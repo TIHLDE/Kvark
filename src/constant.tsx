@@ -5,6 +5,22 @@ import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
  */
 export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;
 /**
+ * Client ID for Feide application
+ */
+export const FEIDE_CLIENT_ID = import.meta.env.VITE_FEIDE_CLIENT_ID;
+/**
+ * Redirect URI for Feide application
+ */
+export const FEIDE_REDIRECT_URI = import.meta.env.VITE_FEIDE_REDIRECT_URI;
+/**
+ * Authn state for Feide application
+ */
+export const FEIDE_AUTH_STATE = import.meta.env.VITE_FEIDE_AUTH_STATE;
+/**
+ * Feide Auth Url
+ */
+export const FEIDE_AUTH_URL = 'https://auth.dataporten.no/oauth/authorization';
+/**
  * Name of auth-token which is sent to backend to authenticate the user
  */
 export const TOKEN_HEADER_NAME = 'X-CSRF-Token';

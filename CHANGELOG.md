@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+## Versjon 2024.30.07
+- ✨ **Feide**. Man kan nå registrere bruker automatisk med Feide.
+
 ## Versjon 2024.29.07
 - 🎨 **Ny student**. Ny student side er redesignet.
 

@@ -51,6 +51,8 @@ const URLS = {
   aboutIndex: `${WIKI}${WIKI_URLS.ABOUT_INDEX}`,
   profile: '/profil/',
   signup: '/ny-bruker/',
+  signupForm: '/ny-bruker/skjema/',
+  signupFeide: '/ny-bruker/feide/',
   shortLinks: '/linker/',
   qrCodes: '/qr-koder/',
   gallery: '/galleri/',

@@ -99,7 +99,7 @@ const SignUp = () => {
         <CardContent>
           <Form {...form}>
             <form className='space-y-6' onSubmit={form.handleSubmit(onSignUp)}>
-              <div className='flex space-x-4'>
+              <div className='space-y-6 md:space-y-0 md:flex md:space-x-4'>
                 <FormField
                   control={form.control}
                   name='first_name'
@@ -133,7 +133,7 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className='flex space-x-4'>
+              <div className='space-y-6 md:space-y-0 md:flex md:space-x-4'>
                 <FormField
                   control={form.control}
                   name='user_id'
@@ -169,7 +169,7 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className='flex space-x-4'>
+              <div className='space-y-6 md:space-y-0 md:flex md:space-x-4'>
                 <FormField
                   control={form.control}
                   name='study'
@@ -228,7 +228,7 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className='flex space-x-4'>
+              <div className='space-y-6 md:space-y-0 md:flex md:space-x-4'>
                 <FormField
                   control={form.control}
                   name='password'

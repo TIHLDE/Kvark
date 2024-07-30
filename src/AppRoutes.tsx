@@ -49,6 +49,8 @@ const Wiki = lazy(() => import('pages/Wiki'));
 const ShortLinks = lazy(() => import('pages/ShortLinks'));
 const QRCodes = lazy(() => import('pages/QRCodes'));
 const SignUp = lazy(() => import('pages/SignUp'));
+const SignUpOptions = lazy(() => import('pages/SignUpOptions'));
+const SignUpFeide = lazy(() => import('pages/SignUpFeide'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
@@ -168,7 +170,9 @@ const AppRoutes = () => {
 
         <Route element={<LogIn />} path={URLS.login} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
-        <Route element={<SignUp />} path={URLS.signup} />
+        <Route element={<SignUp />} path={URLS.signupForm} />
+        <Route element={<SignUpOptions />} path={URLS.signup} />
+        <Route element={<SignUpFeide />} path={URLS.signupFeide} />
 
         <Route element={<Changelog />} path={URLS.changelog} />
 
