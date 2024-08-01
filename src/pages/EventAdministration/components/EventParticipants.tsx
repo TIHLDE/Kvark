@@ -197,7 +197,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                   </Button>
                 </form>
               </Form>
-
             </>
           )}
           {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
