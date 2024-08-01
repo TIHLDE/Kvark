@@ -45,7 +45,7 @@ const SignUpFeide = () => {
   }, [location]);
 
   return (
-    <Page className='mt-12'>
+    <Page>
       <div className='max-w-xl w-full mx-auto'>
         {queryError && (
           <div className='space-y-8'>

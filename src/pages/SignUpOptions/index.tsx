@@ -17,7 +17,7 @@ const SignUpOptions = () => {
   };
 
   return (
-    <Page className='mt-12'>
+    <Page>
       <Card className='max-w-2xl w-full mx-auto'>
         <CardContent className='space-y-12 p-8'>
           <div className='space-y-4'>

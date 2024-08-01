@@ -198,9 +198,9 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                 </form>
               </Form>
 
-              {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
             </>
           )}
+          {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
         </>
       ) : (
         <h1>{onWait ? 'Ingen på ventelisten' : 'Ingen påmeldte'}</h1>
