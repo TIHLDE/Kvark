@@ -12,7 +12,7 @@ import SLACK from 'assets/icons/slack.svg';
 import SNAPCHAT from 'assets/icons/snapchat.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import VERCEL from 'assets/icons/vercel.svg';
-import MAINSPONSOR from 'assets/img/mainSponsor.png';
+import MAINSPONSOR from 'assets/img/mainSponsor.svg';
 import NITO from 'assets/img/nito.png';
 
 const Footer = () => {
@@ -58,7 +58,7 @@ const Footer = () => {
 
         <div className='space-y-12 lg:max-w-sm w-full'>
           <div className='space-y-4'>
-            <a className='mx-auto' href='https://www.accenture.com/no-en' rel='noopener noreferrer' target='_blank'>
+            <a className='mx-auto' href='https://www.lysekonsern.no/' rel='noopener noreferrer' target='_blank'>
               <img alt='Sponsor' className='w-60 md:w-72 mx-auto' loading='lazy' src={MAINSPONSOR} />
             </a>
             <h1 className='text-sm text-center'>Hovedsamarbeidspartner</h1>
