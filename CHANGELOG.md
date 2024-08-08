@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2024.08.08
 
 ## Versjon 2024.30.07
 - ✨ **Feide**. Man kan nå registrere bruker automatisk med Feide.
