@@ -84,7 +84,14 @@ const SignUp = () => {
         navigate(redirectURL || URLS.login);
       },
       onError: (e) => {
-        toast.error(e.detail);
+        Object.keys(e.detail).forEach((key: string) => {
+          if (key in userData) {
+            const errorKey = key as keyof UserCreate;
+            const errorMessage = (e.detail as unknown as Record<string, any>)[key];
+            form.setError(errorKey, { message: errorMessage });
+          }
+        });
+        toast.error('Det er en eller flere feil i skjemaet');
       },
     });
   };
