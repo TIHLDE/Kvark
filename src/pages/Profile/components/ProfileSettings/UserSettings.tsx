@@ -41,7 +41,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { ...user, gender: user.gender.toString() },
+    defaultValues: { ...user, image: user.image || '', gender: user.gender.toString() },
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
