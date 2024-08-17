@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+## Versjon 2024.17.08
+- ✨ **Opptak**. Ny side som viser oversikt over alle verv man kan søke på.
+
 ## Versjon 2024.30.07
 - ✨ **Feide**. Man kan nå registrere bruker automatisk med Feide.
 - ✨ **Sponsor**. Logo for ny sponsor i footer.
