@@ -39,7 +39,7 @@ const Expandable = ({
                     className={cn('whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm', expanded && 'rounded-b-none' )}
                     variant='outline'
                 >
-                    <div className='flex items-center space-x-4'>
+                    <div className='flex items-center space-x-2 md:space-x-4 w-full overflow-hidden'>
                         { icon }
                         <div className='text-start break-words'>
                             {typeof title === 'string'
@@ -54,11 +54,11 @@ const Expandable = ({
                     </div>
                     <div className='flex items-center space-x-4'>
                         { extra }
-                        {expanded ? <ChevronDownIcon className='stroke-[1.5px]' /> : <ChevronRightIcon className='stroke-[1.5px]' />}
+                        {expanded || open ? <ChevronDownIcon className='stroke-[1.5px]' /> : <ChevronRightIcon className='stroke-[1.5px]' />}
                     </div>
                 </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 [&>*]:p-4'>
+            <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 [&>*]:p-2 md:[&>*]:p-4'>
                 { children }
             </CollapsibleContent>
         </Collapsible>
