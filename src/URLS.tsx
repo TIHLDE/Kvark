@@ -69,6 +69,7 @@ const URLS = {
   pythons: 'https://pythons.tihlde.org/',
   pythonsLadies: 'https://pythons-damer.tihlde.org/',
   changelog: '/endringslogg',
+  admissions: '/opptak/',
 };
 
 export default URLS;

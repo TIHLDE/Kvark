@@ -23,22 +23,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'compo
 import { Form } from 'components/ui/form';
 import { Separator } from 'components/ui/separator';
 
-const FieldSubmissionSchema = z.object({
-  field: z.object({
-    id: z.string(),
-  }),
-});
-
-const TextFieldSubmissionSchema = FieldSubmissionSchema.extend({
-  answer_text: z.string().optional(),
-});
-
-const SelectFieldSubmissionSchema = FieldSubmissionSchema.extend({
-  selected_options: z.array(z.string()),
-});
-
 const formSchema = z.object({
-  answers: z.array(z.union([TextFieldSubmissionSchema, SelectFieldSubmissionSchema])),
+  answers: z.array(
+    z.object({
+      field: z.object({
+        id: z.string(),
+      }),
+      answer_text: z.string().optional(),
+      selected_options: z.array(z.string()).optional(),
+    }),
+  ),
 });
 
 const FormPage = () => {
@@ -82,7 +76,7 @@ const FormPage = () => {
         if ('selected_options' in answer) {
           return {
             field: { id: answer.field.id },
-            selected_options: answer.selected_options.map((option) => ({ id: option })),
+            selected_options: answer.selected_options?.map((option) => ({ id: option })) || [],
           };
         }
 
