@@ -219,8 +219,8 @@ export const useDeleteGroupFine = (
   });
 };
 
-export const useGroupForms = (groupSlug: string) =>
-  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug));
+export const useGroupForms = (groupSlug: string, enabled?: boolean) =>
+  useQuery<Array<GroupForm>, RequestResponse>(GROUPS_QUERY_KEYS.forms.all(groupSlug), () => API.getGroupForms(groupSlug), { enabled });
 
 export const useGroupStatistics = (groupSlug: string) =>
   useQuery<GroupMemberStatistics, RequestResponse>(GROUPS_QUERY_KEYS.statistics(groupSlug), () => API.getGroupStatistics(groupSlug));

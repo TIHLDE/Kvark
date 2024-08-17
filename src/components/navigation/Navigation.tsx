@@ -67,6 +67,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       isAuthenticated
         ? {
             items: [
+              { title: 'Opptak', text: 'Søk verv hos TIHLDE', to: URLS.admissions },
               { title: 'Kokebok', text: 'Få hjelp til dine øvinger', to: URLS.cheatsheet },
               { title: 'Link-forkorter', text: 'Forkort linker til å peke mot TIHLDE', to: URLS.shortLinks },
               { title: 'QR koder', text: 'Generer dine egne QR koder', to: URLS.qrCodes },

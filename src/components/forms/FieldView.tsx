@@ -21,7 +21,7 @@ const FieldView = <FormValues extends FieldValues>({ formField, index, submitFor
         disabled={disabled}
         form={submitForm}
         label={formField.title}
-        name={`answers.${index}.answer_text` as Path<FormValues>}
+        name={`answers[${index}].answer_text` as Path<FormValues>}
         required={formField.required}
       />
     ) : formField.type === FormFieldType.MULTIPLE_SELECT ? (
@@ -30,7 +30,7 @@ const FieldView = <FormValues extends FieldValues>({ formField, index, submitFor
           form={submitForm}
           items={formField.options.map((option) => ({ value: option.id || '', label: option.title }))}
           label={formField.title}
-          name={`answers.${index}.selected_options` as Path<FormValues>}
+          name={`answers[${index}].selected_options` as Path<FormValues>}
           required={formField.required}
         />
         <p className='text-muted-foreground text-sm'>Velg en eller flere svaralternativer</p>
@@ -43,7 +43,7 @@ const FieldView = <FormValues extends FieldValues>({ formField, index, submitFor
           items={formField.options.map((option) => ({ value: option.id || '', label: option.title }))}
           label={formField.title}
           multiple={false}
-          name={`answers.${index}.selected_options` as Path<FormValues>}
+          name={`answers[${index}].selected_options` as Path<FormValues>}
           required={formField.required}
         />
         <p className='text-muted-foreground text-sm'>Velg ett svaralternativ</p>
