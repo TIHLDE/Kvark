@@ -8,6 +8,7 @@ import { GroupList } from 'types';
 import { useGroupForms } from 'hooks/Group';
 
 import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import { Button } from 'components/ui/button';
 import Expandable from 'components/ui/expandable';
 import { Skeleton } from 'components/ui/skeleton';
 
@@ -31,36 +32,41 @@ const GroupAdmission = ({ group }: GroupAdmissionProps) => {
   );
 
   return (
-    <Expandable description={group.contact_email} icon={<Logo />} onOpenChange={setIsExpanded} open={isExpanded} title={group.name}>
-      {isLoading && (
-        <div className='flex justify-center space-x-2 items-center'>
-          <LoaderCircle className='w-5 h-5 animate-spin' />
-          <p className='text-muted-foreground'>Laster inn opptaksskjema...</p>
-        </div>
-      )}
-      {filteredForms.length === 0 && !isLoading && <p className='text-muted-foreground text-center'>Ingen opptaksskjemaer funnet</p>}
-      {filteredForms.length > 0 && (
-        <div className='space-y-2'>
-          {filteredForms.map((form, index) => (
-            <div key={index}>
-              {form.is_open_for_submissions ? (
-                <Link
-                  className='flex items-center justify-between px-2 md:px-4 py-2 md:py-3 rounded-md bg-card border border-secondary hover:bg-secondary'
-                  to={`${URLS.form}${form.id}`}>
-                  {form.title}
-                  <ArrowRight className='w-5 h-5 stroke-[1.5px]' />
-                </Link>
+    <Expandable className='z-10' description={group.contact_email} icon={<Logo />} onOpenChange={setIsExpanded} open={isExpanded} title={group.name}>
+      <div>
+        {isLoading && (
+          <div className='flex justify-center space-x-2 items-center'>
+            <LoaderCircle className='w-5 h-5 animate-spin' />
+            <p className='text-muted-foreground'>Laster inn opptaksskjema...</p>
+          </div>
+        )}
+        {filteredForms.length === 0 && !isLoading && <p className='text-muted-foreground text-center'>Ingen opptaksskjemaer funnet</p>}
+        <div className='grid grid-cols-2 gap-2'>
+          {filteredForms.length > 0 && (
+            <div>
+              {filteredForms[0].is_open_for_submissions ? (
+                <Button asChild className='w-full bg-sky-500 text-white'>
+                  <Link to={`${URLS.form}${filteredForms[0].id}`}>
+                    Søk nå <ArrowRight className='h-4 stroke-[1.5px]' />
+                  </Link>
+                </Button>
               ) : (
                 <div className='flex items-center justify-between px-2 md:px-4 py-2 md:py-3 rounded-md border border-,muted bg-muted text-muted-foreground'>
-                  <p>{form.title}</p>
+                  <p>{filteredForms[0].title}</p>
 
                   <Lock className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px] text-red-500' />
                 </div>
               )}
             </div>
-          ))}
+          )}
+
+          <Button asChild variant='ghost'>
+            <Link to={URLS.groups.details(group.slug)}>
+              Les mer <ArrowRight className='h-4' />
+            </Link>
+          </Button>
         </div>
-      )}
+      </div>
     </Expandable>
   );
 };

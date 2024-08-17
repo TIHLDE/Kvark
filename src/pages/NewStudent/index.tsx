@@ -1,6 +1,7 @@
 import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import URLS from 'URLS';
 
 import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from 'hooks/MediaQuery';
 import { useIsAuthenticated } from 'hooks/User';
@@ -68,8 +69,8 @@ const NewStudent = () => {
             </Button>
           </a>
           <Button asChild variant={'outline'}>
-            <Link to={isAuthenticated ? '/profil' : '/ny-bruker'}>
-              {isAuthenticated ? 'Se profil' : 'Opprett Bruker'} <ArrowRight className='h-4' />
+            <Link to={isAuthenticated ? URLS.admissions : '/ny-bruker'}>
+              {isAuthenticated ? 'Søk verv' : 'Opprett Bruker'} <ArrowRight className='h-4' />
             </Link>
           </Button>
         </div>
