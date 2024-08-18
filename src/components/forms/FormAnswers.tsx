@@ -106,6 +106,9 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
           <TableHeader>
             <TableRow>
               <TableHead>Navn</TableHead>
+              <TableHead>E-post</TableHead>
+              <TableHead>Studie</TableHead>
+              <TableHead>Studiekull</TableHead>
 
               {selectedFields.includes('Alle') && form.fields.map((field, index) => <TableHead key={index}>{field.title}</TableHead>)}
 
@@ -118,6 +121,12 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
                 <TableCell>
                   {submission.user.first_name} {submission.user.last_name}
                 </TableCell>
+
+                <TableCell>{submission.user.email}</TableCell>
+
+                <TableCell>{submission.user.study.group.name}</TableCell>
+
+                <TableCell>{submission.user.studyyear.group.name}</TableCell>
 
                 {form.fields
                   .filter((filter) => {
