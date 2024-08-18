@@ -26,7 +26,6 @@ const GroupAdmission = ({ group, disabled }: GroupAdmissionProps) => {
     if (!forms) {
       return [];
     }
-
     return forms.filter((form) => form.title.toLowerCase().includes('opptak'));
   }, [forms]);
 
