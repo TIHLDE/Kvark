@@ -90,7 +90,7 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
               <>
                 <SingleUserSearch form={form} inGroup={group.slug} label='Botsjef' name='fines_admin' user={group.fines_admin} />
 
-                <MarkdownEditor form={form} label='Botsystem praktiske detaljer' name='fine_info' />
+                <MarkdownEditor form={form} label='Botsystem praktiske detaljer' name='fine_info' required />
               </>
             )}
 
