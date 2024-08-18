@@ -3,8 +3,8 @@ import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 
-import FormInput from 'components/inputs/Input';
 import FormMultiCheckbox from 'components/inputs/MultiCheckbox';
+import FormTextarea from 'components/inputs/Textarea';
 
 export type FieldViewProps<TFormValues extends FieldValues> = {
   formField: TextFormField | SelectFormField;
@@ -17,7 +17,7 @@ const FieldView = <FormValues extends FieldValues>({ formField, index, submitFor
   <>
     <input {...submitForm.register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={formField.id} />
     {formField.type === FormFieldType.TEXT_ANSWER ? (
-      <FormInput
+      <FormTextarea
         disabled={disabled}
         form={submitForm}
         label={formField.title}
