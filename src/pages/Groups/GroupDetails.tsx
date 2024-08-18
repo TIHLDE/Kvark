@@ -73,7 +73,7 @@ const GroupDetails = () => {
 
   return (
     <>
-      <AddFineDialog groupSlug={data.slug} />
+      {isMemberOfGroup && isFinesActive && <AddFineDialog groupSlug={data.slug} />}
 
       <CardHeader>
         <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
