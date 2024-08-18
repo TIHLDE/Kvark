@@ -107,7 +107,7 @@ const AppRoutes = () => {
         <Route element={<Toddel />} path={URLS.toddel} />
         <Route path={URLS.form}>
           <Route element={<AuthRoute element={<Form />} />} path={`:id/`} />
-          <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<FormAdmin />} />} path={`admin/:id/`} />
+          <Route element={<AuthRoute apps={[PermissionApp.GROUPFORM]} element={<FormAdmin />} />} path={`admin/:id/`} />
         </Route>
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
