@@ -15,14 +15,15 @@ const Admissions = () => {
   type CollectionProps = {
     groups: Array<GroupList>;
     title: string;
+    disabled?: boolean;
   };
 
-  const Collection = ({ groups, title }: CollectionProps) => (
+  const Collection = ({ groups, title, disabled }: CollectionProps) => (
     <div className='space-y-4'>
       <h1 className='text-xl font-bold'>{title}</h1>
       <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-baseline'>
         {groups.map((group, index) => (
-          <GroupAdmission group={group} key={index} />
+          <GroupAdmission disabled={disabled} group={group} key={index} />
         ))}
       </div>
     </div>
@@ -123,7 +124,7 @@ const Admissions = () => {
               ))}
             </div>
           )}
-          {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
+          {Boolean(INTERESTGROUPS.length) && <Collection disabled groups={INTERESTGROUPS} title='Interessegrupper' />}
         </div>
       </div>
     </Page>
