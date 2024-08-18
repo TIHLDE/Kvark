@@ -12,6 +12,7 @@ type FormTextareaProps<TFormValues extends FieldValues> = {
   placeholder?: string;
   required?: boolean;
   className?: string;
+  disabled?: boolean;
 };
 
 const FormTextarea = <TFormValues extends FieldValues>({
@@ -22,6 +23,7 @@ const FormTextarea = <TFormValues extends FieldValues>({
   placeholder,
   required,
   className,
+  disabled,
 }: FormTextareaProps<TFormValues>) => {
   return (
     <FormField
@@ -33,7 +35,7 @@ const FormTextarea = <TFormValues extends FieldValues>({
             {label} {required && <span className='text-red-300'>*</span>}
           </FormLabel>
           <FormControl>
-            <Textarea className='h-full' {...field} placeholder={placeholder || 'Skriv her...'} />
+            <Textarea className='h-full' disabled={disabled} {...field} placeholder={placeholder || 'Skriv her...'} />
           </FormControl>
           <FormMessage />
           {description && <FormDescription>{description}</FormDescription>}
