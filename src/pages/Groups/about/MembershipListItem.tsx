@@ -1,23 +1,18 @@
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import StarIcon from '@mui/icons-material/Star';
-import { Collapse, Divider, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
 import { parseISO } from 'date-fns';
-import { useState } from 'react';
+import { User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getUserAffiliation } from 'utils';
 
 import { Membership, UserList } from 'types';
-import { MembershipType } from 'types/Enums';
 
-import { useDeleteMembership, useUpdateMembership } from 'hooks/Membership';
-import { useSnackbar } from 'hooks/Snackbar';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
+import { Separator } from 'components/ui/separator';
 
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
+import PromoteMember from './PromoteMember';
+import RemoveMember from './RemoveMember';
 
 export type MembershipListItemProps = {
   membership: Membership;
@@ -26,59 +21,48 @@ export type MembershipListItemProps = {
 
 const MembershipListItem = ({ membership, isAdmin }: MembershipListItemProps) => {
   const user = membership.user as UserList;
-  const [expanded, setExpanded] = useState(false);
-  const deleteMembership = useDeleteMembership(membership.group.slug, user.user_id);
-  const updateMembership = useUpdateMembership(membership.group.slug, user.user_id);
-  const showSnackbar = useSnackbar();
 
-  const removeMemberFromGroup = () =>
-    deleteMembership.mutate(null, {
-      onSuccess: (data) => showSnackbar(data.detail, 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
-
-  const promoteUserToLeader = () =>
-    updateMembership.mutate(MembershipType.LEADER, {
-      onSuccess: () => showSnackbar(`${user.first_name} ${user.last_name} ble promotert til leder`, 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
+  const UserAvatar = () => (
+    <Avatar>
+      <AvatarImage alt={user.first_name} src={user.image} />
+      <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
+    </Avatar>
+  );
 
   return (
-    <Paper noOverflow noPadding>
-      <ListItem
-        disablePadding
-        secondaryAction={isAdmin && <IconButton onClick={() => setExpanded((prev) => !prev)}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</IconButton>}>
-        <ListItemButton component={Link} to={`${URLS.profile}${user.user_id}/`}>
-          <ListItemAvatar>
-            <Avatar user={user} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={`${user.first_name} ${user.last_name}`}
-            secondary={`${formatDate(parseISO(membership.created_at), { time: false, fullMonth: true })} -> nå`}
-          />
-        </ListItemButton>
-      </ListItem>
-      <Collapse in={expanded && isAdmin} mountOnEnter>
-        <Typography sx={{ whiteSpace: 'break-spaces', p: 2 }}>
-          {`Allergier: ${user.allergy ? user.allergy : 'Har ingen allergier'}
-E-post: ${user.email}
-${getUserAffiliation(user)}`}
-        </Typography>
-        <Divider />
-        <Stack direction={{ xs: 'column', lg: 'row' }} gap={1} sx={{ p: 1 }}>
-          <VerifyDialog onConfirm={promoteUserToLeader} startIcon={<StarIcon />} titleText={`Promoter ${user.first_name} ${user.last_name} til leder?`}>
-            Promoter til leder
-          </VerifyDialog>
-          <VerifyDialog
-            color='error'
-            onConfirm={removeMemberFromGroup}
-            startIcon={<HighlightOffIcon />}
-            titleText={`Fjern ${user.first_name} ${user.last_name} fra gruppen?`}>
-            Fjern medlem
-          </VerifyDialog>
-        </Stack>
-      </Collapse>
-    </Paper>
+    <Expandable
+      description={`${formatDate(parseISO(membership.created_at), { time: false, fullMonth: true })} -> nå`}
+      icon={<UserAvatar />}
+      title={`${user.first_name} ${user.last_name}`}>
+      <div className='space-y-4'>
+        <div className='text-sm'>
+          <p>
+            <strong>Allergier:</strong> {user.allergy ? user.allergy : 'Har ingen allergier'}
+          </p>
+          <p>
+            <strong>E-post:</strong> {user.email}
+          </p>
+          <p>{getUserAffiliation(user)}</p>
+        </div>
+
+        {isAdmin && (
+          <>
+            <Separator />
+
+            <div className='space-y-2 md:flex md:items-center md:space-x-2 md:space-y-0'>
+              <Button asChild className='w-full text-black dark:text-white' variant='outline'>
+                <Link to={`${URLS.profile}${user.user_id}/`}>
+                  <User className='mr-2 w-5 h-5 stroke-[1.5px]' />
+                  Se profil
+                </Link>
+              </Button>
+              <PromoteMember membership={membership} user={user} />
+              <RemoveMember membership={membership} user={user} />
+            </div>
+          </>
+        )}
+      </div>
+    </Expandable>
   );
 };
 

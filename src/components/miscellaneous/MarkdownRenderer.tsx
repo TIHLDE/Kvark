@@ -1,83 +1,32 @@
-import { Divider, Skeleton, styled, Typography } from '@mui/material';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
 import rehypeRaw from 'rehype-raw';
 
-import { Event, JobPost, News } from 'types';
+import { Event, EventList, JobPost, News } from 'types';
 
 import { useEventById } from 'hooks/Event';
 import { useJobPostById } from 'hooks/JobPost';
 import { useNewsById } from 'hooks/News';
 
-import Expand from 'components/layout/Expand';
 import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import Linkify from 'components/miscellaneous/Linkify';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
+import Expandable from 'components/ui/expandable';
+import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
-export const Ol = styled('ol')(({ theme }) => ({
-  listStylePosition: 'inside',
-  marginLeft: theme.spacing(1),
-}));
-export const Ul = styled('ul')(({ theme }) => ({
-  listStylePosition: 'inside',
-  marginLeft: theme.spacing(1),
-}));
-export const Li = styled('li')(({ theme }) => ({
-  fontSize: theme.typography.body1.fontSize,
-  wordBreak: 'break-word',
-}));
-
-export const InlineCode = styled('code')(({ theme }) => ({
-  padding: theme.spacing(0.5, 1),
-  color: theme.palette.text.primary,
-  borderRadius: theme.shape.borderRadius,
-  background: theme.palette.action.selected,
-}));
-
-export const Heading = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-  color: theme.palette.text.primary,
-  wordBreak: 'break-word',
-}));
-
-export const ExpandList = styled('div')(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-}));
-
-export const Pre = styled('pre')(({ theme }) => ({
-  color: theme.palette.text.primary,
-  background: theme.palette.action.selected,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  overflowX: 'auto',
-}));
-
-export const Blockquote = styled('blockquote')(({ theme }) => ({
-  margin: theme.spacing(0, 2, 1),
-  padding: theme.spacing(2, 3, 1),
-  borderLeft: `${theme.spacing(1)} solid ${theme.palette.primary.main}`,
-}));
-
-export const Image = styled('img')(({ theme }) => ({
-  maxWidth: '100%',
-  objectFit: 'contain',
-  height: 'auto',
-  borderRadius: theme.shape.borderRadius,
-}));
-
 export const EventCard = ({ id }: { id: Event['id'] }) => {
   const { data } = useEventById(id);
-  return data ? <EventListItem event={data} sx={{ mb: 1 }} /> : <EventListItemLoading sx={{ mb: 1 }} />;
+  return data ? <EventListItem event={data as unknown as EventList} size='medium' /> : <EventListItemLoading />;
 };
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);
-  return data ? <JobPostListItem jobPost={data} sx={{ mb: 1 }} /> : <JobPostListItemLoading sx={{ mb: 1 }} />;
+  return data ? <JobPostListItem jobPost={data} /> : <JobPostListItemLoading />;
 };
 export const NewsCard = ({ id }: { id: News['id'] }) => {
   const { data } = useNewsById(id);
-  return data ? <NewsListItem news={data} sx={{ mb: 1 }} /> : <NewsListItemLoading sx={{ mb: 1 }} />;
+  return data ? <NewsListItem news={data} /> : <NewsListItemLoading />;
 };
 
 export enum LanguageTypes {
@@ -97,20 +46,20 @@ export type CodeBlockProps = {
 export const CodeBlock = ({ inline = false, className: language, children }: CodeBlockProps) => {
   const value = children[0];
   if (inline) {
-    return <InlineCode>{value}</InlineCode>;
+    return <code className='bg-card p-1 rounded-md'>{value}</code>;
   } else if (language === LanguageTypes.EXPANDLIST) {
     return (
-      <ExpandList>
+      <div className='mb-2'>
         <ReactMarkdown components={components}>{value}</ReactMarkdown>
-      </ExpandList>
+      </div>
     );
   } else if (language === LanguageTypes.EXPAND) {
     const header = value.split('::')[0] || '';
     const val = value.split('::')[1] || '';
     return (
-      <Expand flat header={header}>
+      <Expandable title={header}>
         <ReactMarkdown components={components}>{val}</ReactMarkdown>
-      </Expand>
+      </Expandable>
     );
   } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
     const id = Number(value);
@@ -124,47 +73,50 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
       return <NewsCard id={id} />;
     }
   }
-  return <Pre>{value}</Pre>;
+  return <pre className='bg-card rounded-md p-2 overflow-x-auto'>{value}</pre>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const components: any = {
-  blockquote: ({ children }: { children: ReactNode[] }) => <Blockquote>{children}</Blockquote>,
+  blockquote: ({ children }: { children: ReactNode[] }) => <blockquote className='p-2 pl-4 ml-4 my-2 border-l-4 border-l-primary'>{children}</blockquote>,
   code: CodeBlock,
   pre: ({ children }: { children: ReactNode[] }) => children,
-  h1: ({ children }: { children: ReactNode[] }) => <Heading variant='h2'>{children}</Heading>,
-  h2: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
-  h3: ({ children }: { children: ReactNode[] }) => <Heading variant='h3'>{children}</Heading>,
-  ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ol>{children}</Ol>,
-  ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <Ul>{children}</Ul>,
+  h1: ({ children }: { children: ReactNode[] }) => <h1 className='text-3xl font-bold'>{children}</h1>,
+  h2: ({ children }: { children: ReactNode[] }) => <h1 className='text-2xl font-bold'>{children}</h1>,
+  h3: ({ children }: { children: ReactNode[] }) => <h1 className='text-2xl font-bold'>{children}</h1>,
+  ol: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ol className='ml-2 list-inside list-decimal'>{children}</ol>,
+  ul: ({ children }: { children: ReactNode[]; ordered: boolean }) => <ul className='ml-2 list-inside list-disc'>{children}</ul>,
   li: ({ children, checked }: { children: ReactNode[]; checked: boolean }) =>
-    createElement(Li, {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
-  p: ({ children }: { children: ReactNode[] }) => (
-    <Linkify>
-      <Heading variant='body1'>{children}</Heading>
-    </Linkify>
+    createElement('li', {}, checked ? createElement('input', { type: 'checkbox', checked, readOnly: true }) : null, children),
+  p: ({ children }: { children: ReactNode[] }) => <p>{children}</p>,
+  a: ({ children, href }: { children: ReactNode[]; href: string }) => (
+    <a className='underline text-blue-500 dark:text-indigo-300' href={href}>
+      {children}
+    </a>
   ),
-  hr: () => <Divider sx={{ my: 1 }} />,
-  img: ({ alt, src }: { alt: string; src: string }) => <Image alt={alt} loading='lazy' src={src} />,
+  hr: () => <Separator className='my-2' />,
+  img: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className='object-contain max-w-full h-auto rounded-md' loading='lazy' src={src} />,
 };
 
 export type MarkdownRendererProps = {
   value?: string;
+  className?: string;
 };
 
-const MarkdownRenderer = ({ value }: MarkdownRendererProps) => {
+const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
   const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
     <Suspense
       fallback={
-        <>
+        <div className='space-y-2'>
           {skeletonWidthArray.map((width, index) => (
-            <Skeleton height={38} key={index} width={`${width}%`} />
+            <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
           ))}
-        </>
+        </div>
       }>
       <ReactMarkdown
+        className={className}
         components={components}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rehypePlugins={[rehypeRaw] as any}>

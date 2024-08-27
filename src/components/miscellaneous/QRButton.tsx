@@ -1,48 +1,29 @@
-import QrCodeIcon from '@mui/icons-material/QrCodeRounded';
-import { Button, ButtonProps, styled, Theme, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { cn } from 'lib/utils';
+import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { useState } from 'react';
 
-import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
-const Qr = styled(QRCodeCanvas)(({ theme }) => ({
-  padding: theme.spacing(4, 3),
-  display: 'block',
-  margin: '0 auto',
-  height: 'auto !important',
-  width: '100% !important',
-  maxHeight: 350,
-  objectFit: 'contain',
-}));
-
-export type QRButtonProps = ButtonProps & {
+export type QRButtonProps = {
+  children: React.ReactNode;
   qrValue: string;
+  className?: string;
   subtitle?: string;
 };
 
-const QRButton = ({ qrValue, subtitle, children, ...props }: QRButtonProps) => {
-  const [showQR, setShowQR] = useState(false);
-  const theme = useTheme();
-  const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
+export const QRButton = ({ qrValue, subtitle, className, children }: QRButtonProps) => {
+  const OpenButton = (
+    <Button className={cn('w-full', className)} size='lg' variant='outline'>
+      <QrCodeIcon className='mr-2 stroke-[1.5px]' /> {children}
+    </Button>
+  );
 
   return (
-    <>
-      <Button endIcon={<QrCodeIcon />} variant='outlined' {...props} onClick={() => setShowQR(true)}>
-        {children}
-      </Button>
-      <Dialog
-        fullScreen={lgDown}
-        onClose={() => setShowQR(false)}
-        open={showQR}
-        sx={{ '& .MuiPaper-root': { backgroundColor: (theme) => theme.palette.common.white } }}>
-        <Qr bgColor={theme.palette.common.white} fgColor={theme.palette.common.black} size={1000} value={qrValue} />
-        {subtitle && (
-          <Typography align='center' sx={{ my: 0.25, color: (theme) => theme.palette.common.black }} variant='h3'>
-            {subtitle}
-          </Typography>
-        )}
-      </Dialog>
-    </>
+    <ResponsiveDialog title='QR-kode' trigger={OpenButton}>
+      <QRCodeCanvas className='block !h-auto !w-full max-h-[70vh] mx-auto object-contain' size={1000} value={qrValue} />
+      {subtitle && <h1 className='text-center my-1 text-xl'>{subtitle}</h1>}
+    </ResponsiveDialog>
   );
 };
 

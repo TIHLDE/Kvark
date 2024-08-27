@@ -1,66 +1,75 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import { Button, IconButton, ListItem, ListItemText, Skeleton, Stack, Theme, Typography, useMediaQuery } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import URLS from 'URLS';
+import { toast } from 'sonner';
 import { getUserAffiliation } from 'utils';
+import { z } from 'zod';
 
 import { UserList } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
 
 import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
 import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
 
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
-import { StandaloneExpand } from 'components/layout/Expand';
-import Paper from 'components/layout/Paper';
-import Avatar from 'components/miscellaneous/Avatar';
+import FormTextarea from 'components/inputs/Textarea';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { Skeleton } from 'components/ui/skeleton';
 
-type FormValues = {
-  reason: string;
-};
+const formSchema = z.object({
+  reason: z.string().optional(),
+});
 
 const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
   const [showDialog, setShowDialog] = useState(false);
-  const showSnackbar = useSnackbar();
-  const { handleSubmit, formState, register } = useForm<FormValues>();
   const declineUser = useDeclineUser();
-  const decline = (data: FormValues) =>
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const decline = (values: z.infer<typeof formSchema>) =>
     declineUser.mutate(
-      { userId: user.user_id, reason: data.reason },
+      { userId: user.user_id, reason: values.reason || '' },
       {
         onSuccess: (data) => {
           setShowDialog(false);
-          showSnackbar(data.detail, 'success');
+          toast.success(data.detail);
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
 
+  const OpenButton = (
+    <Button className='w-full' variant='outline'>
+      Avslå
+    </Button>
+  );
+
   return (
-    <>
-      <Button color='error' fullWidth onClick={() => setShowDialog(true)} variant='outlined'>
-        Slett
-      </Button>
-      <Dialog
-        contentText='Brukeren vil få beskjed via epost om at brukeren ble avslått sammen med begrunnelsen.'
-        onClose={() => setShowDialog(false)}
-        open={showDialog}
-        titleText='Slett bruker'>
-        <form onSubmit={handleSubmit(decline)}>
-          <TextField formState={formState} label='Begrunnelse (valgfri)' minRows={2} multiline {...register('reason')} />
-          <SubmitButton disabled={declineUser.isLoading} formState={formState}>
-            Slett bruker
-          </SubmitButton>
+    <ResponsiveDialog
+      description='Brukeren vil få beskjed via epost om at brukeren ble avslått sammen med begrunnelsen.'
+      onOpenChange={setShowDialog}
+      open={showDialog}
+      title='Avslå bruker'
+      trigger={OpenButton}>
+      <Form {...form}>
+        <form className='space-y-4' onSubmit={form.handleSubmit(decline)}>
+          <FormTextarea form={form} label='Begrunnelse (valgfri)' name='reason' />
+
+          <Button className='w-full' disabled={declineUser.isLoading} type='submit'>
+            {declineUser.isLoading ? 'Avslår...' : 'Avslå bruker'}
+          </Button>
         </form>
-      </Dialog>
-    </>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 
@@ -71,74 +80,63 @@ export type PersonListItemProps = {
 
 const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) => {
   const activateUser = useActivateUser();
-  const showSnackbar = useSnackbar();
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
+
   const [expanded, setExpanded] = useState(false);
   const { data } = useUser(user.user_id, { enabled: expanded && is_TIHLDE_member });
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const activate = () =>
     activateUser.mutate(user.user_id, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
 
+  const UserAvatar = (
+    <Avatar>
+      <AvatarImage alt={user.first_name} src={user.image} />
+      <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
+    </Avatar>
+  );
+
   return (
-    <StandaloneExpand
-      bgColor='smoke'
-      expanded={expanded}
-      icon={<Avatar sx={{ mr: 2 }} user={user} />}
-      listItemProps={{
-        secondaryAction: (
-          <IconButton component='a' href={`${URLS.profile}${user.user_id}/`} rel='noopener noreferrer' target='_blank'>
-            <OpenInNewIcon />
-          </IconButton>
-        ),
-      }}
-      onExpand={setExpanded}
-      primary={`${user.first_name} ${user.last_name}`}
-      secondary={!mdDown && getUserAffiliation(user)}
-      sx={{ mb: 1 }}>
+    <Expandable
+      description={(isDesktop && getUserAffiliation(user)) || undefined}
+      icon={UserAvatar}
+      onOpenChange={setExpanded}
+      open={expanded}
+      title={`${user.first_name} ${user.last_name}`}>
       <div>
-        {mdDown && <Typography variant='subtitle1'>{getUserAffiliation(user)}</Typography>}
-        <Typography variant='subtitle1'>{`Brukernavn: ${user.user_id}`}</Typography>
-        <Typography variant='subtitle1'>
-          Epost: <a href={`mailto:${user.email}`}>{user.email}</a>
-        </Typography>
+        {is_TIHLDE_member ? (
+          data && (
+            <div className='space-y-2'>
+              <UserSettings isAdmin user={data} />
+              <UserDeleteDialog isAdmin user={data} />
+            </div>
+          )
+        ) : (
+          <div className='space-y-2 lg:space-y-0 lg:flex lg:items-center lg:space-x-4'>
+            <Button className='w-full' onClick={activate} variant='outline'>
+              Legg til medlem
+            </Button>
+            <DeclineUser user={user} />
+          </div>
+        )}
       </div>
-      {is_TIHLDE_member ? (
-        data && (
-          <>
-            <UserSettings isAdmin user={data} />
-            <UserDeleteDialog isAdmin user={data} />
-          </>
-        )
-      ) : (
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-          <Button fullWidth onClick={activate} variant='outlined'>
-            Legg til medlem
-          </Button>
-          <DeclineUser user={user} />
-        </Stack>
-      )}
-    </StandaloneExpand>
+    </Expandable>
   );
 };
 
 export default PersonListItem;
 
 export const PersonListItemLoading = () => {
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   return (
-    <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem>
-        <ListItemText
-          primary={<Skeleton width={`${160 + 40 * Math.random()}px`} />}
-          secondary={!mdDown && <Skeleton width={`${130 + 20 * Math.random()}px`} />}
-        />
-      </ListItem>
-    </Paper>
+    <div className='space-y-2'>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Skeleton className='h-12' key={index} />
+      ))}
+    </div>
   );
 };

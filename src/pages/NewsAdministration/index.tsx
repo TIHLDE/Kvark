@@ -1,83 +1,55 @@
-import EditIcon from '@mui/icons-material/EditRounded';
-import OpenIcon from '@mui/icons-material/OpenInBrowserRounded';
-import { Collapse, Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-import { useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { ChevronRight, Plus } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
-
-import { useNews } from 'hooks/News';
 
 import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
 
-import Paper from 'components/layout/Paper';
-import SidebarList from 'components/layout/SidebarList';
-import Tabs from 'components/layout/Tabs';
 import Page from 'components/navigation/Page';
+import { Button } from 'components/ui/button';
 
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    padding: theme.spacing(4),
-    marginLeft: theme.spacing(35),
-    [theme.breakpoints.down('lg')]: {
-      padding: theme.spacing(4, 1, 6),
-      marginLeft: 0,
-    },
-  },
-  content: {
-    maxWidth: 900,
-    margin: '0 auto',
-  },
-  header: {
-    color: theme.palette.text.primary,
-    paddingLeft: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-}));
+import NewsList from './components/NewsList';
 
 const NewsAdministration = () => {
-  const { classes } = useStyles();
   const navigate = useNavigate();
   const { newsId } = useParams();
-  const editTab = { value: 'edit', label: newsId ? 'Endre' : 'Skriv', icon: EditIcon };
-  const navigateTab = { value: 'navigate', label: 'Se nyhet', icon: OpenIcon };
-  const tabs = newsId ? [editTab, navigateTab] : [editTab];
-  const [tab, setTab] = useState(editTab.value);
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {
-      navigate(`${URLS.newsAdmin}${newNews}/`);
+      navigate(`${URLS.news}${newNews}/`);
     } else {
-      setTab(editTab.value);
       navigate(URLS.newsAdmin);
     }
   };
 
   return (
-    <Page maxWidth={false} options={{ lightColor: 'blue', filledTopbar: true, gutterBottom: true, gutterTop: true, noFooter: true, title: 'Admin nyheter' }}>
-      <SidebarList
-        descKey='header'
-        idKey='id'
-        noExpired
-        onItemClick={(id: number | null) => goToNews(id || null)}
-        selectedItemId={Number(newsId)}
-        title='Nyheter'
-        titleKey='title'
-        useHook={useNews}
-      />
-      <div className={classes.root}>
-        <div className={classes.content}>
-          <Typography className={classes.header} variant='h2'>
-            {newsId ? 'Endre nyhet' : 'Ny nyhet'}
-          </Typography>
-          <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
-          <Paper>
-            <Collapse in={tab === editTab.value} mountOnEnter>
-              <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
-            </Collapse>
-            {tab === navigateTab.value && <Navigate to={`${URLS.news}${newsId}/`} />}
-          </Paper>
+    <Page className='max-w-6xl mx-auto'>
+      <div className='space-y-6'>
+        <div className='space-y-4 md:space-y-0 md:flex items-center justify-between'>
+          <h1 className='font-bold text-4xl md:text-5xl'>{newsId ? 'Endre nyhet' : 'Ny nyhet'}</h1>
+
+          <div className='flex items-center space-x-4'>
+            <NewsList />
+
+            {newsId && (
+              <>
+                <Button asChild size='icon' variant='outline'>
+                  <Link to={URLS.newsAdmin}>
+                    <Plus className='w-5 h-5 stroke-[1.5px]' />
+                  </Link>
+                </Button>
+
+                <Button asChild className='p-0' variant='link'>
+                  <Link to={`${URLS.news}${newsId}/`}>
+                    Se nyhet
+                    <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
+                  </Link>
+                </Button>
+              </>
+            )}
+          </div>
         </div>
+
+        <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
       </div>
     </Page>
   );

@@ -1,24 +1,27 @@
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownwardRounded';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpwardRounded';
-import Delete from '@mui/icons-material/DeleteRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Checkbox, Collapse, Divider, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
+import { cn } from 'lib/utils';
+import { BadgeCheck, ChevronDown, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { formatDate, getUserAffiliation } from 'utils';
 
 import { Registration } from 'types';
 
-import { useDeleteEventRegistration, useEventById, useUpdateEventRegistration } from 'hooks/Event';
-import { useSnackbar } from 'hooks/Snackbar';
+import { useEventById, useUpdateEventRegistration } from 'hooks/Event';
 import { useUserStrikes } from 'hooks/User';
 
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
 import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Button } from 'components/ui/button';
+import { Checkbox } from 'components/ui/checkbox';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
+import { Label } from 'components/ui/label';
+import { Separator } from 'components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
+
+import DeleteRegistration from './DeleteRegistration';
+import MoveParticipant from './MoveParticipant';
 
 export type ParticipantProps = {
   eventId: number;
@@ -27,8 +30,6 @@ export type ParticipantProps = {
 
 const Participant = ({ registration, eventId }: ParticipantProps) => {
   const updateRegistration = useUpdateEventRegistration(eventId);
-  const deleteRegistration = useDeleteEventRegistration(eventId);
-  const showSnackbar = useSnackbar();
   const [checkedState, setCheckedState] = useState(registration.has_attended);
   const [expanded, setExpanded] = useState(false);
   const { data: event } = useEventById(eventId);
@@ -37,31 +38,17 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
     setCheckedState(registration.has_attended);
   }, [registration]);
 
-  const deleteHandler = async () => {
-    await deleteRegistration.mutate(registration.user_info.user_id, {
-      onSuccess: () => {
-        showSnackbar(`Deltageren ble fjernet`, 'success');
-      },
-    });
-  };
-
-  const moveHandler = (onWait: boolean) => {
-    updateRegistration.mutate({ registration: { is_on_wait: onWait }, userId: registration.user_info.user_id });
-  };
-
-  const handleAttendedCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedState(event.target.checked);
+  const handleAttendedCheck = (checked: boolean) => {
+    setCheckedState(checked);
     updateRegistration.mutate(
-      { registration: { has_attended: event.target.checked }, userId: registration.user_info.user_id },
+      { registration: { has_attended: checked }, userId: registration.user_info.user_id },
       {
         onSuccess: () => {
-          showSnackbar(
-            `${registration.user_info.first_name} ${registration.user_info.last_name} ble satt til ${!event.target.checked ? 'ikke ' : ''}ankommet`,
-            'success',
-          );
+          toast.success(`${registration.user_info.first_name} ${registration.user_info.last_name} ble satt til ${!checked ? 'ikke ' : ''}ankommet`);
         },
         onError: () => {
-          setCheckedState(!event.target.checked);
+          toast.error('Klarer ikke å endre ankomststatus');
+          setCheckedState(!checked);
         },
       },
     );
@@ -69,92 +56,108 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
 
   const StrikesInfo = () => {
     const { data = [] } = useUserStrikes(registration.user_info.user_id);
+
     return (
-      <>
-        <Typography variant='subtitle1'>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</Typography>
-        <Stack gap={1}>
-          {data.map((strike) => (
-            <StrikeListItem key={strike.id} strike={strike} user={registration.user_info} />
-          ))}
+      <div className='space-y-2'>
+        <h1>{`Alle prikker (${data.reduce((val, strike) => val + strike.strike_size, 0)}):`}</h1>
+        <div className='space-y-4'>
+          <div className='space-y-2'>
+            {data.map((strike) => (
+              <StrikeListItem key={strike.id} strike={strike} user={registration.user_info} />
+            ))}
+          </div>
           {!data.length && (
-            <Typography variant='subtitle2'>{`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}</Typography>
+            <h1 className='text-sm text-muted-foreground text-center'>
+              {`${registration.user_info.first_name} ${registration.user_info.last_name} har ingen aktive prikker`}
+            </h1>
           )}
-          <StrikeCreateDialog eventId={eventId} userId={registration.user_info.user_id}>
-            Lag ny prikk
-          </StrikeCreateDialog>
-        </Stack>
-      </>
+          <StrikeCreateDialog eventId={eventId} userId={registration.user_info.user_id} />
+        </div>
+      </div>
     );
   };
 
+  const UserAvatar = () => (
+    <Avatar>
+      <AvatarImage alt={registration.user_info.first_name} src={registration.user_info.image} />
+      <AvatarFallback>{registration.user_info.first_name[0] + registration.user_info.last_name[0]}</AvatarFallback>
+    </Avatar>
+  );
+
   return (
-    <Paper bgColor='smoke' noOverflow noPadding sx={{ mb: 1 }}>
-      <ListItem
-        disablePadding
-        secondaryAction={
-          !registration.is_on_wait && (
-            <Tooltip title={checkedState ? 'Merk som ikke ankommet' : 'Merk som ankommet'}>
-              <Checkbox checked={checkedState} onChange={handleAttendedCheck} />
-            </Tooltip>
-          )
-        }>
-        <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
-          <ListItemAvatar>
-            <Avatar user={registration.user_info} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`}
-            secondary={`${getUserAffiliation(registration.user_info)}${
-              registration.user_info.allergy !== '' ? `\nAllergier: ${registration.user_info.allergy}` : ''
-            }${!registration.allow_photo ? `\nVil ikke bli tatt bilde av` : ''}`}
-          />
-          {expanded ? <ExpandLessIcon sx={{ mr: 2 }} /> : <ExpandMoreIcon sx={{ mr: 2 }} />}
-        </ListItemButton>
-      </ListItem>
-      <Collapse in={expanded} mountOnEnter unmountOnExit>
-        <Divider />
-        <Stack gap={1} sx={{ p: 2 }}>
-          <div>
-            <Typography variant='subtitle1'>{`Epost: ${registration.user_info.email}`}</Typography>
-            <Typography variant='subtitle1'>{`Påmeldt: ${formatDate(parseISO(registration.created_at))}`}</Typography>
+    <Collapsible className='w-full bg-white dark:bg-inherit border border-secondary rounded-md' onOpenChange={setExpanded} open={expanded}>
+      <CollapsibleTrigger asChild>
+        <Button
+          className={cn(
+            'whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm',
+            expanded && 'rounded-b-none',
+          )}
+          variant='outline'>
+          <div className='flex items-center space-x-4'>
+            <UserAvatar />
+            <div className='text-start break-words'>
+              <h1>
+                {registration.user_info.first_name} {registration.user_info.last_name}
+              </h1>
+              <h1 className='text-sm'>{getUserAffiliation(registration.user_info)}</h1>
+            </div>
           </div>
-          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            {registration.is_on_wait && event && event.list_count >= event.limit ? (
-              <VerifyDialog contentText='Du må flytte noen på ventelista før du kan flytte en deltager opp' startIcon={<ArrowUpwardIcon />}>
-                Flytt til påmeldte
-              </VerifyDialog>
-            ) : registration.is_on_wait && event && event.list_count <= event.limit ? (
-              <VerifyDialog
-                contentText={`Er du sikker på at du vil gi denne personen plass på dette arrangementet?`}
-                onConfirm={() => moveHandler(false)}
-                startIcon={<ArrowUpwardIcon />}
-                titleText={'Er du sikker?'}
-                variant='outlined'>
-                Flytt til påmeldte
-              </VerifyDialog>
-            ) : (
-              <VerifyDialog
-                contentText={`Er du sikker på at du vil flytte denne personen til ventelista?`}
-                onConfirm={() => moveHandler(true)}
-                startIcon={<ArrowDownwardIcon />}
-                titleText={'Er du sikker?'}
-                variant='outlined'>
-                Flytt til venteliste
-              </VerifyDialog>
+          <div className='flex items-center space-x-2'>
+            {!registration.is_on_wait && checkedState && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <BadgeCheck className='w-5 h-5 stroke-[1.5px] text-emerald-700' />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Deltager har ankommet</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
-            <VerifyDialog
-              color='error'
-              contentText={`Er du sikker på at du vil fjerne ${registration.user_info.first_name} ${registration.user_info.last_name} fra arrangementet?`}
-              onConfirm={deleteHandler}
-              startIcon={<Delete />}>
-              Fjern deltager
-            </VerifyDialog>
-          </Stack>
-          <Divider sx={{ my: 1 }} />
-          <StrikesInfo />
-        </Stack>
-      </Collapse>
-    </Paper>
+            {expanded ? <ChevronDown className='stroke-[1.5px]' /> : <ChevronRight className='stroke-[1.5px]' />}
+          </div>
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 p-4'>
+        <div className='space-y-4'>
+          <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between'>
+            <div className='text-sm space-y-1'>
+              <h1>Epost: {registration.user_info.email}</h1>
+              <h1>Påmeldt: {formatDate(parseISO(registration.created_at))}</h1>
+            </div>
+
+            {!registration.is_on_wait && (
+              <label
+                className='w-full md:w-auto flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
+                htmlFor={registration.user_info.user_id}>
+                <Checkbox checked={checkedState} id={registration.user_info.user_id} onCheckedChange={(checked) => handleAttendedCheck(Boolean(checked))} />
+                <div className='space-y-1 leading-none'>
+                  <Label>Ankommet?</Label>
+                  <p className='text-sm text-muted-foreground'>Marker om deltager har ankommet</p>
+                </div>
+              </label>
+            )}
+          </div>
+
+          <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-4'>
+            {registration.is_on_wait && event && event.list_count >= event.limit ? (
+              <MoveParticipant checkedState={checkedState} eventId={eventId} isOnWait={registration.is_on_wait} />
+            ) : registration.is_on_wait && event && event.list_count <= event.limit ? (
+              <MoveParticipant checkedState={checkedState} eventId={eventId} isOnWait={registration.is_on_wait} userId={registration.user_info.user_id} />
+            ) : (
+              <MoveParticipant checkedState={checkedState} eventId={eventId} isOnWait={registration.is_on_wait} userId={registration.user_info.user_id} />
+            )}
+
+            <DeleteRegistration eventId={eventId} userInfo={registration.user_info} />
+          </div>
+        </div>
+
+        <Separator className='my-4' />
+
+        <StrikesInfo />
+      </CollapsibleContent>
+    </Collapsible>
   );
 };
 

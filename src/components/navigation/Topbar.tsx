@@ -1,182 +1,67 @@
-import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import { AppBar, Button, Grow, MenuItem, MenuList, Paper, Popper, Toolbar, useMediaQuery, useTheme } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { cn } from 'lib/utils';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
 
-//import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { NavigationItem, NavigationOptions } from 'components/navigation/Navigation';
-import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
-const useStyles = makeStyles()((theme) => ({
-  appBar: {
-    boxSizing: 'border-box',
-    backgroundColor: theme.palette.colors.gradient.main.top,
-    color: theme.palette.text.primary,
-    flexGrow: 1,
-    zIndex: theme.zIndex.drawer + 2,
-    transition: '0.2s',
-  },
-  fancyAppBar: {
-    backgroundColor: 'transparent',
-  },
-  backdrop: {
-    ...theme.palette.blurred,
-    ...theme.palette.transparent,
-    backgroundColor: `${theme.palette.colors.gradient.main.top}bf`,
-    border: 'none',
-    boxShadow: 'none',
-  },
-  toolbar: {
-    width: '100%',
-    maxWidth: theme.breakpoints.values.xl,
-    margin: 'auto',
-    padding: theme.spacing(0, 1),
-    display: 'grid',
-    gridTemplateColumns: '172px 1fr 172px',
-  },
-  filledTopbar: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 65,
-    background: theme.palette.colors.gradient.main.top,
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  topbarMobile: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: theme.spacing(0.5),
-    zIndex: theme.zIndex.drawer,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 62,
-  },
-  logo: {
-    height: 32,
-    width: 'auto',
-    marginLeft: 0,
-  },
-  items: {
-    display: 'flex',
-    justifyContent: 'center',
-    color: theme.palette.common.white,
-  },
-  black: {
-    color: theme.palette.common.black,
-  },
-  right: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  selected: {
-    borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
-    '& a': {
-      fontWeight: 600,
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-    },
-  },
-  avatar: {
-    width: 55,
-    height: 55,
-  },
-  topbarItem: {
-    alignSelf: 'center',
-  },
-  menulist: {
-    padding: theme.spacing(0.5, 0),
-    background: theme.palette.background.smoke,
-    borderRadius: theme.spacing(1),
-    textTransform: 'uppercase',
-    minWidth: 150,
-  },
-  menulistItem: {
-    display: 'block',
-    textAlign: 'center',
-  },
-  dropdownIcon: {
-    transition: 'transform 0.5s',
-  },
-  expanded: {
-    transform: 'rotate(180deg)',
-  },
-}));
+import TihldeLogo from 'components/miscellaneous/TihldeLogo';
+import { NavigationItem } from 'components/navigation/Navigation';
+import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuListItem,
+  NavigationMenuTrigger,
+} from 'components/ui/navigation-menu';
 
 const TopBarItem = (props: NavigationItem) => {
-  const { classes, cx } = useStyles();
-  const [isOpen, setIsOpen] = useState(false);
-  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
 
   if (props.type === 'link') {
     const selected = location.pathname === props.to;
+
     return (
-      <div className={cx(classes.topbarItem, selected && classes.selected)}>
-        {props.external ? (
-          <Button color='inherit' component='a' endIcon={<OpenInNewIcon />} href={props.to}>
+      <NavigationMenuItem>
+        <Link to={props.to}>
+          <NavigationMenuLink
+            className={cn(
+              'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
+              selected && 'dark:text-white text-muted-foreground font-bold',
+            )}>
             {props.text}
-          </Button>
-        ) : (
-          <Button color='inherit' component={Link} onClick={selected ? () => window.location.reload() : undefined} to={props.to}>
-            {props.text}
-          </Button>
-        )}
-      </div>
+          </NavigationMenuLink>
+        </Link>
+      </NavigationMenuItem>
     );
   }
 
   return (
-    <div className={classes.topbarItem} onMouseLeave={() => setIsOpen(false)}>
-      <Button
-        className={classes.topbarItem}
-        color='inherit'
-        endIcon={<ExpandIcon className={cx(classes.dropdownIcon, isOpen && classes.expanded)} />}
-        onClick={() => setIsOpen((prev) => !prev)}
-        onMouseEnter={() => setIsOpen(true)}
-        ref={buttonAnchorRef}>
-        {props.text}
-      </Button>
-      <Popper anchorEl={buttonAnchorRef.current} disablePortal open={isOpen} role={undefined} transition>
-        {({ TransitionProps, placement }) => (
-          <Grow {...TransitionProps} style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-            <Paper>
-              <MenuList className={classes.menulist}>
-                {props.items.map((item, i) =>
-                  item.external ? (
-                    <MenuItem className={classes.menulistItem} component='a' href={item.to} key={i} target='_blank'>
-                      {item.text} <OpenInNewIcon fontSize='inherit' sx={{ mb: '-2px' }} />
-                    </MenuItem>
-                  ) : (
-                    <MenuItem className={classes.menulistItem} component={Link} key={i} to={item.to}>
-                      {item.text}
-                    </MenuItem>
-                  ),
-                )}
-              </MenuList>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </div>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>{props.text}</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className='grid gap-3 p-6 grid-cols-2 lg:grid-cols-3 md:w-[400px] lg:w-[600px]'>
+          {props.items.map((item, index) => (
+            <NavigationMenuListItem href={item.to} key={index} title={item.title}>
+              {item.text}
+            </NavigationMenuListItem>
+          ))}
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
   );
 };
 
 export type TopbarProps = {
   items: Array<NavigationItem>;
-} & Pick<NavigationOptions, 'darkColor' | 'lightColor' | 'filledTopbar'>;
+};
 
-const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => {
-  const { classes, cx } = useStyles();
-  const theme = useTheme();
+const Topbar = ({ items }: TopbarProps) => {
   const [scrollLength, setScrollLength] = useState(0);
-  const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
+  const isMediumScreen = useMediaQuery(MEDIUM_SCREEN);
 
   const handleScroll = () => setScrollLength(window.pageYOffset);
 
@@ -186,38 +71,46 @@ const Topbar = ({ items, lightColor, darkColor, filledTopbar }: TopbarProps) => 
   }, []);
 
   const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
-  const shouldOverrideColorProp = useMemo(() => !lgDown && (filledTopbar || !isOnTop), [lgDown, isOnTop, filledTopbar]);
-  const colorOnDark = useMemo(() => (darkColor && !shouldOverrideColorProp ? darkColor : 'white'), [darkColor, shouldOverrideColorProp]);
-  const colorOnLight = useMemo(() => (lightColor && !shouldOverrideColorProp ? lightColor : 'white'), [lightColor, shouldOverrideColorProp]);
 
-  if (lgDown) {
+  if (!isMediumScreen) {
     return (
-      <div className={classes.topbarMobile}>
+      <header
+        className={cn(
+          'fixed z-30 w-full top-0 transition-all duration-150 p-2 flex items-center justify-between',
+          !isOnTop && 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        )}>
         <Link aria-label='Til forsiden' to={URLS.landing}>
-          <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />{' '}
+          <TihldeLogo className='h-[24px] w-auto ml-0 text-primary' size='large' />{' '}
         </Link>
-        <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
-      </div>
+        <ProfileTopbarButton />
+      </header>
     );
   }
+
   return (
     <>
-      <AppBar className={cx(classes.appBar, isOnTop ? classes.fancyAppBar : classes.backdrop)} elevation={isOnTop ? 0 : 1} position='fixed'>
-        <Toolbar className={classes.toolbar} disableGutters>
+      <header
+        className={cn(
+          'fixed z-30 w-full top-0 transition-all duration-150',
+          !isOnTop &&
+            'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-card/60  dark:supports-[backdrop-filter]:bg-background/60',
+        )}>
+        <nav className='flex items-center justify-between py-3 px-8'>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeLogo className={classes.logo} darkColor={colorOnDark} lightColor={colorOnLight} size='large' />{' '}
+            <TihldeLogo className='h-[28px] w-auto ml-0 text-primary' size='large' />{' '}
           </Link>
-          <div className={cx(classes.items, (theme.palette.mode === 'light' ? colorOnLight : colorOnDark) !== 'white' && !filledTopbar && classes.black)}>
-            {items.map((item, i) => (
-              <TopBarItem key={i} {...item} />
-            ))}
+          <NavigationMenu>
+            <NavigationMenuList>
+              {items.map((item, i) => (
+                <TopBarItem key={i} {...item} />
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+          <div className='flex justify-end'>
+            <ProfileTopbarButton />
           </div>
-          <div className={classes.right}>
-            <ProfileTopbarButton darkColor={colorOnDark} lightColor={colorOnLight} />
-          </div>
-        </Toolbar>
-      </AppBar>
-      {filledTopbar && <div className={classes.filledTopbar} />}
+        </nav>
+      </header>
     </>
   );
 };

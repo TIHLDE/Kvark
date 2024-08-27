@@ -1,44 +1,42 @@
-import { Typography, TypographyProps } from '@mui/material';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import { Form } from 'types';
 
 import FieldView from 'components/forms/FieldView';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 
-export type FormViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formState' | 'register' | 'control' | 'getValues'> & {
+export type FormViewProps<TFormValues extends FieldValues> = {
   form: Form;
+  submitForm: UseFormReturn<TFormValues>;
   disabled?: boolean;
-  alignText?: TypographyProps['align'];
 };
 
-const FormView = <FormValues extends FieldValues>({
-  form,
-  register,
-  formState,
-  control,
-  getValues,
-  disabled = false,
-  alignText,
-}: FormViewProps<FormValues>) => (
+const FormView = <FormValues extends FieldValues>({ form, submitForm, disabled = false }: FormViewProps<FormValues>) => (
   <>
-    {!form.fields.length && (
-      <Typography align={alignText} variant='body2'>
-        Dette spørreskjemaet inneholder ingen spørsmål.
-      </Typography>
-    )}
+    {!form.fields.length && <h1 className='text-center'>Dette spørreskjemaet inneholder ingen spørsmål.</h1>}
     {form.fields.map((field, index) => (
-      <FieldView
-        control={control}
-        disabled={disabled}
-        field={field}
-        formState={formState}
-        getValues={getValues}
-        index={index}
-        key={field.id}
-        register={register}
-      />
+      <FieldView disabled={disabled} formField={field} index={index} key={field.id} submitForm={submitForm} />
     ))}
   </>
+);
+
+type FormViewTemplateProps = {
+  form: Form;
+};
+
+export const FormViewTemplate = ({ form }: FormViewTemplateProps) => (
+  <div className='space-y-4'>
+    {form.fields.map((field, index) => (
+      <div className='space-y-1' key={index}>
+        <Label>
+          {field.title}
+          {field.required && <span className='text-red-300'>*</span>}
+        </Label>
+        <Input className='w-full' disabled value={field.title} />
+      </div>
+    ))}
+  </div>
 );
 
 export default FormView;

@@ -1,32 +1,15 @@
-import DeleteIcon from '@mui/icons-material/DeleteRounded';
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  Checkbox,
-  Chip,
-  FormControl,
-  IconButton,
-  InputLabel,
-  ListItemText,
-  ListSubheader,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  Tooltip,
-} from '@mui/material';
-import { useMemo } from 'react';
+import { Command as CommandPrimitive } from 'cmdk';
+import { Trash, X } from 'lucide-react';
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 
-import { BaseGroup, PriorityPoolMutate } from 'types';
+import { BaseGroup, GroupList, PriorityPoolMutate } from 'types';
 import { GroupType } from 'types/Enums';
 
 import { useGroupsByType } from 'hooks/Group';
-import { useUser } from 'hooks/User';
 
-import { ShowMoreText } from 'components/miscellaneous/UserInformation';
+import { Badge } from 'components/ui/badge';
+import { Button } from 'components/ui/button';
+import { Command, CommandGroup, CommandItem, CommandList } from 'components/ui/command';
 
 export type EventEditPriorityPoolsProps = {
   priorityPools: Array<PriorityPoolMutate>;
@@ -35,15 +18,7 @@ export type EventEditPriorityPoolsProps = {
 type GroupOption = { type: 'header'; header: string } | { type: 'group'; group: BaseGroup };
 
 const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPriorityPoolsProps) => {
-  const { data: user } = useUser();
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, STUDYGROUPS, STUDYYEARGROUPS, data = [] } = useGroupsByType();
-
-  const handleChange = (event: SelectChangeEvent<PriorityPoolMutate['groups']>, index: number) => {
-    const {
-      target: { value },
-    } = event;
-    setPriorityPools((prev) => prev.map((pool, i) => (i === index ? { groups: typeof value === 'string' ? value.split(',') : value } : pool)));
-  };
 
   const addPriorityPool = () => setPriorityPools((prev) => [...prev, { groups: [] }]);
   const removePriorityPool = (index: number) => setPriorityPools((prev) => prev.filter((_, i) => i !== index));
@@ -77,65 +52,162 @@ const EventEditPriorityPools = ({ priorityPools, setPriorityPools }: EventEditPr
     return array;
   }, [BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS, STUDYGROUPS, STUDYYEARGROUPS]);
 
+  return (
+    <div className='space-y-2'>
+      {priorityPools.map((pool, poolIndex) => (
+        <div className='flex space-x-2' key={poolIndex}>
+          <MultiSelectGroup data={data} groupOptions={groupOptions} key={poolIndex} pool={pool} poolIndex={poolIndex} setPriorityPools={setPriorityPools} />
+
+          <Button onClick={() => removePriorityPool(poolIndex)} size='icon' type='button' variant='outline'>
+            <Trash className='w-4 h-4' />
+          </Button>
+        </div>
+      ))}
+
+      <Button className='w-full' onClick={addPriorityPool} type='button'>
+        Legg til prioriteringsgruppe
+      </Button>
+    </div>
+  );
+};
+
+type MultiSelectGroupProps = {
+  pool: PriorityPoolMutate;
+  setPriorityPools: React.Dispatch<React.SetStateAction<Array<PriorityPoolMutate>>>;
+  groupOptions: Array<GroupOption>;
+  poolIndex: number;
+  data: GroupList[];
+};
+
+const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, data }: MultiSelectGroupProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>('');
+  const [options, setOptions] = useState<Array<GroupOption>>(groupOptions);
+
+  const addGroupToPriorityPool = (group: BaseGroup, poolIndex: number) => {
+    setOptions((prev) => {
+      const newOptions = [...prev];
+      const index = newOptions.findIndex((option) => option.type === 'group' && option.group.slug === group.slug);
+      if (index !== -1) {
+        newOptions.splice(index, 1);
+      }
+      return newOptions;
+    });
+
+    setPriorityPools((prev) => {
+      const newPools = [...prev];
+      newPools[poolIndex].groups.push(group.slug);
+      return newPools;
+    });
+  };
+
+  const removeGroupFromPriorityPool = (slug: string, poolIndex: number) => {
+    setOptions((prev) => {
+      const newOptions = [...prev];
+      const group = data.find((group) => group.slug === slug);
+      if (group) {
+        newOptions.push({ type: 'group', group });
+      }
+      return newOptions;
+    });
+
+    setPriorityPools((prev) => {
+      const newPools = [...prev];
+      newPools[poolIndex].groups = newPools[poolIndex].groups.filter((group) => group !== slug);
+      return newPools;
+    });
+  };
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    const input = inputRef.current;
+    if (input) {
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        if (input.value === '') {
+          setPriorityPools((prev) => {
+            const newPools = [...prev];
+            newPools[poolIndex].groups.pop();
+            return newPools;
+          });
+        }
+      }
+      // This is not a default behaviour of the <input /> field
+      if (e.key === 'Escape') {
+        input.blur();
+      }
+    }
+  }, []);
+
   const getGroupName = (slug: BaseGroup['slug']) => {
     const group = data.find((group) => group.slug === slug);
     return group ? (group.type === GroupType.STUDYYEAR ? `${group.name}-kullet` : group.name) : 'Ukjent';
   };
 
   return (
-    <Stack gap={2}>
-      <Alert severity='info' variant='outlined'>
-        <AlertTitle>Hva er en prioriteringsgruppe?</AlertTitle>
-        <ShowMoreText variant='body2'>
-          {`Prioriteringsgruppene definerer hvem som er prioritert til et arrangement. For at en bruker skal bli prioritert må den være medlem av alle gruppene i en av prioriteringsgruppene. Rekkefølgen til prioriteringsgruppene har ingenting å si. Med "-kullet" menes året du startet på studiet. Du er for eksempel en del av ${user?.studyyear.group?.name}-kullet.
-          
-Om du for eksempel vil prioritere ${user?.studyyear.group?.name}-kullet til Dataingeniør og Digital forretningsutvikling må du lage 2 prioriteringsgrupper:
-- ${user?.studyyear.group?.name}-kullet og Dataingeniør
-- ${user?.studyyear.group?.name}-kullet og Digital forretningsutvikling`}
-        </ShowMoreText>
-      </Alert>
-      {priorityPools.map((pool, index) => (
-        <Stack direction='row' gap={1} key={index} sx={{ alignItems: 'center' }}>
-          <FormControl fullWidth>
-            <InputLabel id={`select-priority-groups-${index}-label`}>Prioriteringsgruppe</InputLabel>
-            <Select
-              fullWidth
-              id={`select-priority-groups-${index}`}
-              input={<OutlinedInput fullWidth id={`select-priority-groups-${index}`} label='Prioriteringsgruppe' />}
-              labelId={`select-priority-groups-${index}-label`}
-              multiple
-              onChange={(e) => handleChange(e, index)}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={getGroupName(value)} />
-                  ))}
-                </Box>
-              )}
-              value={pool.groups}>
-              {groupOptions.map((option) =>
-                option.type === 'header' ? (
-                  <ListSubheader key={option.header}>{option.header}</ListSubheader>
-                ) : (
-                  <MenuItem key={option.group.slug} value={option.group.slug}>
-                    <Checkbox checked={pool.groups.includes(option.group.slug)} />
-                    <ListItemText primary={option.group.name} />
-                  </MenuItem>
-                ),
-              )}
-            </Select>
-          </FormControl>
-          <Tooltip arrow title='Fjern prioriteringsgruppe'>
-            <IconButton color='error' onClick={() => removePriorityPool(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      ))}
-      <Button onClick={addPriorityPool} variant='contained'>
-        Legg til prioriteringsgruppe
-      </Button>
-    </Stack>
+    <Command className='overflow-visible bg-transparent' key={poolIndex} onKeyDown={handleKeyDown}>
+      <div className='group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
+        <div className='flex flex-wrap gap-1'>
+          {pool.groups.map((slug, index) => (
+            <Badge key={index} variant='secondary'>
+              {getGroupName(slug)}
+              <button
+                className='ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                onClick={() => removeGroupFromPriorityPool(slug, poolIndex)}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                type='button'>
+                <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+              </button>
+            </Badge>
+          ))}
+          {/* Avoid having the "Search" Icon */}
+          <CommandPrimitive.Input
+            className='ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground'
+            onBlur={() => setOpen(false)}
+            onFocus={() => setOpen(true)}
+            onValueChange={setInputValue}
+            placeholder='Select frameworks...'
+            ref={inputRef}
+            value={inputValue}
+          />
+        </div>
+      </div>
+      <div className='relative mt-2'>
+        <CommandList>
+          {open && options.length > 0 ? (
+            <div className='w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+              <CommandGroup className='h-full overflow-auto'>
+                {options.map((option, index) => (
+                  <Fragment key={index}>
+                    {option.type === 'header' ? (
+                      <div className='relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm font-semibold'>
+                        <p>{option.header}</p>
+                      </div>
+                    ) : (
+                      <CommandItem
+                        className={'cursor-pointer'}
+                        key={index}
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                        }}
+                        onSelect={() => {
+                          setInputValue('');
+                          addGroupToPriorityPool(option.group, poolIndex);
+                        }}>
+                        {getGroupName(option.group.slug)}
+                      </CommandItem>
+                    )}
+                  </Fragment>
+                ))}
+              </CommandGroup>
+            </div>
+          ) : null}
+        </CommandList>
+      </div>
+    </Command>
   );
 };
 

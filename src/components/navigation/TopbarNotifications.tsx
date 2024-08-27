@@ -1,43 +1,22 @@
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import NotificationReadIcon from '@mui/icons-material/NotificationsNoneRounded';
-import NotificationUnreadIcon from '@mui/icons-material/NotificationsRounded';
-import {
-  Badge,
-  Box,
-  ClickAwayListener,
-  Collapse,
-  Divider,
-  Grow,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Popper,
-  Skeleton,
-  Theme,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
 import parseISO from 'date-fns/parseISO';
-import { useMemo, useRef, useState } from 'react';
+import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getTimeSince, isExternalURL } from 'utils';
+import { getTimeSince } from 'utils';
 
 import { Notification } from 'types';
 
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 import { useNotifications } from 'hooks/Notification';
 import { useUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
 
-import Dialog from 'components/layout/Dialog';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
-import Linkify from 'components/miscellaneous/Linkify';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
+import { Button, PaginateButton } from 'components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from 'components/ui/drawer';
+import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
+import { ScrollArea } from 'components/ui/scroll-area';
+import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
 type NotificationItemProps = {
   notification: Notification;
@@ -50,133 +29,144 @@ export type NotificationsTopbarProps = {
 
 const NotificationItem = ({ notification, setShowNotifications }: NotificationItemProps) => {
   const [showDescription, setShowDescription] = useState(false);
-  const { event } = useAnalytics();
-
-  const Icon = notification.read ? NotificationReadIcon : NotificationUnreadIcon;
 
   const linkOnClick = () => {
-    event('open-notification-link', 'notifications', `Opened notification link: ${notification.link}`);
     setShowNotifications(false);
   };
 
   return (
-    <Paper noOverflow noPadding sx={{ mb: 1, ...(!notification.read && { backgroundColor: (theme) => theme.palette.colors.tihlde + '25' }) }}>
-      <ListItem
-        disablePadding
-        secondaryAction={
-          notification.description !== '' && (
-            <IconButton aria-label='Åpne beskrivelse' edge='end' onClick={() => setShowDescription((prev) => !prev)}>
-              {showDescription ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            </IconButton>
-          )
-        }>
-        {notification.link ? (
-          <ListItemButton
-            {...(isExternalURL(notification.link) ? { component: 'a', href: notification.link } : { component: Link, to: notification.link })}
-            aria-label='Åpne link'
-            onClick={linkOnClick}>
-            <ListItemIcon>
-              <Icon />
-            </ListItemIcon>
-            <ListItemText aria-label='Åpne beskrivelse' primary={notification.title} secondary={getTimeSince(parseISO(notification.created_at))} />
-          </ListItemButton>
-        ) : (
-          <>
-            <ListItem component='div'>
-              <ListItemIcon>
-                <Icon />
-              </ListItemIcon>
-              <ListItemText aria-label='Åpne beskrivelse' primary={notification.title} secondary={getTimeSince(parseISO(notification.created_at))} />
-            </ListItem>
-          </>
+    <div className='w-full flex justify-between px-4 py-4 border-b'>
+      <div className='w-5/6 space-y-2'>
+        <div>
+          <h1 className='text-sm truncate'>{notification.title}</h1>
+          <p className='text-xs text-muted-foreground'>{getTimeSince(parseISO(notification.created_at))}</p>
+        </div>
+        <div>
+          <div className='text-sm text-muted-foreground'>
+            {notification.description.length < 100 ? (
+              notification.description
+            ) : (
+              <p>
+                {showDescription ? notification.description : `${notification.description.slice(0, 100)}...`}
+                <span className='text-primary hover:underline cursor-pointer ml-1 text-xs' onClick={() => setShowDescription((prev) => !prev)}>
+                  {showDescription ? 'Skjul' : 'Vis mer'}
+                </span>
+              </p>
+            )}
+          </div>
+        </div>
+        {notification.link && (
+          <Button asChild className='w-auto h-auto px-4 py-2' variant='secondary'>
+            <Link className='text-xs' onClick={linkOnClick} to={notification.link}>
+              <SquareArrowOutUpRight className='h-[1rem] w-[1rem] stroke-[1.5px] mr-2' />
+              Les mer
+            </Link>
+          </Button>
         )}
-      </ListItem>
-      <Collapse in={showDescription}>
-        <Divider />
-        <Typography sx={{ whiteSpace: 'break-spaces', wordBreak: 'break-word', py: 1, px: 2 }} variant='body2'>
-          <Linkify>{notification.description}</Linkify>
-        </Typography>
-      </Collapse>
-    </Paper>
+      </div>
+
+      {!notification.read && <div className='rounded-full w-2 h-2 bg-sky-300 animate-pulse' />}
+    </div>
   );
 };
 
 const NotificationItemLoading = () => (
-  <Paper noPadding sx={{ mb: 1 }}>
-    <ListItem>
-      <ListItemIcon>
-        <NotificationReadIcon />
-      </ListItemIcon>
-      <ListItemText primary={<Skeleton height={24} width='40%' />} secondary={<Skeleton height={12} width='15%' />} />
-    </ListItem>
-  </Paper>
+  <div className='space-y-2'>
+    {[...Array(6)].map((_, index) => (
+      <Skeleton className='h-12' key={index} />
+    ))}
+  </div>
 );
 
-const NotificationsTopbar = ({ color }: NotificationsTopbarProps) => {
+const NotificationsTopbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-  const mdDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const buttonAnchorRef = useRef<HTMLButtonElement>(null);
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (buttonAnchorRef.current && buttonAnchorRef.current.contains(event.target as HTMLElement)) {
-      return;
-    }
+  if (!isDesktop) {
+    return (
+      <Drawer onOpenChange={setShowNotifications} open={showNotifications}>
+        <DrawerTrigger asChild>
+          <button className='dark:text-white'>
+            {!showNotifications ? (
+              user && user.unread_notifications > 0 ? (
+                <div className='relative'>
+                  <BellRing className='h-[1.2rem] w-[1.2rem]' />
+                  <div className='absolute bottom-0 -right-0.5 bg-red-400 rounded-full h-2 w-2 animate-pulse' />
+                </div>
+              ) : (
+                <Bell className='h-[1.2rem] w-[1.2rem]' />
+              )
+            ) : (
+              <X className='h-[1.2rem] w-[1.2rem]' />
+            )}
+          </button>
+        </DrawerTrigger>
 
-    setShowNotifications(false);
-  };
+        <DrawerContent className='px-2'>
+          <h1 className='text-xl font-bold text-center pt-4 pb-2'>Varslinger</h1>
 
-  const NotificationsList = () => (
-    <>
-      <Typography align='center' gutterBottom variant='h2'>
-        Varslinger
-      </Typography>
-      {isLoading && <NotificationItemLoading />}
-      {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
-      {error && <Paper>{error.detail}</Paper>}
-      {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <List dense disablePadding>
-            {notifications.map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} setShowNotifications={setShowNotifications} />
-            ))}
-          </List>
-        </Pagination>
-      )}
-      {isFetching && <NotificationItemLoading />}
-    </>
-  );
+          <ScrollArea className='h-[60vh] pb-4 pr-0'>
+            {isLoading && <NotificationItemLoading />}
+            {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
+            {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
+            {data !== undefined && (
+              <div>
+                {notifications.map((notification, index) => (
+                  <NotificationItem key={index} notification={notification} setShowNotifications={setShowNotifications} />
+                ))}
+              </div>
+            )}
+            {hasNextPage && <PaginateButton className='w-full mt-4 bg-inherit' isLoading={isFetching} nextPage={fetchNextPage} />}
+          </ScrollArea>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
-    <>
-      <IconButton aria-label='Vis varslinger' onClick={() => setShowNotifications((prev) => !prev)} ref={buttonAnchorRef} sx={{ color: color }}>
-        <Badge badgeContent={user?.unread_notifications} color='error'>
-          {showNotifications ? <CloseRoundedIcon /> : <NotificationReadIcon />}
-        </Badge>
-      </IconButton>
-      {mdDown ? (
-        <Dialog fullScreen onClose={() => setShowNotifications(false)} open={showNotifications && !isLoading}>
-          <NotificationsList />
-        </Dialog>
-      ) : (
-        <Popper anchorEl={buttonAnchorRef.current} disablePortal open={showNotifications && !isLoading} role={undefined} transition>
-          {({ TransitionProps }) => (
-            <Grow {...TransitionProps} style={{ transformOrigin: 'right top' }}>
-              <Paper elevation={2} noPadding sx={{ maxWidth: (theme) => theme.breakpoints.values.md }}>
-                <ClickAwayListener onClickAway={handleClose}>
-                  <Box sx={{ p: 2, height: 'calc(100vh - 130px)', overflow: 'auto' }}>
-                    <NotificationsList />
-                  </Box>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
+    <Popover onOpenChange={setShowNotifications} open={showNotifications}>
+      <PopoverTrigger asChild>
+        <button className='dark:text-white'>
+          {!showNotifications ? (
+            user && user.unread_notifications > 0 ? (
+              <div className='relative'>
+                <BellRing className='h-[1.2rem] w-[1.2rem]' />
+                <div className='absolute bottom-0 -right-0.5 bg-red-400 rounded-full h-2 w-2 animate-pulse' />
+              </div>
+            ) : (
+              <Bell className='h-[1.2rem] w-[1.2rem]' />
+            )
+          ) : (
+            <X className='h-[1.2rem] w-[1.2rem]' />
           )}
-        </Popper>
-      )}
-    </>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className='w-[400px] rounded-xl mr-8 mt-2 p-0 dark:bg-background'>
+        <div className='p-4'>
+          <h1 className='text-lg font-bold'>Varslinger</h1>
+        </div>
+
+        <Separator />
+
+        <ScrollArea className='h-[60vh] pb-4 pr-0'>
+          {isLoading && <NotificationItemLoading />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
+          {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
+          {data !== undefined && (
+            <div>
+              {notifications.map((notification, index) => (
+                <NotificationItem key={index} notification={notification} setShowNotifications={setShowNotifications} />
+              ))}
+            </div>
+          )}
+          {hasNextPage && <PaginateButton className='w-full mt-4 bg-inherit' isLoading={isFetching} nextPage={fetchNextPage} />}
+        </ScrollArea>
+      </PopoverContent>
+    </Popover>
   );
 };
 

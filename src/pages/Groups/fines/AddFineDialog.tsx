@@ -1,132 +1,141 @@
-import AddIcon from '@mui/icons-material/AddRounded';
-import { Fab, FabProps, ListSubheader, MenuItem } from '@mui/material';
-import { forwardRef, Ref, useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { formatLawHeader } from 'utils';
+import { z } from 'zod';
 
-import { Group, GroupFineCreate, UserBase } from 'types';
+import { Group, GroupFineCreate } from 'types';
 
 import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
-import { useAnalytics } from 'hooks/Utils';
+import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
+import FormInput from 'components/inputs/Input';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import UserSearch from 'components/inputs/UserSearch';
-import Dialog from 'components/layout/Dialog';
+import { FormSelect } from 'components/inputs/Select';
+import { FormImageUpload } from 'components/inputs/Upload';
+import { MultiUserSearch } from 'components/inputs/UserSearch';
+import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
-export type AddFineDialogProps = FabProps & {
+export type AddFineDialogProps = {
   groupSlug: Group['slug'];
 };
 
-type FormValues = Omit<GroupFineCreate, 'user'> & {
-  user: Array<UserBase>;
-};
+const formSchema = z.object({
+  description: z.string({ required_error: 'Du må velge en lov' }),
+  amount: z.string(),
+  reason: z.string(),
+  user: z.array(z.string()).refine((v) => v.length > 0, { message: 'Du må velge minst en person' }),
+  image: z.string().optional(),
+});
 
-const AddFineDialog = forwardRef(function AddFineDialog({ groupSlug, ...props }: AddFineDialogProps, ref: Ref<HTMLButtonElement>) {
-  const { event } = useAnalytics();
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const { data: laws } = useGroupLaws(groupSlug, { enabled: dialogOpen });
+const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const { data: laws, isLoading } = useGroupLaws(groupSlug, { enabled: dialogOpen });
   const createFine = useCreateGroupFine(groupSlug);
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, control, watch, setValue } = useForm<FormValues>();
 
-  const selectedLaw = watch('description');
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: laws?.filter((l) => Boolean(l.description))[0]?.id,
+      amount: laws?.filter((l) => Boolean(l.description))[0]?.amount.toString() || '1',
+      user: [],
+      reason: '',
+      image: '',
+    },
+  });
 
-  useEffect(() => {
-    const law = laws?.find((law) => law.id === selectedLaw);
-    if (law) {
-      setValue('amount', law.amount);
-    }
-  }, [selectedLaw]);
-
-  const submit = (data: FormValues) => {
-    const law = laws?.find((law) => law.id === data.description);
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const law = laws?.find((law) => law.id === values.description);
     if (!law) {
-      showSnackbar('Du må velge en lov', 'warning');
+      toast.error('Du må velge en lov');
       return;
     }
-    if (!data.user?.length) {
-      showSnackbar('Du må velge minst en person', 'warning');
-      return;
-    }
-    event('create', 'fines', `Created a new fine`);
-    createFine.mutate(
-      { ...data, description: formatLawHeader(law), user: data.user.map((u) => u.user_id) },
-      {
-        onSuccess: () => {
-          showSnackbar('Boten ble opprettet', 'success');
-          setDialogOpen(false);
-        },
-        onError: (e) => showSnackbar(e.detail, 'error'),
+    const description = formatLawHeader(law);
+
+    const data: GroupFineCreate = {
+      ...values,
+      description,
+      image: values.image || null,
+      amount: parseInt(values.amount),
+    };
+
+    createFine.mutate(data, {
+      onSuccess: () => {
+        toast.success('Boten ble opprettet');
+        form.reset();
+        setDialogOpen(false);
       },
-    );
+      onError: (e) => {
+        toast.error(e.detail);
+      },
+    });
   };
+
+  const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   const selectableLawExists = Boolean(laws?.filter((law) => Boolean(law.description)).length);
 
+  const OpenButton = (
+    <Button className='fixed bottom-20 lg:bottom-4 right-4' size={isDesktop ? 'sm' : 'icon'}>
+      <Plus className='lg:mr-1 h-4 w-4' />
+      {isDesktop && 'Ny bot'}
+    </Button>
+  );
+
   return (
-    <>
-      {laws !== undefined && (
-        <Dialog
-          contentText={!selectableLawExists ? 'Det er ingen lover i lovverket, du kan ikke gi bot for å ha brutt en lov som ikke finnes' : undefined}
-          onClose={() => setDialogOpen(false)}
-          open={dialogOpen}
-          titleText='Ny bot'>
-          {selectableLawExists && (
-            <form onSubmit={handleSubmit(submit)}>
-              <UserSearch
-                control={control}
-                formState={formState}
-                helperText='Du kan velge flere personer'
+    <ResponsiveDialog description='Opprett en ny bot for et lovbrudd' onOpenChange={setDialogOpen} open={dialogOpen} title='Ny bot' trigger={OpenButton}>
+      {!selectableLawExists && !isLoading && (
+        <h1 className='text-center'>Det er ingen lover i lovverket, du kan ikke gi bot for å ha brutt en lov som ikke finnes.</h1>
+      )}
+      {laws && (
+        <ScrollArea className='h-[60vh]'>
+          <Form {...form}>
+            <form className='space-y-4 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
+              <MultiUserSearch
+                description='Du kan velge flere personer'
+                form={form}
                 inGroup={groupSlug}
                 label='Hvem har begått et lovbrudd?'
-                multiple
                 name='user'
-              />
-              <Select
-                control={control}
-                defaultValue={laws.filter((l) => Boolean(l.description))[0].id}
-                formState={formState}
-                label='Lovbrudd'
-                name='description'
-                required>
-                {laws.map((law) =>
-                  law.description ? (
-                    <MenuItem key={law.id} sx={{ whiteSpace: 'break-spaces' }} value={law.id}>
-                      {formatLawHeader(law)}
-                    </MenuItem>
-                  ) : (
-                    <ListSubheader key={law.id}>{formatLawHeader(law)}</ListSubheader>
-                  ),
-                )}
-              </Select>
-              <TextField
-                defaultValue={1}
-                formState={formState}
-                inputProps={{ type: 'number' }}
-                label='Forslag til antall bøter'
-                {...register('amount')}
                 required
               />
-              <MarkdownEditor formState={formState} label='Begrunnelse' {...register('reason')} />
-              <ImageUpload formState={formState} label='Bildebevis (Valgfritt)' register={register('image')} setValue={setValue} watch={watch} />
-              <SubmitButton disabled={createFine.isLoading} formState={formState} sx={{ mt: 2 }}>
-                Opprett bot
-              </SubmitButton>
+
+              <div className='rounded-md p-4 border space-y-2'>
+                <FormSelect
+                  form={form}
+                  label='Lovbrudd'
+                  name='description'
+                  options={laws.map((law) => ({
+                    label: formatLawHeader(law),
+                    value: law.id,
+                    isHeader: Boolean(!law.description),
+                  }))}
+                  required
+                />
+                <MarkdownRenderer value={laws.find((law) => law.id === form.getValues('description'))?.description ?? ''} />
+              </div>
+
+              <FormInput form={form} label='Forslag til antall bøter' name='amount' required type='number' />
+
+              <MarkdownEditor form={form} label='Begrunnelse' name='reason' required />
+
+              <FormImageUpload form={form} label='Bildebevis (Valgfritt)' name='image' />
+
+              <Button className='w-full' disabled={createFine.isLoading} type='submit'>
+                {createFine.isLoading ? 'Oppretter bot...' : 'Opprett bot'}
+              </Button>
             </form>
-          )}
-        </Dialog>
+          </Form>
+        </ScrollArea>
       )}
-      <Fab color='primary' variant='extended' {...props} onClick={() => setDialogOpen(true)} ref={ref}>
-        <AddIcon sx={{ mr: 1 }} />
-        Ny bot
-      </Fab>
-    </>
+    </ResponsiveDialog>
   );
-});
+};
 
 export default AddFineDialog;

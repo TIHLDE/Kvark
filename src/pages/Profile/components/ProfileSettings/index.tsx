@@ -1,13 +1,8 @@
-import DeleteIcon from '@mui/icons-material/DeleteOutlineRounded';
-import NotificationSettingsIcon from '@mui/icons-material/EditNotificationsRounded';
-import ExportIcon from '@mui/icons-material/FileDownloadRounded';
-import UserSettingsIcon from '@mui/icons-material/MoodRounded';
-import PasswordIcon from '@mui/icons-material/PasswordRounded';
-import { Button, Stack, Typography } from '@mui/material';
+import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { User } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useExportUserData, useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -15,7 +10,8 @@ import UserNotificationSettings, { ConnectWithSlack } from 'pages/Profile/compon
 import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
 import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
 
-import { StandaloneExpand } from 'components/layout/Expand';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
 
 export type ProfileSettingsProps = {
   user: User;
@@ -23,55 +19,80 @@ export type ProfileSettingsProps = {
 
 const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   const { event } = useAnalytics();
-  const showSnackbar = useSnackbar();
   const forgotPassword = useForgotPassword();
   const exportUserData = useExportUserData();
   const runExportUserdata = () =>
     exportUserData.mutate(undefined, {
       onSuccess: (data) => {
         event('export-data', 'profile', 'Exported user data');
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
 
   const resetPassword = () => {
     forgotPassword.mutate(user.email, {
-      onSuccess: () => showSnackbar('Vi har sendt deg en epost med link til en side der du kan endre passordet ditt', 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onSuccess: () => {
+        toast.success('Vi har sendt deg en epost med link til en side der du kan endre passordet ditt');
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
   };
 
   return (
-    <Stack gap={1}>
+    <div className='space-y-2'>
       <ConnectWithSlack />
-      <StandaloneExpand icon={<NotificationSettingsIcon />} primary='Varslingsinnstillinger' secondary='Bestem hvor du ønsker å motta ulike typer varsler'>
+      <Expandable
+        className='dark:bg-card'
+        description='Bestem hvor du ønsker å motta ulike typer varsler'
+        icon={<BellPlusIcon className='stroke-[1.5px]' />}
+        title='Varslingsinnstillinger'>
         <UserNotificationSettings user={user} />
-      </StandaloneExpand>
-      <StandaloneExpand icon={<UserSettingsIcon />} primary='Profil-innstillinger' secondary='Endre informasjon om deg selv'>
-        <UserSettings user={user} />
-      </StandaloneExpand>
-      <StandaloneExpand icon={<PasswordIcon />} primary='Endre passord' secondary='Motta en link i din epost til side der du kan endre passord'>
-        <Button disabled={forgotPassword.isLoading} fullWidth onClick={resetPassword} variant='outlined'>
-          Endre passord
+      </Expandable>
+      <Expandable
+        className='dark:bg-card'
+        description='Motta en link i din epost til side der du kan endre passord'
+        icon={<KeyRoundIcon className='stroke-[1.5px]' />}
+        title='Endre passord'>
+        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={resetPassword} size='lg' variant='outline'>
+          Endre Passord
         </Button>
-      </StandaloneExpand>
-      <StandaloneExpand icon={<ExportIcon />} primary='Eksporter brukerdata' secondary='Få tilsendt alle data vi har lagret i tilknytning til din bruker'>
-        <Button disabled={exportUserData.isLoading} fullWidth onClick={runExportUserdata} variant='outlined'>
+      </Expandable>
+      <Expandable
+        className='dark:bg-card'
+        description='Endre informasjon om deg selv'
+        icon={<UserCogIcon className='stroke-[1.5px]' />}
+        title='Profil-innstillinger'>
+        <UserSettings user={user} />
+      </Expandable>
+      <Expandable
+        className='dark:bg-card'
+        description='Få tilsendt alle data vi har lagret i tilknytning til din bruker'
+        icon={<CloudDownloadIcon className='stroke-[1.5px]' />}
+        title='Eksporter brukerdata'>
+        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={runExportUserdata} size='lg' variant='outline'>
           Eksporter brukerdata
         </Button>
-      </StandaloneExpand>
-      <StandaloneExpand icon={<DeleteIcon />} primary='Slett brukerkonto' secondary='Slett din bruker og alle tilhørende data vi har lagret'>
-        <Typography color={(theme) => theme.palette.error.main} gutterBottom variant='h3'>
-          Slett brukerkonto
-        </Typography>
-        <Typography gutterBottom variant='body2'>
-          Slett din bruker og alle tilhørende data vi har lagret. Dine påmeldinger, medlemsskap, korte linker og badges er blant det som vil slettes for alltid.
-          Det er ikke mulig å angre denne handlingen.
-        </Typography>
-        <UserDeleteDialog user={user} />
-      </StandaloneExpand>
-    </Stack>
+      </Expandable>
+      <Expandable
+        className='dark:bg-card'
+        description='Slett din bruker og alle tilhørende data vi har lagret'
+        icon={<TrashIcon className='stroke-[1.5px]' />}
+        title='Slett brukerkonto'>
+        <div className='space-y-2'>
+          <h1 className='text-destructive text-xl font-semibold'>Slett brukerkonto</h1>
+          <p className='text-sm'>
+            Slett din bruker og alle tilhørende data vi har lagret. Dine påmeldinger, medlemsskap, korte linker og badges er blant det som vil slettes for
+            alltid. Det er ikke mulig å angre denne handlingen.
+          </p>
+          <UserDeleteDialog user={user} />
+        </div>
+      </Expandable>
+    </div>
   );
 };
 

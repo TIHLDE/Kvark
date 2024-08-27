@@ -1,57 +1,26 @@
-import { styled, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { MouseEvent as ReactMouseEvent, useState } from 'react';
-import { themesDetails, ThemeTypes } from 'theme';
+import { Moon, Sun } from 'lucide-react';
 
-import { useThemeSettings } from 'hooks/Theme';
-import { useAnalytics } from 'hooks/Utils';
+import { useTheme } from 'hooks/Theme';
 
-import Dialog from 'components/layout/Dialog';
+import { Button } from 'components/ui/button';
 
-const ThemeDialog = styled(Dialog)({
-  '& .MuiPaper-root': {
-    maxWidth: '250px',
-  },
-});
-const ButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
-  background: theme.palette.background.smoke,
-}));
-const ButtonText = styled(Typography)(({ theme }) => ({
-  margin: theme.spacing(0, 1),
-  color: theme.palette.text.secondary,
-}));
-
-export type ThemeSettingsProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
-const ThemeSettings = ({ open, onClose }: ThemeSettingsProps) => {
-  const { event } = useAnalytics();
-  const themeSettings = useThemeSettings();
-  const [themeName, setThemeName] = useState(themeSettings.getThemeFromStorage());
-
-  const changeTheme = (e: ReactMouseEvent<HTMLElement, MouseEvent>, newThemeName: ThemeTypes) => {
-    if (newThemeName) {
-      setThemeName(newThemeName);
-      themeSettings.set(newThemeName);
-      event('switch', 'theme', newThemeName);
-    }
-  };
+const ThemeSettings = () => {
+  const { setTheme, theme } = useTheme();
 
   return (
-    <ThemeDialog maxWidth={false} onClose={onClose} open={open}>
-      <Typography align='center' gutterBottom variant='h2'>
-        Tema
-      </Typography>
-      <ButtonGroup aria-label='Tema' exclusive fullWidth onChange={changeTheme} orientation='vertical' value={themeName}>
-        {themesDetails.map((theme) => (
-          <ToggleButton aria-label={theme.name} key={theme.key} value={theme.key}>
-            <theme.icon />
-            <ButtonText variant='subtitle2'>{theme.name}</ButtonText>
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-    </ThemeDialog>
+    <Button
+      className='text-black dark:text-white w-auto h-auto p-0 bg-inherit hover:bg-inherit'
+      onClick={() => {
+        if (theme === 'dark') {
+          setTheme('light');
+        } else {
+          setTheme('dark');
+        }
+      }}>
+      <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
+      <Moon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
+      <span className='sr-only'>Toggle theme</span>
+    </Button>
   );
 };
 

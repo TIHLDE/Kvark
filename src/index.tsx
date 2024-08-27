@@ -3,15 +3,12 @@ import 'assets/css/index.css';
 import 'delayed-scroll-restoration-polyfill';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { CssBaseline } from '@mui/material';
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -20,12 +17,14 @@ import { BrowserRouter } from 'react-router-dom';
 import API from 'api/api';
 
 import { MiscProvider } from 'hooks/Misc';
-import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';
 
+import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
 import Navigation from 'components/navigation/Navigation';
+import ScrollToTop from 'components/navigation/ScrollToTop';
+import { Toaster } from 'components/ui/sonner';
 
-export const muiCache = createCache({ key: 'mui', prepend: true });
+export const cache = createCache({ key: 'tihlde-cache', prepend: true });
 
 inject(); // inject analytics Vercel
 
@@ -48,17 +47,14 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
 
   return (
-    <CacheProvider value={muiCache}>
-      <ThemeProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline enableColorScheme />
-          <QueryClientProvider client={queryClient}>
-            <MiscProvider>
-              <SnackbarProvider>{children}</SnackbarProvider>
-            </MiscProvider>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </LocalizationProvider>
+    <CacheProvider value={cache}>
+      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+        <QueryClientProvider client={queryClient}>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <MiscProvider>{children}</MiscProvider>
+          <ReactQueryDevtools />
+        </QueryClientProvider>
       </ThemeProvider>
     </CacheProvider>
   );
@@ -67,9 +63,12 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 export const Application = () => (
   <Providers>
     <BrowserRouter>
+      <ScrollToTop />
       <Navigation>
+        <ShortCutMenu />
         <AppRoutes />
         <Analytics />
+        <Toaster />
       </Navigation>
     </BrowserRouter>
   </Providers>
@@ -105,4 +104,6 @@ const rickroll = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
 
-render(<Application />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = container && createRoot(container);
+root && root.render(<Application />);

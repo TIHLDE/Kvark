@@ -8,7 +8,7 @@ export enum CheatsheetStudy {
   DATAING = 'Dataing',
   DIGFOR = 'DigFor',
   DIGSEC = 'DigSec',
-  DIGSAM = 'DigSam',
+  DIGTRANS = 'DigTrans',
   INFO = 'Info',
 }
 
@@ -60,6 +60,7 @@ export enum PermissionApp {
   FORMS = 'form',
   TODDEL = 'toddel',
   BANNERS = 'banner',
+  GROUPFORM = 'groupform',
 }
 
 export enum Groups {
@@ -117,4 +118,10 @@ export enum StrikeReason {
   LATE = 'LATE',
   BAD_BEHAVIOR = 'BAD_BEHAVIOR',
   EVAL_FORM = 'EVAL_FORM',
+}
+
+export enum Category {
+  COMPRES = 'bedpres',
+  COURSE = 'kurs',
+  ACTIVITY = 'aktivitet',
 }

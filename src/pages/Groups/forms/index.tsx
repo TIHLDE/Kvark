@@ -1,14 +1,6 @@
-import MultipleIcon from '@mui/icons-material/AllInclusiveRounded';
-import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import OnlyMembersIcon from '@mui/icons-material/GroupsRounded';
-import OpenIcon from '@mui/icons-material/LockOpenRounded';
-import ViewIcon from '@mui/icons-material/PreviewRounded';
-import SettingsIcon from '@mui/icons-material/SettingsRounded';
-import { Alert, Button, Collapse, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Tooltip } from '@mui/material';
-import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { cn } from 'lib/utils';
+import { ArrowRight, CircleHelp, Eye, Infinity, Info, LockOpen, Settings, Users } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { GroupForm } from 'types';
@@ -17,58 +9,52 @@ import { useGroup, useGroupForms } from 'hooks/Group';
 
 import AddGroupFormDialog from 'pages/Groups/forms/AddGroupFormDialog';
 
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
 
 const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
-  const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
+
+  const Description = () => (
+    <div className='flex items-center space-x-2'>
+      <LockOpen className={cn('w-4 h-4 stroke-[1.5px]', form.is_open_for_submissions ? 'text-emerald-500' : 'text-red-500')} />
+      <Users className={cn('w-4 h-4 stroke-[1.5px]', form.only_for_group_members ? 'text-red-500' : 'text-emerald-500')} />
+      <Infinity className={cn('w-4 h-4 stroke-[1.5px]', form.can_submit_multiple ? 'text-emerald-500' : 'text-red-500')} />
+    </div>
+  );
 
   return (
-    <Paper key={form.id} noOverflow noPadding>
-      <ListItem disablePadding>
-        <ListItemButton onClick={() => setExpanded((prev) => !prev)}>
-          <ListItemText
-            primary={form.title}
-            secondary={
-              <Stack direction='row' gap={1}>
-                <Tooltip title={`Spørreskjemaet er ${form.is_open_for_submissions ? '' : 'ikke '}åpent for innsending av svar`}>
-                  <OpenIcon color={form.is_open_for_submissions ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
-                </Tooltip>
-                <Tooltip title={`Spørreskjemaet er åpent for ${form.only_for_group_members ? 'kun medlemmer av gruppen' : 'alle'}`}>
-                  <OnlyMembersIcon color={form.only_for_group_members ? 'error' : 'success'} sx={{ fontSize: 'inherit' }} />
-                </Tooltip>
-                <Tooltip title={`Spørreskjemaet kan ${form.can_submit_multiple ? '' : 'ikke '}besvares flere ganger`}>
-                  <MultipleIcon color={form.can_submit_multiple ? 'success' : 'error'} sx={{ fontSize: 'inherit' }} />
-                </Tooltip>
-              </Stack>
-            }
-          />
-          <ListItemIcon sx={{ minWidth: 0 }}>{expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-      <Collapse in={expanded} mountOnEnter unmountOnExit>
-        <Divider />
-        <Stack gap={2} sx={{ p: 1 }}>
-          {!form.is_open_for_submissions && <Alert severity='info'>Du må åpne spørreskjemaet for innsending for å kunne svare på og dele skjemaet.</Alert>}
-          <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-            <Button component={Link} endIcon={<SettingsIcon />} fullWidth to={`${URLS.form}admin/${form.id}/`} variant='outlined'>
+    <Expandable description={<Description />} icon={<CircleHelp />} title={form.title}>
+      <div className='space-y-2'>
+        {!form.is_open_for_submissions && (
+          <Alert>
+            <Info className='w-5 h-5' />
+            <AlertTitle>Spørreskjemaet er ikke åpent for innsending av svar</AlertTitle>
+            <AlertDescription>Du må åpne spørreskjemaet for innsending for å kunne svare på og dele skjemaet.</AlertDescription>
+          </Alert>
+        )}
+        <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
+          <Button asChild className='w-full text-black dark:text-white' variant='outline'>
+            <Link to={`${URLS.form}admin/${form.id}/`}>
+              <Settings className='w-5 h-5 mr-2' />
               Administrer
-            </Button>
-            <Button
-              component={Link}
-              disabled={!form.is_open_for_submissions}
-              endIcon={<ViewIcon />}
-              fullWidth
-              to={`${URLS.form}${form.id}/`}
-              variant='outlined'>
-              Svar på/se skjema
-            </Button>
-            <ShareButton disabled={!form.is_open_for_submissions} fullWidth shareId={form.id} shareType='form' title={form.title} />
-          </Stack>
-        </Stack>
-      </Collapse>
-    </Paper>
+            </Link>
+          </Button>
+          <Button
+            className='w-full text-black dark:text-white'
+            disabled={!form.is_open_for_submissions}
+            onClick={() => navigate(`${URLS.form}${form.id}/`)}
+            variant='outline'>
+            <Eye className='w-5 h-5 mr-2' />
+            Svar på/se skjema
+          </Button>
+          <ShareButton shareId={form.id} shareType='form' title={form.title} />
+        </div>
+      </div>
+    </Expandable>
   );
 };
 
@@ -86,30 +72,27 @@ const GroupForms = () => {
     <>
       {isAdmin ? (
         <>
-          <AddGroupFormDialog groupSlug={slug} sx={{ mb: 2 }} />
+          <AddGroupFormDialog groupSlug={slug} />
           <div>
-            <Stack component={List} disablePadding gap={1}>
+            <div className='space-y-2'>
               {forms.map((form) => (
                 <GroupFormAdminListItem form={form} key={form.id} />
               ))}
-            </Stack>
+            </div>
           </div>
         </>
       ) : (
-        <List disablePadding>
+        <div className='space-y-2'>
           {forms.map((form) => (
-            <Paper key={form.id} noOverflow noPadding sx={{ mb: 1 }}>
-              <ListItem disablePadding>
-                <ListItemButton component={Link} to={`${URLS.form}${form.id}/`}>
-                  <ListItemText primary={form.title} />
-                  <ListItemIcon sx={{ minWidth: 0 }}>
-                    <ArrowIcon />
-                  </ListItemIcon>
-                </ListItemButton>
-              </ListItem>
-            </Paper>
+            <Link
+              className='flex items-center justify-between p-4 border rounded-md hover:bg-border transition-all duration-150 text-black dark:text-white'
+              key={form.id}
+              to={`${URLS.form}${form.id}/`}>
+              <h1>{form.title}</h1>
+              <ArrowRight className='w-5 h-5' />
+            </Link>
           ))}
-        </List>
+        </div>
       )}
       {!forms.length && <NotFoundIndicator header='Gruppen har ingen spørreskjemaer' />}
     </>

@@ -1,17 +1,18 @@
-import ShareIcon from '@mui/icons-material/Share';
-import { Button, ButtonProps } from '@mui/material';
+import { Share2Icon } from 'lucide-react';
 import { useMemo } from 'react';
 import URLS from 'URLS';
 
 import { useAnalytics, useShare } from 'hooks/Utils';
 
-export type ShareProps = ButtonProps & {
+import { Button } from 'components/ui/button';
+
+export type ShareProps = {
   title: string;
   shareType: 'event' | 'news' | 'jobpost' | 'pages' | 'form';
   shareId: number | string;
 };
 
-const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
+const ShareButton = ({ shareId, title, shareType }: ShareProps) => {
   const { event } = useAnalytics();
   const [urlFromType, useShortener] = useMemo(() => {
     switch (shareType) {
@@ -37,8 +38,9 @@ const ShareButton = ({ shareId, title, shareType, ...props }: ShareProps) => {
   );
 
   return (
-    <Button disabled={hasShared} endIcon={<ShareIcon />} onClick={share} variant='outlined' {...props}>
-      {hasShared ? 'Delt!' : 'Del'}
+    <Button className='w-full flex items-center space-x-2' disabled={hasShared} onClick={share} variant='outline'>
+      <Share2Icon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
+      <h1 className='text-sm md:text-md'>{hasShared ? 'Delt!' : 'Del'}</h1>
     </Button>
   );
 };

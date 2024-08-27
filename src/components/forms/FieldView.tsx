@@ -1,66 +1,53 @@
-import { Typography } from '@mui/material';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import { SelectFormField, TextFormField } from 'types';
 import { FormFieldType } from 'types/Enums';
 
-import BoolArray from 'components/inputs/BoolArray';
-import TextField from 'components/inputs/TextField';
+import FormMultiCheckbox from 'components/inputs/MultiCheckbox';
+import FormTextarea from 'components/inputs/Textarea';
 
-export type FieldViewProps<FormValues> = Pick<UseFormReturn<FormValues>, 'formState' | 'register' | 'control' | 'getValues'> & {
-  field: TextFormField | SelectFormField;
+export type FieldViewProps<TFormValues extends FieldValues> = {
+  formField: TextFormField | SelectFormField;
   index: number;
   disabled?: boolean;
+  submitForm: UseFormReturn<TFormValues>;
 };
 
-const FieldView = <FormValues extends FieldValues>({ register, field, formState, index, control, getValues, disabled = false }: FieldViewProps<FormValues>) => (
+const FieldView = <FormValues extends FieldValues>({ formField, index, submitForm, disabled = false }: FieldViewProps<FormValues>) => (
   <>
-    <input {...register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={field.id} />
-    {field.type === FormFieldType.TEXT_ANSWER ? (
-      <>
-        <Typography sx={{ color: (theme) => theme.palette.text[disabled ? 'disabled' : 'primary'] }}>{`${field.title} ${
-          field.required ? '*' : ''
-        }`}</Typography>
-        <TextField
-          disabled={disabled}
-          formState={formState}
-          {...register(`answers.${index}.answer_text` as Path<FormValues>)}
-          maxRows={3}
-          multiline
-          required={field.required}
+    <input {...submitForm.register(`answers.${index}.field.id` as Path<FormValues>)} type='hidden' value={formField.id} />
+    {formField.type === FormFieldType.TEXT_ANSWER ? (
+      <FormTextarea
+        disabled={disabled}
+        form={submitForm}
+        label={formField.title}
+        name={`answers[${index}].answer_text` as Path<FormValues>}
+        required={formField.required}
+      />
+    ) : formField.type === FormFieldType.MULTIPLE_SELECT ? (
+      <div className='space-y-2'>
+        <FormMultiCheckbox
+          form={submitForm}
+          items={formField.options.map((option) => ({ value: option.id || '', label: option.title }))}
+          label={formField.title}
+          name={`answers[${index}].selected_options` as Path<FormValues>}
+          required={formField.required}
         />
-      </>
-    ) : field.type === FormFieldType.MULTIPLE_SELECT ? (
-      <BoolArray
-        control={control}
-        disabled={disabled}
-        formState={formState}
-        getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
-        getValues={getValues}
-        label={field.title}
-        name={`answers.${index}.selected_options` as Path<FormValues>}
-        optionLabelKey='title'
-        options={field.options}
-        optionValueKey='id'
-        required={field.required}
-        type='checkbox'
-      />
+        <p className='text-muted-foreground text-sm'>Velg en eller flere svaralternativer</p>
+      </div>
     ) : (
-      <BoolArray
-        control={control}
-        defaultValue={[field.options[0]]}
-        disabled={disabled}
-        formState={formState}
-        getPathToObject={(obj) => obj?.['answers']?.[index]?.['selected_options']}
-        getValues={getValues}
-        label={field.title}
-        name={`answers.${index}.selected_options` as Path<FormValues>}
-        optionLabelKey='title'
-        options={field.options}
-        optionValueKey='id'
-        required={field.required}
-        type='radio'
-      />
+      <div className='space-y-2'>
+        <FormMultiCheckbox
+          defaultValue={formField.options[0].id}
+          form={submitForm}
+          items={formField.options.map((option) => ({ value: option.id || '', label: option.title }))}
+          label={formField.title}
+          multiple={false}
+          name={`answers[${index}].selected_options` as Path<FormValues>}
+          required={formField.required}
+        />
+        <p className='text-muted-foreground text-sm'>Velg ett svaralternativ</p>
+      </div>
     )}
   </>
 );

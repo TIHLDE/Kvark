@@ -1,9 +1,6 @@
-import OpenIcon from '@mui/icons-material/ArrowForwardRounded';
-import CloseIcon from '@mui/icons-material/CloseRounded';
-import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
-import { Button, Stack, styled, Typography } from '@mui/material';
 import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from 'constant';
 import { getYear } from 'date-fns';
+import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
@@ -11,12 +8,7 @@ import URLS from 'URLS';
 import { useIsAuthenticated, useUser } from 'hooks/User';
 import { useAnalytics, usePersistedState } from 'hooks/Utils';
 
-const Box = styled('div')(({ theme }) => ({
-  padding: theme.spacing(3),
-  borderRadius: theme.shape.borderRadius,
-  border: `${theme.spacing(0.5)} solid ${theme.palette.get<string>({ light: theme.palette.common.black, dark: theme.palette.common.white })}`,
-  margin: theme.spacing(0, 1, 4),
-}));
+import { Button } from 'components/ui/button';
 
 const NewStudentBox = () => {
   const { event } = useAnalytics();
@@ -59,43 +51,33 @@ const NewStudentBox = () => {
   const fadderukaSignupAnalytics = () => event('signup-fadderuka-from-box', 'new-student', 'Clicked on link to signup for fadderuka');
 
   return (
-    <Box>
-      <Typography align='center' color='inherit' gutterBottom variant='h2'>
-        {header}
-      </Typography>
-      <Typography align='center' gutterBottom>
-        {text}
-      </Typography>
+    <div className='p-4 rounded-md border max-w-3xl w-full mx-auto space-y-4'>
+      <h1 className='text-center text-4xl font-bold'>{header}</h1>
+      <p className='text-center'>{text}</p>
       {header === HEADER.NEW_STUDENT && (
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
-          <Button component={Link} endIcon={<OpenIcon />} fullWidth to={URLS.newStudent} variant='contained'>
-            Nye studenter
+        <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-4 md:justify-center pt-4 pb-2'>
+          <Button asChild className='w-full'>
+            <Link to={URLS.newStudent}>
+              Nye studenter
+              <ArrowRight className='ml-2 w-5 h-5 stroke-[1.5px]' />
+            </Link>
           </Button>
           {SHOW_FADDERUKA_INFO && (
-            <Button
-              component='a'
-              endIcon={<OpenInNewIcon />}
-              fullWidth
-              href='https://s.tihlde.org/fadderuka-paamelding'
-              onClick={fadderukaSignupAnalytics}
-              rel='noopener noreferrer'
-              target='_blank'
-              variant='outlined'>
-              Meld deg på fadderuka
+            <Button asChild className='w-full' variant='outline'>
+              <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
+                Meld deg på fadderuka
+                <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />
+              </a>
             </Button>
           )}
-        </Stack>
+        </div>
       )}
       {isAuthenticated && (
-        <Button
-          endIcon={<CloseIcon />}
-          fullWidth
-          onClick={hideBox}
-          sx={{ mt: 1, color: (theme) => theme.palette.get<string>({ light: theme.palette.common.black, dark: theme.palette.common.white }) }}>
+        <Button className='w-full' onClick={hideBox} variant='outline'>
           Ikke vis igjen
         </Button>
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -1,10 +1,11 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { toast } from 'sonner';
 
 import { Emoji, Event, News } from 'types';
 
 import { useCreateReaction, useDeleteReaction, useUpdateReaction } from 'hooks/EmojiReaction';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useUser } from 'hooks/User';
+
+import { Button } from 'components/ui/button';
 
 export type EmojiItemProps = {
   data: News | Event;
@@ -14,7 +15,6 @@ export type EmojiItemProps = {
 
 export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   const user = useUser();
-  const showSnackbar = useSnackbar();
 
   const deleteReaction = useDeleteReaction();
   const createReaction = useCreateReaction();
@@ -23,10 +23,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
   const handleDelete = (reaction_id: string) => {
     deleteReaction.mutate(reaction_id, {
       onSuccess: () => {
-        showSnackbar('Reaksjon fjernet', 'success');
+        toast.success('Reaksjon fjernet');
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
@@ -39,10 +39,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
         { reaction_id: reaction.reaction_id, emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon oppdatert', 'success');
+            toast.success('Reaksjon oppdatert');
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );
@@ -51,10 +51,10 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
         { emoji: emoji, content_type: content_type, object_id: data.id },
         {
           onSuccess: () => {
-            showSnackbar('Reaksjon lagt til', 'success');
+            toast.success('Reaksjon lagt til');
           },
           onError: (e) => {
-            showSnackbar(e.detail, 'error');
+            toast.error(e.detail);
           },
         },
       );
@@ -65,20 +65,20 @@ export const EmojiItem = ({ data, emoji, content_type }: EmojiItemProps) => {
 
   if (userReaction) {
     return (
-      <Button onClick={() => handleDelete(userReaction.reaction_id)} variant='outlined'>
-        <Stack direction='row' spacing={0.5}>
-          <Typography sx={{ fontSize: { xs: 14, md: 16 } }}>{emoji.emoji}</Typography>
-          <Typography sx={{ fontSize: { xs: 10, md: 12 } }}>{emoji.count}</Typography>
-        </Stack>
+      <Button className='px-2' onClick={() => handleDelete(userReaction.reaction_id)} variant='secondary'>
+        <div className='flex items-center space-x-1'>
+          <p className='text-lg'>{emoji.emoji}</p>
+          <p>{emoji.count}</p>
+        </div>
       </Button>
     );
   }
   return (
-    <Button onClick={() => handleCreate(emoji.emoji)} variant='text'>
-      <Stack direction='row' spacing={0.5}>
-        <Typography>{emoji.emoji}</Typography>
-        <Typography fontSize={12}>{emoji.count}</Typography>
-      </Stack>
+    <Button className='px-2' onClick={() => handleCreate(emoji.emoji)} variant='ghost'>
+      <div className='flex items-center space-x-1'>
+        <p className='text-lg'>{emoji.emoji}</p>
+        <p>{emoji.count}</p>
+      </div>
     </Button>
   );
 };

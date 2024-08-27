@@ -12,7 +12,57 @@
 
 ## Neste versjon
 
-## Versjon 2023.15.01
+## Versjon 2024.17.08
+- ✨ **Opptak**. Ny side som viser oversikt over alle verv man kan søke på.
+
+## Versjon 2024.30.07
+- ✨ **Feide**. Man kan nå registrere bruker automatisk med Feide.
+- ✨ **Sponsor**. Logo for ny sponsor i footer.
+
+## Versjon 2024.29.07
+- 🎨 **Ny student**. Ny student side er redesignet.
+
+## Versjon 2024.22.07
+- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
+
+## Versjon 2024.22.07
+- ✨ **Endringslogg**. La til en ny side for å se endringsloggene til Kvark og Lepton
+
+## Versjon 2024.04.07
+- 🎨 **Design**. MUI er fjernet fra prosjektet, og TailwindCSS og Shadcn/ui er implementert.
+
+## Versjon 2024.01.05
+- ⚡**Arrangement**. Et arrangement vil nå være markert og sortert etter kategori i tillegg til ansvarlig gruppe.
+- ⚡ **Påmelding**. Bruker kan ikke lenger se meld deg av knappen for et arrangement hvis bruker har betalt.
+
+## Versjon 2024.16.04
+- ✨ **Brukerbio**. Bruker kan nå lage en bio.
+
+## Versjon 2023.11.04
+- ✨ **Shortcuts**. La til meny med shortcuts.
+
+## Versjon 2023.10.04
+- 🎨 **Footer**. La til NITO logo i footer under "samarbeid"
+
+## Versjon 2023.02.04
+- 🎨 **Tema**. Endret til shadcn komponenter for å endre tema.
+- 🦟 **Markdown**. Fikset markdown bug.
+- 🎨 **Bildeopplastning**. Endret komponent for å laste opp bilder.
+- 🎨 **Admin filopplastning**. Fjernet mulighet for admin å laste opp bilder.
+- 🎨 **Arrangement view**. Endret design til shadcn på arrangement view.
+- 🎨 **Profilside**. Endret design for profilside til bruker.
+- 🎨 **Nyhet view**. Endret design til shadcn på nyhet view.
+
+## Versjon 2023.07.02
+- 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
+
+## Versjon 2024.11.03
+- ⚡ **Bøter**. Man kan nå se paragrafbeskrivelsen når man legger inn en ny bot.
+
+## Versjon 2024.07.02
+- 🎨 **Vipps betaling**. Brukere kan nå ikke sette nedbetalingstid selv. 2 timer er konstant tid.
+
+## Versjon 2024.15.01
 - 🦟 **Vipps betaling**. Diverse bugs i betalingsløsningen er nå fikset.
 - ✨ **Reaksjoner**. Det er nå mulig å reagere på arrangementer og nyheter med emojier.
 - 🎨 **Prikk info**. Mail for kontakt for prikk, er nå endret.

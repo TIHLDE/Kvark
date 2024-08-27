@@ -1,146 +1,138 @@
-import { TextField as MuiTextField, Stack } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { removeIdsFromFields } from 'utils';
+import { z } from 'zod';
 
-import { EventForm, Form, FormCreate, GroupForm, GroupFormUpdate, TemplateForm } from 'types';
+import { EventForm, Form, FormCreate, GroupForm, TemplateForm } from 'types';
 import { FormResourceType } from 'types/Enums';
 
 import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import Bool from 'components/inputs/Bool';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import FormInput from 'components/inputs/Input';
+import { FormDetailSwitch } from 'components/inputs/Switch';
+import { Button } from 'components/ui/button';
+import { Form as FormWrapper } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type FormDetailsEditorProps = {
   form: Form;
+  navigate?: boolean;
 };
 
-const DeleteFormButton = ({ form }: FormDetailsEditorProps) => {
+const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) => {
   const deleteForm = useDeleteForm(form.id);
-  const navigate = useNavigate();
-  const showSnackbar = useSnackbar();
+  const navigateTo = useNavigate();
 
   const deleteFormHandler = () =>
     deleteForm.mutate(undefined, {
-      onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
-        navigate(-1);
+      onSuccess: () => {
+        toast.success('Skjema ble slettet');
+        navigate && navigateTo(-1);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
 
-  return (
-    <VerifyDialog color='error' contentText='Sletting av skjema kan ikke reverseres.' disabled={deleteForm.isLoading} onConfirm={deleteFormHandler}>
+  const OpenButton = (
+    <Button className='w-full' type='button' variant='destructive'>
       Slett spørreskjema
-    </VerifyDialog>
+    </Button>
+  );
+
+  return (
+    <ResponsiveAlertDialog
+      action={deleteFormHandler}
+      description='Er du sikker på at du vil slette dette skjemaet?'
+      title='Slett skjema'
+      trigger={OpenButton}
+    />
   );
 };
 
 type GroupFormDetailsEditorProps = {
-  form: GroupForm;
+  groupForm: GroupForm;
 };
 
-type GroupFormUpdateValues = Pick<
-  GroupFormUpdate,
-  'can_submit_multiple' | 'is_open_for_submissions' | 'only_for_group_members' | 'title' | 'email_receiver_on_submit'
->;
+const formSchema = z.object({
+  can_submit_multiple: z.boolean(),
+  is_open_for_submissions: z.boolean(),
+  only_for_group_members: z.boolean(),
+  title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Feltet er påkrevd' }),
+  email_receiver_on_submit: z.string().email().optional().or(z.literal('')),
+});
 
-const GroupFormDetailsEditor = ({ form }: GroupFormDetailsEditorProps) => {
-  const updateForm = useUpdateForm(form.id || '-');
-  const showSnackbar = useSnackbar();
-  const { handleSubmit, register, formState, control } = useForm<GroupFormUpdateValues>({
+const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
+  const updateForm = useUpdateForm(groupForm.id || '-');
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      can_submit_multiple: form.can_submit_multiple,
-      is_open_for_submissions: form.is_open_for_submissions,
-      only_for_group_members: form.only_for_group_members,
-      email_receiver_on_submit: form.email_receiver_on_submit,
-      title: form.title,
+      can_submit_multiple: groupForm.can_submit_multiple,
+      is_open_for_submissions: groupForm.is_open_for_submissions,
+      only_for_group_members: groupForm.only_for_group_members,
+      email_receiver_on_submit: groupForm.email_receiver_on_submit || '',
+      title: groupForm.title || '',
     },
   });
 
-  const save: SubmitHandler<GroupFormUpdateValues> = (data) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     updateForm.mutate(
-      { resource_type: form.resource_type, ...data },
+      { resource_type: groupForm.resource_type, ...values },
       {
         onSuccess: () => {
-          showSnackbar('Spørsmålene ble oppdatert', 'success');
+          toast.success('Skjema ble oppdatert');
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
   };
 
   return (
-    <>
-      <Stack component='form' onSubmit={handleSubmit(save)}>
-        <TextField disabled={updateForm.isLoading} formState={formState} label='Tittel' {...register('title', { required: 'Feltet er påkrevd' })} required />
-        <TextField
-          disabled={updateForm.isLoading}
-          formState={formState}
-          helperText='Legg inn en epost-adresse for å bli varslet via epost når spørreskjemaet mottar nye svar'
-          label='Epost-mottager ved svar'
-          type='email'
-          {...register('email_receiver_on_submit')}
-        />
-        <Bool
-          control={control}
-          formState={formState}
-          label={
-            <>
-              Tillat flere innsendinger
-              <ShowMoreTooltip>Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.</ShowMoreTooltip>
-            </>
-          }
+    <FormWrapper {...form}>
+      <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
+        <FormInput form={form} label='Tittel' name='title' required />
+
+        <FormInput form={form} label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />
+
+        <FormDetailSwitch
+          description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.'
+          form={form}
+          label='Tillat flere innsendinger'
           name='can_submit_multiple'
-          type='checkbox'
         />
-        <Bool
-          control={control}
-          formState={formState}
-          label={
-            <>
-              Åpent for innsending
-              <ShowMoreTooltip>
-                Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet,
-                og ingen kan heller se/finne det.
-              </ShowMoreTooltip>
-            </>
-          }
+
+        <FormDetailSwitch
+          description='Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet, og ingen kan heller se/finne det.'
+          form={form}
+          label='Åpent for innsending'
           name='is_open_for_submissions'
-          type='checkbox'
         />
-        <Bool
-          control={control}
-          formState={formState}
-          label={
-            <>
-              Kun for medlemmer av gruppen
-              <ShowMoreTooltip>
-                Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og
-                personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.
-              </ShowMoreTooltip>
-            </>
-          }
+
+        <FormDetailSwitch
+          description='Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.'
+          form={form}
+          label='Kun for medlemmer av gruppen'
           name='only_for_group_members'
-          type='checkbox'
         />
-        <Stack direction={{ xs: 'column', sm: 'row' }} gap={2} sx={{ mb: 1, mt: 3 }}>
-          <SubmitButton disabled={updateForm.isLoading} formState={formState}>
-            Lagre
-          </SubmitButton>
-          <DeleteFormButton form={form} />
-        </Stack>
-      </Stack>
-    </>
+
+        <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>
+          <Button className='w-full' disabled={updateForm.isLoading} type='submit'>
+            {updateForm.isLoading ? 'Lagrer...' : 'Lagre'}
+          </Button>
+
+          <DeleteFormButton form={groupForm} navigate />
+        </div>
+      </form>
+    </FormWrapper>
   );
 };
 
@@ -150,8 +142,7 @@ type EventFormDetailsEditorProps = {
 
 const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
   const createForm = useCreateForm();
-  const [formtemplateName, setFormtemplateName] = useState('');
-  const showSnackbar = useSnackbar();
+  const [formtemplateName, setFormtemplateName] = useState<string>('');
 
   const saveAsTemplate = () => {
     const formTemplate: FormCreate = {
@@ -163,41 +154,41 @@ const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
     };
     createForm.mutate(formTemplate, {
       onSuccess: (data) => {
-        showSnackbar(`Lagret mal med navn "${data.title}"`, 'success');
+        toast.success(`Lagret mal med navn "${data.title}"`);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
     });
   };
+
+  const OpenButton = <Button className='w-full'>Lagre som mal</Button>;
+
   return (
-    <>
-      <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-        <VerifyDialog
-          contentText='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
-          dialogChildren={
-            <MuiTextField
-              disabled={false}
-              fullWidth
-              label='Tittel'
-              margin='normal'
-              onChange={(e) => setFormtemplateName(e.target.value)}
-              value={formtemplateName}
-            />
-          }
-          onConfirm={saveAsTemplate}
-          title='Lagre som mal'>
-          Lagre som mal
-        </VerifyDialog>
-        <DeleteFormButton form={form} />
-      </Stack>
-    </>
+    <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
+      <ResponsiveDialog
+        className='max-w-2xl'
+        description='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
+        title='Lagre som mal'
+        trigger={OpenButton}>
+        <div className='space-y-6'>
+          <div className='space-y-1'>
+            <Label>Tittel</Label>
+            <Input onChange={(e) => setFormtemplateName(e.target.value)} value={formtemplateName} />
+          </div>
+          <Button className='w-full' onClick={saveAsTemplate}>
+            {createForm.isLoading ? 'Lagrer...' : 'Lagre'}
+          </Button>
+        </div>
+      </ResponsiveDialog>
+      <DeleteFormButton form={form} />
+    </div>
   );
 };
 
 const FormDetailsEditor = ({ form }: FormDetailsEditorProps) =>
   form.resource_type === FormResourceType.GROUP_FORM ? (
-    <GroupFormDetailsEditor form={form} />
+    <GroupFormDetailsEditor groupForm={form} />
   ) : form.resource_type === FormResourceType.EVENT_FORM ? (
     <EventFormDetailsEditor form={form} />
   ) : (

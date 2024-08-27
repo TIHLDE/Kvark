@@ -1,47 +1,34 @@
-import { styled } from '@mui/material';
 import { useMemo } from 'react';
 
 import { useNews } from 'hooks/News';
 
-import Banner from 'components/layout/Banner';
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
-
-const NewsGrid = styled('div')(({ theme }) => ({
-  display: 'grid',
-  marginBottom: theme.spacing(2),
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gridGap: theme.spacing(1),
-  [theme.breakpoints.down('lg')]: {
-    gridTemplateColumns: '1fr 1fr',
-  },
-  [theme.breakpoints.down('md')]: {
-    gridTemplateColumns: '1fr',
-  },
-}));
+import { PaginateButton } from 'components/ui/button';
 
 const News = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Page banner={<Banner title='Nyheter' />} options={{ title: 'Nyheter' }}>
-      <NewsGrid>
+    <Page className='space-y-8'>
+      <div>
+        <h1 className='text-3xl md:text-5xl font-bold'>Nyheter</h1>
+      </div>
+      <div>
         {isLoading && <NewsListItemLoading />}
         {!isLoading && !news.length && <NotFoundIndicator header='Fant ingen nyheter' />}
-        {error && <Paper>{error.detail}</Paper>}
+        {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
         {data !== undefined && (
-          <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
+          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
             {news.map((newsItem) => (
               <NewsListItem key={newsItem.id} news={newsItem} />
             ))}
-          </Pagination>
+          </div>
         )}
-        {isFetching && <NewsListItemLoading />}
-      </NewsGrid>
+        {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+      </div>
     </Page>
   );
 };

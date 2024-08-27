@@ -1,7 +1,5 @@
-import { Button, Skeleton, Stack, styled, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
-import React from 'react';
-import { usePalette } from 'react-palette';
+import { PencilIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate } from 'utils';
@@ -11,81 +9,72 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission, useUser } from 'hooks/User';
 
-import Container from 'components/layout/Container';
-import Paper from 'components/layout/Paper';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from 'components/miscellaneous/ShareButton';
+import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
+import { Button } from 'components/ui/button';
+import { Separator } from 'components/ui/separator';
+import { Skeleton } from 'components/ui/skeleton';
 
-const TopContainer = styled('div', { shouldForwardProp: (prop) => prop !== 'bgColor' })<{ bgColor?: React.CSSProperties['backgroundColor'] }>(
-  ({ theme, bgColor }) => ({
-    color: theme.palette.common.white,
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(20),
-    background: bgColor || theme.palette.colors.gradient.main.top,
-    transition: 'background 1s',
-    [theme.breakpoints.down('lg')]: {
-      paddingBottom: theme.spacing(15),
-    },
-  }),
-);
+import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
 export type NewsRendererProps = {
   data: News;
   preview?: boolean;
 };
+
 const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
-  const { data: palette } = usePalette(data?.image || '');
   const { data: user } = useUser();
 
   return (
     <div>
-      <TopContainer bgColor={palette.muted}>
-        <Container maxWidth='lg' sx={{ px: { xs: 3, md: 5 } }}>
-          <Typography sx={{ py: 1, wordWrap: 'break-word', fontSize: (theme) => ({ xs: '2.3rem', lg: theme.typography.h1.fontSize }) }} variant='h1'>
-            {data.title}
-          </Typography>
-          <Typography gutterBottom variant='h3'>
-            {data.header}
-          </Typography>
-        </Container>
-      </TopContainer>
-      <Container maxWidth='lg' sx={{ mt: { xs: -13, lg: -18 } }}>
-        <Stack gap={1}>
-          <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
-          {!preview && (
-            <HavePermission apps={[PermissionApp.NEWS]}>
-              <Button component={Link} fullWidth to={`${URLS.newsAdmin}${data.id}/`} variant='outlined'>
-                Endre nyhet
-              </Button>
-            </HavePermission>
+      <div className='px-4 mx-auto max-w-4xl w-full pb-10'>
+        <div className='space-y-2'>
+          <h1 className='text-2xl break-words lg:text-4xl font-semibold'>{data.title}</h1>
+          <h1 className='break-words lg:text-lg'>{data.header}</h1>
+        </div>
+        <Separator className='my-6 bg-secondary-foreground dark:bg-border' />
+        <div className='space-y-2'>
+          {data.creator && (
+            <h1>
+              Skrevet av{' '}
+              <Link className='underline' to={`${URLS.profile}${data.creator.user_id}/`}>
+                {data.creator.first_name} {data.creator.last_name}
+              </Link>
+            </h1>
           )}
-          <Stack alignItems='center' justifyContent='space-between' sx={{ flexDirection: { xs: 'column', md: 'row' }, gap: { xs: '12px', md: '0px' } }}>
-            <Stack alignItems='center' direction='row' justifyContent='space-between'>
-              <Typography variant='body2'>
-                Publisert: {formatDate(parseISO(data.created_at), { time: false })}
-                {data.creator && (
-                  <>
-                    <br />
-                    Forfatter:{' '}
-                    <Link to={`${URLS.profile}${data.creator.user_id}/`}>
-                      {data.creator.first_name} {data.creator.last_name}
-                    </Link>
-                  </>
-                )}
-              </Typography>
-            </Stack>
-            {data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
-          </Stack>
-          <Paper>
-            <MarkdownRenderer value={data.body} />
-          </Paper>
-        </Stack>
-        <Stack alignItems='flex-end' sx={{ marginTop: 2 }}>
-          <ShareButton shareId={data.id} shareType='news' title={data.title} />
-        </Stack>
-      </Container>
+          <h1 className='text-sm text-muted-foreground'>{formatDate(parseISO(data.created_at), { time: false })}</h1>
+          {data.updated_at && <UpdatedAgo updatedAt={data.updated_at} />}
+        </div>
+      </div>
+
+      <div className='px-4 mx-auto max-w-4xl w-full space-y-4 lg:space-y-8'>
+        <img alt={data.image_alt || data.title} className='rounded-md aspect-auto mx-auto' src={data.image || TIHLDE_LOGO} />
+
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+          <div className='flex items-center space-x-2'>
+            <ShareButton shareId={data.id} shareType='news' title={data.title} />
+            {!preview && (
+              <HavePermission apps={[PermissionApp.NEWS]}>
+                <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
+                  <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
+                  <Link className='text-sm md:text-md' to={`${URLS.newsAdmin}${data.id}/`}>
+                    Endre nyhet
+                  </Link>
+                </Button>
+              </HavePermission>
+            )}
+          </div>
+          {!preview && data?.emojis_allowed && user && <ReactionHandler content_type='news' data={data} />}
+        </div>
+
+        <Separator className='bg-secondary-foreground dark:bg-border' />
+
+        <div>
+          <MarkdownRenderer value={data.body} />
+        </div>
+      </div>
     </div>
   );
 };
@@ -93,24 +82,8 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
 export default NewsRenderer;
 
 export const NewsRendererLoading = () => (
-  <div>
-    <TopContainer>
-      <Container maxWidth='lg' sx={{ px: { xs: 3, md: 5 } }}>
-        <Skeleton height={80} width='60%' />
-        <Skeleton height={40} width={250} />
-      </Container>
-    </TopContainer>
-    <Container maxWidth='lg' sx={{ mt: { xs: -13, lg: -18 } }}>
-      <Stack gap={1}>
-        <AspectRatioLoading borderRadius />
-        <Skeleton height={40} width={250} />
-        <Paper>
-          <Skeleton width='80%' />
-          <Skeleton width='85%' />
-          <Skeleton width='75%' />
-          <Skeleton width='90%' />
-        </Paper>
-      </Stack>
-    </Container>
+  <div className='space-y-4'>
+    <Skeleton className='h-60' />
+    <Skeleton className='h-96' />
   </div>
 );

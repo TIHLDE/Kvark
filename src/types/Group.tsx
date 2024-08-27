@@ -1,6 +1,6 @@
 import { GroupType, MembershipType } from 'types/Enums';
 import { Permissions } from 'types/Misc';
-import { UserBase, UserList } from 'types/User';
+import { User, UserBase, UserList } from 'types/User';
 
 export type GroupPermissions = Permissions & {
   group_form: boolean;
@@ -26,6 +26,22 @@ export type Group = GroupList & {
   fines_admin: UserBase | UserList | null;
   fines_activated: boolean;
   fine_info: string;
+};
+
+export type FormGroupValues = {
+  name: string;
+  slug: string;
+  type: GroupType;
+  image?: string;
+  image_alt?: string;
+  viewer_is_member: boolean;
+  contact_email?: string;
+  description?: string;
+  permissions: GroupPermissions;
+  fines_admin: User | null;
+  leader: UserList | null;
+  fines_activated: boolean;
+  fine_info?: string;
 };
 
 export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 'type' | 'viewer_is_member'>> &

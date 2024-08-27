@@ -1,19 +1,18 @@
 import { AppointmentModel, ViewState } from '@devexpress/dx-react-scheduler';
 import { Appointments, DateNavigator, MonthView, Scheduler, Toolbar } from '@devexpress/dx-react-scheduler-material-ui';
-import { Button, ClickAwayListener, Popper, useTheme } from '@mui/material';
 import { addDays, endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { Category, EventList } from 'types';
-import { Groups } from 'types/Enums';
+import { Category as CategoryEnum, Groups } from 'types/Enums';
 
-import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
 import EventsCalendarPopover from 'pages/Landing/components/EventsCalendarPopover';
 
-import Paper from 'components/layout/Paper';
+import { Button } from 'components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
 
 type Filters = {
   start_range?: string;
@@ -29,56 +28,34 @@ type AppointmentProps = {
 };
 
 const Appointment = ({ children, data }: AppointmentProps) => {
-  const theme = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const handleClickAway = () => {
-    setAnchorEl(null);
-  };
-
-  const { data: categories = [] } = useCategories();
-
-  const getColor = (event: EventList) => {
-    if (categories.find((c) => c.id === event.category)?.text === 'Aktivitet') {
-      return theme.palette.colors.activity_event;
+  const getColor = (event: EventList): string => {
+    if (event.category?.text === CategoryEnum.ACTIVITY) {
+      return 'bg-[#9778ce] dark:bg-[#7e57c2] hover:bg-[#9778ce]/30 dark:hover:bg-[#7e57c2]/30';
     }
 
-    if (event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase()) {
-      return theme.palette.colors.nok_event;
+    if (
+      event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ||
+      event.category?.text.toLowerCase() === CategoryEnum.COMPRES ||
+      event.category?.text.toLowerCase() === CategoryEnum.COURSE
+    ) {
+      return 'bg-[#83C4F8] dark:bg-[#83C4F8] hover:bg-[#83C4F8]/30 dark:hover:bg-[#83C4F8]/30';
     }
 
-    return theme.palette.colors.other_event;
+    return 'bg-[#FFA675] dark:bg-[#FFA675] hover:bg-[#FFA675]/30 dark:hover:bg-[#FFA675]/30';
   };
   return (
-    <>
-      <Button onClick={handleClick} sx={{ minWidth: '40px', width: '100%', height: '100%', textAlign: 'left', textTransform: 'none' }}>
-        <Appointments.Appointment data={data} draggable={false} resources={[]} style={{ backgroundColor: getColor(data as unknown as EventList) }}>
-          {children}
-        </Appointments.Appointment>
-      </Button>
-      <Popper
-        anchorEl={anchorEl}
-        modifiers={[
-          {
-            name: 'flip',
-            enabled: false,
-          },
-        ]}
-        open={open}
-        placement='top'
-        style={{ zIndex: 1000000 }}>
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <div>
-            <EventsCalendarPopover id={Number(data.id)} />
-          </div>
-        </ClickAwayListener>
-      </Popper>
-    </>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button className='w-full h-full'>
+          <Appointments.Appointment className={getColor(data as unknown as EventList)} data={data} draggable={false} resources={[]}>
+            {children}
+          </Appointments.Appointment>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <EventsCalendarPopover id={Number(data.id)} />
+      </PopoverContent>
+    </Popover>
   );
 };
 
@@ -118,7 +95,9 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
     [events],
   );
   return (
-    <Paper noPadding sx={{ '& div:first-of-type': { whiteSpace: 'break-spaces' }, '& table': { minWidth: 'unset' } }}>
+    <div className='p-2 rounded-md border bg-card'>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore */}
       <Scheduler data={displayedEvents} firstDayOfWeek={1} locale='no-NB'>
         <ViewState currentDate={currentDate} onCurrentDateChange={setCurrentDate} />
         <MonthView />
@@ -126,7 +105,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
         <DateNavigator />
         <Appointments appointmentComponent={Appointment} />
       </Scheduler>
-    </Paper>
+    </div>
   );
 };
 

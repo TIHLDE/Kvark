@@ -1,6 +1,5 @@
-import { Button, Skeleton, Typography } from '@mui/material';
 import parseISO from 'date-fns/parseISO';
-import { makeStyles } from 'makeStyles';
+import { PencilIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { formatDate, getJobpostType } from 'utils';
@@ -11,33 +10,13 @@ import { PermissionApp } from 'types/Enums';
 import { HavePermission } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Paper from 'components/layout/Paper';
-import AspectRatioImg, { AspectRatioLoading } from 'components/miscellaneous/AspectRatioImg';
-import DetailContent, { DetailContentLoading } from 'components/miscellaneous/DetailContent';
+import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import DetailContent from 'components/miscellaneous/DetailContent';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
 import ShareButton from 'components/miscellaneous/ShareButton';
-
-const useStyles = makeStyles()((theme) => ({
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '3fr 1fr',
-    gridGap: theme.spacing(2),
-    alignItems: 'self-start',
-    padding: theme.spacing(2, 0),
-    [theme.breakpoints.down('lg')]: {
-      gridTemplateColumns: '1fr',
-    },
-  },
-  title: {
-    fontSize: '2.4rem',
-  },
-  infoBox: {
-    marginBottom: theme.spacing(2),
-  },
-  button: {
-    marginBottom: theme.spacing(2),
-  },
-}));
+import { Button } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Skeleton } from 'components/ui/skeleton';
 
 export type JobPostRendererProps = {
   data: JobPost;
@@ -46,37 +25,43 @@ export type JobPostRendererProps = {
 
 const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   const { event } = useAnalytics();
-  const { classes } = useStyles();
   const deadline = formatDate(parseISO(data.deadline));
   const publishedAt = formatDate(parseISO(data.created_at));
 
   const goToApplyLink = () => event('apply', 'jobposts', `Apply to: ${data.company}, ${data.title}`);
 
   return (
-    <div className={classes.grid}>
-      <div className={classes.infoBox}>
-        <AspectRatioImg alt={data.image_alt || data.title} borderRadius src={data.image} />
-        <Paper>
-          <Typography gutterBottom variant='caption'>
-            Publisert: {publishedAt}
-          </Typography>
-          <Typography className={classes.title} gutterBottom variant='h1'>
-            {data.title}
-          </Typography>
-          <MarkdownRenderer value={data.ingress || ''} />
-          <MarkdownRenderer value={data.body} />
-        </Paper>
+    <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
+      <div className='space-y-4'>
+        <AspectRatioImg alt={data.image_alt || data.title} className='rounded-md' src={data.image} />
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{data.title}</CardTitle>
+            <CardDescription>Publisert: {publishedAt}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <MarkdownRenderer value={data.ingress || ''} />
+            <MarkdownRenderer value={data.body} />
+          </CardContent>
+        </Card>
       </div>
-      <div>
-        <Paper className={classes.infoBox}>
-          <DetailContent info={data.company} title='Bedrift: ' />
-          <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
-          <DetailContent
-            info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
-            title='Årstrinn: '
-          />
-          <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />
-          <DetailContent info={data.location} title='Sted: ' />
+
+      <div className='space-y-4'>
+        <Card>
+          <CardContent className='p-4 space-y-2'>
+            <DetailContent info={data.company} title='Bedrift: ' />
+            <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
+            <DetailContent
+              info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
+              title='Årstrinn: '
+            />
+            <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />
+            <DetailContent info={data.location} title='Sted: ' />
+          </CardContent>
+        </Card>
+
+        <div className='space-y-2'>
           {data.email && (
             <DetailContent
               info={
@@ -87,28 +72,25 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
               title='Kontakt: '
             />
           )}
-        </Paper>
-        {data.link && (
-          <Button
-            className={classes.button}
-            component='a'
-            fullWidth
-            href={data.link}
-            onClick={goToApplyLink}
-            rel='noreferrer'
-            target='_blank'
-            variant='contained'>
-            Søk
-          </Button>
-        )}
-        <ShareButton className={classes.button} fullWidth shareId={data.id} shareType='jobpost' title={data.title} />
-        {!preview && (
-          <HavePermission apps={[PermissionApp.JOBPOST]}>
-            <Button className={classes.button} component={Link} fullWidth to={`${URLS.jobpostsAdmin}${data.id}/`} variant='outlined'>
-              Endre annonse
+          {data.link && (
+            <Button asChild className='w-full'>
+              <a href={data.link} onClick={goToApplyLink} rel='noreferrer' target='_blank'>
+                Søk
+              </a>
             </Button>
-          </HavePermission>
-        )}
+          )}
+          <ShareButton shareId={data.id} shareType='jobpost' title={data.title} />
+          {!preview && (
+            <HavePermission apps={[PermissionApp.JOBPOST]}>
+              <Button asChild className='w-full text-black dark:text-white' variant='outline'>
+                <Link to={`${URLS.jobpostsAdmin}${data.id}/`}>
+                  <PencilIcon className='mr-2 w-5 h-5 stroke-[1.5px]' />
+                  Endre annonse
+                </Link>
+              </Button>
+            </HavePermission>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -117,25 +99,15 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
 export default JobPostRenderer;
 
 export const JobPostRendererLoading = () => {
-  const { classes } = useStyles();
-
   return (
-    <div className={classes.grid}>
-      <Paper>
-        <Skeleton height={80} width='60%' />
-        <Skeleton height={40} width={250} />
-        <Skeleton width={200} />
-        <Skeleton height={40} width='80%' />
-        <Skeleton height={40} width='85%' />
-        <Skeleton height={40} width='75%' />
-        <Skeleton height={40} width='90%' />
-      </Paper>
+    <div className='grid lg:grid-cols-[3fr,1fr] items-start gap-4'>
+      <div className='space-y-4'>
+        <Skeleton className='h-96' />
+        <Skeleton className='h-60' />
+      </div>
+
       <div>
-        <AspectRatioLoading borderRadius />
-        <Paper className={classes.infoBox}>
-          <DetailContentLoading />
-          <DetailContentLoading />
-        </Paper>
+        <Skeleton className='h-60' />
       </div>
     </div>
   );

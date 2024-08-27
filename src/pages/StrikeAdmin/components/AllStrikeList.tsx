@@ -1,14 +1,11 @@
-import { Stack } from '@mui/material';
 import { Fragment, useMemo } from 'react';
 
 import { useStrikes } from 'hooks/Strike';
 
-import { PersonListItemLoading } from 'pages/UserAdmin/components/PersonListItem';
-
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import StrikeListItem from 'components/miscellaneous/StrikeListItem';
+import { PaginateButton } from 'components/ui/button';
+import { Skeleton } from 'components/ui/skeleton';
 
 const AllStrikesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useStrikes();
@@ -16,22 +13,27 @@ const AllStrikesList = () => {
 
   return (
     <>
-      {isLoading && <PersonListItemLoading />}
-      {isEmpty && <NotFoundIndicator header='Fant ingen prikker' />}
-      {error && <Paper>{error.detail}</Paper>}
-      {data !== undefined && (
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Stack spacing={2}>
-            {data.pages.map((page, i) => (
-              <Fragment key={i}>
-                {page.results.map((strike) => (
-                  <StrikeListItem displayUserInfo key={strike.id} strike={strike} user={strike.user} />
-                ))}
-              </Fragment>
-            ))}
-          </Stack>
-        </Pagination>
+      {isLoading && (
+        <div className='space-y-2'>
+          {[...Array(5)].map((_, i) => (
+            <Skeleton className='h-12' key={i} />
+          ))}
+        </div>
       )}
+      {isEmpty && <NotFoundIndicator header='Fant ingen prikker' />}
+      {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
+      {data !== undefined && (
+        <div className='space-y-2'>
+          {data.pages.map((page, i) => (
+            <Fragment key={i}>
+              {page.results.map((strike) => (
+                <StrikeListItem displayUserInfo key={strike.id} strike={strike} user={strike.user} />
+              ))}
+            </Fragment>
+          ))}
+        </div>
+      )}
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </>
   );
 };

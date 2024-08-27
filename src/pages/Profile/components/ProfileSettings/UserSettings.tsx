@@ -1,58 +1,62 @@
-import { MenuItem, Stack, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { User } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useUpdateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Bool from 'components/inputs/Bool';
-import Select from 'components/inputs/Select';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import { ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import FormInput from 'components/inputs/Input';
+import { FormSelect } from 'components/inputs/Select';
+import { FormDetailSwitch } from 'components/inputs/Switch';
+import FormTextarea from 'components/inputs/Textarea';
+import { FormImageUpload } from 'components/inputs/Upload';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
 
 export type UserSettingsProps = {
   user: User;
   isAdmin?: boolean;
 };
 
-type FormData = Pick<
-  User,
-  | 'first_name'
-  | 'last_name'
-  | 'email'
-  | 'image'
-  | 'gender'
-  | 'allergy'
-  | 'tool'
-  | 'public_event_registrations'
-  | 'accepts_event_rules'
-  | 'allows_photo_by_default'
->;
+const formSchema = z.object({
+  first_name: z.string({ required_error: 'Fornavn er påkrevd' }).min(1, { message: 'Fornavn er påkrevd' }),
+  last_name: z.string({ required_error: 'Etternavn er påkrevd' }).min(1, { message: 'Etternavn er påkrevd' }),
+  email: z.string().email({ message: 'Epost er ugyldig' }),
+  image: z.string().optional(),
+  gender: z.string(),
+  allergy: z.string().optional(),
+  tool: z.string().optional(),
+  public_event_registrations: z.boolean(),
+  accepts_event_rules: z.boolean(),
+  allows_photo_by_default: z.boolean(),
+});
 
 export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   const { event } = useAnalytics();
-  const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
 
-  const { register, handleSubmit, formState, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
-  const updateData = (data: FormData) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { ...user, image: user.image || '', gender: user.gender.toString() },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (updateUser.isLoading) {
       return;
     }
     updateUser.mutate(
-      { userId: user.user_id, user: { ...user, ...data } },
+      { userId: user.user_id, user: { ...user, ...values, gender: parseInt(values.gender) } },
       {
         onSuccess: () => {
-          showSnackbar('Bruker oppdatert', 'success');
+          toast.success('Bruker oppdatert');
           event('update-settings', 'profile', 'Update');
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
@@ -63,86 +67,65 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(updateData)}>
-      {isAdmin && (
-        <Stack direction={['column', 'row']} gap={[0, 1]}>
-          <TextField disabled={updateUser.isLoading} formState={formState} label='Fornavn' {...register('first_name')} />
-          <TextField disabled={updateUser.isLoading} formState={formState} label='Etternavn' {...register('last_name')} />
-          <TextField disabled={updateUser.isLoading} formState={formState} label='Epost' {...register('email')} />
-        </Stack>
-      )}
-      <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
-      <Stack direction={['column', 'row']} gap={[0, 1]}>
-        <Select control={control} disabled={updateUser.isLoading} formState={formState} label='Kjønn' name='gender'>
-          <MenuItem value={1}>Mann</MenuItem>
-          <MenuItem value={2}>Kvinne</MenuItem>
-          <MenuItem value={3}>Annet</MenuItem>
-        </Select>
-      </Stack>
-      <TextField disabled={updateUser.isLoading} formState={formState} label='Kjøkkenredskap' {...register('tool')} />
-      <TextField
-        disabled={updateUser.isLoading}
-        formState={formState}
-        helperText='Dine allergier vises til arrangører ved arrangementer'
-        label='Dine allergier'
-        multiline
-        {...register('allergy')}
-        minRows={1}
-      />
-      <Stack>
-        <Bool
-          control={control}
-          disabled={updateUser.isLoading}
-          formState={formState}
-          label={
-            <>
-              Offentlige arrangementspåmeldinger
-              <ShowMoreTooltip>
-                Bestemmer:
-                <br />
-                1. Om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer.
-                <br />
-                2. Om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.
-              </ShowMoreTooltip>
-            </>
-          }
+    <Form {...form}>
+      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+        {isAdmin && (
+          <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
+            <FormInput form={form} label='Fornavn' name='first_name' required />
+
+            <FormInput form={form} label='Etternavn' name='last_name' required />
+
+            <FormInput form={form} label='Epost' name='email' required type='email' />
+          </div>
+        )}
+
+        {isAdmin && <FormImageUpload form={form} label='Velg profilbilde' name='image' ratio='1:1' />}
+
+        <FormSelect
+          form={form}
+          label='Kjønn'
+          name='gender'
+          options={[
+            { label: 'Mann', value: 1 },
+            { label: 'Kvinne', value: 2 },
+            { label: 'Annet', value: 3 },
+          ]}
+        />
+
+        <FormInput form={form} label='Kjøkkenredskap' name='tool' />
+
+        <FormTextarea description='Dine allergier vises til arrangører ved arrangementer' form={form} label='Dine allergier' name='allergy' />
+
+        <FormDetailSwitch
+          description='Bestemmer om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer, og om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.'
+          form={form}
+          label='Offentlige arrangementspåmeldinger'
           name='public_event_registrations'
-          type='checkbox'
         />
-        <Bool
-          control={control}
-          disabled={updateUser.isLoading}
-          formState={formState}
-          label={
-            <>
-              Aksepterer <Link to='/wiki/arrangementsregler/'>arrangementreglene</Link>
-            </>
+
+        <FormDetailSwitch
+          description={
+            <Link className='text-primary' to='/wiki/arrangementsregler/'>
+              Arrangementreglene
+            </Link>
           }
+          form={form}
+          label='Aksepterer arrangementreglene'
           name='accepts_event_rules'
-          type='checkbox'
         />
-        <Bool
-          control={control}
-          disabled={updateUser.isLoading}
-          formState={formState}
+
+        <FormDetailSwitch
+          description='Godtar at bilder av deg kan deles på TIHLDE sine plattformer'
+          form={form}
           label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
           name='allows_photo_by_default'
-          type='checkbox'
         />
-      </Stack>
-      <SubmitButton disabled={updateUser.isLoading} formState={formState}>
-        Lagre
-      </SubmitButton>
-      {!isAdmin && (
-        <Typography sx={{ mt: 1 }} variant='body2'>
-          {`Er navn, epost, klasse eller studie er feil? Ta kontakt med oss på `}
-          <a href='https://m.me/tihlde' rel='noopener noreferrer' target='_blank'>
-            Messenger
-          </a>
-          {` eller Slack.`}
-        </Typography>
-      )}
-    </form>
+
+        <Button className='w-full' type='submit'>
+          {updateUser.isLoading ? 'Lagrer...' : 'Lagre'}
+        </Button>
+      </form>
+    </Form>
   );
 };
 

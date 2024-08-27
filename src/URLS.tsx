@@ -52,6 +52,8 @@ const URLS = {
   aboutIndex: `${WIKI}${WIKI_URLS.ABOUT_INDEX}`,
   profile: '/profil/',
   signup: '/ny-bruker/',
+  signupForm: '/ny-bruker/skjema/',
+  signupFeide: '/ny-bruker/feide/',
   shortLinks: '/linker/',
   qrCodes: '/qr-koder/',
   gallery: '/galleri/',
@@ -61,7 +63,14 @@ const URLS = {
   jobpostsAdmin: '/admin/karriere/',
   newsAdmin: '/admin/nyheter/',
   bannerAdmin: '/admin/bannere/',
-  jubilee: 'jubileum.tihlde.org/',
+  jubilee: 'https://jubileum.tihlde.org/',
+  fondet: 'https://fondet.tihlde.org/',
+  kontRes: 'https://kontres.tihlde.org/',
+  github: 'https://github.com/TIHLDE',
+  pythons: 'https://pythons.tihlde.org/',
+  pythonsLadies: 'https://pythons-damer.tihlde.org/',
+  changelog: '/endringslogg',
+  admissions: '/opptak/',
 };
 
 export default URLS;

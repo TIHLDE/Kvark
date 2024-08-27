@@ -1,52 +1,50 @@
-import { BoxProps, Skeleton, styled } from '@mui/material';
+import { cn } from 'lib/utils';
 import { useEffect, useState } from 'react';
 
 import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
 
 export type AspectRatioImgProps = {
   alt: string;
-  borderRadius?: boolean;
   className?: string;
-  ratio?: number;
   src?: string;
-  sx?: BoxProps['sx'];
+  ratio?: '21/9' | '16:9' | '4:3' | '1:1' | '3:4' | '9:16';
 };
 
-const Img = styled('img', { shouldForwardProp: (prop) => prop !== 'borderRadius' && prop !== 'ratio' && prop !== 'sx' })<
-  Pick<AspectRatioImgProps, 'borderRadius' | 'ratio'>
->(({ theme, borderRadius, ratio }) => ({
-  ...(borderRadius && { borderRadius: `${theme.shape.borderRadius}px` }),
-  aspectRatio: ratio ? String(ratio) : '21 / 9',
-  objectFit: 'cover',
-  width: '100%',
-  '&:not([src*=".jpg"])': {
-    background: theme.palette.common.white,
-  },
-}));
-
-const AspectRatioImg = ({ alt, borderRadius, className, ratio = 21 / 9, src, sx }: AspectRatioImgProps) => {
+const AspectRatioImg = ({ alt, className, src, ratio = '21/9' }: AspectRatioImgProps) => {
   const [imgUrl, setImgUrl] = useState(src || TIHLDE_LOGO);
 
   useEffect(() => {
     setImgUrl(src || TIHLDE_LOGO);
   }, [src]);
 
+  const setRatio = () => {
+    switch (ratio) {
+      case '21/9':
+        return 'aspect-[21/9]';
+
+      case '16:9':
+        return 'aspect-[16/9]';
+
+      case '4:3':
+        return 'aspect-[4/3]';
+
+      case '1:1':
+        return 'aspect-[1/1]';
+
+      case '3:4':
+        return 'aspect-[3/4]';
+
+      case '9:16':
+        return 'aspect-[9/16]';
+
+      default:
+        return 'aspect-[21/9]';
+    }
+  };
+
   return (
-    <Img alt={alt} borderRadius={borderRadius} className={className} loading='lazy' onError={() => setImgUrl(TIHLDE_LOGO)} ratio={ratio} src={imgUrl} sx={sx} />
+    <img alt={alt} className={cn('object-cover w-full rounded-md', className, setRatio())} loading='lazy' onError={() => setImgUrl(TIHLDE_LOGO)} src={imgUrl} />
   );
 };
 
 export default AspectRatioImg;
-
-export const AspectRatioLoading = ({
-  borderRadius,
-  className,
-  ratio = 21 / 9,
-  sx,
-}: Pick<AspectRatioImgProps, 'borderRadius' | 'className' | 'ratio' | 'sx'>) => (
-  <Skeleton
-    className={className}
-    sx={{ height: 'auto', borderRadius: borderRadius ? (theme) => `${theme.shape.borderRadius}px` : undefined, aspectRatio: String(ratio), ...sx }}
-    variant='rectangular'
-  />
-);

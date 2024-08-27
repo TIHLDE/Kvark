@@ -1,123 +1,106 @@
-import EditIcon from '@mui/icons-material/Edit';
-import { Button, Collapse } from '@mui/material';
-import { EMAIL_REGEX } from 'constant';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { Group } from 'types';
+import { FormGroupValues } from 'types';
 
 import { useUpdateGroup } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
 
-import Bool from 'components/inputs/Bool';
+import FormInput from 'components/inputs/Input';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { ImageUpload } from 'components/inputs/Upload';
-import UserSearch from 'components/inputs/UserSearch';
-import Dialog from 'components/layout/Dialog';
-import { ShowMoreText, ShowMoreTooltip } from 'components/miscellaneous/UserInformation';
+import FormBasicSwitch from 'components/inputs/Switch';
+import { FormImageUpload } from 'components/inputs/Upload';
+import { SingleUserSearch } from 'components/inputs/UserSearch';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
 
 export type UpdateGroupModalProps = {
-  group: Group;
+  group: FormGroupValues;
 };
 
-type FormValues = Pick<Group, 'contact_email' | 'description' | 'fine_info' | 'fines_activated' | 'name' | 'fines_admin' | 'image'>;
+const formSchema = z.object({
+  contact_email: z.string().email().optional(),
+  description: z.string().optional(),
+  fine_info: z.string().optional(),
+  fines_activated: z.boolean(),
+  name: z.string().min(1, { message: 'Gruppen må ha et navn' }),
+  fines_admin: z.object({ user_id: z.string() }).nullable(),
+  image: z.string().optional(),
+});
 
 const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { register, formState, handleSubmit, control, watch, setValue } = useForm<FormValues>({ defaultValues: { ...group } });
-  const watchFinesActivated = watch('fines_activated');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      contact_email: group.contact_email || '',
+      description: group.description || '',
+      fine_info: group.fine_info || '',
+      fines_activated: group.fines_activated,
+      name: group.name,
+      fines_admin: group.fines_admin || null,
+      image: group.image || '',
+    },
+  });
+  const watchFinesActivated = form.watch('fines_activated');
   const updateGroup = useUpdateGroup();
-  const showSnackbar = useSnackbar();
 
-  const submit = async (formData: FormValues) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     updateGroup.mutate(
-      { ...formData, fines_admin: formData.fines_admin?.user_id || null, slug: group.slug },
+      { ...values, fines_admin: values.fines_admin?.user_id || null, slug: group.slug },
       {
         onSuccess: () => {
           setIsOpen(false);
-          showSnackbar('Gruppen ble oppdatert', 'success');
+          toast.success('Gruppen ble oppdatert');
         },
         onError: (e) => {
-          showSnackbar(e.detail, 'error');
+          toast.error(e.detail);
         },
       },
     );
   };
 
-  return (
-    <>
-      <Button onClick={() => setIsOpen(true)} startIcon={<EditIcon />} variant='outlined'>
-        Rediger gruppen
-      </Button>
-      <Dialog onClose={() => setIsOpen(false)} open={isOpen} titleText='Rediger gruppen'>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField formState={formState} label='Gruppenavn' {...register('name', { required: 'Gruppen må ha et navn' })} required />
+  const OpenButton = <Button className='w-full lg:w-auto'>Rediger gruppen</Button>;
 
-          <ImageUpload formState={formState} label='Velg bilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
-          <MarkdownEditor formState={formState} label='Gruppebeskrivelse' {...register('description')} />
-          <TextField
-            formState={formState}
-            label='Kontakt e-post'
-            {...register('contact_email', {
-              pattern: {
-                value: EMAIL_REGEX,
-                message: 'Ugyldig e-post',
-              },
-            })}
-            type='email'
-          />
-          <Bool
-            control={control}
-            formState={formState}
-            label={
+  return (
+    <ResponsiveDialog
+      description='Her kan du redigere gruppenavn, beskrivelse, bilde og kontaktperson.'
+      onOpenChange={setIsOpen}
+      open={isOpen}
+      title='Rediger gruppen'
+      trigger={OpenButton}>
+      <ScrollArea className='h-[60vh]'>
+        <Form {...form}>
+          <form className='py-6 px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormInput form={form} label='Gruppenavn' name='name' required />
+
+            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='1:1' />
+
+            <MarkdownEditor form={form} label='Gruppebeskrivelse' name='description' />
+
+            <FormInput form={form} label='Kontakt e-post' name='contact_email' type='email' />
+
+            <FormBasicSwitch className='pt-4' form={form} label='Botsystem' name='fines_activated' />
+
+            {watchFinesActivated && (
               <>
-                Botsystem
-                <ShowMoreTooltip>
-                  Bestemmer om botsystemet skal aktiveres for gruppen. I botsystemet kan du lage et lovverk. Brukerene kan så registrere bøter på hverandre med
-                  referanse til lovverket, antall bøter og kommentar. Dere kan selv bestemmer hvor mye en bot er verdt og markere om en bot er godkjent og om
-                  boten er betalt.
-                </ShowMoreTooltip>
+                <SingleUserSearch form={form} inGroup={group.slug} label='Botsjef' name='fines_admin' user={group.fines_admin} />
+
+                <MarkdownEditor form={form} label='Botsystem praktiske detaljer' name='fine_info' required />
               </>
-            }
-            name='fines_activated'
-            type='switch'
-          />
-          <Collapse in={watchFinesActivated}>
-            <UserSearch
-              control={control}
-              formState={formState}
-              helperText={
-                <ShowMoreText>
-                  Botsjefen får tilgang til å endre lovverket, godkjenne bøter, markere bøter som betalt og slette bøter. Du som leder av gruppen har også
-                  tilgang til dette.
-                </ShowMoreText>
-              }
-              inGroup={group.slug}
-              label='Botsjef'
-              name='fines_admin'
-            />
-            <MarkdownEditor
-              formState={formState}
-              helperText={
-                <ShowMoreText>
-                  Her kan du skrive praktiske detaljer rundt botsystemet som ikke nødvendigvis er en egen lovparagraf. Dette kan for eksempel være info om hvor
-                  mye en bot er verdt, hvordan bøter godkjennes og når lovverket kan revideres.
-                </ShowMoreText>
-              }
-              label='Botsystem praktiske detaljer'
-              multiline
-              {...register('fine_info')}
-              maxRows={10}
-            />
-          </Collapse>
-          <SubmitButton disabled={updateGroup.isLoading} formState={formState} sx={{ mt: 2 }}>
-            Oppdater gruppen
-          </SubmitButton>
-        </form>
-      </Dialog>
-    </>
+            )}
+
+            <Button className='w-full' disabled={updateGroup.isLoading} type='submit'>
+              {updateGroup.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            </Button>
+          </form>
+        </Form>
+      </ScrollArea>
+    </ResponsiveDialog>
   );
 };
 

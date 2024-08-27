@@ -8,6 +8,7 @@ import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
+import Changelog from 'pages/Changelog';
 import Companies from 'pages/Companies';
 import EventDetails from 'pages/EventDetails';
 import Events from 'pages/Events';
@@ -21,10 +22,8 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
-import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import InfoBannerAdmin from 'components/miscellaneous/InfoBanner/InfoBannerAdmin';
-import Page from 'components/navigation/Page';
 
 const Gallery = lazy(() => import('pages/Gallery'));
 const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
@@ -50,10 +49,13 @@ const Wiki = lazy(() => import('pages/Wiki'));
 const ShortLinks = lazy(() => import('pages/ShortLinks'));
 const QRCodes = lazy(() => import('pages/QRCodes'));
 const SignUp = lazy(() => import('pages/SignUp'));
+const SignUpOptions = lazy(() => import('pages/SignUpOptions'));
+const SignUpFeide = lazy(() => import('pages/SignUpFeide'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
 const Wrapped = lazy(() => import('pages/wrapped'));
+const Admissions = lazy(() => import('pages/Admissions'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -78,7 +80,7 @@ export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
     return element;
   }
   if (isLoading) {
-    return <Page />;
+    return <div className='w-full min-h-screen' />;
   }
   if (allowAccess) {
     return element;
@@ -93,7 +95,7 @@ const AppRoutes = () => {
   useEffect(() => event('page_view', window.location.href, window.location.pathname), [location]);
 
   return (
-    <Suspense fallback={<Page options={{ title: 'Laster...', filledTopbar: true }} />}>
+    <Suspense fallback={<div className='w-full min-h-screen' />}>
       <Routes>
         <Route element={<Landing />} index />
         <Route element={<NewStudent />} path={URLS.newStudent} />
@@ -106,7 +108,7 @@ const AppRoutes = () => {
         <Route element={<Toddel />} path={URLS.toddel} />
         <Route path={URLS.form}>
           <Route element={<AuthRoute element={<Form />} />} path={`:id/`} />
-          <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<FormAdmin />} />} path={`admin/:id/`} />
+          <Route element={<AuthRoute apps={[PermissionApp.GROUPFORM]} element={<FormAdmin />} />} path={`admin/:id/`} />
         </Route>
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
@@ -142,7 +144,8 @@ const AppRoutes = () => {
           <Route element={<News />} index />
         </Route>
 
-        <Route element={<SlackConnectPage />} path='slack/' />
+        {/* TODO: Find out if this page is in use */}
+        {/* <Route element={<SlackConnectPage />} path='slack/' /> */}
         <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
           <Route element={<Profile />} path=':userId/' />
         </Route>
@@ -154,6 +157,7 @@ const AppRoutes = () => {
         <Route element={<AuthRoute element={<Wrapped />} />} path={URLS.wrapped} />
 
         <Route element={<AuthRoute element={<QRCodes />} />} path={URLS.qrCodes} />
+        <Route element={<AuthRoute element={<Admissions />} />} path={URLS.admissions} />
 
         <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
           <Route element={<InfoBannerAdmin />} />
@@ -172,7 +176,11 @@ const AppRoutes = () => {
 
         <Route element={<LogIn />} path={URLS.login} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
-        <Route element={<SignUp />} path={URLS.signup} />
+        <Route element={<SignUp />} path={URLS.signupForm} />
+        <Route element={<SignUpOptions />} path={URLS.signup} />
+        <Route element={<SignUpFeide />} path={URLS.signupFeide} />
+
+        <Route element={<Changelog />} path={URLS.changelog} />
 
         <Route element={<Http404 />} path='*' />
       </Routes>

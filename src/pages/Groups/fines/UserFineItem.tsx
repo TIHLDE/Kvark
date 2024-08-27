@@ -1,33 +1,28 @@
-import PayedIcon from '@mui/icons-material/CreditScoreRounded';
-import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import { Collapse, Divider, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
+import { Check, HandCoins } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 import { GroupUserFine } from 'types';
 
 import { useBatchUpdateUserGroupFines, useGroupUserFines } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
 
 import FineItem, { FineItemProps } from 'pages/Groups/fines/FineItem';
 import { useFinesFilter } from 'pages/Groups/fines/FinesContext';
 
-import Pagination from 'components/layout/Pagination';
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
-import Avatar from 'components/miscellaneous/Avatar';
+import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Button, PaginateButton } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
 };
 
 const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const { event } = useAnalytics();
   const finesFilter = useFinesFilter();
-  const showSnackbar = useSnackbar();
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);
 
   const { data, hasNextPage, isFetching, fetchNextPage } = useGroupUserFines(groupSlug, userFine.user.user_id, finesFilter, { enabled: expanded });
@@ -38,8 +33,12 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
     updateUserFines.mutate(
       { approved: true },
       {
-        onSuccess: () => showSnackbar(`Bøtene er nå markert som godkjent`, 'success'),
-        onError: (e) => showSnackbar(e.detail, 'error'),
+        onSuccess: () => {
+          toast.success('Bøtene er nå godkjent');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
   };
@@ -49,50 +48,70 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
     updateUserFines.mutate(
       { payed: true },
       {
-        onSuccess: () => showSnackbar(`Bøtene er nå markert som betalt`, 'success'),
-        onError: (e) => showSnackbar(e.detail, 'error'),
+        onSuccess: () => {
+          toast.success('Bøtene er nå betalt');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
   };
+
+  const UserAvatar = (
+    <Avatar>
+      <AvatarImage alt={userFine.user.first_name} src={userFine.user.image} />
+      <AvatarFallback>{userFine.user.first_name[0] + userFine.user.last_name[0]}</AvatarFallback>
+    </Avatar>
+  );
+
+  const FinesAmount = <h1 className='text-2xl font-bold'>{userFine.fines_amount}</h1>;
+
+  const ApprovedButton = (
+    <Button className='w-full' variant='outline'>
+      <Check className='w-5 h-5 mr-2' />
+      Godkjenn alle
+    </Button>
+  );
+
+  const PaidButton = (
+    <Button className='w-full' variant='outline'>
+      <HandCoins className='w-5 h-5 mr-2' />
+      Betal alle
+    </Button>
+  );
+
   return (
-    <Paper noOverflow noPadding>
-      <ListItem button dense onClick={() => setExpanded((prev) => !prev)}>
-        <Avatar sx={{ mr: 2 }} user={userFine.user} />
-        <ListItemText primary={`${userFine.user.first_name} ${userFine.user.last_name}`} />
-        <Typography sx={{ fontWeight: 'bold', ml: 1, mr: 3 }} variant='h3'>
-          {userFine.fines_amount}
-        </Typography>
-        {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-      </ListItem>
-      <Collapse in={expanded} mountOnEnter>
-        <Divider />
-        <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
-          <Stack component={List} gap={1} sx={{ p: [1, undefined, 2] }}>
-            {isAdmin && (
-              <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-                <VerifyDialog
-                  color='success'
-                  contentText='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som godkjent.'
-                  onConfirm={toggleApproved}
-                  startIcon={<ApprovedIcon />}>
-                  Merk alle som godkjent
-                </VerifyDialog>
-                <VerifyDialog
-                  color='success'
-                  contentText='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som betalt.'
-                  onConfirm={togglePayed}
-                  startIcon={<PayedIcon />}>
-                  Merk alle som betalt
-                </VerifyDialog>
-              </Stack>
-            )}
-            {fines.map((fine) => (
-              <FineItem fine={fine} fineUser={userFine.user} groupSlug={groupSlug} hideUserInfo isAdmin={isAdmin} key={fine.id} />
-            ))}
-          </Stack>
-        </Pagination>
-      </Collapse>
-    </Paper>
+    <Expandable
+      extra={FinesAmount}
+      icon={UserAvatar}
+      onOpenChange={setExpanded}
+      open={expanded}
+      title={`${userFine.user.first_name} ${userFine.user.last_name}`}>
+      {isAdmin && !fines.length && <h1 className='text-center'>Ingen bøter</h1>}
+      {isAdmin && fines.length > 0 && (
+        <div className='flex items-center space-x-4 pb-4'>
+          <ResponsiveAlertDialog
+            action={toggleApproved}
+            description='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som godkjent.'
+            title='Godkjenn alle bøter'
+            trigger={ApprovedButton}
+          />
+
+          <ResponsiveAlertDialog
+            action={togglePayed}
+            description='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som betalt.'
+            title='Betal alle bøter'
+            trigger={PaidButton}
+          />
+        </div>
+      )}
+      {fines.map((fine) => (
+        <FineItem fine={fine} fineUser={userFine.user} groupSlug={groupSlug} hideUserInfo isAdmin={isAdmin} key={fine.id} />
+      ))}
+
+      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </Expandable>
   );
 };
 

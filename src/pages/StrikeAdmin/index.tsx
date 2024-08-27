@@ -1,38 +1,43 @@
-import GroupIcon from '@mui/icons-material/Group';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from 'makeStyles';
-import { useState } from 'react';
+import { DotSquare, Users } from 'lucide-react';
 
-import AllStrikesList from 'pages/StrikeAdmin/components/AllStrikeList';
-import UserStrikeList from 'pages/StrikeAdmin/components/UserStrikeList';
-
-import Paper from 'components/layout/Paper';
-import Tabs from 'components/layout/Tabs';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import Page from 'components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
-const useStyles = makeStyles()(() => ({
-  content: {
-    margin: '-60px auto 60px',
-    position: 'relative',
-  },
-}));
+import AllStrikesList from './components/AllStrikeList';
+import UserStrikeList from './components/UserStrikeList';
 
 const StrikeAdmin = () => {
-  const { classes } = useStyles();
-  const strikesTab = { value: 'strikes', label: 'Medlemmer med prikker', icon: GroupIcon };
-  const allStrikesTab = { value: 'allStrikes', label: 'Alle prikker', icon: WorkspacesIcon };
+  const strikesTab = { value: 'strikes', label: 'Medlemmer med prikker', icon: Users };
+  const allStrikesTab = { value: 'allStrikes', label: 'Alle prikker', icon: DotSquare };
   const tabs = [strikesTab, allStrikesTab];
-  const [tab, setTab] = useState(strikesTab.value);
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: 'Prikker admin' }}>
-      <Paper className={classes.content}>
-        <Typography variant='h1'>Prikker admin</Typography>
-        <Tabs selected={tab} setSelected={setTab} tabs={tabs} />
-        {tab === strikesTab.value ? <UserStrikeList /> : <AllStrikesList />}
-      </Paper>
+    <Page className='max-w-6xl w-full mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Prikker admin</CardTitle>
+          <CardDescription>Her kan du se og administrere prikker.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue='strikes'>
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  <tab.icon className='mr-2 h-5 w-5 stroke-[1.5px]' />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value='strikes'>
+              <UserStrikeList />
+            </TabsContent>
+            <TabsContent value='allStrikes'>
+              <AllStrikesList />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </Page>
   );
 };

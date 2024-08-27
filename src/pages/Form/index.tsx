@@ -1,34 +1,46 @@
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { parseISO } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import URLS from 'URLS';
 import { formatDate } from 'utils';
+import { z } from 'zod';
 
 import { Submission } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
 
-import { useConfetti } from 'hooks/Confetti';
-import { useCreateSubmission, useFormById, validateSubmissionInput } from 'hooks/Form';
-import { useSnackbar } from 'hooks/Snackbar';
+import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from 'hooks/Form';
 import { useAnalytics } from 'hooks/Utils';
 
 import Http404 from 'pages/Http404';
 
 import FormView from 'components/forms/FormView';
-import SubmitButton from 'components/inputs/SubmitButton';
-import Paper from 'components/layout/Paper';
-import { PrimaryTopBox } from 'components/layout/TopBox';
 import Page from 'components/navigation/Page';
+import { Button } from 'components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form } from 'components/ui/form';
+import { Separator } from 'components/ui/separator';
+
+const formSchema = z.object({
+  answers: z.array(
+    z.object({
+      field: z.object({
+        id: z.string(),
+      }),
+      answer_text: z.string().optional(),
+      selected_options: z.array(z.string()).optional(),
+    }),
+  ),
+});
 
 const FormPage = () => {
-  const { run } = useConfetti();
+  const navigate = useNavigate();
   const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
   const { data: form, isError } = useFormById(id || '-');
   const createSubmission = useCreateSubmission(id || '-');
-  const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const title = useMemo(
     () => (form ? (form.resource_type === FormResourceType.EVENT_FORM && form.type === EventFormType.EVALUATION ? 'Evaluering' : form.title) : ''),
@@ -51,32 +63,50 @@ const FormPage = () => {
     [form],
   );
 
-  const { register, handleSubmit, formState, setError, getValues, control, reset } = useForm<Submission>();
+  const submitForm = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { answers: [] },
+  });
 
   const submitDisabled = isLoading || createSubmission.isLoading || !form;
 
-  const submit = async (data: Submission) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const data: Submission = {
+      answers: values.answers.map((answer) => {
+        if ('selected_options' in answer) {
+          return {
+            field: { id: answer.field.id },
+            selected_options: answer.selected_options?.map((option) => ({ id: option })) || [],
+          };
+        }
+
+        return {
+          field: { id: answer.field.id },
+          answer_text: answer.answer_text || '',
+        };
+      }),
+    };
     if (submitDisabled || !form) {
       return;
     }
     setIsLoading(true);
     data.answers = data.answers || [];
     try {
+      validateSubmissionTextInput(data, form);
       validateSubmissionInput(data, form);
     } catch (e) {
-      setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
+      submitForm.setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
       setIsLoading(false);
       return;
     }
     createSubmission.mutate(data, {
       onSuccess: () => {
-        run();
-        showSnackbar('Innsendingen var vellykket', 'success');
+        toast.success('Innsendingen var vellykket');
         GAEvent('submitted', 'forms', `Submitted submission for form: ${form.title}`);
-        reset();
+        navigate(-1);
       },
       onError: (e) => {
-        showSnackbar(e.detail, 'error');
+        toast.error(e.detail);
       },
       onSettled: () => {
         setIsLoading(false);
@@ -93,64 +123,44 @@ const FormPage = () => {
   const canAnswerForm = Boolean(form && (!form.viewer_has_answered || (form.resource_type === FormResourceType.GROUP_FORM && form.can_submit_multiple)));
 
   return (
-    <Page banner={<PrimaryTopBox />} options={{ title: `${form?.title || 'Laster spørreskjema...'} - Spørreskjema` }}>
-      <Paper
-        sx={{
-          maxWidth: (theme) => theme.breakpoints.values.md,
-          margin: 'auto',
-          position: 'relative',
-          left: 0,
-          right: 0,
-          top: -60,
-        }}>
-        {form ? (
-          <>
-            <Typography align='center' variant='h2'>
-              {title}
-            </Typography>
-            <Typography align='center' variant='subtitle2'>
-              {subtitle}
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            {canAnswerForm ? (
-              <form onSubmit={handleSubmit(submit)}>
-                {form && (
-                  <FormView
-                    alignText='center'
-                    control={control}
-                    disabled={submitDisabled}
-                    form={form}
-                    formState={formState}
-                    getValues={getValues}
-                    register={register}
-                  />
-                )}
-                <SubmitButton disabled={submitDisabled} formState={formState} sx={{ mt: 2 }}>
-                  Send inn svar
-                </SubmitButton>
-              </form>
-            ) : (
-              <>
-                <Typography align='center' variant='body2'>
-                  Du har allerede svart på dette spørreskjemaet, takk!
-                </Typography>
-                <Stack direction={{ xs: 'column', md: 'row' }} gap={1} sx={{ mt: 2 }}>
-                  <Button component={Link} fullWidth to={URLS.landing} variant='outlined'>
-                    Gå til forsiden
-                  </Button>
-                  <Button component={Link} fullWidth to={URLS.profile} variant='outlined'>
-                    Gå til profilen
-                  </Button>
-                </Stack>
-              </>
-            )}
-          </>
-        ) : (
-          <Typography align='center' variant='h2'>
-            Laster spørreskjema...
-          </Typography>
-        )}
-      </Paper>
+    <Page className='max-w-5xl mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{subtitle}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {form ? (
+            <>
+              <Separator className='mb-2' />
+              {canAnswerForm ? (
+                <Form {...submitForm}>
+                  <form className='space-y-4' onSubmit={submitForm.handleSubmit(onSubmit)}>
+                    {form && <FormView disabled={submitDisabled} form={form} submitForm={submitForm} />}
+                    <Button className='w-full' disabled={submitDisabled} type='submit'>
+                      {createSubmission.isLoading ? 'Sender inn...' : 'Send inn'}
+                    </Button>
+                  </form>
+                </Form>
+              ) : (
+                <>
+                  <h1 className='text-center'>Du har allerede svart på dette spørreskjemaet, takk!</h1>
+                  <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2 mt-4'>
+                    <Button asChild className='w-full text-black dark:text-white' variant='outline'>
+                      <Link to={URLS.landing}>Gå til forsiden</Link>
+                    </Button>
+                    <Button asChild className='w-full text-black dark:text-white' variant='outline'>
+                      <Link to={URLS.profile}>Gå til profilen din</Link>
+                    </Button>
+                  </div>
+                </>
+              )}
+            </>
+          ) : (
+            <h1 className='text-center'>Laster spørreskjema...</h1>
+          )}
+        </CardContent>
+      </Card>
     </Page>
   );
 };

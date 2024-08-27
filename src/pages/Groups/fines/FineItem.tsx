@@ -1,46 +1,22 @@
-import PaidIcon from '@mui/icons-material/CreditScoreRounded';
-import Delete from '@mui/icons-material/DeleteRounded';
-import ApprovedIcon from '@mui/icons-material/DoneOutlineRounded';
-import EditRounded from '@mui/icons-material/EditRounded';
-import ExpandLessIcon from '@mui/icons-material/ExpandLessRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMoreRounded';
-import DefenseIcon from '@mui/icons-material/ShieldRounded';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Chip,
-  Collapse,
-  Divider,
-  ListItem,
-  ListItemButton,
-  ListItemProps,
-  ListItemText,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
 import { parseISO } from 'date-fns';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { cn } from 'lib/utils';
+import { Check, HandCoins } from 'lucide-react';
+import { toast } from 'sonner';
 import { formatDate } from 'utils';
 
-import { Group, GroupFine, GroupFineDefenseMutate, GroupFineMutate, UserBase } from 'types';
+import { Group, GroupFine, UserBase } from 'types';
 
-import { useDeleteGroupFine, useUpdateGroupFine, useUpdateGroupFineDefense } from 'hooks/Group';
-import { useSnackbar } from 'hooks/Snackbar';
+import { useUpdateGroupFine } from 'hooks/Group';
 import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import { useCheckedFines, useToggleCheckedFine } from 'pages/Groups/fines/FinesContext';
-
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import Dialog from 'components/layout/Dialog';
-import Paper from 'components/layout/Paper';
-import VerifyDialog from 'components/layout/VerifyDialog';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
+import { Button } from 'components/ui/button';
+import Expandable from 'components/ui/expandable';
+
+import DeleteFine from './DeleteFine';
+import EditFine from './EditFine';
+import FineDefense from './FineDefense';
 
 export type FineItemProps = {
   fine: GroupFine;
@@ -48,57 +24,24 @@ export type FineItemProps = {
   isAdmin?: boolean;
   hideUserInfo?: boolean;
   fineUser?: UserBase;
-} & ListItemProps;
+};
 
-const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser, ...props }: FineItemProps) => {
+const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItemProps) => {
   const { data: user } = useUser();
   const { event } = useAnalytics();
-  const showSnackbar = useSnackbar();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
-  const updateFineDefense = useUpdateGroupFineDefense(groupSlug, fine.id);
-  const deleteFine = useDeleteGroupFine(groupSlug, fine.id);
-  const checkedFines = useCheckedFines();
-  const onCheck = useToggleCheckedFine();
-  const [editOpen, setEditOpen] = useState(false);
-  const [editDefenseOpen, setEditDefenseOpen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const { register, formState, handleSubmit } = useForm<Pick<GroupFineMutate, 'amount' | 'reason'>>({
-    defaultValues: { amount: fine.amount, reason: fine.reason },
-  });
-  const {
-    register: registerDefense,
-    formState: formStateDefense,
-    handleSubmit: handleSubmitDefense,
-  } = useForm<GroupFineDefenseMutate>({
-    defaultValues: { defense: fine.defense },
-  });
-
-  const onUpdateFine = (data: Pick<GroupFineMutate, 'amount' | 'reason'>) => {
-    event('update', 'fines', `Updated a single fine`);
-    updateFine.mutate(data, {
-      onSuccess: () => {
-        showSnackbar(`Boten er oppdatert`, 'success');
-        setEditOpen(false);
-      },
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
-  };
-  const onUpdateFineDefense = (data: GroupFineDefenseMutate) =>
-    updateFineDefense.mutate(data, {
-      onSuccess: () => {
-        showSnackbar(`Forsvar av boten ble oppdatert`, 'success');
-        setEditDefenseOpen(false);
-      },
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
 
   const toggleApproved = () => {
     event('update', 'fines', `Approved a single fine`);
     updateFine.mutate(
       { approved: !fine.approved },
       {
-        onSuccess: () => showSnackbar(`Boten er nå markert som ${fine.approved ? 'ikke godkjent' : 'godkjent'}`, 'success'),
-        onError: (e) => showSnackbar(e.detail, 'error'),
+        onSuccess: () => {
+          toast.success(`Boten er nå markert som ${fine.approved ? 'ikke godkjent' : 'godkjent'}`);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
   };
@@ -108,136 +51,95 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser, ...props }
     updateFine.mutate(
       { payed: !fine.payed },
       {
-        onSuccess: () => showSnackbar(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`, 'success'),
-        onError: (e) => showSnackbar(e.detail, 'error'),
+        onSuccess: () => {
+          toast.success(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
   };
 
+  const FineAmount = <h1 className='text-xl font-bold'>{fine.amount}</h1>;
+
+  const Title = (
+    <div className='flex items-center space-x-1'>
+      <h1>{hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}</h1>
+      <Check className={cn('w-4 h-4 stroke-[1.5px]', fine.approved ? 'text-emerald-500' : 'text-red-500')} />
+      <HandCoins className={cn('w-4 h-4 stroke-[1.5px]', fine.payed ? 'text-emerald-500' : 'text-red-500')} />
+    </div>
+  );
+
   return (
-    <Paper noOverflow noPadding>
-      <ListItem
-        dense
-        disablePadding
-        secondaryAction={isAdmin && onCheck && <Checkbox checked={checkedFines.includes(fine.id)} edge='end' onClick={() => onCheck(fine.id)} />}
-        {...props}>
-        <ListItemButton onClick={() => setExpanded((prev) => !prev)} sx={{ py: 0 }}>
-          <Typography sx={{ fontWeight: 'bold', ml: 0.5, mr: 2 }} variant='h3'>
-            {fine.amount}
-          </Typography>
-          <ListItemText
-            primary={
-              <>
-                {hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}
-                <Tooltip title={`Boten er ${fine.approved ? '' : 'ikke '} godkjent`}>
-                  <ApprovedIcon color={fine.approved ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
-                </Tooltip>
-                <Tooltip title={`Boten er ${fine.payed ? '' : 'ikke '} betalt`}>
-                  <PaidIcon color={fine.payed ? 'success' : 'error'} sx={{ fontSize: 'inherit', ml: 0.5, mb: '-1px' }} />
-                </Tooltip>
-              </>
-            }
-            secondary={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
-          />
-          {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-        </ListItemButton>
-      </ListItem>
-      <Collapse in={expanded}>
-        <Divider />
-        <Stack gap={1} sx={{ p: [1, undefined, 2] }}>
-          <Stack direction='row' gap={1}>
-            <Chip color={fine.approved ? 'success' : 'error'} icon={<ApprovedIcon />} label={fine.approved ? 'Godkjent' : 'Ikke godkjent'} variant='outlined' />
-            <Chip color={fine.payed ? 'success' : 'error'} icon={<PaidIcon />} label={fine.payed ? 'Betalt' : 'Ikke betalt'} variant='outlined' />
-          </Stack>
-          <div>
-            <Typography component='p' variant='subtitle2'>{`Opprettet av: ${fine.created_by.first_name} ${fine.created_by.last_name}`}</Typography>
-            <Typography component='p' variant='subtitle2'>{`Dato: ${formatDate(parseISO(fine.created_at), {
-              fullDayOfWeek: true,
-              fullMonth: true,
-            })}`}</Typography>
+    <Expandable
+      description={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
+      icon={FineAmount}
+      title={Title}>
+      <div className='space-y-4'>
+        <div className='flex items-center space-x-2'>
+          <div
+            className={cn(
+              'flex items-center space-x-1 px-2 py-1 rounded-md border text-sm',
+              fine.approved ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
+            )}>
+            <Check className='w-4 h-4' />
+            <span>{fine.approved ? 'Godkjent' : 'Ikke godkjent'}</span>
           </div>
-          {fine.reason && (
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography component='p' variant='subtitle2'>
-                Begrunnelse:
-              </Typography>
-              <MarkdownRenderer value={fine.reason} />
-            </Paper>
-          )}
-          {fine.image && (
-            <Box alt='Bildebevis' component='img' loading='lazy' src={fine.image} sx={{ borderRadius: 1, maxWidth: 600, m: 'auto', width: '100%' }} />
-          )}
-          {fine.defense && (
-            <Paper sx={{ px: 2, py: 1 }}>
-              <Typography component='p' variant='subtitle2'>
-                Forsvar fra den tiltalte:
-              </Typography>
-              <MarkdownRenderer value={fine.defense} />
-            </Paper>
-          )}
-          {(fineUser || fine.user)?.user_id === user?.user_id && (
-            <>
-              <Button fullWidth onClick={() => setEditDefenseOpen(true)} startIcon={<DefenseIcon />} variant='outlined'>
-                {fine.defense ? 'Endre forsvar' : 'Legg til forsvar'}
-              </Button>
-              <Dialog onClose={() => setEditDefenseOpen(false)} open={editDefenseOpen} titleText='Endre forsvar'>
-                <form onSubmit={handleSubmitDefense(onUpdateFineDefense)}>
-                  <MarkdownEditor formState={formStateDefense} label='Forsvar' {...registerDefense('defense')} />
-                  <SubmitButton formState={formStateDefense} variant='contained'>
-                    Lagre
-                  </SubmitButton>
-                </form>
-              </Dialog>
-            </>
-          )}
-          {isAdmin && (
-            <>
-              <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-                <Button
-                  color={fine.approved ? 'error' : 'success'}
-                  disabled={fine.payed}
-                  fullWidth
-                  onClick={toggleApproved}
-                  startIcon={<ApprovedIcon />}
-                  variant='contained'>
-                  Merk som {fine.approved ? 'ikke godkjent' : 'godkjent'}
-                </Button>
-                <Button
-                  color={fine.payed ? 'error' : 'success'}
-                  disabled={!fine.approved}
-                  fullWidth
-                  onClick={togglePayed}
-                  startIcon={<PaidIcon />}
-                  variant='contained'>
-                  Merk som {fine.payed ? 'ikke betalt' : 'betalt'}
-                </Button>
-              </Stack>
-              <Dialog onClose={() => setEditOpen(false)} open={editOpen} titleText='Endre bot'>
-                <form onSubmit={handleSubmit(onUpdateFine)}>
-                  <MarkdownEditor formState={formState} label='Begrunnelse' {...register('reason')} />
-                  <TextField disabled={fine.approved} formState={formState} InputProps={{ type: 'number' }} label='Endre antall' {...register('amount')} />
-                  <SubmitButton formState={formState} variant='contained'>
-                    Lagre
-                  </SubmitButton>
-                </form>
-              </Dialog>
-              <Stack direction={{ xs: 'column', md: 'row' }} gap={1}>
-                <Button fullWidth onClick={() => setEditOpen(true)} startIcon={<EditRounded />} variant='outlined'>
-                  Endre bot
-                </Button>
-                <VerifyDialog
-                  color='error'
-                  contentText={`Er du sikker på at du vil slette denne boten?`}
-                  onConfirm={() => deleteFine.mutate(undefined)}
-                  startIcon={<Delete />}>
-                  Slett bot
-                </VerifyDialog>
-              </Stack>
-            </>
-          )}
-        </Stack>
-      </Collapse>
-    </Paper>
+
+          <div
+            className={cn(
+              'flex items-center space-x-1 px-2 py-1 rounded-md border text-sm',
+              fine.payed ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
+            )}>
+            <HandCoins className='w-4 h-4' />
+            <span>{fine.payed ? 'Betalt' : 'Ikke betalt'}</span>
+          </div>
+        </div>
+
+        <div>
+          <p className='text-sm'>
+            Opprettet av: {fine.created_by.first_name} {fine.created_by.last_name}
+          </p>
+          <p className='text-sm'>Dato: {formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true })}</p>
+        </div>
+
+        {fine.reason && (
+          <div className='space-y-1 rounded-md border p-2'>
+            <h1 className='text-sm text-muted-foreground'>Begrunnelse:</h1>
+            <MarkdownRenderer value={fine.reason} />
+          </div>
+        )}
+
+        {fine.image && <img alt='Bildebevis' className='rounded-md max-w-[600px] mx-auto w-full' loading='lazy' src={fine.image} />}
+
+        {fine.defense && (
+          <div className='space-y-1 rounded-md border p-2'>
+            <h1 className='text-sm text-muted-foreground'>Forsvar fra den tiltalte:</h1>
+            <MarkdownRenderer value={fine.defense} />
+          </div>
+        )}
+
+        {(fineUser || fine.user)?.user_id === user?.user_id && <FineDefense defense={fine.defense} fineId={fine.id} groupSlug={groupSlug} />}
+
+        {isAdmin && (
+          <div className='grid md:grid-cols-2 gap-4'>
+            <Button className='w-full' onClick={toggleApproved} variant={fine.approved ? 'destructive' : 'default'}>
+              <Check className='w-5 h-5 mr-2' />
+              Merk som {fine.approved ? 'ikke godkjent' : 'godkjent'}
+            </Button>
+            <Button className='w-full' onClick={togglePayed} variant={fine.payed ? 'destructive' : 'default'}>
+              <HandCoins className='w-5 h-5 mr-2' />
+              Merk som {fine.payed ? 'ikke betalt' : 'betalt'}
+            </Button>
+
+            <EditFine fine={fine} groupSlug={groupSlug} />
+
+            <DeleteFine fineId={fine.id} groupSlug={groupSlug} />
+          </div>
+        )}
+      </div>
+    </Expandable>
   );
 };
 

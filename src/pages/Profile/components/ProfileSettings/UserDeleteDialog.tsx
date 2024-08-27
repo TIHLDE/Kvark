@@ -1,54 +1,77 @@
-import { Button } from '@mui/material';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { User } from 'types';
 
-import { useSnackbar } from 'hooks/Snackbar';
 import { useDeleteUser, useLogout } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import TextField from 'components/inputs/TextField';
-import VerifyDialog from 'components/layout/VerifyDialog';
+import FormInput from 'components/inputs/Input';
+import { Button } from 'components/ui/button';
+import { Form } from 'components/ui/form';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type UserDeleteDialogProps = {
   user: User;
   isAdmin?: boolean;
 };
 
+const formSchema = z.object({
+  userId: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Feltet er påkrevd' }),
+});
+
 export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
   const { event } = useAnalytics();
   const deleteUser = useDeleteUser();
   const logOut = useLogout();
-  const showSnackbar = useSnackbar();
-  const { register, formState, watch } = useForm<Pick<User, 'user_id'>>();
-  const writtenUserId = watch('user_id');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
 
-  const runDeleteUser = () =>
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (isAdmin && values.userId !== user.user_id) {
+      return form.setError('userId', { message: 'Brukernavn matcher ikke bruker' });
+    }
     deleteUser.mutate(isAdmin ? user.user_id : undefined, {
       onSuccess: (data) => {
-        showSnackbar(data.detail, 'success');
+        toast.success(data.detail);
         event('delete-user', 'profile', 'Deleted user');
-        logOut();
+        !isAdmin && logOut();
+        setIsOpen(false);
       },
-      onError: (e) => showSnackbar(e.detail, 'error'),
+      onError: (e) => {
+        toast.error(e.detail);
+      },
     });
+  };
+
+  const OpenButton = (
+    <Button className='w-full' variant='destructive'>
+      Slett konto
+    </Button>
+  );
 
   return (
-    <VerifyDialog
-      color='error'
-      contentText={`Det er ikke mulig å angre denne handlingen. Bekreft ved å skrive inn${isAdmin ? '' : ' ditt'} brukernavn.`}
-      dialogChildren={
-        <>
-          <TextField disabled={deleteUser.isLoading} formState={formState} label='Brukernavn' {...register('user_id')} />
-          <Button color='error' disabled={user.user_id !== writtenUserId} fullWidth onClick={runDeleteUser} variant='outlined'>
-            Slett{isAdmin ? '' : ' din'} konto
+    <ResponsiveDialog
+      description={`Det er ikke mulig å angre denne handlingen. Bekreft ved å skrive inn ${isAdmin ? '' : 'ditt'} brukernavn.`}
+      onOpenChange={setIsOpen}
+      open={isOpen}
+      title={`Slett ${isAdmin && 'din'} konto`}
+      trigger={OpenButton}>
+      <Form {...form}>
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <FormInput form={form} label='Brukernavn' name='userId' required />
+
+          <Button className='w-full' type='submit'>
+            {deleteUser.isLoading ? 'Sletter...' : 'Slett'}
           </Button>
-        </>
-      }
-      fullWidth
-      variant='outlined'>
-      Slett{isAdmin ? '' : ' din'} konto
-    </VerifyDialog>
+        </form>
+      </Form>
+    </ResponsiveDialog>
   );
 };
 

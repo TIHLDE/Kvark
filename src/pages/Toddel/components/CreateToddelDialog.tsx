@@ -1,96 +1,156 @@
-import AddIcon from '@mui/icons-material/AddRounded';
-import { formatISO9075, parseISO } from 'date-fns';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format, formatISO9075, parseISO } from 'date-fns';
+import { nb } from 'date-fns/locale';
+import { cn } from 'lib/utils';
+import { CalendarIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { ToddelMutate } from 'types';
-
-import { useSnackbar } from 'hooks/Snackbar';
 import { useCreateToddel } from 'hooks/Toddel';
 
-import DatePicker from 'components/inputs/DatePicker';
-import SubmitButton from 'components/inputs/SubmitButton';
-import TextField from 'components/inputs/TextField';
-import { FormFileUpload, ImageUpload } from 'components/inputs/Upload';
-import { BannerButton } from 'components/layout/Banner';
-import Dialog from 'components/layout/Dialog';
+import { FormFileUpload, FormImageUpload } from 'components/inputs/Upload';
+import { Button } from 'components/ui/button';
+import { Calendar } from 'components/ui/calendar';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
+
+const formSchema = z.object({
+  edition: z.number().min(1, { message: 'Feltet er påkrevd' }),
+  title: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  published_at: z.date({
+    required_error: 'Dato er påkrevd',
+  }),
+  image: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  pdf: z.string().min(1, { message: 'Feltet er påkrevd' }),
+});
 
 const CreateToddelDialog = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const createToddel = useCreateToddel();
-  const showSnackbar = useSnackbar();
-  const { register, formState, handleSubmit, control, setValue, watch, reset } = useForm<ToddelMutate>();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      edition: 0,
+      title: '',
+      published_at: new Date(),
+      image: '',
+      pdf: '',
+    },
+  });
 
-  const submit = (data: ToddelMutate) =>
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     createToddel.mutate(
       {
-        ...data,
-        published_at: formatISO9075(typeof data.published_at === 'string' ? parseISO(data.published_at) : (data.published_at as unknown as Date), {
+        ...values,
+        published_at: formatISO9075(typeof values.published_at === 'string' ? parseISO(values.published_at) : (values.published_at as unknown as Date), {
           representation: 'date',
         }),
       },
       {
         onSuccess: () => {
-          showSnackbar('Publikasjonen ble opprettet', 'success');
+          toast.success('Publikasjonen ble opprettet');
           setDialogOpen(false);
-          reset();
+          form.reset();
         },
-        onError: (e) => showSnackbar(e.detail, 'error'),
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
     );
+  };
+
+  const CreateButton = (
+    <Button>
+      <Plus className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px] mr-2' />
+      Publiser
+    </Button>
+  );
 
   return (
-    <>
-      <BannerButton onClick={() => setDialogOpen(true)} startIcon={<AddIcon />} variant='outlined'>
-        Ny publikasjon
-      </BannerButton>
-      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen} titleText='Ny publikasjon'>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField
-            formState={formState}
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ inputMode: 'numeric' }}
-            label='Utgave'
-            {...register('edition', {
-              pattern: { value: RegExp(/^[0-9]*$/), message: 'Skriv inn et heltall som 0 eller høyere' },
-              valueAsNumber: true,
-              min: { value: 0, message: 'Utgaven må være over 0' },
-              required: 'Du må gi publikasjonen et utgave-nummer',
-            })}
-            required
-          />
-          <TextField formState={formState} label='Tittel' {...register('title', { required: 'Gi publikasjonen en tittel' })} required />
-          <DatePicker
-            control={control}
-            formState={formState}
-            fullWidth
-            label='Utgivelsesdato'
-            name='published_at'
-            required
-            rules={{ required: 'En utgivelsesdato er påkrevd' }}
-            type='date'
-          />
-          <ImageUpload
-            formState={formState}
-            label='Velg bilde *'
-            paperProps={{ sx: { mb: 2, mt: 1 } }}
-            register={register('image', { required: 'Gi publikasjonen et visningsbilde til nettsiden' })}
-            setValue={setValue}
-            watch={watch}
-          />
-          <FormFileUpload
-            accept='application/pdf'
-            formState={formState}
-            label='Velg publikasjon (pdf) *'
-            paperProps={{ sx: { mb: 2 } }}
-            register={register('pdf', { required: 'Du må laste opp publikasjonen (pdf)' })}
-            setValue={setValue}
-            watch={watch}
-          />
-          <SubmitButton formState={formState}>Opprett publikasjon</SubmitButton>
-        </form>
-      </Dialog>
-    </>
+    <ResponsiveDialog description='Opprett en ny utgave' onOpenChange={setDialogOpen} open={dialogOpen} title='Opprett ny publikasjon' trigger={CreateButton}>
+      <ScrollArea className='h-[70vh]'>
+        <Form {...form}>
+          <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name='edition'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Utgave <span className='text-red-300'>*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv nummer her...' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} type='number' />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='title'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Tittel <span className='text-red-300'>*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Skriv her...' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='published_at'
+              render={({ field }) => (
+                <FormItem className='flex flex-col'>
+                  <FormLabel>
+                    Publiseringsdato <span className='text-red-300'>*</span>
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')} variant='outline'>
+                          {field.value ? format(field.value, 'PPP', { locale: nb }) : <span>Pick a date</span>}
+                          <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent align='start' className='w-auto p-0'>
+                      <Calendar
+                        disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                        initialFocus
+                        mode='single'
+                        onSelect={field.onChange}
+                        selected={field.value}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormImageUpload form={form} label='Velg bilde *' name='image' />
+
+            <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
+
+            <Button className='w-full' disabled={createToddel.isLoading} type='submit'>
+              {createToddel.isLoading ? 'Oppretter...' : 'Opprett'}
+            </Button>
+          </form>
+        </Form>
+      </ScrollArea>
+    </ResponsiveDialog>
   );
 };
 

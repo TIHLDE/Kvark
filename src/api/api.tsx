@@ -8,6 +8,7 @@ import {
   Category,
   Cheatsheet,
   CompaniesEmail,
+  CreateQRCode,
   Event,
   EventFavorite,
   EventList,
@@ -59,6 +60,8 @@ import {
   StrikeList,
   Submission,
   User,
+  UserBio,
+  UserBioCreate,
   UserCreate,
   UserNotificationSetting,
   UserNotificationSettingChoice,
@@ -108,6 +111,8 @@ export const WARNINGS_ENDPOINT = 'warnings';
 export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
 export const WRAPPED_ENDPOINT = 'wrapped';
+export const BIO_ENDPOINT = 'user-bios/';
+export const FEIDE_ENDPOINT = 'feide/';
 
 export default {
   // Auth
@@ -237,6 +242,9 @@ export default {
   exportUserData: () => IFetch<RequestResponse>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/data/` }),
   deleteUser: (userId?: User['user_id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
 
+  // Feide
+  feideAuthenticate: (code: string) => IFetch<RequestResponse>({ method: 'POST', url: FEIDE_ENDPOINT, data: { code }, withAuth: false }),
+
   // Notifications
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),
   updateNotification: (id: number, item: { read: boolean }) =>
@@ -249,7 +257,7 @@ export default {
 
   // QR codes
   getQRCodes: (filters?: any) => IFetch<Array<QRCode>>({ method: 'GET', url: `${QR_CODE_ENDPOINT}/`, data: filters || {} }),
-  createQRCode: (item: QRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
+  createQRCode: (item: CreateQRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
   deleteQRCode: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${QR_CODE_ENDPOINT}/${String(id)}/` }),
 
   // Gallery
@@ -390,4 +398,10 @@ export default {
 
   // Wrapped
   getWrappedStats: (year: number) => IFetch<WrappedStats>({ method: 'GET', url: `${WRAPPED_ENDPOINT}/stats/${year}/` }),
+
+  // User bio
+  createUserBio: (data: UserBioCreate) => IFetch<UserBio>({ method: 'POST', url: `${BIO_ENDPOINT}`, data }),
+  updateUserBio: (id: UserBio['id'], data: Partial<UserBio>) => IFetch<UserBio>({ method: 'PUT', url: `${BIO_ENDPOINT}${id}/`, data }),
+  deleteUserBio: (id: UserBio['id']) => IFetch<UserBio>({ method: 'DELETE', url: `${BIO_ENDPOINT}${id}/` }),
+  getUserBio: (id: UserBio['id'] | null) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}${id}/` }),
 };

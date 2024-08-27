@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,8 +32,10 @@ const NewsDetails = () => {
   }
 
   return (
-    <Page maxWidth={false} options={{ title: data ? data.title : 'Laster nyhet...' }}>
+    <Page>
       {data && (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <Helmet>
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
@@ -42,7 +43,7 @@ const NewsDetails = () => {
           <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
         </Helmet>
       )}
-      <Box sx={{ pb: 2 }}>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</Box>
+      <div className='pb-4'>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>
     </Page>
   );
 };

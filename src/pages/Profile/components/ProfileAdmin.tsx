@@ -1,14 +1,4 @@
-import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
-import NewsIcon from '@mui/icons-material/DescriptionRounded';
-import GroupsIcon from '@mui/icons-material/GroupRounded';
-import InfoIcon from '@mui/icons-material/InfoRounded';
-import UsersIcon from '@mui/icons-material/PermIdentityRounded';
-import EventIcon from '@mui/icons-material/TodayRounded';
-import JobPostIcon from '@mui/icons-material/WorkOutlineRounded';
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
-import { makeStyles } from 'makeStyles';
-import { ComponentType } from 'react';
+import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, LucideIcon, Newspaper, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -16,93 +6,82 @@ import { PermissionApp } from 'types/Enums';
 
 import { HavePermission } from 'hooks/User';
 
-import { FileUpload } from 'components/inputs/Upload';
-import Paper from 'components/layout/Paper';
-
-const useStyles = makeStyles()((theme) => ({
-  list: {
-    display: 'grid',
-    gridGap: theme.spacing(1),
-  },
-  avatar: {
-    background: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
-  },
-}));
+import { Card, CardContent } from 'components/ui/card';
 
 const Admin = () => {
-  const { classes } = useStyles();
-
   type CardProps = {
     apps: PermissionApp[];
     to: string;
     primary: string;
     secondary: string;
-    icon: ComponentType;
+    icon: LucideIcon;
   };
 
-  const Card = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
+  const AdminCard = ({ apps, icon: Icon, to, primary, secondary }: CardProps) => (
     <HavePermission apps={apps}>
-      <Paper noOverflow noPadding>
-        <ListItem button component={Link} to={to}>
-          <ListItemAvatar>
-            <Avatar className={classes.avatar}>
-              <Icon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={primary} secondary={secondary} />
-          <ArrowIcon />
-        </ListItem>
-      </Paper>
+      <Card className='hover:bg-secondary'>
+        <CardContent className='p-0'>
+          <Link className='flex items-center justify-between p-2 w-full' to={to}>
+            <div className='flex items-center space-x-4'>
+              <Icon className='w-5 h-5 stroke-[1.5px]' />
+              <div>
+                <h1>{primary}</h1>
+                <h1 className='text-sm'>{secondary}</h1>
+              </div>
+            </div>
+            <ChevronRightIcon className='stroke-[1.5px]' />
+          </Link>
+        </CardContent>
+      </Card>
     </HavePermission>
   );
 
   const cards: Array<CardProps> = [
     {
       apps: [PermissionApp.EVENT],
-      icon: EventIcon,
+      icon: Calendar,
       to: URLS.eventAdmin,
       primary: 'Arrangementer',
       secondary: 'Opprett, endre og slett arrangementer',
     },
     {
       apps: [PermissionApp.GROUP],
-      icon: GroupsIcon,
+      icon: Boxes,
       to: URLS.groups.index,
       primary: 'Grupper',
       secondary: 'Se og endre grupper',
     },
     {
       apps: [PermissionApp.JOBPOST],
-      icon: JobPostIcon,
+      icon: BriefcaseBusiness,
       to: URLS.jobpostsAdmin,
       primary: 'Jobbannonser',
       secondary: 'Opprett, endre og slett jobbannonser',
     },
     {
       apps: [PermissionApp.USER],
-      icon: UsersIcon,
+      icon: Users,
       to: URLS.userAdmin,
       primary: 'Medlemmer',
       secondary: 'Aktiver, rediger og søk etter medlemmer',
     },
     {
       apps: [PermissionApp.NEWS],
-      icon: NewsIcon,
+      icon: Newspaper,
       to: URLS.newsAdmin,
       primary: 'Nyheter',
       secondary: 'Opprett, endre og slett nyheter',
     },
     {
       apps: [PermissionApp.STRIKE],
-      icon: WorkspacesIcon,
+      icon: Grip,
       to: URLS.strikeAdmin,
       primary: 'Prikker',
       secondary: 'Se og slett prikker',
     },
     {
       apps: [PermissionApp.BANNERS],
-      icon: InfoIcon,
+      icon: Info,
       to: URLS.bannerAdmin,
       primary: 'Bannere',
       secondary: 'Opprett, endre og slett bannere',
@@ -110,18 +89,11 @@ const Admin = () => {
   ];
 
   return (
-    <List className={classes.list} disablePadding>
+    <ul className='space-y-2'>
       {cards.map((card, i) => (
-        <Card key={i} {...card} />
+        <AdminCard key={i} {...card} />
       ))}
-      <Paper className={classes.list}>
-        <Typography variant='h3'>Filopplastning</Typography>
-        <Typography variant='subtitle2'>
-          Last opp filer og få en link du kan dele med andre. Bruk <Link to={URLS.shortLinks}>link-forkorteren</Link> hvis du vil ha enda kortere linker.
-        </Typography>
-        <FileUpload />
-      </Paper>
-    </List>
+    </ul>
   );
 };
 
