@@ -61,6 +61,7 @@ export enum PermissionApp {
   TODDEL = 'toddel',
   BANNERS = 'banner',
   GROUPFORM = 'groupform',
+  COMMENT = 'comment',
 }
 
 export enum Groups {

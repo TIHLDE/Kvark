@@ -13,3 +13,4 @@ export * from 'types/Toddel';
 export * from 'types/Wiki';
 export * from 'types/Order';
 export * from 'types/UserBio';
+export * from 'types/Comment';

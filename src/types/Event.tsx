@@ -52,6 +52,7 @@ export type Event = {
   contact_person: User | null;
   emojis_allowed: boolean;
   reactions: Reaction[];
+  comments: Comment[];
 };
 
 export type EventMutate = Partial<Omit<Event, 'organizer' | 'priority_pools'>> &
