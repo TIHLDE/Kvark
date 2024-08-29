@@ -13,6 +13,8 @@
 ## Neste versjon
 
 - 🦟 **Deltakerliste**. Fikset en bug som gjorde at admins ikke kan se arrangementdeltakerenes allergier.
+- 🦟 **Reaksjoner**. Fikset en bug som gjorde at man ikke kunne scrolle for å se alle reaksjoner.
+- 🦟 **Karriere**. Fikset mobil layout for jobbannonser.
 
 ## Versjon 2024.17.08
 
