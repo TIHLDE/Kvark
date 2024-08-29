@@ -125,6 +125,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             <div className='text-sm space-y-1'>
               <h1>Epost: {registration.user_info.email}</h1>
               <h1>Påmeldt: {formatDate(parseISO(registration.created_at))}</h1>
+              <h1>Allergier: {registration.user_info.allergy.length > 0 ? registration.user_info.allergy : 'Ingen allergier'}</h1>
             </div>
 
             {!registration.is_on_wait && (
