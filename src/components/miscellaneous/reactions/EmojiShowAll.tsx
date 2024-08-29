@@ -72,7 +72,7 @@ export const EmojiShowAll = (data: ContentType) => {
                   ?.filter((reaction) => reaction.emoji === reactionTab.value)
                   .map((reaction, index) => (
                     <ReactionListItem key={index} {...reaction} />
-                ))}
+                  ))}
               </div>
             </ScrollArea>
           </TabsContent>
