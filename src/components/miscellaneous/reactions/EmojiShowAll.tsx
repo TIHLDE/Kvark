@@ -56,17 +56,25 @@ export const EmojiShowAll = (data: ContentType) => {
           <ScrollBar orientation='horizontal' />
         </ScrollArea>
         <TabsContent value='all'>
-          {data?.reactions?.map((reaction, index) => (
-            <ReactionListItem key={index} {...reaction} />
-          ))}
+          <ScrollArea className='w-full h-[60vh] pr-4'>
+            <div className='space-y-2'>
+              {data?.reactions?.map((reaction, index) => (
+                <ReactionListItem key={index} {...reaction} />
+              ))}
+            </div>
+          </ScrollArea>
         </TabsContent>
         {tabs.slice(1).map((reactionTab, index) => (
           <TabsContent className='space-y-2' key={index} value={reactionTab.value}>
-            {data?.reactions
-              ?.filter((reaction) => reaction.emoji === reactionTab.value)
-              .map((reaction, index) => (
-                <ReactionListItem key={index} {...reaction} />
-              ))}
+            <ScrollArea className='w-full h-[60vh] pr-4'>
+              <div className='space-y-2'>
+                {data?.reactions
+                  ?.filter((reaction) => reaction.emoji === reactionTab.value)
+                  .map((reaction, index) => (
+                    <ReactionListItem key={index} {...reaction} />
+                ))}
+              </div>
+            </ScrollArea>
           </TabsContent>
         ))}
       </Tabs>
