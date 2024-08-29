@@ -18,7 +18,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
 
     <div>
       <div className='px-6'>
-        <h1 className='text-xl font-bold whitespace-nowrap text-ellipsis overflow-hidden'>{jobPost.title}</h1>
+        <h1 className='md:text-xl font-bold'>{jobPost.title}</h1>
         <p className='text-muted-foreground text-sm'>
           {jobPost.company} • {jobPost.location}
         </p>
