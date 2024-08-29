@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2024.08.29
 
 - 🦟 **Deltakerliste**. Fikset en bug som gjorde at admins ikke kan se arrangementdeltakerenes allergier.
 
