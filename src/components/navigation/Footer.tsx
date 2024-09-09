@@ -24,7 +24,7 @@ const Footer = () => {
     { img: TWITTER, link: 'https://twitter.com/tihlde' },
     { img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
     { img: SLACK, link: 'https://tihlde.slack.com' },
-    { img: DISCORD, link: 'https://discord.gg/SZR9vTS' },
+    { img: DISCORD, link: 'https://discord.gg/HNt5XQdyxy' },
   ];
 
   const attributes = [

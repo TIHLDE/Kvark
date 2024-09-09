@@ -6,7 +6,7 @@ import { User } from 'types';
 import { useExportUserData, useForgotPassword } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import UserNotificationSettings, { ConnectWithSlack } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
+import UserNotificationSettings, { ConnectWithDiscord } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
 import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
 
@@ -45,7 +45,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
 
   return (
     <div className='space-y-2'>
-      <ConnectWithSlack />
+      <ConnectWithDiscord />
       <Expandable
         className='dark:bg-card'
         description='Bestem hvor du ønsker å motta ulike typer varsler'
