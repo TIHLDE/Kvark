@@ -118,7 +118,7 @@ const Profile = () => {
                 {user.bio && (
                   <div className='space-y-2'>
                     <Separator />
-                    <p className='text-sm md:text-md'>{user.bio.description}</p>
+                    <p className='text-sm md:text-md break-all'>{user.bio.description}</p>
                     <div className='flex items-center space-x-1'>
                       {user.bio.gitHub_link && (
                         <Button asChild className='text-black dark:text-white' size='icon' variant='outline'>

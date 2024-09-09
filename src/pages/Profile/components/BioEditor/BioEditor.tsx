@@ -61,6 +61,10 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
     },
   });
 
+  const description = form.watch('description') || '';
+
+  const charactersLeft = 500 - description.length;
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!userBio) {
       createUserBio.mutate(values, {
@@ -88,7 +92,7 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   return (
     <Form {...form}>
       <form className='space-y-6 px-4 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormTextarea description='En kort beskrivelse av deg.' form={form} label='Beskrivelse' name='description' />
+      <FormTextarea description={`Tegn igjen = ${charactersLeft}`} form={form} label='Beskrivelse' maxLength={500} name='description' />
 
         <FormInput description='Din GitHub profil.' form={form} label='GitHub' name='gitHub_link' />
 
