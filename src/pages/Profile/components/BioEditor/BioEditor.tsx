@@ -24,23 +24,29 @@ const formSchema = z.object({
   gitHub_link: z
     .string()
     .url({
-      message: 'Ugyldig URL',
+      message: 'URL må starte med "https://github.com/"',
     })
     .max(300, {
       message: 'Maks 300 tegn',
     })
     .optional()
-    .or(z.literal('')),
+    .or(z.literal(''))
+    .refine((url: string | undefined) => !url || url.startsWith('https://github.com/'), {
+      message: 'URL må starte med "https://github.com/"',
+    }),
   linkedIn_link: z
     .string()
     .url({
-      message: 'Ugyldig URL',
+      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
     })
     .max(300, {
       message: 'Maks 300 tegn',
     })
     .optional()
-    .or(z.literal('')),
+    .or(z.literal(''))
+    .refine((url: string | undefined) => !url || url.startsWith('https://linkedin.com/') || url.startsWith('https://no.linkedin.com/'), {
+      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
+    }),
 });
 
 export type UserBioProps = {
@@ -60,6 +66,10 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
       linkedIn_link: userBio ? userBio.linkedIn_link : '',
     },
   });
+
+  const description = form.watch('description') || '';
+
+  const charactersLeft = 500 - description.length;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!userBio) {
@@ -88,7 +98,7 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   return (
     <Form {...form}>
       <form className='space-y-6 px-4 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormTextarea description='En kort beskrivelse av deg.' form={form} label='Beskrivelse' name='description' />
+        <FormTextarea description={`Tegn igjen: ${charactersLeft}`} form={form} label='Beskrivelse' maxLength={500} name='description' />
 
         <FormInput description='Din GitHub profil.' form={form} label='GitHub' name='gitHub_link' />
 
