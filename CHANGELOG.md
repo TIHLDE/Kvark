@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+
+## Versjon 2024.12.09
+
 - 🎨 **Tekstboks**. La til maks antall bokstaver på tekstboks.
 - 🎨 **Discord**. Endret Discord invite lenke i footer og på profil.
 - 🦟 **Deltakerliste**. Fikset en bug som gjorde at admins ikke kan se arrangementdeltakerenes allergier.
