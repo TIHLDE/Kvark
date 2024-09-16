@@ -22,6 +22,7 @@ const BadgeDetails = () => {
   return (
     <Page className='mx-auto max-w-5xl'>
       <Card>
+        <CardContent className='pt-6'>
         <div className='flex items-center space-x-2'>
           {badge?.image && <img alt={badge.title} className='object-contain w-16 h-16 md:w-20 md:h-20' src={badge.image} />}
           <CardHeader>
@@ -33,7 +34,6 @@ const BadgeDetails = () => {
             </CardDescription>
           </CardHeader>
         </div>
-        <CardContent className='pt-6'>
           {!isLoading && !leaderboardEntries.length && <NotFoundIndicator header='Ingen har mottatt dette badget enda' />}
           {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
           {data !== undefined && (
