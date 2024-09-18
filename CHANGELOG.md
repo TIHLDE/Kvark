@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- 🦟 **Safari zoom**. En bug der safari på mobil zoomer inn på input er nå fikset.
 
 ## Versjon 2024.12.09
 
