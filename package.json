@@ -86,7 +86,7 @@
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.0",
     "@types/node": "^20.6.3",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@types/react-helmet": "^6.1.2",
     "@types/react-qr-reader": "^2.1.4",
