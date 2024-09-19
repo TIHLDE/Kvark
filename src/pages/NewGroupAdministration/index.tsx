@@ -1,4 +1,5 @@
 
+
 import { Input } from "components/ui/input";
 import { Select, SelectItem, SelectTrigger, SelectContent } from "components/ui/select";
 import { FormLabel,  FormItem, Form,  } from "components/ui/form";
@@ -6,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "components/ui/button";
 
 export default function NewGroupAdministration() {
-    const form = useForm();
+  const form = useForm();
 
   return <div className="max-w-5xl mx-auto pt-24 flex flex-col gap-2 px-2">
     <h1 className="text-4xl font-bold">Opprett ny gruppe</h1>
