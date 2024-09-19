@@ -1,4 +1,4 @@
-import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, LucideIcon, Newspaper, Users } from 'lucide-react';
+import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, LucideIcon, Newspaper, Plus, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -85,6 +85,13 @@ const Admin = () => {
       to: URLS.bannerAdmin,
       primary: 'Bannere',
       secondary: 'Opprett, endre og slett bannere',
+    },
+    {
+      apps: [PermissionApp.GROUP],
+      icon: Plus,
+      to: URLS.newGroupAdmin,
+      primary: 'Ny gruppe',
+      secondary: 'Legg til en ny gruppe',
     },
   ];
 

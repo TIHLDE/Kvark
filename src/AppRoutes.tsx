@@ -158,8 +158,8 @@ const AppRoutes = () => {
         <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
           <Route element={<InfoBannerAdmin />} />
         </Route>
-        <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<NewGroupAdministration />} />} path={URLS.newGroupAdmin} />
-        
+        <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<NewGroupAdministration />} />} path={URLS.newGroupAdmin} />
+
         <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
         </Route>
