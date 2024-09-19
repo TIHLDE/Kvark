@@ -38,6 +38,7 @@ const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/Badge
 const Cheatsheet = lazy(() => import('pages/Cheatsheet'));
 const EventAdministration = lazy(() => import('pages/EventAdministration'));
 const EventRegistration = lazy(() => import('pages/EventRegistration'));
+const NewGroupAdministration = lazy(() => import('pages/NewGroupAdministration'));
 const ForgotPassword = lazy(() => import('pages/ForgotPassword'));
 const Form = lazy(() => import('pages/Form'));
 const FormAdmin = lazy(() => import('pages/Form/FormAdmin'));
@@ -154,10 +155,11 @@ const AppRoutes = () => {
         <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
         <Route element={<AuthRoute element={<QRCodes />} />} path={URLS.qrCodes} />
         <Route element={<AuthRoute element={<Admissions />} />} path={URLS.admissions} />
-
         <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
           <Route element={<InfoBannerAdmin />} />
         </Route>
+        <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<NewGroupAdministration />} />} path={URLS.newGroupAdmin} />
+        
         <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
           <Route element={<JobPostAdministration />} path=':jobPostId/' />
         </Route>

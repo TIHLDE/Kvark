@@ -21,6 +21,9 @@ export type EventStatisticsProps = {
 const EventStatistics = ({ eventId }: EventStatisticsProps) => {
   const { data } = useEventStatistics(eventId);
 
+  console.log(data);
+  console.log('data');
+
   if (!data) {
     return null;
   }
