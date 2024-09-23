@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy, Info } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -36,23 +36,21 @@ const formSchema = z.object({
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState<boolean>(false);
-  const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
+  const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
+    is_on_wait: onWait,
+    has_attended: showOnlyNotAttended,
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { names: false, emails: false },
   });
 
-  const registrations = useMemo(
-    () =>
-      data
-        ? data.pages
-            .map((page) => page.results)
-            .flat()
-            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
-        : [],
-    [data, showOnlyNotAttended],
-  );
+  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [showOnlyNotAttended]);
 
   let sortedRegistrations = registrations;
 
