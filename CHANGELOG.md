@@ -12,6 +12,14 @@
 
 ## Neste versjon
 
+## Versjon 2024.18.09
+
+- 🦟 **Safari zoom**. En bug der safari på mobil zoomer inn på input er nå fikset.
+
+## Versjon 2024.12.09
+
+- 🎨 **Tekstboks**. La til maks antall bokstaver på tekstboks.
+- 🎨 **Discord**. Endret Discord invite lenke i footer og på profil.
 - 🦟 **Deltakerliste**. Fikset en bug som gjorde at admins ikke kan se arrangementdeltakerenes allergier.
 - 🦟 **Reaksjoner**. Fikset en bug som gjorde at man ikke kunne scrolle for å se alle reaksjoner.
 - 🦟 **Karriere**. Fikset mobil layout for jobbannonser.
