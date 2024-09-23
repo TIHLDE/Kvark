@@ -193,7 +193,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <>
             <ResponsiveAlertDialog
               action={signOff}
-              description='Om du melder deg av arrangementet vil du miste plassen din og eventuelt havne på venteliste om det er en. Du vil også få 1 prikk for å melde deg av etter avmeldingsfristen.'
+              description='Om du melder deg av arrangementet vil du miste plassen din og eventuelt havne på venteliste om det er en. Dersom du melder deg av etter avmeldingsfristen vil du også få 1 prikk.'
               title='Meld deg av arrangementet'
               trigger={
                 <Button className='w-full' variant='destructive'>
