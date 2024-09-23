@@ -38,7 +38,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
   const [showOnlyNotAttended, setShowOnlyNotAttended] = useState<boolean>(false);
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
-    has_attended: showOnlyNotAttended,
+    has_attended: !showOnlyNotAttended,
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
