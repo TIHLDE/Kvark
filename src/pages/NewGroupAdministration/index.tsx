@@ -1,26 +1,30 @@
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from 'components/ui/button';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
 const schema = z.object({
   groupName: z.string().min(1, 'Gruppenavn er påkrevd'),
   slug: z.string().min(1, 'Slug er påkrevd'),
-  groupType: z.enum(['board', 'subGroup', 'committee', 'interestGroup'], { message: 'Gruppetype er påkrevd' })
+  groupType: z.enum(['board', 'subGroup', 'committee', 'interestGroup'], { message: 'Gruppetype er påkrevd' }),
 });
 
 export default function NewGroupAdministration() {
-  const form = useForm({
-    resolver: zodResolver(schema)
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
   });
 
-  const { register, handleSubmit, formState: { errors } } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: z.infer<typeof schema>) => {
     console.log(data);
   };
 
@@ -45,11 +49,11 @@ export default function NewGroupAdministration() {
           </FormItem>
           <FormField
             control={form.control}
-            name="groupType"
+            name='groupType'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Gruppetype</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select defaultValue={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger className='text-muted-foreground'>
                       <SelectValue placeholder='Velg gruppetype...' />
@@ -67,7 +71,9 @@ export default function NewGroupAdministration() {
             )}
           />
           <FormItem className='mt-5'>
-              <Button variant='default' type='submit'>Opprett Gruppe</Button>
+            <Button type='submit' variant='default'>
+              Opprett Gruppe
+            </Button>
           </FormItem>
         </form>
       </Form>
