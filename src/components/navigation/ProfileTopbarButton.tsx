@@ -1,4 +1,4 @@
-import { UserRoundIcon } from 'lucide-react';
+import { Bug, BugIcon, UserRoundIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
@@ -19,7 +19,14 @@ const ProfileTopbarButton = () => {
 
   return (
     <div className='flex items-center space-x-4'>
-      {Boolean(user) && <TopbarNotifications />}
+      {Boolean(user) && (
+        <>
+          <TopbarNotifications />
+          <Link to={URLS.feedback}>
+            <Bug className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[2px]' />
+          </Link>
+        </>
+      )}
       <ThemeSettings />
       {user ? (
         <Link onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>

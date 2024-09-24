@@ -1,0 +1,164 @@
+{
+    "id": 861,
+    "title": "Bedpres med Accenture",
+    "start_date": "2024-09-24T17:15:00+02:00",
+    "end_date": "2024-09-24T20:00:00+02:00",
+    "location": "Krambugata 12, 7010 Trondheim",
+    "description": "## Hei, dannede EDBer! 👋  \n\n&nbsp;  \n&nbsp;  \n\n**Accenture, kanskje Norges triveligste arbeidsplass, inviterer deg til bedpres på Krambua!**\n\n&nbsp;  \n&nbsp;  \n\n📆 **Dato:** Tirsdag 24. september  &nbsp;   \n🕒 **Tid:** 17:15  &nbsp;  \n📍 **Sted:** Krambua (Krambugata 12, 7010 Trondheim) \n\n&nbsp;  \n&nbsp;  \n\nHva som venter deg: &nbsp;  \n🔍 **Hvem er vi?:** Bli kjent med Accenture og dine muligheter som student eller ferdig utdannet hos oss!  \n\n&nbsp;  \n&nbsp;  \n\n🍜 **Mat og drikke:** Etter presentasjon blir det digg mat og drikke.   \n\n&nbsp;  \n&nbsp;  \n\n👥 **Fyr løs:** Still alle spørsmålene du brenner inne med, og finn ut om Accenture er stedet for deg 😊  \n\n&nbsp;  \n&nbsp;  \n\nLevd under en stein og aldri hørt om oss? Vel, Accenture er et av verdens største konsulentselskaper. Vi har ca. 700,000 ansatte globalt, og drøyt 1 000 ansatte i Norge. Vi jobber med å løse utfordringene til de største selskapene i landet, og bidrar med samfunnsnyttige løsninger til både det offentlige og private næringsliv. Vi leverer tjenester innen rådgivning, design, innovasjon, teknologi og strategi, og tar vårt samfunnsansvar på alvor.  \n\n&nbsp;  \n&nbsp;  \n\n**Håper vi sees!**",
+    "sign_up": true,
+    "category": {
+        "id": 11,
+        "text": "Bedpres"
+    },
+    "expired": false,
+    "limit": 30,
+    "closed": false,
+    "list_count": 30,
+    "waiting_list_count": 58,
+    "organizer": {
+        "name": "Næringsliv og Kurs",
+        "slug": "nok",
+        "type": "SUBGROUP",
+        "viewer_is_member": false,
+        "image": "https://leptonstoragepro.blob.core.windows.net/imagepng/98245368-6414-4028-b774-82cde7750d06NoK.png",
+        "image_alt": null,
+        "fines_activated": true
+    },
+    "image": "https://leptonstoragepro.blob.core.windows.net/imagejpeg/34c6ecfd-ccc2-4d05-be2d-7ee587ed3831Accenture.jpg",
+    "image_alt": "",
+    "start_registration_at": "2024-09-17T12:00:00+02:00",
+    "end_registration_at": "2024-09-24T11:00:00+02:00",
+    "sign_off_deadline": "2024-09-23T12:00:00+02:00",
+    "only_allow_prioritized": false,
+    "evaluation": "f8814622-8f77-475a-ae2e-4f12a9da3cf9",
+    "survey": null,
+    "updated_at": "2024-09-17T12:32:43.742803+02:00",
+    "can_cause_strikes": true,
+    "enforces_previous_strikes": true,
+    "permissions": {
+        "write": true,
+        "read": true
+    },
+    "priority_pools": [
+        {
+            "groups": [
+                {
+                    "name": "2022",
+                    "slug": "2022",
+                    "type": "STUDYYEAR",
+                    "viewer_is_member": false,
+                    "image": null,
+                    "image_alt": null,
+                    "fines_activated": false
+                }
+            ]
+        },
+        {
+            "groups": [
+                {
+                    "name": "2021",
+                    "slug": "2021",
+                    "type": "STUDYYEAR",
+                    "viewer_is_member": false,
+                    "image": null,
+                    "image_alt": null,
+                    "fines_activated": false
+                }
+            ]
+        },
+        {
+            "groups": [
+                {
+                    "name": "2020",
+                    "slug": "2020",
+                    "type": "STUDYYEAR",
+                    "viewer_is_member": false,
+                    "image": null,
+                    "image_alt": null,
+                    "fines_activated": false
+                }
+            ]
+        }
+    ],
+    "paid_information": null,
+    "is_paid_event": false,
+    "contact_person": {
+        "user_id": "betinakl",
+        "first_name": "Betina",
+        "last_name": "Knapskog Linge",
+        "image": "",
+        "email": "betinalinge@gmail.com",
+        "gender": 2,
+        "study": {
+            "group": {
+                "name": "Digital forretningsutvikling",
+                "slug": "digital-forretningsutvikling",
+                "type": "STUDY",
+                "viewer_is_member": false,
+                "image": null,
+                "image_alt": null,
+                "fines_activated": false
+            },
+            "membership_type": "MEMBER",
+            "created_at": "2023-08-15T12:27:26.731673+02:00",
+            "expiration_date": null
+        },
+        "studyyear": {
+            "group": {
+                "name": "2023",
+                "slug": "2023",
+                "type": "STUDYYEAR",
+                "viewer_is_member": false,
+                "image": null,
+                "image_alt": null,
+                "fines_activated": false
+            },
+            "membership_type": "MEMBER",
+            "created_at": "2023-08-15T12:27:26.762926+02:00",
+            "expiration_date": null
+        }
+    },
+    "reactions": [
+        {
+            "reaction_id": 1391,
+            "user": {
+                "user_id": "siversei",
+                "first_name": "Sivert",
+                "last_name": "Eikrem",
+                "image": "https://tihldestorage.blob.core.windows.net/imagejpeg/5a6249b2-ffd2-47fd-b98c-7114f1565fc7Sivert-ferdig.jpg"
+            },
+            "emoji": "🫡"
+        },
+        {
+            "reaction_id": 1393,
+            "user": {
+                "user_id": "zakariyi",
+                "first_name": "Zakariya",
+                "last_name": "Ibrahim",
+                "image": ""
+            },
+            "emoji": "🫡"
+        },
+        {
+            "reaction_id": 1437,
+            "user": {
+                "user_id": "antontv",
+                "first_name": "Anton",
+                "last_name": "Tveito",
+                "image": "https://tihldestorage.blob.core.windows.net/imagejpeg/af0f242a-0194-419c-9b09-6d4ff8ef98caSnapchat-622371682.jpg"
+            },
+            "emoji": "🫡"
+        },
+        {
+            "reaction_id": 1441,
+            "user": {
+                "user_id": "sindrjb",
+                "first_name": "Sindre",
+                "last_name": "Jentoft Bøe",
+                "image": ""
+            },
+            "emoji": "🫡"
+        }
+    ],
+    "emojis_allowed": true
+}

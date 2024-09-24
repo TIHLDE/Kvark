@@ -21,6 +21,7 @@ const URLS = {
     get_badge_relative: 'erverv/',
     get_badge: () => `${URLS.badges.index}${URLS.badges.get_badge_relative}`,
   },
+  feedback: '/tilbakemelding/',
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
   contactInfo: `${WIKI}${WIKI_URLS.CONTACT_US}`,

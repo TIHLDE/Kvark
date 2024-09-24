@@ -55,6 +55,7 @@ const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
 const Admissions = lazy(() => import('pages/Admissions'));
+const Feedback = lazy(() => import('pages/Feedback'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -98,6 +99,7 @@ const AppRoutes = () => {
       <Routes>
         <Route element={<Landing />} index />
         <Route element={<NewStudent />} path={URLS.newStudent} />
+        <Route element={<AuthRoute element={<Feedback />} />} path={URLS.feedback} />
         <Route path={URLS.events}>
           <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} />} path={`:id/${URLS.eventRegister}`} />
           <Route element={<EventDetails />} path=':id/*' />
