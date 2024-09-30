@@ -237,7 +237,6 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           <h1 className='text-lg font-bold'>Statistikk</h1>
 
           <EventStatistics eventId={eventId} />
-
           <Registrations eventId={eventId} />
           <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
         </div>
