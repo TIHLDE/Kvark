@@ -54,7 +54,7 @@ const EventStatistics = ({ eventId }: EventStatisticsProps) => {
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           {data.studyyears.map((studyyear) => (
             <Stat
-              active={searchParams.get('year') == studyyear.studyyear}
+              active={searchParams.get('year') === studyyear.studyyear}
               key={studyyear.studyyear}
               label={studyyear.studyyear}
               number={studyyear.amount}
