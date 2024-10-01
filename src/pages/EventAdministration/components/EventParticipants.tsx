@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy, Info } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -35,24 +35,22 @@ const formSchema = z.object({
 });
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
-  const [showOnlyNotAttended, setShowOnlyNotAttended] = useState<boolean>(false);
-  const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
+  const [showHasNotAttended, setShowHasNotAttended] = useState<boolean>(false);
+  const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
+    is_on_wait: onWait,
+    ...(showHasNotAttended ? { has_attended: false } : {}),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { names: false, emails: false },
   });
 
-  const registrations = useMemo(
-    () =>
-      data
-        ? data.pages
-            .map((page) => page.results)
-            .flat()
-            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
-        : [],
-    [data, showOnlyNotAttended],
-  );
+  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+
+  useEffect(() => {
+    refetch({});
+  }, [showHasNotAttended]);
 
   let sortedRegistrations = registrations;
 
@@ -104,7 +102,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
         </h1>
         {!onWait && (
           <div className='items-top flex space-x-2'>
-            <Checkbox checked={showOnlyNotAttended} id='terms1' onCheckedChange={(checked) => setShowOnlyNotAttended(Boolean(checked))} />
+            <Checkbox checked={showHasNotAttended} id='terms1' onCheckedChange={(checked) => setShowHasNotAttended(Boolean(checked))} />
             <div className='grid leading-none'>
               <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
                 Ikke ankommet
