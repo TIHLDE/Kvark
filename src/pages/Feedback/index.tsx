@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
+import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
 
 const fakeBugs = [
   {
@@ -38,7 +39,26 @@ const fakeBugs = [
   },
 ];
 
-const formSchema = z.object({
+const ideaFormSchema = z.object({
+  title: z
+    .string()
+    .min(2, {
+      message: 'Tittelen må være minst 2 tegn.',
+    })
+    .max(50, {
+      message: 'Tittelen kan ikke overstige 50 tegn.',
+    }),
+  description: z
+    .string()
+    .min(10, {
+      message: 'Beskrivelsen må være minst 10 tegn.',
+    })
+    .max(500, {
+      message: 'Beskrivelsen kan ikke overstige 500 tegn.',
+    }),
+});
+
+const bugFormSchema = z.object({
   title: z
     .string()
     .min(2, {
@@ -58,8 +78,16 @@ const formSchema = z.object({
 });
 
 export default function Feedback() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
+    resolver: zodResolver(ideaFormSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+    },
+  });
+
+  const bugForm = useForm<z.infer<typeof bugFormSchema>>({
+    resolver: zodResolver(bugFormSchema),
     defaultValues: {
       title: '',
       description: '',
@@ -96,8 +124,13 @@ export default function Feedback() {
       }
     });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Handle form submission
+  function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
+    // Handle idea form submission
+    console.log(values);
+  }
+
+  function onSubmitBug(values: z.infer<typeof bugFormSchema>) {
+    // Handle bug form submission
     console.log(values);
   }
 
@@ -144,14 +177,92 @@ export default function Feedback() {
           </Select>
         </div>
         <div>
-          <Button className=' ml-auto' variant='outline'>
-            <PlusIcon className='w-4 h-4' />
-            Ny Idé
-          </Button>
-          <Button className='ml-2' variant='outline'>
-            <PlusIcon className='w-4 h-4' />
-            Ny Feil
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className=' ml-auto' variant='outline'>
+                <PlusIcon className='w-4 h-4' />
+                Ny Idé
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <Form {...ideaForm}>
+                <form onSubmit={ideaForm.handleSubmit(onSubmitIdea)} className='space-y-8'>
+                  <FormField
+                    control={ideaForm.control}
+                    name='title'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tittel</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Skriv inn tittel på ideen' {...field} />
+                        </FormControl>
+                        <FormDescription>Gi en kort og konsis tittel for ideen.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={ideaForm.control}
+                    name='description'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Beskrivelse</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder='Beskriv ideen i detalj' className='resize-none' {...field} />
+                        </FormControl>
+                        <FormDescription>Gi en detaljert beskrivelse av ideen.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type='submit'>Send inn</Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className='ml-2' variant='outline'>
+                <PlusIcon className='w-4 h-4' />
+                Ny Feil
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <Form {...bugForm}>
+                <form onSubmit={bugForm.handleSubmit(onSubmitBug)} className='space-y-8'>
+                  <FormField
+                    control={bugForm.control}
+                    name='title'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tittel</FormLabel>
+                        <FormControl>
+                          <Input placeholder='Skriv inn tittel på feilen' {...field} />
+                        </FormControl>
+                        <FormDescription>Gi en kort og konsis tittel for feilen.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={bugForm.control}
+                    name='description'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Beskrivelse</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder='Beskriv feilen i detalj' className='resize-none' {...field} />
+                        </FormControl>
+                        <FormDescription>Gi en detaljert beskrivelse av feilen.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type='submit'>Send inn</Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -185,50 +296,6 @@ export default function Feedback() {
           </Collapsible>
         ))}
       </div>
-
-      {/* <div className="my-12 rounded-3xl bg-white/5 border border-white/5 p-8">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tittel</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Skriv inn tittel på feilen eller ideen" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Gi en kort og konsis tittel for feilen eller ideen.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Beskrivelse</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Beskriv feilen eller ideen i detalj"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Gi en detaljert beskrivelse av feilen eller ideen.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Send inn</Button>
-          </form>
-        </Form>
-      </div> */}
     </div>
   );
 }
