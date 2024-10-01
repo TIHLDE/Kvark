@@ -117,7 +117,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: data?.category.toString() || '',
+      category: data?.category?.toString() || '',
       description: data?.description || '',
       end_date: data?.end_date ? parseISO(data.end_date) : new Date(),
       end_registration_at: data?.end_registration_at ? parseISO(data.end_registration_at) : new Date(),
