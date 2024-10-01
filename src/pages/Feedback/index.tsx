@@ -140,7 +140,7 @@ export default function Feedback() {
       <div className='absolute top-56 right-44 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
 
       <div className='mt-44'>
-        <p className='text-xs py-0.5 px-2.5 bg-cyan-400/30 w-fit rounded-full text-cyan-400   mb-2'>Brukerinnspill</p>
+        <p className='text-xs py-0.5 px-2.5 dark:bg-cyan-600 bg-cyan-500 text-white w-fit rounded-full dark:text-cyan-300   mb-2'>Brukerinnspill</p>
         <h1 className='text-2xl md:text-6xl font-semibold max-w-3xl leading-tight'>
           Kom med nye idéer <br />
           og rapporter feil på siden
@@ -154,7 +154,7 @@ export default function Feedback() {
       <div className='mt-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-2'>
         <div className='flex flex-col md:flex-row gap-2 mb-8 md:mb-0'>
           <Select defaultValue='all' onValueChange={setFilter}>
-            <SelectTrigger className='w-[180px]'>
+            <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
             </SelectTrigger>
             <SelectContent>
@@ -165,7 +165,7 @@ export default function Feedback() {
           </Select>
 
           <Select defaultValue='newest' onValueChange={setSort}>
-            <SelectTrigger className='w-[180px]'>
+            <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Sorter' />
             </SelectTrigger>
             <SelectContent>
@@ -178,7 +178,7 @@ export default function Feedback() {
         </div>
         <div className='flex'>
           <Dialog>
-            <DialogTrigger  asChild>
+            <DialogTrigger asChild>
               <Button className=' ml-auto' variant='outline'>
                 <PlusIcon className='w-4 h-4' />
                 Ny Idé
@@ -269,7 +269,7 @@ export default function Feedback() {
       <div className='my-4 md:my-8 space-y-4'>
         {filteredAndSortedBugs.map((item) => (
           <Collapsible
-            className='w-full bg-white/[1%] border border-white/10 rounded-lg overflow-hidden'
+            className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
             key={item.id}
             onOpenChange={() => toggleItem(item.id)}
             open={openItems.includes(item.id)}>
@@ -289,9 +289,9 @@ export default function Feedback() {
                 {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
               </div>
             </CollapsibleTrigger>
-            <CollapsibleContent className='p-4 border-t border-white/10 bg-white/[2%]'>
-              <p className='text-lg text-gray-300'>{item.description}</p>
-              <p className='text-xs text-gray-400 mt-2'>Opprettet: {item.created_at.toLocaleString()}</p>
+            <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
+              <p className='text-lg text-gray-700 dark:text-gray-300'>{item.description}</p>
+              <p className='text-xs text-gray-600 dark:text-gray-400 mt-2'>Opprettet: {item.created_at.toLocaleString()}</p>
             </CollapsibleContent>
           </Collapsible>
         ))}
