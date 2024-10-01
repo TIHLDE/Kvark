@@ -141,18 +141,18 @@ export default function Feedback() {
 
       <div className='mt-44'>
         <p className='text-xs py-0.5 px-2.5 dark:bg-cyan-600 bg-cyan-500 text-white w-fit rounded-full dark:text-cyan-300   mb-2'>Brukerinnspill</p>
-        <h1 className='text-2xl md:text-6xl font-semibold max-w-3xl leading-tight'>
+        <h1 className='text-2xl sm:text-6xl font-semibold max-w-3xl leading-tight'>
           Kom med nye idéer <br />
           og rapporter feil på siden
         </h1>
       </div>
-      <p className='mt-6 text-sm md:text-2xl max-w-4xl leading-relaxed text-gray-400'>
+      <p className='mt-6 text-sm sm:text-2xl max-w-4xl leading-relaxed text-gray-400'>
         Index tester noe nytt! Vi skal la brukere komme med ideer og gi tilbakemelding på ting som fungerer dårlig eller kunne blitt gjort bedre. Alle skal også
         kunne stemme på ideer og ting som må fikses, så vi vet hvor det brenner mest.
       </p>
 
-      <div className='mt-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-2'>
-        <div className='flex flex-col md:flex-row gap-2 mb-8 md:mb-0'>
+      <div className='mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2'>
+        <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
           <Select defaultValue='all' onValueChange={setFilter}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
@@ -266,7 +266,7 @@ export default function Feedback() {
         </div>
       </div>
 
-      <div className='my-4 md:my-8 space-y-4'>
+      <div className='my-4 sm:my-8 space-y-4'>
         {filteredAndSortedBugs.map((item) => (
           <Collapsible
             className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'

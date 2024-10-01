@@ -58,6 +58,7 @@
     "react-easy-crop": "^5.0.8",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.53.0",
+    "react-joyride": "^2.9.2",
     "react-markdown": "^8.0.7",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.26.1",
