@@ -79,7 +79,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
           </div>
         )}
 
-        {isAdmin && <FormImageUpload form={form} label='Velg profilbilde' name='image' />}
+        {isAdmin && <FormImageUpload form={form} label='Velg profilbilde' name='image' ratio='1:1' />}
 
         <FormSelect
           form={form}
