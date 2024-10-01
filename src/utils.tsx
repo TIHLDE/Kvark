@@ -102,7 +102,7 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
     case UserStudy.DIGSEC:
       return 'DigSec';
     case UserStudy.DIGSAM:
-      return 'DigTrans';
+      return 'DigSam';
     case UserStudy.DRIFT:
       return 'Drift';
     case UserStudy.INFO:
