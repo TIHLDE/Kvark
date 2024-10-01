@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy, Info } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -36,9 +37,12 @@ const formSchema = z.object({
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [showHasNotAttended, setShowHasNotAttended] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
     ...(showHasNotAttended ? { has_attended: false } : {}),
+    ...(searchParams.has('year') ? { year: searchParams.get('year') } : {}),
+    ...(searchParams.has('study') ? { study: searchParams.get('study') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,8 +53,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   useEffect(() => {
-    refetch({});
-  }, [showHasNotAttended]);
+    refetch();
+  }, [showHasNotAttended, searchParams]);
 
   let sortedRegistrations = registrations;
 
@@ -217,6 +221,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
     return null;
   }
 
+  //TODO: Implement searching by first name and last name
   const needsSorting = data && data.priority_pools && data.priority_pools.length > 0;
 
   return (
