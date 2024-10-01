@@ -34,22 +34,16 @@ const ProfileTopbarButton = () => {
         <Joyride
           callback={handleJoyrideCallback}
           disableScrolling={true}
-          styles={{
-            options:
-              theme.theme === 'light'
-                ? {
-                    primaryColor: 'rgb(29, 67, 140)',
-                  }
-                : {
-                    backgroundColor: 'rgb(30, 41, 59)',
-                    arrowColor: 'rgb(30, 41, 59)',
-                    primaryColor: 'rgb(158, 192, 255)',
-                    textColor: 'rgb(12, 12, 12)',
-                  },
-          }}
-          //@ts-ignore
-          // work around for joyride not running on first render
           hideCloseButton={true}
+          locale={{
+            back: 'Tilbake',
+            next: 'Neste',
+            close: 'Lukk',
+            skip: 'Hopp over',
+            last: 'Ferdig',
+          }}
+          // @ts-expect-error work around for joyride not running on first render
+          run={() => true}
           steps={[
             {
               disableBeacon: true,
@@ -64,17 +58,19 @@ const ProfileTopbarButton = () => {
               ),
             },
           ]}
-          locale={{
-            back: 'Tilbake',
-            next: 'Neste',
-            close: 'Lukk',
-            skip: 'Hopp over',
-            last: 'Ferdig',
+          styles={{
+            options:
+              theme.theme === 'light'
+                ? {
+                    primaryColor: 'rgb(29, 67, 140)',
+                  }
+                : {
+                    backgroundColor: 'rgb(30, 41, 59)',
+                    arrowColor: 'rgb(30, 41, 59)',
+                    primaryColor: 'rgb(158, 192, 255)',
+                    textColor: 'rgb(12, 12, 12)',
+                  },
           }}
-          // this is a workaround for joyride not running on first render
-          //@ts-ignore
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          run={() => true}
         />
       )}
 
