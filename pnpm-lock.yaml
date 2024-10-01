@@ -192,8 +192,8 @@ importers:
         specifier: ^4.9.13
         version: 4.9.13(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@mui/material@6.0.2(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       universal-cookie:
-        specifier: ^6.1.3
-        version: 6.1.3
+        specifier: ^7.2.0
+        version: 7.2.0
       use-resize-observer:
         specifier: ^9.1.0
         version: 9.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3896,8 +3896,8 @@ packages:
   unist-util-visit@5.0.0:
     resolution: {integrity: sha512-MR04uvD+07cwl/yhVuVWAtw+3GOR/knlL55Nd/wAdblk27GCVt3lqpTivy/tkJcZoNPzTwS1Y+KMojlLDhoTzg==}
 
-  universal-cookie@6.1.3:
-    resolution: {integrity: sha512-AETYRrhpRgl9T1YtnODmQE32G81U3A+f3HO3ZeK7efbXqe3x+RNOW4RTpV0iff7zJWhGYJA6EI0Mm+w50aFTAw==}
+  universal-cookie@7.2.0:
+    resolution: {integrity: sha512-PvcyflJAYACJKr28HABxkGemML5vafHmiL4ICe3e+BEKXRMt0GaFLZhAwgv637kFFnnfiSJ8e6jknrKkMrU+PQ==}
 
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
@@ -8148,7 +8148,7 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit-parents: 6.0.1
 
-  universal-cookie@6.1.3:
+  universal-cookie@7.2.0:
     dependencies:
       '@types/cookie': 0.6.0
       cookie: 0.6.0
