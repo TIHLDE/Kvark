@@ -6,11 +6,11 @@ import * as z from 'zod';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
+import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
-import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
 
 const fakeBugs = [
   {
@@ -135,24 +135,24 @@ export default function Feedback() {
   }
 
   return (
-    <div className='max-w-5xl mx-auto pt-12 relative'>
+    <div className='max-w-5xl mx-auto pt-12 relative px-4'>
       <div className='absolute top-44 right-0 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
       <div className='absolute top-56 right-44 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
 
       <div className='mt-44'>
         <p className='text-xs py-0.5 px-2.5 bg-cyan-400/30 w-fit rounded-full text-cyan-400   mb-2'>Brukerinnspill</p>
-        <h1 className='text-6xl font-semibold max-w-3xl leading-tight'>
+        <h1 className='text-2xl md:text-6xl font-semibold max-w-3xl leading-tight'>
           Kom med nye idéer <br />
           og rapporter feil på siden
         </h1>
       </div>
-      <p className='mt-6 text-2xl max-w-4xl leading-relaxed text-gray-400'>
+      <p className='mt-6 text-sm md:text-2xl max-w-4xl leading-relaxed text-gray-400'>
         Index tester noe nytt! Vi skal la brukere komme med ideer og gi tilbakemelding på ting som fungerer dårlig eller kunne blitt gjort bedre. Alle skal også
         kunne stemme på ideer og ting som må fikses, så vi vet hvor det brenner mest.
       </p>
 
-      <div className='mt-8 flex justify-between items-center space-x-4'>
-        <div className='flex space-x-4'>
+      <div className='mt-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-2'>
+        <div className='flex flex-col md:flex-row gap-2 mb-8 md:mb-0'>
           <Select defaultValue='all' onValueChange={setFilter}>
             <SelectTrigger className='w-[180px]'>
               <SelectValue placeholder='Filter' />
@@ -176,9 +176,9 @@ export default function Feedback() {
             </SelectContent>
           </Select>
         </div>
-        <div>
+        <div className='flex'>
           <Dialog>
-            <DialogTrigger asChild>
+            <DialogTrigger  asChild>
               <Button className=' ml-auto' variant='outline'>
                 <PlusIcon className='w-4 h-4' />
                 Ny Idé
@@ -186,7 +186,7 @@ export default function Feedback() {
             </DialogTrigger>
             <DialogContent>
               <Form {...ideaForm}>
-                <form onSubmit={ideaForm.handleSubmit(onSubmitIdea)} className='space-y-8'>
+                <form className='space-y-8' onSubmit={ideaForm.handleSubmit(onSubmitIdea)}>
                   <FormField
                     control={ideaForm.control}
                     name='title'
@@ -208,7 +208,7 @@ export default function Feedback() {
                       <FormItem>
                         <FormLabel>Beskrivelse</FormLabel>
                         <FormControl>
-                          <Textarea placeholder='Beskriv ideen i detalj' className='resize-none' {...field} />
+                          <Textarea className='resize-none' placeholder='Beskriv ideen i detalj' {...field} />
                         </FormControl>
                         <FormDescription>Gi en detaljert beskrivelse av ideen.</FormDescription>
                         <FormMessage />
@@ -229,7 +229,7 @@ export default function Feedback() {
             </DialogTrigger>
             <DialogContent>
               <Form {...bugForm}>
-                <form onSubmit={bugForm.handleSubmit(onSubmitBug)} className='space-y-8'>
+                <form className='space-y-8' onSubmit={bugForm.handleSubmit(onSubmitBug)}>
                   <FormField
                     control={bugForm.control}
                     name='title'
@@ -251,7 +251,7 @@ export default function Feedback() {
                       <FormItem>
                         <FormLabel>Beskrivelse</FormLabel>
                         <FormControl>
-                          <Textarea placeholder='Beskriv feilen i detalj' className='resize-none' {...field} />
+                          <Textarea className='resize-none' placeholder='Beskriv feilen i detalj' {...field} />
                         </FormControl>
                         <FormDescription>Gi en detaljert beskrivelse av feilen.</FormDescription>
                         <FormMessage />
@@ -266,7 +266,7 @@ export default function Feedback() {
         </div>
       </div>
 
-      <div className='my-12 space-y-4'>
+      <div className='my-4 md:my-8 space-y-4'>
         {filteredAndSortedBugs.map((item) => (
           <Collapsible
             className='w-full bg-white/[1%] border border-white/10 rounded-lg overflow-hidden'

@@ -1,4 +1,4 @@
-import { Bug, BugIcon, UserRoundIcon } from 'lucide-react';
+import { Bug, UserRoundIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
