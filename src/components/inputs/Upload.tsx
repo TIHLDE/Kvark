@@ -102,6 +102,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
 
   const dialogConfirmCrop = async () => {
     try {
+      console.log("0000000");
       setIsLoading(true);
       const file = await getCroppedImgAsBlob(imgSrc, croppedAreaPixels, imageFile?.type);
       await uploadFile(file);
@@ -182,7 +183,6 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
   return (
     <>
       {url ? <ImgDisplay /> : <UploadButton />}
-
       <Dialog onOpenChange={closeDialog} open={dialogOpen}>
         <DialogContent className='max-w-3xl w-full'>
           <DialogHeader>
