@@ -41,8 +41,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
     ...(showHasNotAttended ? { has_attended: false } : {}),
-    ...(searchParams.has('year') ? { year: searchParams.get('year') } : {}),
-    ...(searchParams.has('study') ? { study: searchParams.get('study') } : {}),
+    ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
+    ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
