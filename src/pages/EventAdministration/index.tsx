@@ -1,4 +1,4 @@
-import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
+import { ChevronRight, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -7,7 +7,6 @@ import { useEventById } from 'hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
 import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 
 import Page from 'components/navigation/Page';
@@ -91,10 +90,6 @@ const EventAdministration = () => {
                   <Users className='w-5 h-5 mr-2 stroke-[1.5px]' />
                   Deltagere
                 </TabsTrigger>
-                <TabsTrigger value='forms'>
-                  <CircleHelp className='w-5 h-5 mr-2 stroke-[1.5px]' />
-                  Spørsmål
-                </TabsTrigger>
               </TabsList>
 
               {isDesktop && <RegisterButton />}
@@ -104,9 +99,6 @@ const EventAdministration = () => {
             </TabsContent>
             <TabsContent value='participants'>
               <EventParticipants eventId={Number(eventId)} />
-            </TabsContent>
-            <TabsContent value='forms'>
-              <EventFormAdmin eventId={Number(eventId)} />
             </TabsContent>
           </Tabs>
         )}
