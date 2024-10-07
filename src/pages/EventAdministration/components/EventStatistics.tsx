@@ -77,6 +77,18 @@ const EventStatistics = ({ eventId }: EventStatisticsProps) => {
           ))}
         </div>
       </div>
+      <div className='space-y-1'>
+        <h1>Andre:</h1>
+        <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+          <Stat
+            active={Boolean(searchParams.get('has_allergy'))}
+            key='Allergi'
+            label='Allergi'
+            number={data.has_allergy_count}
+            onClick={() => handleFiltering('has_allergy', 'true')}
+          />
+        </div>
+      </div>
     </div>
   );
 };

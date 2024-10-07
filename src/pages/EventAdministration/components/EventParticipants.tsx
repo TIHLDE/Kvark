@@ -37,14 +37,13 @@ const formSchema = z.object({
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [showHasNotAttended, setShowHasNotAttended] = useState<boolean>(false);
-  const [showHasAllergy, setShowHasAllergy] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
     ...(showHasNotAttended ? { has_attended: false } : {}),
     ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
     ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
-    ...(showHasAllergy ? { has_allergy: true } : {}),
+    ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,7 +55,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
 
   useEffect(() => {
     refetch();
-  }, [showHasNotAttended, searchParams, showHasAllergy]);
+  }, [showHasNotAttended, searchParams]);
 
   let sortedRegistrations = registrations;
 
@@ -108,14 +107,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
         </h1>
         {!onWait && (
           <div className='flex gap-2'>
-            <div className='items-top flex space-x-2'>
-              <Checkbox checked={showHasAllergy} id='terms2' onCheckedChange={(checked) => setShowHasAllergy(Boolean(checked))} />
-              <div className='grid leading-none'>
-                <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
-                  Har allergi
-                </label>
-              </div>
-            </div>
             <div className='items-top flex space-x-2'>
               <Checkbox checked={showHasNotAttended} id='terms1' onCheckedChange={(checked) => setShowHasNotAttended(Boolean(checked))} />
               <div className='grid leading-none'>
