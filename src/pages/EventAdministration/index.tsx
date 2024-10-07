@@ -91,10 +91,7 @@ const EventAdministration = () => {
                   <Users className='w-5 h-5 mr-2 stroke-[1.5px]' />
                   Deltagere
                 </TabsTrigger>
-                <TabsTrigger value='forms'>
-                  <CircleHelp className='w-5 h-5 mr-2 stroke-[1.5px]' />
-                  Spørsmål
-                </TabsTrigger>
+                
               </TabsList>
 
               {isDesktop && <RegisterButton />}
@@ -105,9 +102,7 @@ const EventAdministration = () => {
             <TabsContent value='participants'>
               <EventParticipants eventId={Number(eventId)} />
             </TabsContent>
-            <TabsContent value='forms'>
-              <EventFormAdmin eventId={Number(eventId)} />
-            </TabsContent>
+           
           </Tabs>
         )}
       </div>
