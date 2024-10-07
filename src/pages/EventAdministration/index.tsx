@@ -1,4 +1,4 @@
-import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
+import { ChevronRight, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -7,7 +7,6 @@ import { useEventById } from 'hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
 import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 
 import Page from 'components/navigation/Page';
