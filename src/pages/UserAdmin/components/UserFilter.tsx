@@ -33,24 +33,36 @@ const UserFilter = ({ is_TIHLDE_member }: UserFilterProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: { studyyear: 'all', study: 'all', search: '' },
   });
+  const { study, studyyear, search } = form.getValues();
 
-  const watchFilters = form.watch();
-  const formFilters = useMemo(
+  const debouncedSearch = useDebounce(search, 500);
+  const debuncedStudy = useDebounce(study, 500);
+  const debouncedStudyyear = useDebounce(studyyear, 500);
+
+  const filters = useMemo(
     () => ({
-      studyyear: watchFilters.studyyear === 'all' ? undefined : watchFilters.studyyear,
-      study: watchFilters.study === 'all' ? undefined : watchFilters.study,
-      search: watchFilters.search === '' ? undefined : watchFilters.search,
+      study: debuncedStudy,
+      studyyear: debouncedStudyyear,
+      search: debouncedSearch,
     }),
-    [watchFilters],
+    [debouncedSearch, debuncedStudy, debouncedStudyyear],
   );
-  const filters = useDebounce(formFilters, 500);
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ is_TIHLDE_member: is_TIHLDE_member, ...filters });
+
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({
+    is_TIHLDE_member: is_TIHLDE_member,
+    study: filters.study === 'all' ? undefined : filters.study,
+    studyyear: filters.studyyear === 'all' ? undefined : filters.studyyear,
+    search: filters.search === '' ? undefined : filters.search,
+  });
   const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
-  const membersAmount = `${data?.pages[0]?.count || '0'} medlemmer
-    ${watchFilters.studyyear !== 'all' || watchFilters.study !== 'all' ? 'i' : 'totalt'}
-    ${watchFilters.studyyear !== 'all' ? `${watchFilters.studyyear}-kullet` : ''}
-    ${watchFilters.study !== 'all' ? studies.find((study) => study.slug === watchFilters.study)?.name : ''}`;
+  const membersAmount = useMemo(
+    () => `${data?.pages[0]?.count || '0'} medlemmer
+    ${filters.studyyear !== 'all' || filters.study !== 'all' ? 'i' : 'totalt'}
+    ${filters.studyyear !== 'all' ? `${filters.studyyear}-kullet` : ''}
+    ${filters.study !== 'all' ? studies.find((study) => study.slug === filters.study)?.name : ''}`,
+    [filters, data, studies],
+  );
 
   return (
     <div className='space-y-4'>
