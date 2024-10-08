@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+- 🎨 **Notion**. Slack-linken i footeren er erstattet med TIHLDE's Notion
+
 ## Versjon 2024.18.09
 
 - 🦟 **Safari zoom**. En bug der safari på mobil zoomer inn på input er nå fikset.
