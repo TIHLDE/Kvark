@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy, Info } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -36,9 +37,13 @@ const formSchema = z.object({
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [showHasNotAttended, setShowHasNotAttended] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
     ...(showHasNotAttended ? { has_attended: false } : {}),
+    ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
+    ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
+    ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,8 +54,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   useEffect(() => {
-    refetch({});
-  }, [showHasNotAttended]);
+    refetch();
+  }, [showHasNotAttended, searchParams]);
 
   let sortedRegistrations = registrations;
 
@@ -101,12 +106,14 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
           {onWait ? 'Venteliste' : 'Påmeldte'} ({data?.pages[0]?.count || 0})
         </h1>
         {!onWait && (
-          <div className='items-top flex space-x-2'>
-            <Checkbox checked={showHasNotAttended} id='terms1' onCheckedChange={(checked) => setShowHasNotAttended(Boolean(checked))} />
-            <div className='grid leading-none'>
-              <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
-                Ikke ankommet
-              </label>
+          <div className='flex gap-2'>
+            <div className='items-top flex space-x-2'>
+              <Checkbox checked={showHasNotAttended} id='terms1' onCheckedChange={(checked) => setShowHasNotAttended(Boolean(checked))} />
+              <div className='grid leading-none'>
+                <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
+                  Ikke ankommet
+                </label>
+              </div>
             </div>
           </div>
         )}
@@ -217,6 +224,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
     return null;
   }
 
+  //TODO: Implement searching by first name and last name
   const needsSorting = data && data.priority_pools && data.priority_pools.length > 0;
 
   return (
@@ -235,7 +243,6 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
           <h1 className='text-lg font-bold'>Statistikk</h1>
 
           <EventStatistics eventId={eventId} />
-
           <Registrations eventId={eventId} />
           <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
         </div>
