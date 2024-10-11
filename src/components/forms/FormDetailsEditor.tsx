@@ -13,6 +13,7 @@ import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
 
 import FormInput from 'components/inputs/Input';
 import { FormDetailSwitch } from 'components/inputs/Switch';
+import FormTextarea from 'components/inputs/Textarea';
 import { Button } from 'components/ui/button';
 import { Form as FormWrapper } from 'components/ui/form';
 import { Input } from 'components/ui/input';
@@ -65,6 +66,7 @@ const formSchema = z.object({
   is_open_for_submissions: z.boolean(),
   only_for_group_members: z.boolean(),
   title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Feltet er påkrevd' }),
+  description: z.string().optional(),
   email_receiver_on_submit: z.string().email().optional().or(z.literal('')),
 });
 
@@ -79,6 +81,7 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
       only_for_group_members: groupForm.only_for_group_members,
       email_receiver_on_submit: groupForm.email_receiver_on_submit || '',
       title: groupForm.title || '',
+      description: groupForm.description || '',
     },
   });
 
@@ -102,6 +105,8 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
         <FormInput form={form} label='Tittel' name='title' required />
 
         <FormInput form={form} label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />
+
+        <FormTextarea form={form} label='Beskrivelse' name='description' />
 
         <FormDetailSwitch
           description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.'

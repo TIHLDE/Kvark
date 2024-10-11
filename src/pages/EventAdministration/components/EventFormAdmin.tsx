@@ -185,16 +185,6 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
     <div className='space-y-4'>
       <div className='space-y-2'>
         <div className='space-y-1'>
-          <h1 className='font-bold'>Spørsmål ved påmelding</h1>
-          <p className='text-xs'>
-            Deltagere som melder seg på dette arrangementet vil måtte svare på disse spørsmålene først. Deltagerne kan la være å svare på spørsmål som ikke er
-            &quot;Påkrevd&quot;.
-          </p>
-        </div>
-        {event.survey ? <FormAdmin formId={event.survey} /> : <EventFormEditor formType={EventFormType.SURVEY} />}
-      </div>
-      <div className='space-y-2'>
-        <div className='space-y-1'>
           <h1 className='font-bold'>Evalueringsspørsmål</h1>
           <p className='text-xs'>
             Deltagerne som deltar på dette arrangementet <b>må</b> svare på disse spørsmålene før de kan melde seg på andre arrangementer. Blokkeringen av
