@@ -1,4 +1,4 @@
-import { ChevronRight, ListChecks, Pencil, Plus, Users } from 'lucide-react';
+import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import URLS from 'URLS';
@@ -13,6 +13,7 @@ import Page from 'components/navigation/Page';
 import { Button } from 'components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
+import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
 const EventAdministration = () => {
@@ -90,6 +91,10 @@ const EventAdministration = () => {
                   <Users className='w-5 h-5 mr-2 stroke-[1.5px]' />
                   Deltagere
                 </TabsTrigger>
+                <TabsTrigger value='forms'>
+                  <CircleHelp className='w-5 h-5 mr-2 stroke-[1.5px]' />
+                  Spørsmål
+                </TabsTrigger>
               </TabsList>
 
               {isDesktop && <RegisterButton />}
@@ -99,6 +104,9 @@ const EventAdministration = () => {
             </TabsContent>
             <TabsContent value='participants'>
               <EventParticipants eventId={Number(eventId)} />
+            </TabsContent>
+            <TabsContent value='forms'>
+              <EventFormAdmin eventId={Number(eventId)} />
             </TabsContent>
           </Tabs>
         )}
