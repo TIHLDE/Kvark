@@ -86,7 +86,7 @@ const Profile = () => {
       className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
       onClick={onClick ? onClick : () => setTab(label)}
       variant={tab === label ? 'outline' : 'ghost'}>
-      <Icon className='mr-2 stroke-[1.5px]' /> {label}
+      <Icon className='mr-2 stroke-[1.5px] shrink-0' /> <p className='truncate ...'>{label}</p>
     </Button>
   );
 
