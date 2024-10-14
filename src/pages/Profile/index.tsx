@@ -158,8 +158,8 @@ const Profile = () => {
           )}
         </CardContent>
       </Card>
-      <div className='grid grid-cols-1 md:grid-cols-4 md:gap-x-4 pb-4'>
-        <div className='space-y-4 col-span-1 mb-4 md:mb-0'>
+      <div className='grid grid-cols-1 md:grid-cols-6 md:gap-x-4 pb-4'>
+        <div className='space-y-4 col-span-2 mb-4 md:mb-0'>
           <Card>
             <CardContent className='p-0 grid grid-cols-2 md:grid-cols-1'>
               {tabs.map((tab) => (
@@ -175,7 +175,7 @@ const Profile = () => {
             </Card>
           )}
         </div>
-        <div className='col-span-3'>
+        <div className='col-span-4'>
           {tab === eventTab.label && <ProfileEvents />}
           {tab === badgesTab.label && <ProfileBadges />}
           {tab === groupsTab.label && <ProfileGroups />}
