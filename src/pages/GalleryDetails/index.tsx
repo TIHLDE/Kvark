@@ -33,13 +33,12 @@ const GalleryDetails = () => {
 
   return (
     <Page className='space-y-12'>
-      <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
-        <div className='space-y-2'>
+      <div className='space-y-4 space-x-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+        <div className='space-y-4'>
+          <div className='flex flex-row justify-between items-center'>
           <h1 className='text-3xl lg:text-5xl font-bold'>{data?.title || 'Laster galleri...'}</h1>
-          <p className='text-muted-foreground'>{data?.description}</p>
-        </div>
 
-        <HavePermission apps={[PermissionApp.PICTURE]}>
+          <HavePermission apps={[PermissionApp.PICTURE]}>
           {data && (
             <div className='flex items-center space-x-2'>
               <PictureUpload id={data.id} />
@@ -47,6 +46,11 @@ const GalleryDetails = () => {
             </div>
           )}
         </HavePermission>
+          </div>
+          <p className='text-muted-foreground'>{data?.description}</p>
+        </div>
+
+       
       </div>
 
       {data ? (
