@@ -35,7 +35,7 @@ const GalleryDetails = () => {
     <Page className='space-y-12'>
       <div className='space-y-4 space-x-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
         <div className='space-y-4 w-full'>
-          <div className='flex flex-row justify-between items-center'>
+          <div className='flex flex-col gap-2 md:flex-row md:justify-between md:items-center'>
             <h1 className='text-3xl lg:text-5xl font-bold'>{data?.title || 'Laster galleri...'}</h1>
 
             <HavePermission apps={[PermissionApp.PICTURE]}>
