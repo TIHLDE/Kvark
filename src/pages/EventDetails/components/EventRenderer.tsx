@@ -211,7 +211,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           </>
         ) : (
           <Alert>
-            <AlertDescription>Det er ikke lenger mulig å melde seg av arrangementet</AlertDescription>
+            <AlertDescription>
+              {registration.has_paid_order
+                ? 'Du har betalt for arrangementet og kan ikke melde deg av.'
+                : 'Det er ikke lenger mulig å melde seg av arrangementet.'}
+            </AlertDescription>
           </Alert>
         )}
       </>

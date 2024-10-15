@@ -1,6 +1,6 @@
 import parseISO from 'date-fns/parseISO';
 import { cn } from 'lib/utils';
-import { BadgeCheck, ChevronDown, ChevronRight } from 'lucide-react';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { formatDate, getUserAffiliation } from 'utils';
@@ -103,6 +103,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             </div>
           </div>
           <div className='flex items-center space-x-2'>
+            {event?.is_paid_event && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HandCoins className={cn('w-5 h-5 stroke-[1.5px]', registration.has_paid_order ? 'text-emerald-700' : 'text-red-700')} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             {!registration.is_on_wait && checkedState && (
               <TooltipProvider>
                 <Tooltip>
