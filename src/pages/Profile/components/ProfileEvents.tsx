@@ -75,14 +75,14 @@ const ProfileEvents = () => {
         <Button
           className={`w-full md:text-md ${tab === 'present' ? 'bg-white dark:bg-secondary' : ''}`}
           onClick={() => setTab('present')}
-          size='lg'
+          size='default'
           variant='outline'>
           Kommende arrangementer
         </Button>
         <Button
           className={`w-full md:text-md ${tab === 'expired' ? 'bg-white dark:bg-secondary' : ''}`}
           onClick={() => setTab('expired')}
-          size='lg'
+          size='default'
           variant='outline'>
           Tidligere arrangementer
         </Button>
