@@ -12,6 +12,12 @@
 
 ## Neste versjon
 
+## Versjon 2024.15.10
+
+- ✨ **Betalinger**. Man kan nå se hvem på deltagerlisten som har betalt for arrangementet.
+- 🎨 **Profil navigering**. Ikoner på mobil på profil er nå fikset.
+- 🎨 **Maks bredde på tekst**. Beskrivelse under tittel er nå tilpasset.
+
 ## Versjon 2024.11.10
 
 - 🎨 **Notion**. Slack-linken i footeren er erstattet med TIHLDE's Notion
