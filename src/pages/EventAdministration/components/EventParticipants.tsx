@@ -23,6 +23,7 @@ import { Separator } from 'components/ui/separator';
 import { Skeleton } from 'components/ui/skeleton';
 
 import EventUserRegistrator from './EventUserRegistrator';
+import EventParticipantSearch from './EventParticipantSearch';
 
 type RegistrationsProps = {
   onWait?: boolean;
@@ -44,6 +45,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
     ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
     ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
+    ...(searchParams.has('search') && !onWait ? { search: searchParams.get('search') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -241,8 +243,8 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
         <div className='space-y-4'>
           <h1 className='text-lg font-bold'>Statistikk</h1>
-
           <EventStatistics eventId={eventId} />
+          <EventParticipantSearch />
           <Registrations eventId={eventId} />
           <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
         </div>
