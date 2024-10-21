@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- ✨ **Filtrering**. Admin kan nå filtere deltakere av et arrangement på studie, studieår, om deltakere har allergier, (om deltakere godtar å bli tatt bilde av, om deltakere har ankommet), i tillegg til å kunne søke på fornavn og etternavn.
 
 ## Versjon 2024.18.09
 
