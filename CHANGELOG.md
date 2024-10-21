@@ -11,9 +11,9 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+🎨 - **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.  
 
 ## Versjon 2024.15.10
-
 - ✨ **Betalinger**. Man kan nå se hvem på deltagerlisten som har betalt for arrangementet.
 - 🎨 **Profil navigering**. Ikoner på mobil på profil er nå fikset.
 - 🎨 **Maks bredde på tekst**. Beskrivelse under tittel er nå tilpasset.
