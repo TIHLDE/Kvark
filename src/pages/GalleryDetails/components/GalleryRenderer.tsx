@@ -1,17 +1,14 @@
 import { useMemo } from 'react';
 
 import { Gallery } from 'types';
+import { Picture } from 'types';
 
 import { useGalleryPictures } from 'hooks/Gallery';
-
-import { Picture } from 'types';
 
 import PictureDialog from 'pages/GalleryDetails/components/PictureDialog';
 
 import { PaginateButton } from 'components/ui/button';
 import { Skeleton } from 'components/ui/skeleton';
-
-
 
 export const GalleryRendererLoading = () => {
   return (
@@ -36,12 +33,9 @@ const GalleryRenderer = ({ id }: GalleryRendererProps) => {
         {pictures.map((image) => (
           <PictureDialog galleryId={id} key={image.id} picture={image} />
         ))}
-        {hasNextPage && <PaginateButton className='mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
       </div>
-
+      {hasNextPage && <PaginateButton className='mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
-
-
   );
 };
 
