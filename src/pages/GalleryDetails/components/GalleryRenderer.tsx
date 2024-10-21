@@ -4,10 +4,14 @@ import { Gallery } from 'types';
 
 import { useGalleryPictures } from 'hooks/Gallery';
 
+import { Picture } from 'types';
+
 import PictureDialog from 'pages/GalleryDetails/components/PictureDialog';
 
 import { PaginateButton } from 'components/ui/button';
 import { Skeleton } from 'components/ui/skeleton';
+
+
 
 export const GalleryRendererLoading = () => {
   return (
@@ -26,14 +30,18 @@ export type GalleryRendererProps = {
 const GalleryRenderer = ({ id }: GalleryRendererProps) => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(id);
   const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-
   return (
-    <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
-      {pictures.map((image) => (
-        <PictureDialog galleryId={id} key={image.id} picture={image} />
-      ))}
-      {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+    <div className='flex flex-col justify-center items-center'>
+      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
+        {pictures.map((image) => (
+          <PictureDialog galleryId={id} key={image.id} picture={image} />
+        ))}
+        {hasNextPage && <PaginateButton className='mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
+      </div>
+
     </div>
+
+
   );
 };
 
