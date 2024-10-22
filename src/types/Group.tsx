@@ -49,6 +49,12 @@ export type GroupMutate = Partial<Omit<Group, 'fines_admin' | 'permissions' | 't
     fines_admin?: string | null;
   };
 
+export type GroupCreate = {
+  name: string;
+  slug: string;
+  type: GroupType;
+};
+
 export type Membership = {
   user: UserBase | UserList;
   membership_type: MembershipType;
