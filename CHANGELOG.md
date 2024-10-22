@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+## Versjon 2024.22.10
+
 - ✨ **Gruppe**. HS kan nå opprette grupper.
 
 ## Versjon 2024.15.10
