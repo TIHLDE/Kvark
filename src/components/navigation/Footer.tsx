@@ -8,7 +8,7 @@ import { Separator } from 'components/ui/separator';
 import DISCORD from 'assets/icons/discord.svg';
 import FACEBOOK from 'assets/icons/facebook.svg';
 import INSTAGRAM from 'assets/icons/instagram.svg';
-import SLACK from 'assets/icons/slack.svg';
+import NOTION from 'assets/icons/notion.svg';
 import SNAPCHAT from 'assets/icons/snapchat.svg';
 import TWITTER from 'assets/icons/twitter.svg';
 import VERCEL from 'assets/icons/vercel.svg';
@@ -23,7 +23,7 @@ const Footer = () => {
     { img: INSTAGRAM, link: 'https://www.instagram.com/tihlde/' },
     { img: TWITTER, link: 'https://twitter.com/tihlde' },
     { img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
-    { img: SLACK, link: 'https://tihlde.slack.com' },
+    { img: NOTION, link: 'https://www.notion.so/tihlde/invite/442710f897b596ecd4f8e078cb25fcf76045125a' },
     { img: DISCORD, link: 'https://discord.gg/HNt5XQdyxy' },
   ];
 

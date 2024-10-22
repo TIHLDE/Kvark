@@ -13,7 +13,7 @@ const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calend
 
 const Events = () => {
   return (
-    <Page className='space-y-8'>
+    <Page className='space-y-8 max-w-7xl mx-auto'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Arrangementer</h1>
       </div>

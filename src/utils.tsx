@@ -53,7 +53,7 @@ export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
  * Transforms a studyyear to the more readable current class.
  * In 2023, the users which started in 2022, the class is shown as `1. klasse` before the summer and `2. klasse` after the summer.
  * @param studyyear The studyyear
- * @param study Optional study. Used to take eventual DigSam-membership into account.
+ * @param study Optional study. Used to take eventual DigSam/DigTrans-membership into account.
  * @returns `1. klasse` or `Startet i 2022`
  */
 export const getStudyyearAsClass = (studyyear: UserBase['studyyear']['group'], study?: UserBase['study']['group']) => {
@@ -125,7 +125,7 @@ export const getUserStudyLong = (userStudy: UserStudy) => {
     case UserStudy.DIGSEC:
       return 'Digital infrastruktur og cybersikkerhet';
     case UserStudy.DIGSAM:
-      return 'Digital samhandling';
+      return 'Digital transformasjon';
     case UserStudy.DRIFT:
       return 'Drift av datasystemer';
     case UserStudy.INFO:
