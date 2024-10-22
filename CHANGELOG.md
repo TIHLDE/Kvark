@@ -12,6 +12,10 @@
 
 ## Neste versjon
 
+## Versjon 2024.22.10
+
+- ✨ **Gruppe**. HS kan nå opprette grupper.
+
 ## Versjon 2024.15.10
 
 - ✨ **Betalinger**. Man kan nå se hvem på deltagerlisten som har betalt for arrangementet.
