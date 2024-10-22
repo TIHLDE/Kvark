@@ -1,82 +1,95 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { GroupCreate } from 'types';
+import { GroupType } from 'types/Enums';
+
+import { useCreateGroup } from 'hooks/Group';
+
+import FormInput from 'components/inputs/Input';
+import { FormSelect } from 'components/inputs/Select';
 import { Button } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Form } from 'components/ui/form';
 
 const schema = z.object({
-  groupName: z.string().min(1, 'Gruppenavn er påkrevd'),
-  slug: z.string().min(1, 'Slug er påkrevd'),
-  groupType: z.enum(['board', 'subGroup', 'committee', 'interestGroup'], { message: 'Gruppetype er påkrevd' }),
+  name: z.string({ message: 'Gruppenavn er påkrevd' }),
+  slug: z.string({ message: 'Gruppeslug er påkrevd' }),
+  type: z.nativeEnum(GroupType, { message: 'Gruppetype er påkrevd' }),
 });
 
 export default function NewGroupAdministration() {
+  const createGroup = useCreateGroup();
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
+    defaultValues: { name: '', slug: '', type: GroupType.BOARD },
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+  const onSubmit = (values: z.infer<typeof schema>) => {
+    const data: GroupCreate = {
+      name: values.name,
+      slug: values.slug.toLowerCase(),
+      type: values.type,
+    };
 
-  const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log(data);
+    createGroup.mutate(data, {
+      onSuccess: () => {
+        toast.success('Gruppen ble opprettet');
+        form.reset();
+      },
+      onError: (e) => {
+        Object.keys(e.detail).forEach((key: string) => {
+          if (key in data) {
+            const errorKey = key as keyof GroupCreate;
+            const errorMessage = (e.detail as unknown as Record<string, any>)[key];
+            form.setError(errorKey, { message: errorMessage });
+          }
+        });
+        toast.error('Det er en eller flere feil i skjemaet');
+      },
+    });
   };
 
   return (
-    <div className='max-w-5xl mx-auto pt-24 flex flex-col gap-2 px-2'>
-      <h1 className='text-4xl font-bold'>Opprett ny gruppe</h1>
-      <p className='text-muted-foreground mb-8'>Velg gruppetype og opprett en ny gruppe.</p>
-      <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FormItem className='mb-5'>
-            <FormLabel>Gruppenavn</FormLabel>
-            <Input placeholder='Gruppenavn' {...register('groupName')} />
-            {errors.groupName && <p className='text-red-500'>{errors.groupName.message as string}</p>}
-          </FormItem>
-          <FormItem style={{ marginBottom: '20px' }}>
-            <FormLabel>Slug</FormLabel>
-            <Input placeholder='Slug' {...register('slug')} />
-            {errors.slug && <p className='text-red-500'>{errors.slug.message as string}</p>}
-            <p className='text-muted-foreground mb-8 text-sm'>
-              En slug er en kort tekststreng som brukes i URL-adresser for å identifisere en spesifikk ressurs på en webside
-            </p>
-          </FormItem>
-          <FormField
-            control={form.control}
-            name='groupType'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Gruppetype</FormLabel>
-                <Select defaultValue={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger className='text-muted-foreground'>
-                      <SelectValue placeholder='Velg gruppetype...' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='board'>Styre</SelectItem>
-                    <SelectItem value='subGroup'>Undergruppe</SelectItem>
-                    <SelectItem value='committee'>Komité</SelectItem>
-                    <SelectItem value='interestGroup'>Interesse Gruppe</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormItem className='mt-5'>
-            <Button type='submit' variant='default'>
-              Opprett Gruppe
-            </Button>
-          </FormItem>
-        </form>
-      </Form>
+    <div className='max-w-5xl mx-auto pt-24 px-2'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Opprett ny gruppe</CardTitle>
+          <CardDescription>Velg gruppetype og opprett en ny gruppe.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+              <FormInput form={form} label='Gruppenavn' name='name' required />
+              <FormInput
+                description='En slug er en kort tekststreng som brukes i URL-adresser for å identifisere en spesifikk ressurs på en webside'
+                form={form}
+                label='Slug'
+                name='slug'
+                required
+              />
+              <FormSelect
+                form={form}
+                label='Gruppetype'
+                name='type'
+                options={[
+                  { value: GroupType.BOARD, label: 'Styre' },
+                  { value: GroupType.SUBGROUP, label: 'Undergruppe' },
+                  { value: GroupType.COMMITTEE, label: 'Komité' },
+                  { value: GroupType.INTERESTGROUP, label: 'Interessegruppe' },
+                ]}
+                required
+              />
+              <Button type='submit' variant='default'>
+                Opprett Gruppe
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
