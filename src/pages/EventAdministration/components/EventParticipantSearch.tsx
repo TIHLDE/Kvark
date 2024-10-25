@@ -1,28 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from 'components/inputs/Input';
-import { Form } from 'components/ui/form';
-
-import { z } from 'zod';
-import { useSearchParams } from 'react-router-dom';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import { useDebounce } from 'hooks/Utils';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
+import { z } from 'zod';
 
-const formSchema = z.object({
-  search: z.string().optional(),
-});
+import { useDebounce } from 'hooks/Utils';
+
+import { Input } from 'components/ui/input';
 
 const EventParticipantSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchInput, setSearchInput] = useState<string | undefined>(searchParams.get('search')?.toString());
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { search: '' },
-  });
-
-  const debouncedSearch = useDebounce(form.watch('search'), 500);
+  const debouncedSearch = useDebounce(searchInput, 500);
 
   useEffect(() => {
     if (debouncedSearch !== undefined) {
@@ -36,12 +26,9 @@ const EventParticipantSearch = () => {
   }, [debouncedSearch, setSearchParams]);
 
   return (
-    <div className='space-y-4'>
-      <Form {...form}>
-        <form className='space-y-2 lg:space-y-0 lg:flex lg:items-center lg:space-x-2'>
-          <FormInput form={form} label='Søk' name='search' />
-        </form>
-      </Form>
+    <div className='space-y-2'>
+      <h1 className='text-lg font-bold'>Søk: </h1>
+      <Input onChange={(e) => setSearchInput(e.target.value)} placeholder='Søk etter en deltager' />
     </div>
   );
 };

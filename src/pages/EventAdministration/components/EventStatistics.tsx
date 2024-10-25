@@ -1,4 +1,5 @@
 import { cn } from 'lib/utils';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Event } from 'types';
@@ -29,9 +30,10 @@ const Stat = ({ label, number, active, onClick }: StatProps) => {
 
 export type EventStatisticsProps = {
   eventId: Event['id'];
+  isPaid: boolean;
 };
 
-const EventStatistics = ({ eventId }: EventStatisticsProps) => {
+const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
   const { data } = useEventStatistics(eventId);
   const [searchParams, setSearchParams] = useSearchParams();
   function handleFiltering(category: string, label: string) {
@@ -86,6 +88,29 @@ const EventStatistics = ({ eventId }: EventStatisticsProps) => {
             label='Allergi'
             number={data.has_allergy_count}
             onClick={() => handleFiltering('has_allergy', 'true')}
+          />
+          <Stat
+            active={Boolean(searchParams.get('allow_photo'))}
+            key='allow_photo'
+            label='Samtykker ikke fotografering'
+            number={data.allow_photo_count}
+            onClick={() => handleFiltering('allow_photo', 'false')}
+          />
+          {Boolean(isPaid) && (
+            <Stat
+              active={Boolean(searchParams.get('has_paid'))}
+              key='has_paid'
+              label='Betalt'
+              number={data.has_paid_count}
+              onClick={() => handleFiltering('has_paid', 'true')}
+            />
+          )}
+          <Stat
+            active={Boolean(searchParams.get('has_attended'))}
+            key='has_attended'
+            label='Ikke ankommet'
+            number={data.list_count - data.has_attended_count}
+            onClick={() => handleFiltering('has_attended', 'false')}
           />
         </div>
       </div>

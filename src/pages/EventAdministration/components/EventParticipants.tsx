@@ -22,8 +22,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } fr
 import { Separator } from 'components/ui/separator';
 import { Skeleton } from 'components/ui/skeleton';
 
-import EventUserRegistrator from './EventUserRegistrator';
 import EventParticipantSearch from './EventParticipantSearch';
+import EventUserRegistrator from './EventUserRegistrator';
 
 type RegistrationsProps = {
   onWait?: boolean;
@@ -37,15 +37,16 @@ const formSchema = z.object({
 });
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
-  const [showHasNotAttended, setShowHasNotAttended] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
     is_on_wait: onWait,
-    ...(showHasNotAttended ? { has_attended: false } : {}),
+    ...(searchParams.has('has_attended') ? { has_attended: searchParams.get('has_attended') } : {}),
     ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
     ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
     ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
     ...(searchParams.has('search') && !onWait ? { search: searchParams.get('search') } : {}),
+    ...(searchParams.has('has_paid') && !onWait ? { has_paid: searchParams.get('has_paid') } : {}),
+    ...(searchParams.has('allow_photo') && !onWait ? { allow_photo: searchParams.get('allow_photo') } : {}),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +58,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
 
   useEffect(() => {
     refetch();
-  }, [showHasNotAttended, searchParams]);
+  }, [searchParams]);
 
   let sortedRegistrations = registrations;
 
@@ -107,18 +108,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
         <h1 className='text-lg font-bold'>
           {onWait ? 'Venteliste' : 'Påmeldte'} ({data?.pages[0]?.count || 0})
         </h1>
-        {!onWait && (
-          <div className='flex gap-2'>
-            <div className='items-top flex space-x-2'>
-              <Checkbox checked={showHasNotAttended} id='terms1' onCheckedChange={(checked) => setShowHasNotAttended(Boolean(checked))} />
-              <div className='grid leading-none'>
-                <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
-                  Ikke ankommet
-                </label>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {isLoading && (
@@ -243,7 +232,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
         <div className='space-y-4'>
           <h1 className='text-lg font-bold'>Statistikk</h1>
-          <EventStatistics eventId={eventId} />
+          <EventStatistics eventId={eventId} isPaid={data?.is_paid_event ?? false} />
           <EventParticipantSearch />
           <Registrations eventId={eventId} />
           <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
