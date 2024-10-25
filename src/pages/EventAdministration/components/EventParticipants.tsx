@@ -41,10 +41,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     ...(showHasNotAttended ? { has_attended: false } : {}),
   });
 
-  while (hasNextPage) {
-    fetchNextPage();
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { names: false, emails: false },
