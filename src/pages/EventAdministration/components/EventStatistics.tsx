@@ -1,5 +1,4 @@
 import { cn } from 'lib/utils';
-import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { Event } from 'types';
@@ -23,7 +22,7 @@ const Stat = ({ label, number, active, onClick }: StatProps) => {
       className={cn('p-4 rounded-md border text-center hover:bg-accent hover:text-accent-foreground', active ? 'border-primary' : null)}
       onClick={() => onClickStat(label)}>
       <h1 className='text-2xl font-bold'>{number}</h1>
-      <p className='text-xs lg:text-base text-muted-foreground'>{label}</p>
+      <p className='text-xs lg:text-base text-muted-foreground line-clamp-1'>{label}</p>
     </button>
   );
 };
@@ -92,7 +91,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
           <Stat
             active={Boolean(searchParams.get('allow_photo'))}
             key='allow_photo'
-            label='Samtykker ikke fotografering'
+            label='Reservert for fotografering'
             number={data.allow_photo_count}
             onClick={() => handleFiltering('allow_photo', 'false')}
           />
@@ -100,9 +99,9 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
             <Stat
               active={Boolean(searchParams.get('has_paid'))}
               key='has_paid'
-              label='Betalt'
-              number={data.has_paid_count}
-              onClick={() => handleFiltering('has_paid', 'true')}
+              label='Ikke betalt'
+              number={data.list_count - data.has_paid_count}
+              onClick={() => handleFiltering('has_paid', 'false')}
             />
           )}
           <Stat
