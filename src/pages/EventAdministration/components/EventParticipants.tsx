@@ -49,10 +49,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     ...(searchParams.has('allow_photo') && !onWait ? { allow_photo: searchParams.get('allow_photo') } : {}),
   });
 
-  while (hasNextPage) {
-    fetchNextPage();
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { names: false, emails: false },
