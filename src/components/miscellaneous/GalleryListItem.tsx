@@ -12,20 +12,20 @@ export type GalleryListItemProps = {
 };
 
 const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
-  <Link to={`${URLS.gallery}${gallery.id}/`} >
-    <Card className="h-[1/6]">
+  <Link to={`${URLS.gallery}${gallery.id}/`}>
+    <Card className='h-[1/6]'>
       <CardHeader>
         <CardTitle className='text-black dark:text-white'>{gallery.title}</CardTitle>
-        <CardDescription className='h-[40px] line-clamp-2 '>{gallery.description || ""}</CardDescription>
+        <CardDescription className='h-[40px] line-clamp-2 '>{gallery.description || ''}</CardDescription>
       </CardHeader>
       <CardContent>
         <AspectRatioImg alt={gallery.image_alt || gallery.title} className='rounded-md' src={gallery.image} />
       </CardContent>
     </Card>
-  </Link> 
+  </Link>
 );
 
-export default GalleryListItem; 
+export default GalleryListItem;
 
 export const GalleryListItemLoading = () => (
   <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>
