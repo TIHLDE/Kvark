@@ -132,7 +132,8 @@ const FormPage = () => {
         <CardContent>
           {form ? (
             <>
-              <Separator className='mb-2' />
+              {form.description && <p>{form.description}</p>}
+              <Separator className='my-2' />
               {canAnswerForm ? (
                 <Form {...submitForm}>
                   <form className='space-y-4' onSubmit={submitForm.handleSubmit(onSubmit)}>

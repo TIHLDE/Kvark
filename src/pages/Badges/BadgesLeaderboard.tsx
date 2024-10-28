@@ -121,7 +121,7 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
         {!isLoading && !leaderboardEntries.length && <NotFoundIndicator header='Ingen har mottatt badges enda' />}
         {error && <h1 className='text-center mt-4'>{error.detail}</h1>}
         {data !== undefined && (
-          <div className='flex space-y-4'>
+          <div className='space-y-4'>
             {leaderboardEntries.map((entry, index) => (
               <Link
                 className='flex items-center justify-between space-x-4 p-2 border hover:bg-muted rounded-lg w-full text-black dark:text-white'

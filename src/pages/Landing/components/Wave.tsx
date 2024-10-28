@@ -25,7 +25,7 @@ const Wave = () => {
         <div className='max-w-[920px] relative z-20 pt-[150px] px-[15px] pb-[100px] m-auto'>
           <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px] text-primary' size='large' />
           <h1 className='text-center md:text-lg py-2'>
-            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital samhandling og
+            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og
             Informasjonsbehandling ved NTNU
           </h1>
           <div className='flex items-center space-x-4 justify-center mt-4'>

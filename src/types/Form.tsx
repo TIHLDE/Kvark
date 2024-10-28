@@ -10,6 +10,7 @@ import { UserBase } from 'types/User';
 export interface FormBase {
   id: string;
   title: string;
+  description?: string;
   fields: Array<TextFormField | SelectFormField>;
   viewer_has_answered: boolean;
   template: boolean;

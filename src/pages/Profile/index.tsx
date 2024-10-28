@@ -86,7 +86,7 @@ const Profile = () => {
       className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
       onClick={onClick ? onClick : () => setTab(label)}
       variant={tab === label ? 'outline' : 'ghost'}>
-      <Icon className='mr-2 stroke-[1.5px]' /> {label}
+      <Icon className='mr-2 stroke-[1.5px] shrink-0' /> <p className='truncate ...'>{label}</p>
     </Button>
   );
 
@@ -158,8 +158,8 @@ const Profile = () => {
           )}
         </CardContent>
       </Card>
-      <div className='grid grid-cols-1 md:grid-cols-4 md:gap-x-4 pb-4'>
-        <div className='space-y-4 col-span-1 mb-4 md:mb-0'>
+      <div className='grid grid-cols-1 md:grid-cols-6 md:gap-x-4 pb-4'>
+        <div className='space-y-4 col-span-2 mb-4 md:mb-0'>
           <Card>
             <CardContent className='p-0 grid grid-cols-2 md:grid-cols-1'>
               {tabs.map((tab) => (
@@ -175,7 +175,7 @@ const Profile = () => {
             </Card>
           )}
         </div>
-        <div className='col-span-3'>
+        <div className='col-span-4'>
           {tab === eventTab.label && <ProfileEvents />}
           {tab === badgesTab.label && <ProfileBadges />}
           {tab === groupsTab.label && <ProfileGroups />}

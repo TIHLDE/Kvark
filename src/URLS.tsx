@@ -57,6 +57,7 @@ const URLS = {
   qrCodes: '/qr-koder/',
   gallery: '/galleri/',
   userAdmin: '/admin/brukere/',
+  newGroupAdmin: '/admin/ny-gruppe/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',
   jobpostsAdmin: '/admin/karriere/',
