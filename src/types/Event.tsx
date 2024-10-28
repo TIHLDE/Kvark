@@ -111,6 +111,6 @@ export type EventStatistics = {
   studyyears: Array<{ studyyear: Group['name']; amount: number }>;
   studies: Array<{ study: Group['name']; amount: number }>;
   has_allergy_count: number;
-  has_paid_count: number;
+  has_not_paid_count: number;
   allow_photo_count: number;
 };
