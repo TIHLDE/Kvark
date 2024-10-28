@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { urlEncode } from 'utils';
 
-import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
+import { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
 import { FormFieldType, FormResourceType } from 'types/Enums';
 
 import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
@@ -12,8 +12,8 @@ import { getCookie } from 'api/cookie';
 import { useFormById, useFormSubmissions } from 'hooks/Form';
 
 import MultiSelect, { MultiSelectOption } from 'components/inputs/MultiSelect';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
 import { Button } from 'components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'components/ui/table';
 
 export type FormAnswersProps = {
   formId: string | null;
@@ -23,8 +23,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
   const { data, isLoading, error } = useFormSubmissions(formId || '-', selectedPage + 1);
-
-  const [selectedFields, setSelectedFields] = useState<string[]>(['Alle']);
+  const [_selectedFields, setSelectedFields] = useState<string[]>(['Alle']);
 
   const handleSelectFields = (values: MultiSelectOption[]) => {
     if (values.length === 0) {
@@ -56,6 +55,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     }
   };
 
+  // TODO: Add this later
   const downloadCSV = async () => {
     try {
       const headers = new Headers();
@@ -91,65 +91,33 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-3'>
       <MultiSelect
         onChange={handleSelectFields}
-        options={form.fields.map((field) => ({
+        options={form.fields.map((field: { title: string }) => ({
           value: field.title,
           label: field.title,
         }))}
         placeholder='Velg spørsmål...'
       />
-
+      <div className='grid grid-cols-[3fr_3fr_3fr_2fr_auto] pl-4 size-full gap-3 text-sm text-gray-300'>
+        <div className=''>Navn</div>
+        <div className=''>E-post</div>
+        <div className=''>Studie</div>
+        <div className=''>Studiekull</div>
+        <div className='w-6'></div>
+      </div>
       <div className='rounded-md border'>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Navn</TableHead>
-              <TableHead>E-post</TableHead>
-              <TableHead>Studie</TableHead>
-              <TableHead>Studiekull</TableHead>
-
-              {selectedFields.includes('Alle') && form.fields.map((field, index) => <TableHead key={index}>{field.title}</TableHead>)}
-
-              {!selectedFields.includes('Alle') && selectedFields.map((field, index) => <TableHead key={index}>{field}</TableHead>)}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.results.map((submission, index) => (
-              <TableRow key={index}>
-                <TableCell>
-                  {submission.user.first_name} {submission.user.last_name}
-                </TableCell>
-
-                <TableCell>{submission.user.email}</TableCell>
-
-                <TableCell>{submission.user.study.group.name}</TableCell>
-
-                <TableCell>{submission.user.studyyear.group.name}</TableCell>
-
-                {form.fields
-                  .filter((filter) => {
-                    if (selectedFields.includes('Alle')) {
-                      return filter;
-                    }
-
-                    return selectedFields.includes(filter.title);
-                  })
-                  .map((field, index) => (
-                    <TableCell key={index}>{getTableCellText(field, submission)}</TableCell>
-                  ))}
-              </TableRow>
+        <div className='px-4 sm:px-0'>
+          <div className='flex flex-col gap-2'>
+            {data.results.map((userSubmission, index) => (
+              <FormAnswer form={form} getTableCellText={getTableCellText} key={index} userSubmission={userSubmission} />
             ))}
-          </TableBody>
-        </Table>
+          </div>
+        </div>
       </div>
 
       <div className='flex items-center justify-between'>
-        <Button onClick={downloadCSV} variant='outline'>
-          Last ned som CSV
-        </Button>
-
         <div className='space-x-2'>
           <Button
             disabled={selectedPage === 0}
@@ -170,5 +138,35 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     </div>
   );
 };
+
+function FormAnswer({ userSubmission, form, getTableCellText }: { userSubmission: UserSubmission; form: Form; getTableCellText: (f: any, s: any) => string }) {
+  return (
+    <Accordion className='' collapsible type='single'>
+      <AccordionItem className='border-0' value='item-1'>
+        <AccordionTrigger className='px-4 py-4 border-b'>
+          <div className='grid grid-cols-[3fr_3fr_3fr_2fr] size-full gap-3 text-left text-ellipsis'>
+            <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.first_name + ' ' + userSubmission.user.last_name}</div>
+            <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.email}</div>
+            <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.study.group.name}</div>
+            <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.studyyear.group.name}</div>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className='px-4 pt-8 pb-14 border-b'>
+          <div className='flex flex-col gap-16'>
+            {form.fields.map((field, index) => (
+              <div className='flex flex-row gap-x-8 text-left' key={index}>
+                <div className='w-1/3'>
+                  <p>{form.fields.find((f) => f.id === field.id)?.title ?? 'Ingen spørsmål'}</p>
+                </div>
+
+                <div className='w-2/3'>{getTableCellText(field, userSubmission)}</div>
+              </div>
+            ))}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
 
 export default FormAnswers;
