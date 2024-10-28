@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Network, Plus, Trash } from 'lucide-react';
+import { Copy, Network, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -51,10 +51,14 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
     <Card>
       <CardHeader className='flex flex-row items-center justify-between'>
         <CardTitle>{shortLink.name}</CardTitle>
-
-        <Button onClick={share} size='icon' variant='ghost'>
-          <Network />
-        </Button>
+        <div>
+          <Button onClick={share} size='icon' variant='ghost'>
+            <Copy />
+          </Button>
+          <Button onClick={share} size='icon' variant='ghost'>
+            <Network />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div>
