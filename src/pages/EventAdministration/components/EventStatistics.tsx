@@ -100,7 +100,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
               active={Boolean(searchParams.get('has_paid'))}
               key='has_paid'
               label='Ikke betalt'
-              number={data.list_count - data.has_paid_count}
+              number={data.has_not_paid_count}
               onClick={() => handleFiltering('has_paid', 'false')}
             />
           )}
