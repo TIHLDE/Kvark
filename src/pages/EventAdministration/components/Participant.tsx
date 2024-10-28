@@ -99,7 +99,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
               <h1>
                 {registration.user_info.first_name} {registration.user_info.last_name}
               </h1>
-              <h1 className='text-sm'>{getUserAffiliation(registration.user_info)}</h1>
+              <h1 className='text-sm hidden md:block'>{getUserAffiliation(registration.user_info)}</h1>
             </div>
           </div>
           <div className='flex items-center space-x-2'>
@@ -146,7 +146,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 htmlFor={registration.user_info.user_id}>
                 <Checkbox checked={checkedState} id={registration.user_info.user_id} onCheckedChange={(checked) => handleAttendedCheck(Boolean(checked))} />
                 <div className='space-y-1 leading-none'>
-                  <Label>Ankommet?</Label>
+                  <Label>Ankommet? </Label>
                   <p className='text-sm text-muted-foreground'>Marker om deltager har ankommet</p>
                 </div>
               </label>
