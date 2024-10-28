@@ -27,6 +27,10 @@ type ShortLinkItemProps = {
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const deleteShortLink = useDeleteShortLink();
   const { event } = useAnalytics();
+  const clip = () => {
+    navigator.clipboard.writeText(`https://s.tihlde.org/${shortLink.name}`);
+    toast.success('Lenken ble kopiert til utklippstavlen');
+  };
   const { share } = useShare(
     {
       title: shortLink.name,
@@ -52,7 +56,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       <CardHeader className='flex flex-row items-center justify-between'>
         <CardTitle>{shortLink.name}</CardTitle>
         <div>
-          <Button onClick={share} size='icon' variant='ghost'>
+          <Button onClick={clip} size='icon' variant='ghost'>
             <Copy />
           </Button>
           <Button onClick={share} size='icon' variant='ghost'>
