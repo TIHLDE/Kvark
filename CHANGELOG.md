@@ -11,7 +11,9 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
-- ✨ **Filtrering**. Admin kan nå filtere deltakere av et arrangement på studie, studieår, om deltakere har allergier, (om deltakere godtar å bli tatt bilde av, om deltakere har ankommet), i tillegg til å kunne søke på fornavn og etternavn.
+
+🎨 - **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
+⚡ - **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
 
 ## Versjon 2024.22.10
 
