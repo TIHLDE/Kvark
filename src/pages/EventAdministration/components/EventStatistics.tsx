@@ -91,7 +91,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
           <Stat
             active={Boolean(searchParams.get('allow_photo'))}
             key='allow_photo'
-            label='Reservert for fotografering'
+            label='Godtar ikke foto'
             number={data.allow_photo_count}
             onClick={() => handleFiltering('allow_photo', 'false')}
           />
