@@ -4,6 +4,7 @@ import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMu
 
 import {
   Group,
+  GroupCreate,
   GroupFine,
   GroupFineBatchMutate,
   GroupFineCreate,
@@ -224,3 +225,14 @@ export const useGroupForms = (groupSlug: string, enabled?: boolean) =>
 
 export const useGroupStatistics = (groupSlug: string) =>
   useQuery<GroupMemberStatistics, RequestResponse>(GROUPS_QUERY_KEYS.statistics(groupSlug), () => API.getGroupStatistics(groupSlug));
+
+export const useCreateGroup = (): UseMutationResult<Group, RequestResponse, GroupCreate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation((group) => API.createGroup(group), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(GROUPS_QUERY_KEYS.all);
+      queryClient.setQueryData(GROUPS_QUERY_KEYS.detail(data.slug), data);
+    },
+  });
+};
