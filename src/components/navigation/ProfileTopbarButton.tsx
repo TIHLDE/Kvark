@@ -53,7 +53,7 @@ const ProfileTopbarButton = () => {
                   <h3 className='text-lg font-semibold mb-2 dark:text-white'>Index rydder opp i bugs!</h3>
                   Det er nytt semester og vi setter inn en ekstra innsats for å bli kvitt det som er av bugs og feil på siden. Trykk her neste gang du møter på
                   et problem for å rapportere det!
-                  <br /> <br /> - Embret og resten av Index-teamet
+                  <br /> <br /> - Index-teamet
                 </div>
               ),
             },

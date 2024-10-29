@@ -14,6 +14,7 @@ import {
   EventList,
   EventMutate,
   EventStatistics,
+  Feedback,
   FileUploadResponse,
   Form,
   FormCreate,
@@ -111,6 +112,7 @@ export const PAYMENT_ENDPOINT = 'payments';
 export const EMOJI_ENDPOINT = 'emojis';
 export const BIO_ENDPOINT = 'user-bios/';
 export const FEIDE_ENDPOINT = 'feide/';
+export const FEEDBACK_ENDPOINT = 'feedbacks/';
 
 export default {
   // Auth
@@ -399,4 +401,7 @@ export default {
   updateUserBio: (id: UserBio['id'], data: Partial<UserBio>) => IFetch<UserBio>({ method: 'PUT', url: `${BIO_ENDPOINT}${id}/`, data }),
   deleteUserBio: (id: UserBio['id']) => IFetch<UserBio>({ method: 'DELETE', url: `${BIO_ENDPOINT}${id}/` }),
   getUserBio: (id: UserBio['id'] | null) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}${id}/` }),
+
+  // Feedback
+  getFeedbacks: (filters?: any) => IFetch<PaginationResponse<Feedback>>({ method: 'GET', url: FEEDBACK_ENDPOINT, data: filters || {} }),
 };

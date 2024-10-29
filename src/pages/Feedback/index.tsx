@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon, ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
+import { useFeedbacks } from 'hooks/Feedback';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
@@ -12,32 +14,10 @@ import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
 
-const fakeBugs = [
-  {
-    type: 'bug',
-    id: 1,
-    points: 10,
-    title: 'Bug 1',
-    description: 'Bug 1 description',
-    created_at: new Date(),
-  },
-  {
-    type: 'bug',
-    id: 2,
-    points: 8,
-    title: 'Bug 2',
-    description: 'Bug 2 description',
-    created_at: new Date(),
-  },
-  {
-    type: 'idea',
-    id: 3,
-    points: 5,
-    title: 'Idé 3',
-    description: 'Idé 3 description',
-    created_at: new Date(),
-  },
-];
+type Filters = {
+  search?: string;
+  feedback_type?: string;
+};
 
 const ideaFormSchema = z.object({
   title: z
@@ -78,6 +58,21 @@ const bugFormSchema = z.object({
 });
 
 export default function Feedback() {
+  const getInitialFilters = useCallback((): Filters => {
+    const params = new URLSearchParams(location.search);
+    const feedback_type = params.get('feedback_type') || undefined;
+    const search = params.get('search') || undefined;
+    return { feedback_type, search };
+  }, []);
+
+  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useFeedbacks(filters);
+
+  const feedbacks = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
+
+  console.log(feedbacks);
+
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
     defaultValues: {
@@ -100,29 +95,7 @@ export default function Feedback() {
     setOpenItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
-  const [filter, setFilter] = useState<string>('all');
   const [sort, setSort] = useState<string>('newest');
-
-  const filteredAndSortedBugs = fakeBugs
-    .filter((item) => {
-      if (filter === 'all') {
-        return true;
-      }
-      return item.type === filter;
-    })
-    .sort((a, b) => {
-      switch (sort) {
-        case 'most-points':
-          return b.points - a.points;
-        case 'least-points':
-          return a.points - b.points;
-        case 'oldest':
-          return a.created_at.getTime() - b.created_at.getTime();
-        case 'newest':
-        default:
-          return b.created_at.getTime() - a.created_at.getTime();
-      }
-    });
 
   function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
     // Handle idea form submission
@@ -134,12 +107,16 @@ export default function Feedback() {
     console.log(values);
   }
 
+  const handleFeedbackFilter = (value: string) => {
+    setFilters((prev) => ({ ...prev, feedback_type: value }));
+  };
+
   return (
-    <div className='max-w-5xl mx-auto pt-12 relative px-4'>
+    <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
       <div className='absolute top-44 right-0 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
       <div className='absolute top-56 right-44 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
 
-      <div className='mt-44'>
+      <div className='mt-24'>
         <p className='text-xs py-0.5 px-2.5 dark:bg-cyan-600 bg-cyan-500 text-white w-fit rounded-full dark:text-cyan-300   mb-2'>Brukerinnspill</p>
         <h1 className='text-2xl sm:text-6xl font-semibold max-w-3xl leading-tight'>
           Kom med nye idéer <br />
@@ -153,7 +130,7 @@ export default function Feedback() {
 
       <div className='mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2'>
         <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
-          <Select defaultValue='all' onValueChange={setFilter}>
+          <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
             </SelectTrigger>
@@ -171,8 +148,9 @@ export default function Feedback() {
             <SelectContent>
               <SelectItem value='newest'>Nyeste</SelectItem>
               <SelectItem value='oldest'>Eldste</SelectItem>
-              <SelectItem value='most-points'>Flest poeng</SelectItem>
-              <SelectItem value='least-points'>Færrest poeng</SelectItem>
+              {/* TODO: Implement sorting by points */}
+              {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
+              <SelectItem value='least-points'>Færrest poeng</SelectItem> */}
             </SelectContent>
           </Select>
         </div>
@@ -267,31 +245,41 @@ export default function Feedback() {
       </div>
 
       <div className='my-4 sm:my-8 space-y-4'>
-        {filteredAndSortedBugs.map((item) => (
+        {feedbacks.map((item, index) => (
           <Collapsible
             className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
-            key={item.id}
+            key={index}
             onOpenChange={() => toggleItem(item.id)}
             open={openItems.includes(item.id)}>
             <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
               <div className='flex items-center space-x-4'>
-                {item.type === 'bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
+                {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
                 <span className='font-medium truncate max-w-md'>{item.title}</span>
               </div>
               <div className='flex items-center space-x-4'>
-                <span className='text-sm text-gray-400'>{item.points} poeng</span>
+                {/* // TODO: Implement voting */}
+                {/* <span className='text-sm text-gray-400'>{item.points} poeng</span>
                 <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
                   <ThumbsUpIcon className='w-4 h-4' />
                 </Button>
                 <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
                   <ThumbsDownIcon className='w-4 h-4' />
-                </Button>
+                </Button> */}
                 {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
               <p className='text-lg text-gray-700 dark:text-gray-300'>{item.description}</p>
-              <p className='text-xs text-gray-600 dark:text-gray-400 mt-2'>Opprettet: {item.created_at.toLocaleString()}</p>
+              <p className='text-xs text-gray-600 dark:text-gray-400 mt-2'>
+                Opprettet:{' '}
+                {new Date(item.created_at).toLocaleString('no-NO', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
             </CollapsibleContent>
           </Collapsible>
         ))}
