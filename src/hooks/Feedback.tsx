@@ -22,7 +22,7 @@ export const useCreateFeedback = (): UseMutationResult<createFeedbackInput, Requ
   const queryClient = useQueryClient();
   return useMutation((data) => API.createFeedback(data), {
     onSuccess: () => {
-      queryClient.invalidateQueries([FEEDBACK_QUERY_KEYS])
+      queryClient.invalidateQueries([FEEDBACK_QUERY_KEYS]);
     },
   });
-}
+};

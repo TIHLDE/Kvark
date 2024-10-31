@@ -2,9 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon, ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { useFeedbacks, useCreateFeedback } from 'hooks/Feedback';
+import { useCreateFeedback, useFeedbacks } from 'hooks/Feedback';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
@@ -13,7 +14,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
-import { toast } from 'sonner';
 
 type Filters = {
   search?: string;
@@ -106,18 +106,20 @@ export default function Feedback() {
   }
 
   function onSubmitBug(values: z.infer<typeof bugFormSchema>) {
-
-    createFeedback.mutate({
-      feedback_type: "Bug",
-      ...values
-    }, {
-      onSuccess: () => {
-        toast.success('Bugen ble registrert');
+    createFeedback.mutate(
+      {
+        feedback_type: 'Bug',
+        ...values,
       },
-      onError: (e) => {
-        toast.error(e.detail);
+      {
+        onSuccess: () => {
+          toast.success('Bugen ble registrert');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
       },
-    });
+    );
 
     console.log(values);
   }
