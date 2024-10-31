@@ -1,6 +1,12 @@
+export type createFeedbackInput = {
+  feedback_type: 'Idea' | 'Bug';
+  title: string;
+  description: string;
+}
+
 export type Feedback = {
   id: number;
-  feedback_type: string;
+  feedback_type: 'Idea' | 'Bug';
   title: string;
   description: string;
   created_at: string;

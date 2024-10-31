@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { useFeedbacks } from 'hooks/Feedback';
+import { useFeedbacks, useCreateFeedback } from 'hooks/Feedback';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
@@ -13,6 +13,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
+import { toast } from 'sonner';
 
 type Filters = {
   search?: string;
@@ -71,6 +72,8 @@ export default function Feedback() {
 
   const feedbacks = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
+  const createFeedback = useCreateFeedback();
+
   console.log(feedbacks);
 
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
@@ -103,7 +106,19 @@ export default function Feedback() {
   }
 
   function onSubmitBug(values: z.infer<typeof bugFormSchema>) {
-    // Handle bug form submission
+
+    createFeedback.mutate({
+      feedback_type: "Bug",
+      ...values
+    }, {
+      onSuccess: () => {
+        toast.success('Bugen ble registrert');
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
+    });
+
     console.log(values);
   }
 
@@ -244,7 +259,7 @@ export default function Feedback() {
         </div>
       </div>
 
-      <div className='my-4 sm:my-8 space-y-4'>
+      <div className='my-4 sm:my-18 space-y-4'>
         {feedbacks.map((item, index) => (
           <Collapsible
             className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'

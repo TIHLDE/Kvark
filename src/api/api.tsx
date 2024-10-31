@@ -8,6 +8,7 @@ import {
   Category,
   Cheatsheet,
   CompaniesEmail,
+  createFeedbackInput,
   CreateQRCode,
   Event,
   EventFavorite,
@@ -15,6 +16,7 @@ import {
   EventMutate,
   EventStatistics,
   Feedback,
+  FeedbackAuthor,
   FileUploadResponse,
   Form,
   FormCreate,
@@ -403,5 +405,7 @@ export default {
   getUserBio: (id: UserBio['id'] | null) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}${id}/` }),
 
   // Feedback
-  getFeedbacks: (filters?: any) => IFetch<PaginationResponse<Feedback>>({ method: 'GET', url: FEEDBACK_ENDPOINT, data: filters || {} }),
+  getFeedbacks: (filters?: any) => IFetch<PaginationResponse<Feedback>>({ method: 'GET', url: `${FEEDBACK_ENDPOINT}`, data: filters || {} }),
+  createFeedback: (data: createFeedbackInput) => IFetch<Feedback>({method: 'POST', url: `${FEEDBACK_ENDPOINT}`, data}),
+  deleteFeedback: (id: Feedback['id']) => IFetch<Feedback>({ method: 'DELETE', url: `${FEEDBACK_ENDPOINT}${id}/` }),
 };
