@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon, ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react';
+import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon, ThumbsDownIcon, ThumbsUpIcon, X } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { useCreateFeedback, useFeedbacks } from 'hooks/Feedback';
+import { useCreateFeedback, useFeedbacks, useDeleteFeedback } from 'hooks/Feedback';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
@@ -14,6 +14,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 type Filters = {
   search?: string;
@@ -73,8 +74,7 @@ export default function Feedback() {
   const feedbacks = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const createFeedback = useCreateFeedback();
-
-  console.log(feedbacks);
+  const deleteFeedback = useDeleteFeedback();
 
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
@@ -100,9 +100,33 @@ export default function Feedback() {
 
   const [sort, setSort] = useState<string>('newest');
 
+  const onDeleteFeedback = (feedbackId: number) => {
+    deleteFeedback.mutate(feedbackId, {
+        onSuccess: () => {
+          toast.success('Feeback ble slettet');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
+      },
+    );
+  }
+
   function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
-    // Handle idea form submission
-    console.log(values);
+    createFeedback.mutate(
+      {
+        feedback_type: 'Idea',
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Ideen ble registrert');
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
+      },
+    );
   }
 
   function onSubmitBug(values: z.infer<typeof bugFormSchema>) {
@@ -120,8 +144,6 @@ export default function Feedback() {
         },
       },
     );
-
-    console.log(values);
   }
 
   const handleFeedbackFilter = (value: string) => {
@@ -287,16 +309,28 @@ export default function Feedback() {
             </CollapsibleTrigger>
             <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
               <p className='text-lg text-gray-700 dark:text-gray-300'>{item.description}</p>
-              <p className='text-xs text-gray-600 dark:text-gray-400 mt-2'>
-                Opprettet:{' '}
-                {new Date(item.created_at).toLocaleString('no-NO', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </p>
+              <div className="flex justify-between items-center">
+                <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
+                  Opprettet:{' '}
+                  {new Date(item.created_at).toLocaleString('no-NO', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </p>
+                <ResponsiveAlertDialog
+                  action={() => onDeleteFeedback(item.id)}
+                  description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
+                  title='Slett feedback?'
+                  trigger={
+                    <Button className='w-full md:w-40 block' type='button' variant='destructive'>
+                      Slett feedback
+                    </Button>
+                  }
+                />
+              </div>
             </CollapsibleContent>
           </Collapsible>
         ))}

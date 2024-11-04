@@ -22,7 +22,16 @@ export const useCreateFeedback = (): UseMutationResult<createFeedbackInput, Requ
   const queryClient = useQueryClient();
   return useMutation((data) => API.createFeedback(data), {
     onSuccess: () => {
-      queryClient.invalidateQueries([FEEDBACK_QUERY_KEYS]);
+      queryClient.invalidateQueries(FEEDBACK_QUERY_KEYS.all);
+    },
+  });
+};
+
+export const useDeleteFeedback = (): UseMutationResult<Feedback, RequestResponse, Feedback['id'], unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation((feedbackId: Feedback['id']) => API.deleteFeedback(feedbackId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(FEEDBACK_QUERY_KEYS.all);
     },
   });
 };
