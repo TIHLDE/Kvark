@@ -12,6 +12,12 @@
 
 ## Neste versjon
 
+## Versjon 2024.04.11
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+- 🎨 **Designendringer**. Escapet beskrivelse i galleri
+- 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
+- ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
+
 ## Versjon 2024.22.10
 
 - ✨ **Gruppe**. HS kan nå opprette grupper.
