@@ -47,7 +47,7 @@ const GalleryDetails = () => {
               )}
             </HavePermission>
           </div>
-          <p className='text-muted-foreground'>{data?.description}</p>
+          <p className='text-muted-foreground break-all'>{data?.description}</p>
         </div>
       </div>
 
