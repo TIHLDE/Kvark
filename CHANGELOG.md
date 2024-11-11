@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- 🎨 - **Designendringer** Nå kommer bare navn opp i deltagerliste for arrangemanter i admin på mobil. 
 
 ## Versjon 2024.04.11
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 

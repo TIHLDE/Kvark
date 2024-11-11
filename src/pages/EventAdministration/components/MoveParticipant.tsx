@@ -54,3 +54,4 @@ const MoveParticipant = ({ eventId, userId, isOnWait, checkedState }: MovePartic
 };
 
 export default MoveParticipant;
+

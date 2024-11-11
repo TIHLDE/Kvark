@@ -163,6 +163,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             )}
 
             <DeleteRegistration eventId={eventId} userInfo={registration.user_info} />
+
           </div>
         </div>
 
