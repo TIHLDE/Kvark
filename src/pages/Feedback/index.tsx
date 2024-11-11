@@ -4,9 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-
 import { useCreateFeedback, useFeedbacks, useDeleteFeedback } from 'hooks/Feedback';
-
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
 import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
@@ -15,6 +13,8 @@ import { Input } from 'components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import { useHavePermission, useUserMemberships } from 'hooks/User';
+import { PermissionApp } from 'types/Enums';
 
 type Filters = {
   search?: string;
@@ -70,7 +70,7 @@ export default function Feedback() {
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useFeedbacks(filters);
-
+  console.log(data);
   const feedbacks = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const createFeedback = useCreateFeedback();
@@ -102,13 +102,13 @@ export default function Feedback() {
 
   const onDeleteFeedback = (feedbackId: number) => {
     deleteFeedback.mutate(feedbackId, {
-        onSuccess: () => {
-          toast.success('Feeback ble slettet');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
+      onSuccess: () => {
+        toast.success('Feeback ble slettet');
       },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
+    },
     );
   }
 
@@ -150,6 +150,10 @@ export default function Feedback() {
     setFilters((prev) => ({ ...prev, feedback_type: value }));
   };
 
+  const { allowAccess: isAdmin } = useHavePermission([
+    PermissionApp.FEEDBACK,
+  ]);
+
   return (
     <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
       <div className='absolute top-44 right-0 bg-cyan-400/30 w-32 h-32 rounded-full blur-3xl'></div>
@@ -169,7 +173,8 @@ export default function Feedback() {
 
       <div className='mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2'>
         <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
-          <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
+          {/* TODO: Implement sorting waiting for backend */}
+          {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
             </SelectTrigger>
@@ -178,20 +183,20 @@ export default function Feedback() {
               <SelectItem value='bug'>Bugs</SelectItem>
               <SelectItem value='idea'>Ideer</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
 
-          <Select defaultValue='newest' onValueChange={setSort}>
+          {/* <Select defaultValue='newest' onValueChange={setSort}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Sorter' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='newest'>Nyeste</SelectItem>
-              <SelectItem value='oldest'>Eldste</SelectItem>
-              {/* TODO: Implement sorting by points */}
-              {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
-              <SelectItem value='least-points'>Færrest poeng</SelectItem> */}
+              <SelectItem value='oldest'>Eldste</SelectItem> */}
+          {/* TODO: Implement sorting by points */}
+          {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
+              <SelectItem value='least-points'>Færrest poeng</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
         <div className='flex'>
           <Dialog>
@@ -308,7 +313,7 @@ export default function Feedback() {
               </div>
             </CollapsibleTrigger>
             <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
-              <p className='text-lg text-gray-700 dark:text-gray-300'>{item.description}</p>
+              <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
               <div className="flex justify-between items-center">
                 <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
                   Opprettet:{' '}
@@ -320,16 +325,18 @@ export default function Feedback() {
                     minute: '2-digit',
                   })}
                 </p>
-                <ResponsiveAlertDialog
-                  action={() => onDeleteFeedback(item.id)}
-                  description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
-                  title='Slett feedback?'
-                  trigger={
-                    <Button className='w-full md:w-40 block' type='button' variant='destructive'>
-                      Slett feedback
-                    </Button>
-                  }
-                />
+                {isAdmin &&
+                  <ResponsiveAlertDialog
+                    action={() => onDeleteFeedback(item.id)}
+                    description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
+                    title='Slett feedback?'
+                    trigger={
+                      <Button className='w-full md:w-40 block' type='button' variant='destructive'>
+                        Slett feedback
+                      </Button>
+                    }
+                  />
+                }
               </div>
             </CollapsibleContent>
           </Collapsible>

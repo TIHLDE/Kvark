@@ -8,10 +8,10 @@ export type Feedback = {
   id: number;
   feedback_type: 'Idea' | 'Bug';
   title: string;
-  description: string;
   created_at: string;
   status: string;
   author: FeedbackAuthor;
+  description: string;
 };
 
 export type FeedbackAuthor = {
