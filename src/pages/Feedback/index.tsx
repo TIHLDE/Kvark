@@ -4,17 +4,20 @@ import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-import { useCreateFeedback, useFeedbacks, useDeleteFeedback } from 'hooks/Feedback';
+
+import { PermissionApp } from 'types/Enums';
+
+import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from 'hooks/Feedback';
+import { useHavePermission, useUserMemberships } from 'hooks/User';
+
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
 import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
+import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import { useHavePermission, useUserMemberships } from 'hooks/User';
-import { PermissionApp } from 'types/Enums';
 
 type Filters = {
   search?: string;
@@ -108,9 +111,8 @@ export default function Feedback() {
       onError: (e) => {
         toast.error(e.detail);
       },
-    },
-    );
-  }
+    });
+  };
 
   function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
     createFeedback.mutate(
@@ -150,9 +152,7 @@ export default function Feedback() {
     setFilters((prev) => ({ ...prev, feedback_type: value }));
   };
 
-  const { allowAccess: isAdmin } = useHavePermission([
-    PermissionApp.FEEDBACK,
-  ]);
+  const { allowAccess: isAdmin } = useHavePermission([PermissionApp.FEEDBACK]);
 
   return (
     <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
@@ -314,7 +314,7 @@ export default function Feedback() {
             </CollapsibleTrigger>
             <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
               <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
-              <div className="flex justify-between items-center">
+              <div className='flex justify-between items-center'>
                 <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
                   Opprettet:{' '}
                   {new Date(item.created_at).toLocaleString('no-NO', {
@@ -325,7 +325,7 @@ export default function Feedback() {
                     minute: '2-digit',
                   })}
                 </p>
-                {isAdmin &&
+                {isAdmin && (
                   <ResponsiveAlertDialog
                     action={() => onDeleteFeedback(item.id)}
                     description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
@@ -336,7 +336,7 @@ export default function Feedback() {
                       </Button>
                     }
                   />
-                }
+                )}
               </div>
             </CollapsibleContent>
           </Collapsible>
