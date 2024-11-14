@@ -1,18 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
- 
 import { Separator } from './separator';
- 
-const meta: Meta<typeof Separator> = {
+
+const meta: Meta = {
   component: Separator,
 };
 export default meta;
- 
-type Story = StoryObj<typeof Separator>;
- 
+
+type Story = StoryObj;
+
 export const Basic: Story = {};
- 
-// export const Primary: Story = {
-//   args: {
-//     primary: true,
-//   },
-// };
+
+export const Primary: Story = {
+  args: {
+    primary: true,
+  },
+};
