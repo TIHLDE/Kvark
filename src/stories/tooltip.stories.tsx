@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
+
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
 const meta: Meta<typeof Tooltip> = {
@@ -21,7 +22,6 @@ export const Base: Story = {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-
   ),
   args: {},
 };
