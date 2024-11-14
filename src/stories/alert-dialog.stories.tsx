@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react"
+import { Meta, StoryObj } from '@storybook/react';
 
 import {
   AlertDialog,
@@ -10,32 +10,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "components/ui/alert-dialog"
-import { Button } from "components/ui/button"
+} from 'components/ui/alert-dialog';
+import { Button } from 'components/ui/button';
 
 const meta: Meta<typeof AlertDialog> = {
-  title: "components/AlertDialog",
+  title: 'components/AlertDialog',
   component: AlertDialog,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof AlertDialog>
+type Story = StoryObj<typeof AlertDialog>;
 
 export const Base: Story = {
   render: () => (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Open</Button>
+        <Button variant='outline'>Open</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your account and remove your data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -46,4 +45,4 @@ export const Base: Story = {
     </AlertDialog>
   ),
   args: {},
-}
+};
