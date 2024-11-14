@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
+
 import { Button } from 'components/ui/button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -28,15 +29,14 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
-    variant: "default",
-    children: "click me!"
+    variant: 'default',
+    children: 'click me!',
   },
 };
 
 export const Secondary: Story = {
   args: {
     variant: 'outline',
-    children: "click me!"
+    children: 'click me!',
   },
 };
-
