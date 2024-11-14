@@ -16,8 +16,8 @@ type Story = StoryObj<typeof Switch>;
 export const Base: Story = {
   render: (args) => (
     <div className='flex items-center space-x-2'>
-      <Switch id='airplane-mode' />
-      <Label htmlFor='airplane-mode'>Airplane Mode</Label>
+      <Switch id='dark-mode' />
+      <Label htmlFor='dark-mode'>Dark Mode</Label>
     </div>
   ),
   args: {},
