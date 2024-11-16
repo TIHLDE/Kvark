@@ -45,6 +45,7 @@ const FormAdmin = lazy(() => import('pages/Form/FormAdmin'));
 const Http404 = lazy(() => import('pages/Http404'));
 const JobPostAdministration = lazy(() => import('pages/JobPostAdministration'));
 const LogIn = lazy(() => import('pages/LogIn'));
+const OAuth = lazy(() => import('pages/OAuth'));
 const NewsAdministration = lazy(() => import('pages/NewsAdministration'));
 const Wiki = lazy(() => import('pages/Wiki'));
 const ShortLinks = lazy(() => import('pages/ShortLinks'));
@@ -173,6 +174,7 @@ const AppRoutes = () => {
         <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
 
         <Route element={<LogIn />} path={URLS.login} />
+        <Route element={<OAuth />} path={URLS.oauth} />
         <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
         <Route element={<SignUp />} path={URLS.signupForm} />
         <Route element={<SignUpOptions />} path={URLS.signup} />

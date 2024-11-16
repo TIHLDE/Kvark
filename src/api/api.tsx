@@ -74,10 +74,12 @@ import {
   WikiTree,
 } from 'types';
 import { CheatsheetStudy, MembershipType } from 'types/Enums';
+import { OAuthAppInfo, OAuthCodeResponse } from 'types/OAuth';
 
 import { IFetch } from 'api/fetch';
 
 export const AUTH_ENDPOINT = 'auth';
+export const OAUTH_ENDPOINT = `${AUTH_ENDPOINT}/oauth`;
 export const BADGES_ENDPOINT = 'badges';
 export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
 export const BADGE_CATEGORIES_ENDPOINT = 'categories';
@@ -124,6 +126,18 @@ export default {
     }),
   forgotPassword: (email: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
+
+  // OAuth
+  getOAuthApp: (clientId: string) =>
+    IFetch<OAuthAppInfo>({ method: 'GET', url: `${OAUTH_ENDPOINT}/oauth_app`, data: { client_id: clientId }, withAuth: false }),
+
+  createOAuthCode: (clientId: string, redirectUri: string) =>
+    IFetch<OAuthCodeResponse>({
+      method: 'POST',
+      url: `${OAUTH_ENDPOINT}/redirect`,
+      data: { client_id: clientId, redirect_uri: redirectUri },
+      withAuth: true,
+    }),
 
   // InfoBanner
   getInfoBanners: (filters?: any) => IFetch<PaginationResponse<InfoBanner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),

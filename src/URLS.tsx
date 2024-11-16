@@ -44,6 +44,7 @@ const URLS = {
   jobposts: '/karriere/',
   landing: '/',
   login: '/logg-inn/',
+  oauth: '/auth/oauth',
   newStudent: '/ny-student/',
   news: '/nyheter/',
   toddel: '/toddel/',
