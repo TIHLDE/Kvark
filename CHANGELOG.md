@@ -11,6 +11,8 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- ⚡  **Lovparagraf**. Endret lovparagraf-parser for å prefikse enkeltsifrede desimaler med null.
+- 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
