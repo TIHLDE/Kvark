@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { formatLawHeader } from 'utils';
@@ -49,6 +49,17 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
       image: '',
     },
   });
+
+  const selectedLawId = form.watch('description');
+
+  useEffect(() => {
+    if (selectedLawId && laws) {
+      const law = laws.find((law) => law.id === selectedLawId);
+      if (law) {
+        form.setValue('amount', law.amount.toString());
+      }
+    }
+  }, [selectedLawId, laws]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const law = laws?.find((law) => law.id === values.description);
