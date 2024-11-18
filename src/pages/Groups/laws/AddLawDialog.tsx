@@ -3,6 +3,7 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { parseLawParagraphNumber } from 'utils';
 import { z } from 'zod';
 
 import { Group } from 'types';
@@ -23,7 +24,7 @@ export type AddLawDialogProps = {
 const formSchema = z.object({
   amount: z.string(),
   description: z.string().optional(),
-  paragraph: z.string(),
+  paragraph: z.string().regex(/^\d+(\.\d{1,2})?$/, { message: 'Paragraf må være et tall med opptil to desimaler' }),
   title: z.string().min(1, { message: 'Tittel er påkrevd' }),
 });
 
@@ -45,7 +46,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
     const data = {
       amount: parseInt(values.amount),
       description: values.description || '',
-      paragraph: parseFloat(values.paragraph),
+      paragraph: parseLawParagraphNumber(values.paragraph),
       title: values.title,
     };
     createLaw.mutate(data, {
