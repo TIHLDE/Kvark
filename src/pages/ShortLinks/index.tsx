@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Network, Plus, Trash } from 'lucide-react';
+import { Copy, Network, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -27,6 +27,10 @@ type ShortLinkItemProps = {
 const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
   const deleteShortLink = useDeleteShortLink();
   const { event } = useAnalytics();
+  const clip = () => {
+    navigator.clipboard.writeText(`https://s.tihlde.org/${shortLink.name}`);
+    toast.success('Lenken ble kopiert til utklippstavlen');
+  };
   const { share } = useShare(
     {
       title: shortLink.name,
@@ -51,10 +55,14 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
     <Card>
       <CardHeader className='flex flex-row items-center justify-between'>
         <CardTitle>{shortLink.name}</CardTitle>
-
-        <Button onClick={share} size='icon' variant='ghost'>
-          <Network />
-        </Button>
+        <div>
+          <Button onClick={clip} size='icon' variant='ghost'>
+            <Copy />
+          </Button>
+          <Button onClick={share} size='icon' variant='ghost'>
+            <Network />
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className='space-y-4'>
         <div>
