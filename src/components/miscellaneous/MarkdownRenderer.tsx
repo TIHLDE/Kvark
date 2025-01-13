@@ -47,8 +47,8 @@ export type CodeBlockProps = {
 
 export const CodeBlock = ({ inline = false, className: language, children }: CodeBlockProps) => {
   const value = typeof children === 'string' ? children : String(children);
-  console.log("CHILDREN: ", value);
-  console.log("LANGUAGE: ", language);
+  console.log('CHILDREN: ', value);
+  console.log('LANGUAGE: ', language);
   if (inline) {
     return <code className='bg-card p-1 rounded-md'>{value}</code>;
   } else if (language === LanguageTypes.EXPANDLIST) {
