@@ -6,16 +6,16 @@ import { toast } from 'sonner';
 import * as z from 'zod';
 
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from 'hooks/Feedback';
-import { useUserMemberships, useUser } from 'hooks/User';
+import { useUser, useUserMemberships } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; 
+import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
- import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
 
 type Filters = {
@@ -179,7 +179,7 @@ export default function Feedback() {
       <div className='mt-12 flex flex-col sm:flex-row justify-between items-end sm:items-center gap-2'>
         <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
           {/* TODO: Implement sorting waiting for backend */}
-           {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
+          {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
             </SelectTrigger>
@@ -198,7 +198,7 @@ export default function Feedback() {
               <SelectItem value='newest'>Nyeste</SelectItem>
               <SelectItem value='oldest'>Eldste</SelectItem>  */}
           {/* TODO: Implement sorting by points */}
-           {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
+          {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
               <SelectItem value='least-points'>Færrest poeng</SelectItem>
             </SelectContent>
           </Select> */}
@@ -213,7 +213,7 @@ export default function Feedback() {
                 Ny Idé
               </Button>
             }>
-            <div className="pl-5 pr-5">
+            <div className='pl-5 pr-5'>
               <Form {...ideaForm}>
                 <form className='space-y-8' onSubmit={ideaForm.handleSubmit(onSubmitIdea)}>
                   <FormField
@@ -258,7 +258,7 @@ export default function Feedback() {
                 Ny Feil
               </Button>
             }>
-            <div className="pl-5 pr-5">
+            <div className='pl-5 pr-5'>
               <Form {...bugForm}>
                 <form className='space-y-8' onSubmit={bugForm.handleSubmit(onSubmitBug)}>
                   <FormField
@@ -334,7 +334,7 @@ export default function Feedback() {
                     minute: '2-digit',
                   })}
                 </p>
-                {(item.author.user_id === user?.user_id || memberships.some(membership => membership.group?.slug === "index")) && (
+                {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
                   <ResponsiveAlertDialog
                     action={() => onDeleteFeedback(item.id)}
                     description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
