@@ -5,18 +5,17 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { PermissionApp } from 'types/Enums';
-
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from 'hooks/Feedback';
-import { useHavePermission, useUserMemberships } from 'hooks/User';
+import { useUserMemberships, useUser } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; // Assuming you have a Dialog component
+import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog'; 
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
 import { Textarea } from 'components/ui/textarea';
 
 type Filters = {
@@ -63,6 +62,8 @@ const bugFormSchema = z.object({
 });
 
 export default function Feedback() {
+  const [openIdea, setOpenIdea] = useState(false);
+  const [openBug, setOpenBug] = useState(false);
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const feedback_type = params.get('feedback_type') || undefined;
@@ -72,10 +73,14 @@ export default function Feedback() {
 
   const [filters, setFilters] = useState<Filters>(getInitialFilters());
 
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useFeedbacks(filters);
-  console.log(data);
-  const feedbacks = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
+  const { data: user } = useUser();
+  const { data: userGroups } = useUserMemberships();
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
+  console.log(memberships[1]?.group?.name);
 
+  const { data: feedbacksData, error, hasNextPage, fetchNextPage, isLoading: isFeedbacksLoading, isFetching } = useFeedbacks(filters);
+  const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
+  console.log(feedbacks);
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
 
@@ -106,7 +111,7 @@ export default function Feedback() {
   const onDeleteFeedback = (feedbackId: number) => {
     deleteFeedback.mutate(feedbackId, {
       onSuccess: () => {
-        toast.success('Feeback ble slettet');
+        toast.success('Feedback ble slettet');
       },
       onError: (e) => {
         toast.error(e.detail);
@@ -123,6 +128,7 @@ export default function Feedback() {
       {
         onSuccess: () => {
           toast.success('Ideen ble registrert');
+          setOpenIdea(false);
         },
         onError: (e) => {
           toast.error(e.detail);
@@ -140,6 +146,7 @@ export default function Feedback() {
       {
         onSuccess: () => {
           toast.success('Bugen ble registrert');
+          setOpenBug(false);
         },
         onError: (e) => {
           toast.error(e.detail);
@@ -151,8 +158,6 @@ export default function Feedback() {
   const handleFeedbackFilter = (value: string) => {
     setFilters((prev) => ({ ...prev, feedback_type: value }));
   };
-
-  const { allowAccess: isAdmin } = useHavePermission([PermissionApp.FEEDBACK]);
 
   return (
     <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
@@ -171,10 +176,10 @@ export default function Feedback() {
         kunne stemme på ideer og ting som må fikses, så vi vet hvor det brenner mest.
       </p>
 
-      <div className='mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2'>
+      <div className='mt-12 flex flex-col sm:flex-row justify-between items-end sm:items-center gap-2'>
         <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
           {/* TODO: Implement sorting waiting for backend */}
-          {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
+           {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Filter' />
             </SelectTrigger>
@@ -183,30 +188,32 @@ export default function Feedback() {
               <SelectItem value='bug'>Bugs</SelectItem>
               <SelectItem value='idea'>Ideer</SelectItem>
             </SelectContent>
-          </Select> */}
+          </Select> 
 
-          {/* <Select defaultValue='newest' onValueChange={setSort}>
+           <Select defaultValue='newest' onValueChange={setSort}>
             <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
               <SelectValue placeholder='Sorter' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='newest'>Nyeste</SelectItem>
-              <SelectItem value='oldest'>Eldste</SelectItem> */}
+              <SelectItem value='oldest'>Eldste</SelectItem>  */}
           {/* TODO: Implement sorting by points */}
-          {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
+           {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
               <SelectItem value='least-points'>Færrest poeng</SelectItem>
             </SelectContent>
           </Select> */}
         </div>
         <div className='flex'>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className=' ml-auto' variant='outline'>
+          <ResponsiveDialog
+            onOpenChange={setOpenIdea}
+            open={openIdea}
+            trigger={
+              <Button className='ml-2' variant='outline'>
                 <PlusIcon className='w-4 h-4' />
                 Ny Idé
               </Button>
-            </DialogTrigger>
-            <DialogContent>
+            }>
+            <div className="pl-5 pr-5">
               <Form {...ideaForm}>
                 <form className='space-y-8' onSubmit={ideaForm.handleSubmit(onSubmitIdea)}>
                   <FormField
@@ -240,16 +247,18 @@ export default function Feedback() {
                   <Button type='submit'>Send inn</Button>
                 </form>
               </Form>
-            </DialogContent>
-          </Dialog>
-          <Dialog>
-            <DialogTrigger asChild>
+            </div>
+          </ResponsiveDialog>
+          <ResponsiveDialog
+            onOpenChange={setOpenBug}
+            open={openBug}
+            trigger={
               <Button className='ml-2' variant='outline'>
                 <PlusIcon className='w-4 h-4' />
                 Ny Feil
               </Button>
-            </DialogTrigger>
-            <DialogContent>
+            }>
+            <div className="pl-5 pr-5">
               <Form {...bugForm}>
                 <form className='space-y-8' onSubmit={bugForm.handleSubmit(onSubmitBug)}>
                   <FormField
@@ -283,8 +292,8 @@ export default function Feedback() {
                   <Button type='submit'>Send inn</Button>
                 </form>
               </Form>
-            </DialogContent>
-          </Dialog>
+            </div>
+          </ResponsiveDialog>
         </div>
       </div>
 
@@ -325,13 +334,13 @@ export default function Feedback() {
                     minute: '2-digit',
                   })}
                 </p>
-                {isAdmin && (
+                {(item.author.user_id === user?.user_id || memberships.some(membership => membership.group?.slug === "index")) && (
                   <ResponsiveAlertDialog
                     action={() => onDeleteFeedback(item.id)}
                     description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
                     title='Slett feedback?'
                     trigger={
-                      <Button className='w-full md:w-40 block' type='button' variant='destructive'>
+                      <Button className='md:w-40 block' type='button' variant='destructive'>
                         Slett feedback
                       </Button>
                     }
