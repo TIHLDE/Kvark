@@ -11,12 +11,20 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
+## Versjon 2025.15.01
 - ⚡ **Kopier link**. Man kan nå kopiere forkortede linker.
 - ⚡ **Allergier for påmeldte medlemmer**. Admins kan nå se allergier for påmeldte medlemmer på arrangementer.
 - 🦟 **Markdown**. Markdown renderer fungerer nå som normalt.
 - ⚡ **Feedback**. Medlemmer kan nå gi tilbakemeldinger på ideer og bugs.
 - ⚡ **Lovparagraf**. Endret lovparagraf-parser for å prefikse enkeltsifrede desimaler med null.
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
+
+## Versjon 2024.04.11
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+- 🎨 **Designendringer**. Escapet beskrivelse i galleri
+- 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
+- ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
 
 ## Versjon 2024.04.11
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
