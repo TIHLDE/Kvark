@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon, ThumbsDownIcon, ThumbsUpIcon, X } from 'lucide-react';
+import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -8,14 +8,13 @@ import * as z from 'zod';
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from 'hooks/Feedback';
 import { useUser, useUserMemberships } from 'hooks/User';
 
-import { Button } from 'components/ui/button';
+import { Button, PaginateButton } from 'components/ui/button';
 import { Card, CardContent } from 'components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
 
 type Filters = {
@@ -76,11 +75,10 @@ export default function Feedback() {
   const { data: user } = useUser();
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
-  console.log(memberships[1]?.group?.name);
 
-  const { data: feedbacksData, error, hasNextPage, fetchNextPage, isLoading: isFeedbacksLoading, isFetching } = useFeedbacks(filters);
+  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbacks(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
-  console.log(feedbacks);
+
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
 
@@ -105,12 +103,6 @@ export default function Feedback() {
   const toggleItem = (id: number) => {
     setOpenItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
-
-  // const [sort, setSort] = useState<string>('newest');
-
-  // const handleFeedbackFilter = (value: string) => {
-  //   setFilters((prev) => ({ ...prev, feedback_type: value }));
-  // };
 
   function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
     createFeedback.mutate(
@@ -177,32 +169,6 @@ export default function Feedback() {
       </p>
 
       <div className='mt-12 flex flex-col sm:flex-row justify-between items-end sm:items-center gap-2'>
-        <div className='flex flex-col sm:flex-row gap-2 mb-8 sm:mb-0'>
-          {/* TODO: Implement sorting waiting for backend */}
-          {/* <Select defaultValue='all' onValueChange={handleFeedbackFilter}>
-            <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
-              <SelectValue placeholder='Filter' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='all'>Alle</SelectItem>
-              <SelectItem value='bug'>Bugs</SelectItem>
-              <SelectItem value='idea'>Ideer</SelectItem>
-            </SelectContent>
-          </Select> 
-
-           <Select defaultValue='newest' onValueChange={setSort}>
-            <SelectTrigger className='w-[180px] bg-white dark:bg-transparent'>
-              <SelectValue placeholder='Sorter' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='newest'>Nyeste</SelectItem>
-              <SelectItem value='oldest'>Eldste</SelectItem>  */}
-          {/* TODO: Implement sorting by points */}
-          {/* <SelectItem value='most-points'>Flest poeng</SelectItem>
-              <SelectItem value='least-points'>Færrest poeng</SelectItem>
-            </SelectContent>
-          </Select> */}
-        </div>
         <div className='flex'>
           <ResponsiveDialog
             onOpenChange={setOpenIdea}
@@ -318,14 +284,6 @@ export default function Feedback() {
                   <span className='font-medium truncate max-w-md'>{item.title}</span>
                 </div>
                 <div className='flex items-center space-x-4'>
-                  {/* // TODO: Implement voting */}
-                  {/* <span className='text-sm text-gray-400'>{item.points} poeng</span>
-                  <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
-                    <ThumbsUpIcon className='w-4 h-4' />
-                  </Button>
-                  <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
-                    <ThumbsDownIcon className='w-4 h-4' />
-                  </Button> */}
                   {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
                 </div>
               </CollapsibleTrigger>
@@ -359,6 +317,8 @@ export default function Feedback() {
             </Collapsible>
           ))
         )}
+
+        {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
       </div>
     </div>
   );
