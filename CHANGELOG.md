@@ -41,6 +41,8 @@
 - 🎨 **Badges ledertavle**. Fikset overflow av tekst på Badges ledertavle.
 - 🦟 **Brukerbilde**. Admins kan nå laste opp profilbilde for medlemmer.
 
+- ✨ **Feedback**. Brukere kan gi tilbakemeldinger om ideer og bugs.
+
 ## Versjon 2024.18.09
 
 - 🦟 **Safari zoom**. En bug der safari på mobil zoomer inn på input er nå fikset.
