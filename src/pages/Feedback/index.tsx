@@ -15,6 +15,7 @@ import { Input } from 'components/ui/input';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+import { Card, CardContent } from 'components/ui/card';
 import { Textarea } from 'components/ui/textarea';
 
 type Filters = {
@@ -107,16 +108,9 @@ export default function Feedback() {
 
   // const [sort, setSort] = useState<string>('newest');
 
-  const onDeleteFeedback = (feedbackId: number) => {
-    deleteFeedback.mutate(feedbackId, {
-      onSuccess: () => {
-        toast.success('Feedback ble slettet');
-      },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
-  };
+  // const handleFeedbackFilter = (value: string) => {
+  //   setFilters((prev) => ({ ...prev, feedback_type: value }));
+  // };
 
   function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
     createFeedback.mutate(
@@ -144,7 +138,7 @@ export default function Feedback() {
       },
       {
         onSuccess: () => {
-          toast.success('Bugen ble registrert');
+          toast.success('Feilen ble registrert');
           setOpenBug(false);
         },
         onError: (e) => {
@@ -154,9 +148,16 @@ export default function Feedback() {
     );
   }
 
-  // const handleFeedbackFilter = (value: string) => {
-  //   setFilters((prev) => ({ ...prev, feedback_type: value }));
-  // };
+  const onDeleteFeedback = (feedbackId: number) => {
+    deleteFeedback.mutate(feedbackId, {
+      onSuccess: () => {
+        toast.success('Tilbakemeldingen ble slettet');
+      },
+      onError: (e) => {
+        toast.error(e.detail);
+      },
+    });
+  };
 
   return (
     <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
@@ -297,58 +298,67 @@ export default function Feedback() {
       </div>
 
       <div className='my-4 sm:my-18 space-y-4'>
-        {feedbacks.map((item, index) => (
-          <Collapsible
-            className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
-            key={index}
-            onOpenChange={() => toggleItem(item.id)}
-            open={openItems.includes(item.id)}>
-            <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
-              <div className='flex items-center space-x-4'>
-                {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
-                <span className='font-medium truncate max-w-md'>{item.title}</span>
-              </div>
-              <div className='flex items-center space-x-4'>
-                {/* // TODO: Implement voting */}
-                {/* <span className='text-sm text-gray-400'>{item.points} poeng</span>
-                <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
-                  <ThumbsUpIcon className='w-4 h-4' />
-                </Button>
-                <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
-                  <ThumbsDownIcon className='w-4 h-4' />
-                </Button> */}
-                {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
-              </div>
-            </CollapsibleTrigger>
-            <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
-              <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
-              <div className='flex justify-between items-center'>
-                <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
-                  Opprettet:{' '}
-                  {new Date(item.created_at).toLocaleString('no-NO', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </p>
-                {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
-                  <ResponsiveAlertDialog
-                    action={() => onDeleteFeedback(item.id)}
-                    description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
-                    title='Slett feedback?'
-                    trigger={
-                      <Button className='md:w-40 block' type='button' variant='destructive'>
-                        Slett feedback
-                      </Button>
-                    }
-                  />
-                )}
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-        ))}
+        {feedbacks.length === 0 ? (
+          <Card>
+            <CardContent className='p-1 h-80 flex flex-col items-center justify-center gap-6'>
+              <div className=''>Ingen tilbakemeldinger rapportert</div>
+              <BugIcon className='w-20 h-20 text-gray-800 dark:text-blue-950/90' />
+            </CardContent>
+          </Card>
+        ) : (
+          feedbacks.map((item, index) => (
+            <Collapsible
+              className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
+              key={index}
+              onOpenChange={() => toggleItem(item.id)}
+              open={openItems.includes(item.id)}>
+              <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
+                <div className='flex items-center space-x-4'>
+                  {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
+                  <span className='font-medium truncate max-w-md'>{item.title}</span>
+                </div>
+                <div className='flex items-center space-x-4'>
+                  {/* // TODO: Implement voting */}
+                  {/* <span className='text-sm text-gray-400'>{item.points} poeng</span>
+                  <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
+                    <ThumbsUpIcon className='w-4 h-4' />
+                  </Button>
+                  <Button className='w-8 h-8 p-0' onClick={(e) => e.preventDefault()} size='sm' variant='outline'>
+                    <ThumbsDownIcon className='w-4 h-4' />
+                  </Button> */}
+                  {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
+                <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
+                <div className='flex justify-between items-center'>
+                  <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
+                    Opprettet:{' '}
+                    {new Date(item.created_at).toLocaleString('no-NO', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </p>
+                  {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
+                    <ResponsiveAlertDialog
+                      action={() => onDeleteFeedback(item.id)}
+                      description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
+                      title='Slett feedback?'
+                      trigger={
+                        <Button className='md:w-40 block' type='button' variant='destructive'>
+                          Slett feedback
+                        </Button>
+                      }
+                    />
+                  )}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          ))
+        )}
       </div>
     </div>
   );
