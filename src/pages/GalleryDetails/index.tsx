@@ -33,20 +33,22 @@ const GalleryDetails = () => {
 
   return (
     <Page className='space-y-12'>
-      <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
-        <div className='space-y-2'>
-          <h1 className='text-3xl lg:text-5xl font-bold'>{data?.title || 'Laster galleri...'}</h1>
-          <p className='text-muted-foreground'>{data?.description}</p>
-        </div>
+      <div className='space-y-4 space-x-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+        <div className='space-y-4 w-full'>
+          <div className='flex flex-col gap-2 md:flex-row md:justify-between md:items-center'>
+            <h1 className='text-3xl lg:text-5xl font-bold'>{data?.title || 'Laster galleri...'}</h1>
 
-        <HavePermission apps={[PermissionApp.PICTURE]}>
-          {data && (
-            <div className='flex items-center space-x-2'>
-              <PictureUpload id={data.id} />
-              <GalleryEditorDialog id={data.id} />
-            </div>
-          )}
-        </HavePermission>
+            <HavePermission apps={[PermissionApp.PICTURE]}>
+              {data && (
+                <div className='flex items-center space-x-2'>
+                  <PictureUpload id={data.id} />
+                  <GalleryEditorDialog id={data.id} />
+                </div>
+              )}
+            </HavePermission>
+          </div>
+          <p className='text-muted-foreground break-all'>{data?.description}</p>
+        </div>
       </div>
 
       {data ? (

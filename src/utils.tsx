@@ -102,7 +102,7 @@ export const getUserStudyShort = (userStudy: UserStudy) => {
     case UserStudy.DIGSEC:
       return 'DigSec';
     case UserStudy.DIGSAM:
-      return 'DigTrans';
+      return 'DigSam';
     case UserStudy.DRIFT:
       return 'Drift';
     case UserStudy.INFO:
@@ -364,3 +364,25 @@ export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormFiel
  * @param url The URL to navigate to
  */
 export const navigateToExternalURL = (url: string) => window.open(url, '_blank');
+
+/**
+ * Parse a paragraph string to a number with two decimals at most and prefixed with a zero if it's a single digit decimal
+ *
+ * Examples:
+ * - "3" -> 3
+ * - "3.1" -> 3.01
+ * - "3.12" -> 3.12
+ *
+ * @param input The input string
+ * @returns The parsed number
+ */
+export const parseLawParagraphNumber = (input: string): number => {
+  const parts = input.split('.');
+  if (parts.length === 1) {
+    return parseFloat(input);
+  } else {
+    const integerPart = parts[0];
+    const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
+    return parseFloat(`${integerPart}.${decimalPart}`);
+  }
+};

@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy, Info } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -21,6 +22,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } fr
 import { Separator } from 'components/ui/separator';
 import { Skeleton } from 'components/ui/skeleton';
 
+import EventParticipantSearch from './EventParticipantSearch';
 import EventUserRegistrator from './EventUserRegistrator';
 
 type RegistrationsProps = {
@@ -35,24 +37,28 @@ const formSchema = z.object({
 });
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
-  const [showOnlyNotAttended, setShowOnlyNotAttended] = useState<boolean>(false);
-  const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, { is_on_wait: onWait });
+  const [searchParams] = useSearchParams();
+  const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
+    is_on_wait: onWait,
+    ...(searchParams.has('has_attended') ? { has_attended: searchParams.get('has_attended') } : {}),
+    ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
+    ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
+    ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
+    ...(searchParams.has('search') && !onWait ? { search: searchParams.get('search') } : {}),
+    ...(searchParams.has('has_paid') && !onWait ? { has_paid: searchParams.get('has_paid') } : {}),
+    ...(searchParams.has('allow_photo') && !onWait ? { allow_photo: searchParams.get('allow_photo') } : {}),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: { names: false, emails: false },
   });
 
-  const registrations = useMemo(
-    () =>
-      data
-        ? data.pages
-            .map((page) => page.results)
-            .flat()
-            .filter((registration) => !showOnlyNotAttended || !registration.has_attended)
-        : [],
-    [data, showOnlyNotAttended],
-  );
+  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+
+  useEffect(() => {
+    refetch();
+  }, [searchParams]);
 
   let sortedRegistrations = registrations;
 
@@ -102,16 +108,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
         <h1 className='text-lg font-bold'>
           {onWait ? 'Venteliste' : 'Påmeldte'} ({data?.pages[0]?.count || 0})
         </h1>
-        {!onWait && (
-          <div className='items-top flex space-x-2'>
-            <Checkbox checked={showOnlyNotAttended} id='terms1' onCheckedChange={(checked) => setShowOnlyNotAttended(Boolean(checked))} />
-            <div className='grid leading-none'>
-              <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer' htmlFor='terms1'>
-                Ikke ankommet
-              </label>
-            </div>
-          </div>
-        )}
       </div>
 
       {isLoading && (
@@ -219,6 +215,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
     return null;
   }
 
+  //TODO: Implement searching by first name and last name
   const needsSorting = data && data.priority_pools && data.priority_pools.length > 0;
 
   return (
@@ -235,9 +232,8 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
 
         <div className='space-y-4'>
           <h1 className='text-lg font-bold'>Statistikk</h1>
-
-          <EventStatistics eventId={eventId} />
-
+          <EventStatistics eventId={eventId} isPaid={data?.is_paid_event ?? false} />
+          <EventParticipantSearch />
           <Registrations eventId={eventId} />
           <Registrations eventId={eventId} needsSorting={needsSorting} onWait />
         </div>

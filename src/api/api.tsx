@@ -344,6 +344,7 @@ export default {
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   getGroupStatistics: (slug: Group['slug']) => IFetch<GroupMemberStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/statistics/` }),
   updateGroup: (slug: Group['slug'], data: GroupMutate) => IFetch<Group>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${slug}/`, data }),
+  createGroup: (data: GroupMutate) => IFetch<Group>({ method: 'POST', url: `${GROUPS_ENDPOINT}/`, data }),
 
   // Group laws
   getGroupLaws: (groupSlug: Group['slug']) => IFetch<Array<GroupLaw>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/` }),

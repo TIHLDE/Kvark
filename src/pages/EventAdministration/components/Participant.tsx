@@ -1,6 +1,6 @@
 import parseISO from 'date-fns/parseISO';
 import { cn } from 'lib/utils';
-import { BadgeCheck, ChevronDown, ChevronRight } from 'lucide-react';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { formatDate, getUserAffiliation } from 'utils';
@@ -99,10 +99,22 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
               <h1>
                 {registration.user_info.first_name} {registration.user_info.last_name}
               </h1>
-              <h1 className='text-sm'>{getUserAffiliation(registration.user_info)}</h1>
+              <h1 className='text-sm hidden md:block'>{getUserAffiliation(registration.user_info)}</h1>
             </div>
           </div>
           <div className='flex items-center space-x-2'>
+            {event?.is_paid_event && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HandCoins className={cn('w-5 h-5 stroke-[1.5px]', registration.has_paid_order ? 'text-emerald-700' : 'text-red-700')} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             {!registration.is_on_wait && checkedState && (
               <TooltipProvider>
                 <Tooltip>
@@ -134,7 +146,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 htmlFor={registration.user_info.user_id}>
                 <Checkbox checked={checkedState} id={registration.user_info.user_id} onCheckedChange={(checked) => handleAttendedCheck(Boolean(checked))} />
                 <div className='space-y-1 leading-none'>
-                  <Label>Ankommet?</Label>
+                  <Label>Ankommet? </Label>
                   <p className='text-sm text-muted-foreground'>Marker om deltager har ankommet</p>
                 </div>
               </label>

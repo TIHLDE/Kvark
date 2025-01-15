@@ -7,13 +7,13 @@ import { useEventById } from 'hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
 import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventFormAdmin from 'pages/EventAdministration/components/EventFormAdmin';
 import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
 
 import Page from 'components/navigation/Page';
 import { Button } from 'components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
+import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
 const EventAdministration = () => {

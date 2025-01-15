@@ -8,7 +8,7 @@ import URLS from 'URLS';
 import { formatDate } from 'utils';
 import { z } from 'zod';
 
-import { Submission } from 'types';
+import { SelectFieldSubmission, Submission, TextFieldSubmission } from 'types';
 import { EventFormType, FormResourceType } from 'types/Enums';
 
 import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from 'hooks/Form';
@@ -77,13 +77,15 @@ const FormPage = () => {
           return {
             field: { id: answer.field.id },
             selected_options: answer.selected_options?.map((option) => ({ id: option })) || [],
-          };
+            type: 'select-field',
+          } satisfies SelectFieldSubmission;
         }
 
         return {
           field: { id: answer.field.id },
           answer_text: answer.answer_text || '',
-        };
+          type: 'text-field',
+        } satisfies TextFieldSubmission;
       }),
     };
     if (submitDisabled || !form) {
@@ -132,7 +134,8 @@ const FormPage = () => {
         <CardContent>
           {form ? (
             <>
-              <Separator className='mb-2' />
+              {form.description && <p>{form.description}</p>}
+              <Separator className='my-2' />
               {canAnswerForm ? (
                 <Form {...submitForm}>
                   <form className='space-y-4' onSubmit={submitForm.handleSubmit(onSubmit)}>

@@ -11,6 +11,35 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- ⚡  **Lovparagraf**. Endret lovparagraf-parser for å prefikse enkeltsifrede desimaler med null.
+- 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
+
+## Versjon 2024.04.11
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+- 🎨 **Designendringer**. Escapet beskrivelse i galleri
+- 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
+- ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
+
+## Versjon 2024.22.10
+
+- ✨ **Gruppe**. HS kan nå opprette grupper.
+
+## Versjon 2024.15.10
+
+- ✨ **Betalinger**. Man kan nå se hvem på deltagerlisten som har betalt for arrangementet.
+- 🎨 **Profil navigering**. Ikoner på mobil på profil er nå fikset.
+- 🎨 **Maks bredde på tekst**. Beskrivelse under tittel er nå tilpasset.
+
+## Versjon 2024.11.10
+
+- 🎨 **Notion**. Slack-linken i footeren er erstattet med TIHLDE's Notion
+- 🦟 **Påmeldingsspørsmål**. Fjernet muligheten for å opprette spørreskjema for påmelding, siden dette ikke brukes lenger.
+- ⚡ **Spørreskjema**. Man kan nå legge ved en beskrivelse på et spørreskjema for gruppeskjema.
+- 🎨 **Studie**. Digital Samhandling er nå byttet ut med Digital Transformasjon overalt.
+- 🦟 **Filtrering av påmeldinger**. Filtrering av påmeldinger som har ankommet skjer nå på backend og ikke frontend.
+- 🎨 **Arrangement**. La til maksbredde for store skjermer.
+- 🎨 **Badges ledertavle**. Fikset overflow av tekst på Badges ledertavle.
+- 🦟 **Brukerbilde**. Admins kan nå laste opp profilbilde for medlemmer.
 
 - ✨ **Feedback**. Brukere kan gi tilbakemeldinger om ideer og bugs.
 
