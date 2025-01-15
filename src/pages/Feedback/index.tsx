@@ -10,12 +10,11 @@ import { useUser, useUserMemberships } from 'hooks/User';
 
 import { Button } from 'components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { Dialog, DialogContent, DialogTrigger } from 'components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
 import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import { Textarea } from 'components/ui/textarea';
 
 type Filters = {
@@ -106,7 +105,7 @@ export default function Feedback() {
     setOpenItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
-  const [sort, setSort] = useState<string>('newest');
+  // const [sort, setSort] = useState<string>('newest');
 
   const onDeleteFeedback = (feedbackId: number) => {
     deleteFeedback.mutate(feedbackId, {
@@ -155,9 +154,9 @@ export default function Feedback() {
     );
   }
 
-  const handleFeedbackFilter = (value: string) => {
-    setFilters((prev) => ({ ...prev, feedback_type: value }));
-  };
+  // const handleFeedbackFilter = (value: string) => {
+  //   setFilters((prev) => ({ ...prev, feedback_type: value }));
+  // };
 
   return (
     <div className='max-w-5xl mx-auto pt-12 relative px-4 pb-12'>
