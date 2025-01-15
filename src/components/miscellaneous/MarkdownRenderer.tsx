@@ -20,10 +20,12 @@ export const EventCard = ({ id }: { id: Event['id'] }) => {
   const { data } = useEventById(id);
   return data ? <EventListItem event={data as unknown as EventList} size='medium' /> : <EventListItemLoading />;
 };
+
 export const JobPostCard = ({ id }: { id: JobPost['id'] }) => {
   const { data } = useJobPostById(id);
   return data ? <JobPostListItem jobPost={data} /> : <JobPostListItemLoading />;
 };
+
 export const NewsCard = ({ id }: { id: News['id'] }) => {
   const { data } = useNewsById(id);
   return data ? <NewsListItem news={data} /> : <NewsListItemLoading />;
@@ -40,11 +42,13 @@ export enum LanguageTypes {
 export type CodeBlockProps = {
   inline?: boolean;
   className?: LanguageTypes | string;
-  children: string[];
+  children: ReactNode; // Endret fra string[] til ReactNode
 };
 
 export const CodeBlock = ({ inline = false, className: language, children }: CodeBlockProps) => {
-  const value = children[0];
+  const value = typeof children === 'string' ? children : String(children);
+  console.log('CHILDREN: ', value);
+  console.log('LANGUAGE: ', language);
   if (inline) {
     return <code className='bg-card p-1 rounded-md'>{value}</code>;
   } else if (language === LanguageTypes.EXPANDLIST) {
@@ -76,7 +80,6 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
   return <pre className='bg-card rounded-md p-2 overflow-x-auto'>{value}</pre>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const components: any = {
   blockquote: ({ children }: { children: ReactNode[] }) => <blockquote className='p-2 pl-4 ml-4 my-2 border-l-4 border-l-primary'>{children}</blockquote>,
   code: CodeBlock,

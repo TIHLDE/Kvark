@@ -1,6 +1,6 @@
 import parseISO from 'date-fns/parseISO';
 import { cn } from 'lib/utils';
-import { BadgeCheck, ChevronDown, ChevronRight, HandCoins } from 'lucide-react';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { formatDate, getUserAffiliation } from 'utils';
@@ -100,6 +100,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 {registration.user_info.first_name} {registration.user_info.last_name}
               </h1>
               <h1 className='text-sm hidden md:block'>{getUserAffiliation(registration.user_info)}</h1>
+              <div className='text-muted-foreground'>
+                {registration.user_info.allergy !== '' ? (
+                  <>
+                    <div className='flex gap-1 items-center'>
+                      <NutOff className='w-3.5 h-3.5 stroke-[1.5px] text-muted-foreground float-left' />
+                      <span className='float-right'>{registration.user_info.allergy}</span>
+                    </div>
+                  </>
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </div>
           <div className='flex items-center space-x-2'>

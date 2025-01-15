@@ -107,13 +107,17 @@ interface FieldSubmission {
 
 export interface TextFieldSubmission extends FieldSubmission {
   answer_text: string;
+  type: 'text-field';
 }
 
 export interface SelectFieldSubmission extends FieldSubmission {
   selected_options: Array<{ id: string }>;
+  type: 'select-field';
 }
 
 export interface UserSubmission {
+  created_at: string;
+  updated_at: string;
   user: UserBase;
   form: string;
   answers: Array<TextFieldSubmission | SelectFieldSubmission>;
