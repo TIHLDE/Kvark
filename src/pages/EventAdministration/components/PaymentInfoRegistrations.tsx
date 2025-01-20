@@ -10,6 +10,7 @@ import { useCreatePaymentOrder } from 'hooks/Payment';
 import { Button, buttonVariants } from 'components/ui/button';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
 import { ScrollArea } from 'components/ui/scroll-area';
+import CountdownTimer from '../../EventDetails/components/CountdownTimer';
 
 /* Notat: La til ny variabel paymentExpiredate, da de nye funk fra 
 CountdownTimer.txt trengte en variabel som ikke var "?" Date; 
@@ -18,46 +19,34 @@ Dette fikk fikset feilmeldinger, samt en "}" nederst på siden.
 
 type PaymentInfoRegistrationProps = {
   hasPaidOrder: boolean;
-  expireDate?: Date;
+  paymentExpireDate: Date;
   orders: Order[];
   eventId: Event['id'];
-  paymentExpireDate: Date;
 };
 
-/* må finne ut hvor mye tid som har gått siden betalingen, da har brukeren 2 timer på seg 
+/*
 
-const getTimeDifference = (time:Date) => {
-  const now = new Date();
-  const myDate = new Date();
+ */
 
-  //Added 10 minutes so that user has time to pay
-  const addedTime = minutesToMilliseconds(10);
-
-  return differenceInMilliseconds(new Date(myDate.getTime() + addedTime), now);
-
-}
-
-const paymentCountDown = ({paymentExpiredate, eventId}): PaymentInfoRegistrationProps => {
-
-}
-*/
-
-const PaymentInfoRegistration = ({ hasPaidOrder, expireDate, orders }: PaymentInfoRegistrationProps) => {
+const PaymentInfoRegistration = ({ hasPaidOrder, paymentExpireDate, orders, eventId }: PaymentInfoRegistrationProps) => {
   return (
+    <>
     <ResponsiveDialog
       description={''}
       title='Betalingsinformasjon'
-      trigger={
-        <Button className='w-full' variant='outline'>
-          Betalingsinformasjon
-        </Button>
-      }>
-      <ScrollArea>
-        <p>{hasPaidOrder ? 'BETALT' : 'IKKE BETALT'}</p>
-        <p> {expireDate ? 'Tiden har gått ut' : 'Det er mer tid igjen'}</p>
-        <p> </p>
-      </ScrollArea>
-    </ResponsiveDialog>
-  );
-};
+      trigger={<Button className='w-full' variant='destructive'>
+        OK!
+      </Button>}
+      children={
+        <ScrollArea>
+          {hasPaidOrder ? 'BETALT' : 'IKKE BETALT'}
+          {paymentExpireDate ? 'Tiden har gått ut' : 'Det er mer tid igjen'}
+          <CountdownTimer event_id={eventId} payment_expiredate={paymentExpireDate} />
+          {orders}
+        </ScrollArea>
+        }
+      />
+    </>
+  )}
+
 export default PaymentInfoRegistration;
