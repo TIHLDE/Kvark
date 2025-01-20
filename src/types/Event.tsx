@@ -4,6 +4,7 @@ import { Permissions } from 'types/Misc';
 import { User, UserList } from 'types/User';
 
 import { Reaction } from './News';
+import { Order } from './Order';
 
 export type Category = {
   created_at: string;
@@ -98,6 +99,7 @@ export type Registration = {
   payment_expiredate: Date;
   has_paid_order?: boolean;
   wait_queue_number?: number;
+  orders?: Order[];
 };
 
 export type PublicRegistration = {

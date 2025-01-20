@@ -21,7 +21,9 @@ import { Separator } from 'components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
 import DeleteRegistration from './DeleteRegistration';
+import EventParticipants from './EventParticipants';
 import MoveParticipant from './MoveParticipant';
+import PaymentInfoRegistration from './PaymentInfoRegistrations';
 
 export type ParticipantProps = {
   eventId: number;
@@ -161,10 +163,18 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             ) : (
               <MoveParticipant checkedState={checkedState} eventId={eventId} isOnWait={registration.is_on_wait} userId={registration.user_info.user_id} />
             )}
-
-            <DeleteRegistration eventId={eventId} userInfo={registration.user_info} />
-
+            {event?.is_paid_event && (
+              <PaymentInfoRegistration
+                eventId={eventId}
+                expireDate={registration.payment_expiredate}
+                hasPaidOrder={registration.has_paid_order ?? false}
+                orders={registration.orders ?? []}
+                paymentExpireDate={registration.payment_expiredate}
+              />
+            )}
+            
           </div>
+          <DeleteRegistration eventId={eventId} userInfo={registration.user_info} />
         </div>
 
         <Separator className='my-4' />

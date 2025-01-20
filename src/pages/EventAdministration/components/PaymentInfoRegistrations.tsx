@@ -1,56 +1,63 @@
-import { Copy } from "lucide-react"
+import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
+import { nb } from 'date-fns/locale';
+import milliseconds from 'date-fns/milliseconds';
+import { useEffect, useState } from 'react';
 
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Event, Order } from 'types';
 
-export function DialogCloseButton() {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex items-center space-x-2">
-          <div className="grid flex-1 gap-2">
-            <Label htmlFor="link" className="sr-only">
-              Link
-            </Label>
-            <Input
-              id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
-              readOnly
-            />
-          </div>
-          <Button type="submit" size="sm" className="px-3">
-            <span className="sr-only">Copy</span>
-            <Copy />
-          </Button>
-        </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
+import { useCreatePaymentOrder } from 'hooks/Payment';
+
+import { Button, buttonVariants } from 'components/ui/button';
+import ResponsiveDialog from 'components/ui/responsive-dialog';
+import { ScrollArea } from 'components/ui/scroll-area';
+
+/* Notat: La til ny variabel paymentExpiredate, da de nye funk fra 
+CountdownTimer.txt trengte en variabel som ikke var "?" Date; 
+Dette fikk fikset feilmeldinger, samt en "}" nederst på siden.
+*/
+
+type PaymentInfoRegistrationProps = {
+  hasPaidOrder: boolean;
+  expireDate?: Date;
+  orders: Order[];
+  eventId: Event['id'];
+  paymentExpireDate: Date;
+};
+
+/* må finne ut hvor mye tid som har gått siden betalingen, da har brukeren 2 timer på seg 
+
+const getTimeDifference = (time:Date) => {
+  const now = new Date();
+  const myDate = new Date();
+
+  //Added 10 minutes so that user has time to pay
+  const addedTime = minutesToMilliseconds(10);
+
+  return differenceInMilliseconds(new Date(myDate.getTime() + addedTime), now);
+
 }
+
+const paymentCountDown = ({paymentExpiredate, eventId}): PaymentInfoRegistrationProps => {
+
+}
+*/
+
+const PaymentInfoRegistration = ({ hasPaidOrder, expireDate, orders }: PaymentInfoRegistrationProps) => {
+  return (
+    <ResponsiveDialog
+      description={''}
+      title='Betalingsinformasjon'
+      trigger={
+        <Button className='w-full' variant='outline'>
+          Betalingsinformasjon
+        </Button>
+      }>
+      <ScrollArea>
+        <p>{hasPaidOrder ? 'BETALT' : 'IKKE BETALT'}</p>
+        <p> {expireDate ? 'Tiden har gått ut' : 'Det er mer tid igjen'}</p>
+        <p> </p>
+      </ScrollArea>
+    </ResponsiveDialog>
+  );
+};
+export default PaymentInfoRegistration;
