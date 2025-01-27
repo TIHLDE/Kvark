@@ -1,10 +1,7 @@
 'use client';
 
-import { Button } from 'components/ui/button';
-import { cn } from 'lib/utils';
-import { VariantProps, cva } from 'class-variance-authority';
+import { cva, VariantProps } from 'class-variance-authority';
 import {
-  Locale,
   addDays,
   addMonths,
   addWeeks,
@@ -16,6 +13,7 @@ import {
   isSameHour,
   isSameMonth,
   isToday,
+  Locale,
   setHours,
   setMonth,
   startOfMonth,
@@ -26,7 +24,11 @@ import {
   subYears,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { ReactNode, createContext, forwardRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { cn } from 'lib/utils';
+import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
+import { Button } from 'components/ui/button';
+
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import EventsCalendarPopover from './EventsCalendarPopover';
 
@@ -178,8 +180,8 @@ const EventGroup = ({ events, hour }: { events: CalendarEvent[]; hour: Date }) =
 
           return (
             <div
-              key={event.id}
               className={cn('relative', dayEventVariants({ variant: event.color }))}
+              key={event.id}
               style={{
                 top: `${startPosition * 100}%`,
                 height: `${hoursDifference * 100}%`,
@@ -195,7 +197,9 @@ const EventGroup = ({ events, hour }: { events: CalendarEvent[]; hour: Date }) =
 const CalendarDayView = () => {
   const { view, events, date } = useCalendar();
 
-  if (view !== 'day') return null;
+  if (view !== 'day') {
+    return null;
+  }
 
   const hours = [...Array(24)].map((_, i) => setHours(date, i));
 
@@ -204,7 +208,7 @@ const CalendarDayView = () => {
       <TimeTable />
       <div className='flex-1'>
         {hours.map((hour) => (
-          <EventGroup key={hour.toString()} hour={hour} events={events} />
+          <EventGroup events={events} hour={hour} key={hour.toString()} />
         ))}
       </div>
     </div>
@@ -236,7 +240,9 @@ const CalendarWeekView = () => {
     return daysOfWeek;
   }, [date]);
 
-  if (view !== 'week') return null;
+  if (view !== 'week') {
+    return null;
+  }
 
   return (
     <div className='flex flex-col relative overflow-auto h-full'>
@@ -244,11 +250,11 @@ const CalendarWeekView = () => {
         <div className='w-12'></div>
         {headerDays.map((date, i) => (
           <div
-            key={date.toString()}
             className={cn(
               'text-center flex-1 gap-1 pb-2 text-sm text-muted-foreground flex items-center justify-center',
               [0, 6].includes(i) && 'text-muted-foreground/50',
-            )}>
+            )}
+            key={date.toString()}>
             {format(date, 'E', { locale })}
             <span className={cn('h-6 grid place-content-center', isToday(date) && 'bg-primary text-primary-foreground rounded-full size-6')}>
               {format(date, 'd')}
@@ -267,7 +273,7 @@ const CalendarWeekView = () => {
                 className={cn('h-full text-sm text-muted-foreground border-l first:border-l-0', [0, 6].includes(i) && 'bg-muted/50')}
                 key={hours[0].toString()}>
                 {hours.map((hour) => (
-                  <EventGroup key={hour.toString()} hour={hour} events={events} />
+                  <EventGroup events={events} hour={hour} key={hour.toString()} />
                 ))}
               </div>
             );
@@ -282,7 +288,7 @@ const DayTile = ({ event }: { event: CalendarEvent }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div key={event.id} className='px-1 rounded text-sm flex items-center gap-1 cursor-pointer'>
+        <div className='px-1 rounded text-sm flex items-center gap-1 cursor-pointer' key={event.id}>
           <div className={cn('shrink-0', monthEventVariants({ variant: event.color }))}></div>
           <span className='flex-1 truncate'>{event.title}</span>
           <time className='tabular-nums text-muted-foreground/50 text-xs'>{format(event.start, 'HH:mm')}</time>
@@ -301,13 +307,15 @@ const CalendarMonthView = () => {
   const monthDates = useMemo(() => getDaysInMonth(date), [date]);
   const weekDays = useMemo(() => generateWeekdays(locale), [locale]);
 
-  if (view !== 'month') return null;
+  if (view !== 'month') {
+    return null;
+  }
 
   return (
     <div className='h-full flex flex-col'>
       <div className='grid grid-cols-7 gap-px sticky top-0 bg-background border-b'>
         {weekDays.map((day, i) => (
-          <div key={day} className={cn('mb-2 text-right text-sm text-muted-foreground pr-2', [0, 6].includes(i) && 'text-muted-foreground/50')}>
+          <div className={cn('mb-2 text-right text-sm text-muted-foreground pr-2', [0, 6].includes(i) && 'text-muted-foreground/50')} key={day}>
             {day}
           </div>
         ))}
@@ -350,7 +358,9 @@ const CalendarYearView = () => {
 
   const weekDays = useMemo(() => generateWeekdays(locale), [locale]);
 
-  if (view !== 'year') return null;
+  if (view !== 'year') {
+    return null;
+  }
 
   return (
     <div className='grid grid-cols-4 gap-10 overflow-auto h-full'>
@@ -360,7 +370,7 @@ const CalendarYearView = () => {
 
           <div className='grid grid-cols-7 gap-2 my-5'>
             {weekDays.map((day) => (
-              <div key={day} className='text-center text-xs text-muted-foreground'>
+              <div className='text-center text-xs text-muted-foreground' key={day}>
                 {day}
               </div>
             ))}
@@ -369,7 +379,7 @@ const CalendarYearView = () => {
           <div className='grid gap-x-2 text-center grid-cols-7 text-xs tabular-nums'>
             {days.map((_date) => {
               return (
-                <div key={_date.toString()} className={cn(getMonth(_date) !== i && 'text-muted-foreground')}>
+                <div className={cn(getMonth(_date) !== i && 'text-muted-foreground')} key={_date.toString()}>
                   <div
                     className={cn(
                       'aspect-square grid place-content-center size-full tabular-nums',
@@ -404,9 +414,9 @@ const CalendarNextTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
 
   return (
     <Button
+      ref={ref}
       size='icon'
       variant='outline'
-      ref={ref}
       {...props}
       onClick={(e) => {
         next();
@@ -435,9 +445,9 @@ const CalendarPrevTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
 
   return (
     <Button
+      ref={ref}
       size='icon'
       variant='outline'
-      ref={ref}
       {...props}
       onClick={(e) => {
         prev();
@@ -458,8 +468,8 @@ const CalendarTodayTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<
 
   return (
     <Button
-      variant='outline'
       ref={ref}
+      variant='outline'
       {...props}
       onClick={(e) => {
         jumpToToday();
@@ -475,7 +485,7 @@ const CalendarCurrentDate = () => {
   const { date, view } = useCalendar();
 
   return (
-    <time dateTime={date.toISOString()} className='tabular-nums'>
+    <time className='tabular-nums' dateTime={date.toISOString()}>
       {format(date, view === 'day' ? 'dd MMMM yyyy' : 'MMMM yyyy', { locale: nb })}
     </time>
   );

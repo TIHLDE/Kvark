@@ -4,6 +4,7 @@ import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 
 import { useEventById } from 'hooks/Event';
+
 import { Skeleton } from '../../../components/ui/skeleton';
 
 export type EventsCalendarPopoverProps = {
