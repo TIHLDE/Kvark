@@ -4,6 +4,7 @@ import URLS from 'URLS';
 import { formatDate, urlEncode } from 'utils';
 
 import { useEventById } from 'hooks/Event';
+import { Skeleton } from '../../../components/ui/skeleton';
 
 export type EventsCalendarPopoverProps = {
   id: number;
@@ -12,8 +13,27 @@ export type EventsCalendarPopoverProps = {
 const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
   const { data } = useEventById(Number(id));
 
+  // show skeleton if no data yet
   if (!data) {
-    return null;
+    return (
+      <div className='space-y-2'>
+        <h1 className='font-bold text-lg'>
+          <Skeleton className='w-[200px] h-6' />
+        </h1>
+        <p className='text-sm'>
+          <Skeleton className='w-[150px] h-4' />
+        </p>
+        <p className='text-sm'>
+          <Skeleton className='w-[120px] h-4' />
+        </p>
+        <p className='text-sm'>
+          <Skeleton className='w-[220px] h-4' />
+        </p>
+        <p>
+          <Skeleton className='w-[210px] h-4' />
+        </p>
+      </div>
+    );
   }
 
   return (
