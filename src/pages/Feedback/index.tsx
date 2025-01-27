@@ -63,6 +63,8 @@ const bugFormSchema = z.object({
 export default function Feedback() {
   const [openIdea, setOpenIdea] = useState(false);
   const [openBug, setOpenBug] = useState(false);
+  const [thumbsUpCount, setThumbsUp] = useState(0);
+  const [thumbsDownCount, setThumbsDown] = useState(0);
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const feedback_type = params.get('feedback_type') || undefined;
@@ -149,6 +151,14 @@ export default function Feedback() {
         toast.error(e.detail);
       },
     });
+  };
+
+  const handleThumbsUp = () => {
+    setThumbsUp(thumbsUpCount + 1);
+  };
+
+  const handleThumbsDown = () => {
+    setThumbsDown(thumbsDownCount + 1);
   };
 
   return (
@@ -300,18 +310,34 @@ export default function Feedback() {
                       minute: '2-digit',
                     })}
                   </p>
-                  {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
-                    <ResponsiveAlertDialog
-                      action={() => onDeleteFeedback(item.id)}
-                      description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
-                      title='Slett feedback?'
-                      trigger={
-                        <Button className='md:w-40 block' type='button' variant='destructive'>
-                          Slett feedback
-                        </Button>
-                      }
-                    />
-                  )}
+                  <div className='flex flex-row items-center space-x-8'>
+                    <div className='flex space-x-4'>
+                      <div className='flex items-center space-x-2'>
+                        <button className='flex items-center space-x-2' type='button'>
+                          👍
+                        </button>
+                        <span>0</span>
+                      </div>
+                      <div className='flex items-center space-x-2'>
+                        <button className='flex items-center space-x-2' type='button'>
+                          👎
+                        </button>
+                        <span>0</span>
+                      </div>
+                    </div>
+                    {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
+                      <ResponsiveAlertDialog
+                        action={() => onDeleteFeedback(item.id)}
+                        description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
+                        title='Slett feedback?'
+                        trigger={
+                          <Button className='md:w-40 block' type='button' variant='destructive'>
+                            Slett feedback
+                          </Button>
+                        }
+                      />
+                    )}
+                  </div>
                 </div>
               </CollapsibleContent>
             </Collapsible>
