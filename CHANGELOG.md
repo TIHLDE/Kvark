@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+- 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
+
 ## Versjon 2025.15.01
 - ⚡ **Kopier link**. Man kan nå kopiere forkortede linker.
 - ⚡ **Allergier for påmeldte medlemmer**. Admins kan nå se allergier for påmeldte medlemmer på arrangementer.
