@@ -1,11 +1,16 @@
+import { VariantProps } from 'class-variance-authority';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
+import { Category, EventList } from 'types';
+import { Category as CategoryEnum, Groups } from 'types/Enums';
+
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
+import { Card } from '../../../components/ui/card';
 import {
   Calendar,
   CalendarCurrentDate,
@@ -16,11 +21,6 @@ import {
   CalendarTodayTrigger,
   monthEventVariants,
 } from './EventsCalendarViewBase';
-import { VariantProps } from 'class-variance-authority';
-
-import { Category, EventList } from 'types';
-import { Category as CategoryEnum, Groups } from 'types/Enums';
-import { Card } from '../../../components/ui/card';
 
 const getColor = (event: EventList): VariantProps<typeof monthEventVariants>['variant'] => {
   if (event.category?.text === CategoryEnum.ACTIVITY) {
