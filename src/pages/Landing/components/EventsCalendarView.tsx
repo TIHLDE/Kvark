@@ -3,8 +3,6 @@ import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { Category } from 'types';
-
 import { useEvents } from 'hooks/Event';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -16,7 +14,29 @@ import {
   CalendarNextTrigger,
   CalendarPrevTrigger,
   CalendarTodayTrigger,
+  monthEventVariants,
 } from './EventsCalendarViewBase';
+import { VariantProps } from 'class-variance-authority';
+
+import { Category, EventList } from 'types';
+import { Category as CategoryEnum, Groups } from 'types/Enums';
+import { Card } from '../../../components/ui/card';
+
+const getColor = (event: EventList): VariantProps<typeof monthEventVariants>['variant'] => {
+  if (event.category?.text === CategoryEnum.ACTIVITY) {
+    return 'purple';
+  }
+
+  if (
+    event.organizer?.slug.toLowerCase() === Groups.NOK.toLowerCase() ||
+    event.category?.text.toLowerCase() === CategoryEnum.COMPRES ||
+    event.category?.text.toLowerCase() === CategoryEnum.COURSE
+  ) {
+    return 'blue';
+  }
+
+  return 'orange';
+};
 
 type Filters = {
   start_range?: string;
@@ -53,6 +73,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
             start: parseISO(event.start_date),
             end: parseISO(event.end_date),
             id: event.id.toString(),
+            color: getColor(event),
           } satisfies CalendarEvent),
       ),
     [data],
@@ -65,7 +86,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
       onSetDate={(date: Date) => {
         setFilters({ start_range: startOfMonth(date).toISOString(), end_range: endOfMonth(date).toISOString() });
       }}>
-      <div className='h-dvh py-6 flex flex-col'>
+      <Card className='h-dvh py-6 flex flex-col'>
         <div className='flex px-6 items-center gap-2 mb-6'>
           <CalendarCurrentDate />
           <div className='flex-1' />
@@ -82,7 +103,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
         <div className='flex-1 overflow-auto px-6 relative'>
           <CalendarMonthView />
         </div>
-      </div>
+      </Card>
     </Calendar>
   );
 };

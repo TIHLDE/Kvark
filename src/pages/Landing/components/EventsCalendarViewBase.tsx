@@ -13,6 +13,7 @@ import {
   isSameHour,
   isSameMonth,
   isToday,
+  isWithinInterval,
   Locale,
   setHours,
   setMonth,
@@ -32,7 +33,7 @@ import { Button } from 'components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import EventsCalendarPopover from './EventsCalendarPopover';
 
-const monthEventVariants = cva('size-2 rounded-full', {
+export const monthEventVariants = cva('size-2 rounded-full', {
   variants: {
     variant: {
       default: 'bg-primary',
@@ -40,6 +41,7 @@ const monthEventVariants = cva('size-2 rounded-full', {
       green: 'bg-green-500',
       pink: 'bg-pink-500',
       purple: 'bg-purple-500',
+      orange: 'bg-orange-500',
     },
   },
   defaultVariants: {
@@ -55,6 +57,7 @@ const dayEventVariants = cva('font-bold border-l-4 rounded p-2 text-xs', {
       green: 'bg-green-500/30 text-green-600 border-green-500',
       pink: 'bg-pink-500/30 text-pink-600 border-pink-500',
       purple: 'bg-purple-500/30 text-purple-600 border-purple-500',
+      orange: 'bg-orange-500/30 text-orange-600 border-orange-500',
     },
   },
   defaultVariants: {
@@ -71,7 +74,6 @@ type ContextType = {
   setDate: (date: Date) => void;
   events: CalendarEvent[];
   locale: Locale;
-  setEvents: (date: CalendarEvent[]) => void;
   onChangeView?: (view: View) => void;
   onEventClick?: (event: CalendarEvent) => void;
   enableHotkeys?: boolean;
@@ -91,7 +93,7 @@ export type CalendarEvent = {
 type CalendarProps = {
   children: ReactNode;
   defaultDate?: Date;
-  events?: CalendarEvent[];
+  events: CalendarEvent[];
   view?: View;
   locale?: Locale;
   enableHotkeys?: boolean;
@@ -107,20 +109,17 @@ const Calendar = ({
   enableHotkeys = true,
   view: _defaultMode = 'month',
   onEventClick,
-  events: defaultEvents = [],
+  events,
   onChangeView,
   onSetDate,
 }: CalendarProps) => {
   const [view, setView] = useState<View>(_defaultMode);
   const [date, setDate] = useState(defaultDate);
-  const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
 
   useEffect(() => {
-    setEvents(defaultEvents);
-  }, [defaultEvents]);
-
-  useEffect(() => {
-    onSetDate?.(date);
+    if (onSetDate) {
+      onSetDate(date);
+    }
   }, [date]);
 
   return (
@@ -131,7 +130,6 @@ const Calendar = ({
         date,
         setDate,
         events,
-        setEvents,
         locale,
         enableHotkeys,
         onEventClick,
@@ -219,7 +217,7 @@ const CalendarWeekView = () => {
   const { view, date, locale, events } = useCalendar();
 
   const weekDates = useMemo(() => {
-    const start = startOfWeek(date, { weekStartsOn: 0 });
+    const start = startOfWeek(date, { weekStartsOn: 1 });
     const weekDates = [];
 
     for (let i = 0; i < 7; i++) {
@@ -234,7 +232,7 @@ const CalendarWeekView = () => {
   const headerDays = useMemo(() => {
     const daysOfWeek = [];
     for (let i = 0; i < 7; i++) {
-      const result = addDays(startOfWeek(date, { weekStartsOn: 0 }), i);
+      const result = addDays(startOfWeek(date, { weekStartsOn: 1 }), i);
       daysOfWeek.push(result);
     }
     return daysOfWeek;
@@ -314,20 +312,20 @@ const CalendarMonthView = () => {
   return (
     <div className='h-full flex flex-col'>
       <div className='grid grid-cols-7 gap-px sticky top-0 bg-background border-b'>
-        {weekDays.map((day, i) => (
-          <div className={cn('mb-2 text-right text-sm text-muted-foreground pr-2', [0, 6].includes(i) && 'text-muted-foreground/50')} key={day}>
+        {weekDays.map((day) => (
+          <div className={'mb-2 text-right text-sm text-foreground pr-2'} key={day}>
             {day}
           </div>
         ))}
       </div>
       <div className='grid overflow-hidden -mt-px flex-1 auto-rows-fr p-px grid-cols-7 gap-px'>
         {monthDates.map((_date) => {
-          const currentEvents = events.filter((event) => isSameDay(event.start, _date));
+          const currentEvents = events.filter(
+            (event) => isSameDay(event.start, _date) || isSameDay(event.end, _date) || isWithinInterval(_date, { start: event.start, end: event.end }),
+          );
 
           return (
-            <div
-              className={cn('ring-1 p-2 text-sm text-muted-foreground ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')}
-              key={_date.toString()}>
+            <div className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')} key={_date.toString()}>
               <span className={cn('size-6 grid place-items-center rounded-full mb-1 sticky top-0', isToday(_date) && 'bg-primary text-primary-foreground')}>
                 {format(_date, 'd')}
               </span>
@@ -398,7 +396,7 @@ const CalendarYearView = () => {
 };
 
 const CalendarNextTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(({ children, onClick, ...props }, ref) => {
-  const { date, setDate, view, enableHotkeys } = useCalendar();
+  const { date, setDate, view } = useCalendar();
 
   const next = useCallback(() => {
     if (view === 'day') {
@@ -429,7 +427,7 @@ const CalendarNextTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
 CalendarNextTrigger.displayName = 'CalendarNextTrigger';
 
 const CalendarPrevTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(({ children, onClick, ...props }, ref) => {
-  const { date, setDate, view, enableHotkeys } = useCalendar();
+  const { date, setDate, view } = useCalendar();
 
   const prev = useCallback(() => {
     if (view === 'day') {
@@ -460,7 +458,7 @@ const CalendarPrevTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
 CalendarPrevTrigger.displayName = 'CalendarPrevTrigger';
 
 const CalendarTodayTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<HTMLButtonElement>>(({ children, onClick, ...props }, ref) => {
-  const { setDate, enableHotkeys, today } = useCalendar();
+  const { setDate, today } = useCalendar();
 
   const jumpToToday = useCallback(() => {
     setDate(today);
@@ -485,7 +483,7 @@ const CalendarCurrentDate = () => {
   const { date, view } = useCalendar();
 
   return (
-    <time className='tabular-nums' dateTime={date.toISOString()}>
+    <time className='tabular-nums font-semibold text-2xl' dateTime={date.toISOString()}>
       {format(date, view === 'day' ? 'dd MMMM yyyy' : 'MMMM yyyy', { locale: nb })}
     </time>
   );
@@ -519,7 +517,7 @@ const TimeTable = () => {
 const getDaysInMonth = (date: Date) => {
   const startOfMonthDate = startOfMonth(date);
   const startOfWeekForMonth = startOfWeek(startOfMonthDate, {
-    weekStartsOn: 0,
+    weekStartsOn: 1,
   });
 
   let currentDate = startOfWeekForMonth;
@@ -530,13 +528,15 @@ const getDaysInMonth = (date: Date) => {
     currentDate = addDays(currentDate, 1);
   }
 
+  console.log(calendar);
+
   return calendar;
 };
 
 const generateWeekdays = (locale: Locale) => {
   const daysOfWeek = [];
   for (let i = 0; i < 7; i++) {
-    const date = addDays(startOfWeek(new Date(), { weekStartsOn: 0 }), i);
+    const date = addDays(startOfWeek(new Date(), { weekStartsOn: 1 }), i);
     daysOfWeek.push(format(date, 'EEEEEE', { locale }));
   }
   return daysOfWeek;
