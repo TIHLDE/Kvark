@@ -13,6 +13,7 @@
 ## Neste versjon
 
 - 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
+- ⚡ **Ytelse** Optimaliserte ytelsen ved å fjerne unødvendige oppdateringer av navigasjonsbaren.
 
 ## Versjon 2025.15.01
 - ⚡ **Kopier link**. Man kan nå kopiere forkortede linker.
