@@ -1,9 +1,7 @@
 import { cn } from 'lib/utils';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import URLS from 'URLS';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
 
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem } from 'components/navigation/Navigation';
@@ -60,46 +58,29 @@ export type TopbarProps = {
 };
 
 const Topbar = ({ items }: TopbarProps) => {
-  const [scrollLength, setScrollLength] = useState(0);
-  const isMediumScreen = useMediaQuery(MEDIUM_SCREEN);
-
-  const handleScroll = () => setScrollLength(window.pageYOffset);
+  const [isOnTop, setIsOnTop] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    function handleScroll() {
+      setIsOnTop(window.scrollY < 20);
+    }
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const isOnTop = useMemo(() => scrollLength < 20, [scrollLength]);
-
-  if (!isMediumScreen) {
-    return (
-      <header
-        className={cn(
-          'fixed z-30 w-full top-0 transition-all duration-150 p-2 flex items-center justify-between',
-          !isOnTop && 'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
-        )}>
-        <Link aria-label='Til forsiden' to={URLS.landing}>
-          <TihldeLogo className='h-[24px] w-auto ml-0 text-primary' size='large' />{' '}
-        </Link>
-        <ProfileTopbarButton />
-      </header>
-    );
-  }
+  }, [setIsOnTop]);
 
   return (
     <>
       <header
         className={cn(
-          'fixed z-30 w-full top-0 transition-all duration-150',
+          'fixed z-30 w-full top-0 transition-all duration-150 max-md:flex max-md:items-center max-md:justify-between',
           !isOnTop &&
             'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-card/60  dark:supports-[backdrop-filter]:bg-background/60',
         )}>
-        <nav className='flex items-center justify-between py-3 px-8'>
+        <nav className='flex items-center justify-between py-3 px-8 w-full'>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeLogo className='h-[28px] w-auto ml-0 text-primary' size='large' />{' '}
+            <TihldeLogo className='h-[28px] w-auto ml-0 text-primary' size='large' />
           </Link>
-          <NavigationMenu>
+          <NavigationMenu className='max-md:hidden'>
             <NavigationMenuList>
               {items.map((item, i) => (
                 <TopBarItem key={i} {...item} />
