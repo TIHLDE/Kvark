@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2025.02.10
 
 - 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
 - ⚡ **Ytelse** Optimaliserte ytelsen ved å fjerne unødvendige oppdateringer av navigasjonsbaren.
