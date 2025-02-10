@@ -32,7 +32,7 @@ const Wiki = () => {
 
   useEffect(() => {
     if (data && location.pathname !== data.path) {
-      navigate(`${URLS.wiki}${data.path}`, { replace: true });
+      navigate(`/wiki/${data.path}`, { replace: true });
     }
   }, [navigate, location.pathname, data]);
 
@@ -100,7 +100,7 @@ const Wiki = () => {
                   <MarkdownRenderer value={data.content} />
                 </div>
               )}
-              {path === WIKI_URLS.ABOUT_INDEX && <Index />}
+              {path === "tihlde/undergrupper/index" && <Index />}
               {group && <GroupItem group={group} />}
               {data.image && (
                 <img alt={data.image_alt || data.title} className='w-full max-h-[350px] object-cover rounded-md' loading='lazy' src={data.image} />
