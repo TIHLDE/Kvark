@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=14.x"
+    "node": ">=22"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
@@ -109,5 +109,6 @@
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.2"
-  }
+  },
+  "packageManager": "pnpm@9.0.0"
 }
