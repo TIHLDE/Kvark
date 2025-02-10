@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2025.02.10
 
 - 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
 - 🎨 **Designendringer**. Forbedret layout for deltakerdetaljer i arrangementsadministrasjonen
