@@ -133,6 +133,9 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
           <Button disabled={!data.next} onClick={() => data.next && setSelectedPage(selectedPage + 1)} size='sm' variant='outline'>
             Neste
           </Button>
+          <Button onClick={downloadCSV} variant='outline'>
+          Last ned som CSV
+        </Button>
         </div>
       </div>
     </div>

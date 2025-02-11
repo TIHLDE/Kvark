@@ -100,7 +100,7 @@ const Wiki = () => {
                   <MarkdownRenderer value={data.content} />
                 </div>
               )}
-              {path === "tihlde/undergrupper/index" && <Index />}
+              {path === 'tihlde/undergrupper/index' && <Index />}
               {group && <GroupItem group={group} />}
               {data.image && (
                 <img alt={data.image_alt || data.title} className='w-full max-h-[350px] object-cover rounded-md' loading='lazy' src={data.image} />
