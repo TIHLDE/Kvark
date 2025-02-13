@@ -71,6 +71,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
       <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
         {isAdmin && (
           <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
+
             <FormInput form={form} label='Fornavn' name='first_name' required />
 
             <FormInput form={form} label='Etternavn' name='last_name' required />
@@ -79,7 +80,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
           </div>
         )}
 
-        {isAdmin && <FormImageUpload form={form} label='Velg profilbilde' name='image' ratio='1:1' />}
+        <FormImageUpload form={form} label='Velg profilbilde' name='image' />
 
         <FormSelect
           form={form}
