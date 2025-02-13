@@ -1,10 +1,10 @@
 import { Badge, BadgeCategory, Group } from 'types';
 
-const WIKI = '/wiki/';
+const WIKI = 'https://wiki.tihlde.org/';
 export const WIKI_URLS = {
-  ABOUT_INDEX: 'tihlde/undergrupper/index/',
-  CONTACT_US: 'kontakt-oss/',
-  EVENT_RULES: 'annet/arrangementsregler/',
+  ABOUT_INDEX: 'https://wiki.tihlde.org/instruks-index',
+  CONTACT_US: 'https://wiki.tihlde.org/kontakt',
+  EVENT_RULES: 'https://wiki.tihlde.org/arrangementer',
 };
 
 const URLS = {
