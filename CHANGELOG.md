@@ -11,7 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
-- 🦟 **Alergener** Fjernet allergener fra gruppe visning for de uten skrive rettigheter.
+- 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 ## Versjon 2025.13.02
 
