@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+- 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 ## Versjon 2025.13.02
 
@@ -27,7 +28,7 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
-- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
 - ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
