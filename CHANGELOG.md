@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+- 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.
+
 ## Versjon 2025.13.02
 
 - 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
@@ -27,7 +29,7 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
-- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
 - ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
