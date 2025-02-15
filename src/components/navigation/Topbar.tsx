@@ -18,21 +18,19 @@ import {
 
 const TopBarItem = (props: NavigationItem) => {
   const location = useLocation();
-
   if (props.type === 'link') {
     const selected = location.pathname === props.to;
 
     return (
       <NavigationMenuItem>
-        <Link to={props.to}>
-          <NavigationMenuLink
-            className={cn(
-              'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
-              selected && 'dark:text-white text-muted-foreground font-bold',
-            )}>
-            {props.text}
-          </NavigationMenuLink>
-        </Link>
+        <NavigationMenuLink
+          asChild
+          className={cn(
+            'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
+            selected && 'dark:text-white text-muted-foreground font-bold',
+          )}>
+          <Link to={props.to}>{props.text}</Link>
+        </NavigationMenuLink>
       </NavigationMenuItem>
     );
   }

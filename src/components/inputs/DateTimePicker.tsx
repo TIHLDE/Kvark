@@ -16,11 +16,20 @@ type DateTimePickerProps<TFormValues extends FieldValues> = {
   label: string;
   required?: boolean;
   className?: string;
+  hideSeconds?: boolean;
   onDateChange?: (date?: Date) => void;
 };
 
 // This must be used within a react-hook-form
-const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, required, className, onDateChange }: DateTimePickerProps<TFormValues>) => {
+const DateTimePicker = <TFormValues extends FieldValues>({
+  form,
+  name,
+  label,
+  required,
+  className,
+  onDateChange,
+  hideSeconds,
+}: DateTimePickerProps<TFormValues>) => {
   return (
     <FormField
       control={form.control}
@@ -35,7 +44,15 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
               <PopoverTrigger asChild>
                 <Button className={cn('w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')} variant='outline'>
                   <CalendarIcon className='mr-2 h-4 w-4' />
-                  {field.value ? format(field.value, 'PPP HH:mm:ss', { locale: nb }) : <span>Velg en dato</span>}
+                  {field.value ? (
+                    hideSeconds ? (
+                      format(field.value, 'PPP HH:mm', { locale: nb })
+                    ) : (
+                      format(field.value, 'PPP HH:mm:ss', { locale: nb })
+                    )
+                  ) : (
+                    <span>Velg en dato</span>
+                  )}
                 </Button>
               </PopoverTrigger>
             </FormControl>
@@ -48,8 +65,8 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
                 }}
                 selected={field.value}
               />
-              <div className='p-3 border-t border-border'>
-                <TimePickerDisplay date={field.value} setDate={field.onChange} />
+              <div className='p-3 border-t border-border flex justify-center'>
+                <TimePickerDisplay date={field.value} hideSeconds={hideSeconds} setDate={field.onChange} />
               </div>
             </PopoverContent>
           </Popover>

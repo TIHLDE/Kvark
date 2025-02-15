@@ -4,9 +4,10 @@ import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 type CloseEventProps = {
   eventId: number | null;
   closeEvent: () => void;
+  disabled?: boolean;
 };
 
-const CloseEvent = ({ eventId, closeEvent }: CloseEventProps) => {
+const CloseEvent = ({ eventId, closeEvent, disabled }: CloseEventProps) => {
   if (!eventId) {
     return null;
   }
@@ -17,7 +18,7 @@ const CloseEvent = ({ eventId, closeEvent }: CloseEventProps) => {
       description='Er du sikker på at du vil stenge arrangementet? Dette kan ikke angres. Eventuell på- og avmelding vil bli stengt.'
       title='Steng arrangement?'
       trigger={
-        <Button className='w-full md:w-40 block' type='button' variant='secondary'>
+        <Button className='w-full md:w-40 block' disabled={disabled} type='button' variant='secondary'>
           Steng arrangement
         </Button>
       }
