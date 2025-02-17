@@ -39,8 +39,7 @@ export const useDeleteFeedback = (): UseMutationResult<Feedback, RequestResponse
 export const useFeedbackVotes = (filter?: any) =>
   useInfiniteQuery<PaginationResponse<Feedback>, RequestResponse>(
     FEEDBACK_QUERY_KEYS.list(filter),
-    ({ pageParam = 1 }) =>
-      API.getFeedbackVotes({ ...filter, page: pageParam }),
+    ({ pageParam = 1 }) => API.getFeedbackVotes({ ...filter, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },

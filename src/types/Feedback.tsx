@@ -13,7 +13,7 @@ export type Feedback = {
   author: FeedbackAuthor;
   description: string;
   upvotes?: number;
-  downvotes?:number;
+  downvotes?: number;
 };
 
 export type FeedbackAuthor = {
