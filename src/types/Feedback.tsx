@@ -12,6 +12,8 @@ export type Feedback = {
   status: string;
   author: FeedbackAuthor;
   description: string;
+  upvotes?: number;
+  downvotes?:number;
 };
 
 export type FeedbackAuthor = {
