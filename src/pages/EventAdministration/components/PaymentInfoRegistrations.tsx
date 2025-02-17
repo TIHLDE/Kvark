@@ -14,7 +14,6 @@ import ResponsiveDialog from 'components/ui/responsive-dialog';
 import { ScrollArea } from 'components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
-
 import CountDown from './CountDown';
 import PaymentOrderStatus from './PaymentOrderStatus';
 import PaymentStatus from './PaymentStatus';
@@ -26,12 +25,10 @@ type PaymentInfoRegistrationProps = {
   eventId: Event['id'];
 };
 
-
-
 const PaymentInfoRegistration = ({ hasPaidOrder, paymentExpireDate, orders, eventId }: PaymentInfoRegistrationProps) => {
   return (
     <>
-      <ResponsiveDialog 
+      <ResponsiveDialog
         description={''}
         title='Betalingsinformasjon'
         trigger={
@@ -42,33 +39,31 @@ const PaymentInfoRegistration = ({ hasPaidOrder, paymentExpireDate, orders, even
               <HandCoins className={cn('w-5 h-5 stroke-[1.5px] ml-2', hasPaidOrder ? 'text-emerald-700' : 'text-red-700')} />
             </p>
           </Button>
-        }
-        
-      >
+        }>
         <ScrollArea>
           <div className='space-y-6'>
             <div className='flex justify-center '>
-              <div >
-              {/* {hasPaidOrder ? 'Deltakeren har betalt.' : <CountDown expiredate={paymentExpireDate}/>} */}
-              <PaymentStatus hasPaid={hasPaidOrder} expireDate={paymentExpireDate} />
+              <div>
+                {/* {hasPaidOrder ? 'Deltakeren har betalt.' : <CountDown expiredate={paymentExpireDate}/>} */}
+                <PaymentStatus expireDate={paymentExpireDate} hasPaid={hasPaidOrder} />
               </div>
             </div>
-            
-            {orders.map(order =>  (
-            <div key={order.order_id} className='space-y-2'>
-                <PaymentOrderStatus status = {order.status} />
+
+            {orders.map((order) => (
+              <div className='space-y-2' key={order.order_id}>
+                <PaymentOrderStatus status={order.status} />
                 <p>
-                  {new Date(order.created_at).toLocaleDateString("no-NO", {
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    month: "2-digit",
-                    year: "2-digit"
+                  {new Date(order.created_at).toLocaleDateString('no-NO', {
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
                   })}
-                </p>  
-            </div>
-          ))}
+                </p>
+              </div>
+            ))}
           </div>
         </ScrollArea>
       </ResponsiveDialog>

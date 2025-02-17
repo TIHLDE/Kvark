@@ -163,14 +163,13 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             ) : (
               <MoveParticipant checkedState={checkedState} eventId={eventId} isOnWait={registration.is_on_wait} userId={registration.user_info.user_id} />
             )}
-  
+
             {event?.is_paid_event && (
               <PaymentInfoRegistration
                 eventId={eventId}
                 hasPaidOrder={registration.has_paid_order ?? false}
                 orders={registration.payment_orders ?? []}
                 paymentExpireDate={registration.payment_expiredate}
-
               />
             )}
           </div>
