@@ -18,7 +18,12 @@ export type JobPostListItemProps = {
 const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
   <Link className='border rounded-md bg-card space-y-4 text-black dark:text-white' to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
     <div className={'flex flex-col sm:flex-row'}>
-      <AspectRatioImg alt={jobPost.image_alt || jobPost.title} className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none sm:w-[350px] md:w-[350px] xl:w-[400px]' ratio={'16:9'} src={jobPost.image} />
+      <AspectRatioImg
+        alt={jobPost.image_alt || jobPost.title}
+        className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none sm:w-[350px] md:w-[350px] xl:w-[400px]'
+        ratio={'16:9'}
+        src={jobPost.image}
+      />
 
       <div className={'flex flex-col w-full justify-between py-2'}>
         <div className='flex flex-row'>
