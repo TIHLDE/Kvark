@@ -7,4 +7,5 @@ export type Order = {
   event: Event['id'];
   status: string;
   payment_link: string;
+  created_at: string;
 };

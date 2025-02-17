@@ -1,6 +1,8 @@
 import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import milliseconds from 'date-fns/milliseconds';
+import { cn } from 'lib/utils';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { Event, Order } from 'types';
@@ -10,54 +12,68 @@ import { useCreatePaymentOrder } from 'hooks/Payment';
 import { Button, buttonVariants } from 'components/ui/button';
 import ResponsiveDialog from 'components/ui/responsive-dialog';
 import { ScrollArea } from 'components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
-/* Notat: La til ny variabel paymentExpiredate, da de nye funk fra 
-CountdownTimer.txt trengte en variabel som ikke var "?" Date; 
-Dette fikk fikset feilmeldinger, samt en "}" nederst på siden.
-*/
+
+import CountDown from './CountDown';
+import PaymentOrderStatus from './PaymentOrderStatus';
+import PaymentStatus from './PaymentStatus';
 
 type PaymentInfoRegistrationProps = {
   hasPaidOrder: boolean;
-  expireDate?: Date;
+  paymentExpireDate: Date;
   orders: Order[];
   eventId: Event['id'];
-  paymentExpireDate: Date;
 };
 
-/* må finne ut hvor mye tid som har gått siden betalingen, da har brukeren 2 timer på seg 
 
-const getTimeDifference = (time:Date) => {
-  const now = new Date();
-  const myDate = new Date();
 
-  //Added 10 minutes so that user has time to pay
-  const addedTime = minutesToMilliseconds(10);
-
-  return differenceInMilliseconds(new Date(myDate.getTime() + addedTime), now);
-
-}
-
-const paymentCountDown = ({paymentExpiredate, eventId}): PaymentInfoRegistrationProps => {
-
-}
-*/
-
-const PaymentInfoRegistration = ({ hasPaidOrder, expireDate, orders }: PaymentInfoRegistrationProps) => {
+const PaymentInfoRegistration = ({ hasPaidOrder, paymentExpireDate, orders, eventId }: PaymentInfoRegistrationProps) => {
   return (
-    <ResponsiveDialog
-      description={''}
-      title='Betalingsinformasjon'
-      trigger={
-        <Button className='w-full' variant='outline'>
-          Betalingsinformasjon
-        </Button>
-      }>
-      <ScrollArea>
-        <p>{hasPaidOrder ? 'BETALT' : 'IKKE BETALT'}</p>
-        <p> {expireDate ? 'Tiden har gått ut' : 'Det er mer tid igjen'}</p>
-        <p> </p>
-      </ScrollArea>
-    </ResponsiveDialog>
+    <>
+      <ResponsiveDialog 
+        description={''}
+        title='Betalingsinformasjon'
+        trigger={
+          <Button className='w-full' variant='outline'>
+            <p>{hasPaidOrder ? 'Deltager har betalt ' : 'Deltager har ikke betalt'}</p>
+            <p>
+              {' '}
+              <HandCoins className={cn('w-5 h-5 stroke-[1.5px] ml-2', hasPaidOrder ? 'text-emerald-700' : 'text-red-700')} />
+            </p>
+          </Button>
+        }
+        
+      >
+        <ScrollArea>
+          <div className='space-y-6'>
+            <div className='flex justify-center '>
+              <div >
+              {/* {hasPaidOrder ? 'Deltakeren har betalt.' : <CountDown expiredate={paymentExpireDate}/>} */}
+              <PaymentStatus hasPaid={hasPaidOrder} expireDate={paymentExpireDate} />
+              </div>
+            </div>
+            
+            {orders.map(order =>  (
+            <div key={order.order_id} className='space-y-2'>
+                <PaymentOrderStatus status = {order.status} />
+                <p>
+                  {new Date(order.created_at).toLocaleDateString("no-NO", {
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit"
+                  })}
+                </p>  
+            </div>
+          ))}
+          </div>
+        </ScrollArea>
+      </ResponsiveDialog>
+    </>
   );
 };
+
 export default PaymentInfoRegistration;

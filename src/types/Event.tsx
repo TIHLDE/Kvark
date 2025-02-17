@@ -99,7 +99,7 @@ export type Registration = {
   payment_expiredate: Date;
   has_paid_order?: boolean;
   wait_queue_number?: number;
-  orders?: Order[];
+  payment_orders?: Order[];
 };
 
 export type PublicRegistration = {
