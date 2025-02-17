@@ -36,9 +36,11 @@ const MembershipListItem = ({ membership, isAdmin }: MembershipListItemProps) =>
       title={`${user.first_name} ${user.last_name}`}>
       <div className='space-y-4'>
         <div className='text-sm'>
-          <p>
-            <strong>Allergier:</strong> {user.allergy ? user.allergy : 'Har ingen allergier'}
-          </p>
+          {isAdmin && (
+            <p>
+              <strong>Allergier:</strong> {user.allergy ? user.allergy : 'Har ingen allergier'}
+            </p>
+          )}
           <p>
             <strong>E-post:</strong> {user.email}
           </p>
