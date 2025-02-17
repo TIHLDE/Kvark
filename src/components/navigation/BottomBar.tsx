@@ -43,7 +43,7 @@ const BottomBar = ({ items }: BottomBarProps) => {
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
-      text: 'Karriere',
+      text: 'Stillinger',
       to: URLS.jobposts,
     },
   ];

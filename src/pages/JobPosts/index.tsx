@@ -138,18 +138,21 @@ const JobPosts = () => {
   );
 
   return (
-    <Page className='space-y-8'>
+    <Page className='space-y-8 container'>
       <div>
-        <h1 className='text-3xl md:text-5xl font-bold'>Karriere</h1>
+        <h1 className='text-3xl md:text-5xl font-bold'>Stillingsannonser</h1>
       </div>
-      <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
+      <div className='grid lg:grid-cols-[1fr,3fr] gap-4 items-start'>
+        <div className='border rounded-md bg-card p-4'>
+          <SearchForm />
+        </div>
         <div>
           {isLoading && <JobPostListItemLoading />}
           {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
           {error && <h1>{error.detail}</h1>}
           {data !== undefined && (
             <div className='space-y-4'>
-              <div className='grid lg:grid-cols-2 gap-4'>
+              <div className='grid lg:grid-cols-1 gap-4'>
                 {data.pages.map((page, index) => (
                   <Fragment key={index}>
                     {page.results.map((jobPost) => (
@@ -161,9 +164,6 @@ const JobPosts = () => {
               {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
             </div>
           )}
-        </div>
-        <div className='border rounded-md bg-card p-4'>
-          <SearchForm />
         </div>
       </div>
     </Page>
