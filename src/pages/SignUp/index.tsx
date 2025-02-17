@@ -87,7 +87,7 @@ const SignUp = () => {
         Object.keys(e.detail).forEach((key: string) => {
           if (key in userData) {
             const errorKey = key as keyof UserCreate;
-            const errorMessage = (e.detail as unknown as Record<string, any>)[key];
+            const errorMessage = (e.detail as unknown as Record<string, string | undefined>)[key];
             form.setError(errorKey, { message: errorMessage });
           }
         });

@@ -531,8 +531,6 @@ const getDaysInMonth = (date: Date) => {
     currentDate = addDays(currentDate, 1);
   }
 
-  console.log(calendar);
-
   return calendar;
 };
 

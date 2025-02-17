@@ -70,7 +70,7 @@ export default function Feedback() {
     return { feedback_type, search };
   }, []);
 
-  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const [filters] = useState<Filters>(getInitialFilters());
 
   const { data: user } = useUser();
   const { data: userGroups } = useUserMemberships();

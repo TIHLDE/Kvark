@@ -1,7 +1,7 @@
 import { CloudUploadIcon, FilePlus } from 'lucide-react';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import Cropper from 'react-easy-crop';
+import Cropper, { Area } from 'react-easy-crop';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -58,7 +58,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -78,7 +78,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
