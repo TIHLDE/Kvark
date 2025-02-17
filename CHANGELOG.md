@@ -11,9 +11,12 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+
 - 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 - 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.
+
+- 🎨 **Designendringer**. Scrollbaren på arrangementkalenderen er fikset.
 
 ## Versjon 2025.13.02
 
@@ -22,6 +25,7 @@
 - ⚡ **Ytelse** Optimaliserte ytelsen ved å fjerne unødvendige oppdateringer av navigasjonsbaren.
 
 ## Versjon 2025.15.01
+
 - ⚡ **Kopier link**. Man kan nå kopiere forkortede linker.
 - ⚡ **Allergier for påmeldte medlemmer**. Admins kan nå se allergier for påmeldte medlemmer på arrangementer.
 - 🦟 **Markdown**. Markdown renderer fungerer nå som normalt.
@@ -30,6 +34,7 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
+
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
