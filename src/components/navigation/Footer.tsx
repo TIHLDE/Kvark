@@ -92,7 +92,7 @@ const Footer = () => {
 
       <div>
         <h1 className='text-center'>
-          Feil på siden? <Link to={URLS.aboutIndex}>Rapporter til Index</Link>
+          Feil på siden? <Link to={URLS.feedback}>Rapporter til Index</Link>
         </h1>
       </div>
     </div>

@@ -27,7 +27,7 @@ const ShortCutNavigation = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => 
     },
     {
       title: 'Wiki',
-      path: '/wiki',
+      path: 'https://wiki.tihlde.org/',
     },
     {
       title: 'Grupper',
