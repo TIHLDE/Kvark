@@ -277,8 +277,8 @@ importers:
         specifier: ^4.2.0
         version: 4.3.0(rollup@4.30.1)(typescript@4.9.5)(vite@5.4.11(@types/node@20.17.13))
       vite-tsconfig-paths:
-        specifier: ^4.3.2
-        version: 4.3.2(typescript@4.9.5)(vite@5.4.11(@types/node@20.17.13))
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@4.9.5)(vite@5.4.11(@types/node@20.17.13))
 
 packages:
 
@@ -3780,8 +3780,8 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  tsconfck@3.1.4:
-    resolution: {integrity: sha512-kdqWFGVJqe+KGYvlSO9NIaWn9jT1Ny4oKVzAJsKii5eoE9snzTJzL4+MMVOMn+fikWGFmKEylcXL710V/kIPJQ==}
+  tsconfck@3.1.5:
+    resolution: {integrity: sha512-CLDfGgUp7XPswWnezWwsCRxNmgQjhYq3VXHM0/XIRxhVrKw0M1if9agzryh1QS3nxjCROvV+xWxoJO1YctzzWg==}
     engines: {node: ^18 || >=20}
     hasBin: true
     peerDependencies:
@@ -3993,8 +3993,8 @@ packages:
     peerDependencies:
       vite: '>=2.6.0'
 
-  vite-tsconfig-paths@4.3.2:
-    resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -8179,7 +8179,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsconfck@3.1.4(typescript@4.9.5):
+  tsconfck@3.1.5(typescript@4.9.5):
     optionalDependencies:
       typescript: 4.9.5
 
@@ -8405,11 +8405,11 @@ snapshots:
       - supports-color
       - typescript
 
-  vite-tsconfig-paths@4.3.2(typescript@4.9.5)(vite@5.4.11(@types/node@20.17.13)):
+  vite-tsconfig-paths@5.1.4(typescript@4.9.5)(vite@5.4.11(@types/node@20.17.13)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
-      tsconfck: 3.1.4(typescript@4.9.5)
+      tsconfck: 3.1.5(typescript@4.9.5)
     optionalDependencies:
       vite: 5.4.11(@types/node@20.17.13)
     transitivePeerDependencies:
