@@ -1,28 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SelectGroup } from '@radix-ui/react-select';
-import { addDays, addHours, format, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
-import { CalendarIcon, Info } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { parseISO, setHours, startOfHour, subDays } from 'date-fns';
+import { useEffect, useMemo } from 'react';
+import { Control, FieldPath, FieldValues, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from 'types';
-import { GroupType, MembershipType } from 'types/Enums';
+import { BaseGroup, Event, EventMutate } from 'types';
+import { MembershipType } from 'types/Enums';
 
 import { useCategories } from 'hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
 import { useGroupsByType } from 'hooks/Group';
 import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
 
-import EventEditPriorityPools from 'pages/EventAdministration/components/EventEditPriorityPools';
 import EventRenderer from 'pages/EventDetails/components/EventRenderer';
 
 import BoolExpand from 'components/inputs/BoolExpand';
 import DateTimePicker from 'components/inputs/DateTimePicker';
-import DateTimeRangePicker from 'components/inputs/DateTimeRangePicker';
+import { DateTimeRangePickerFormInput } from 'components/inputs/DateTimeRangePicker';
 import MarkdownEditor from 'components/inputs/MarkdownEditor';
 import { FormImageUpload } from 'components/inputs/Upload';
 import { SingleUserSearch } from 'components/inputs/UserSearch';
@@ -44,114 +40,82 @@ export type EventEditorProps = {
   goToEvent: (newEvent: number | null) => void;
 };
 
-// const formSchema = z
-//   .object({
-//     category: z.string({ required_error: 'Du må velge en kategori' }).min(1, { message: 'Du må velge en kategori' }),
-//     description: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
-//     end_date: z.date(),
-//     end_registration_at: z.date(),
-//     organizer: z.string().min(1, { message: 'Du må velge en arrangør' }),
-//     image: z.string(),
-//     image_alt: z.string(),
-//     limit: z.number().min(0, { message: 'Antall plasser må være 0 eller høyere' }),
-//     location: z.string().min(1, { message: 'Stedet kan ikke være tomt' }),
-//     sign_up: z.boolean(),
-//     sign_off_deadline: z.date(),
-//     start_date: z.date(),
-//     start_registration_at: z.date(),
-//     title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),
-//     only_allow_prioritized: z.boolean(),
-//     can_cause_strikes: z.boolean(),
-//     enforces_previous_strikes: z.boolean(),
-//     is_paid_event: z.boolean(),
-//     price: z.number().optional(),
-//     paytime: z.string().optional(),
-//     contact_person: z.object({ user_id: z.string() }).nullable(),
-//     emojis_allowed: z.boolean(),
-//   })
-//   .superRefine((data, ctx) => {
-//     if (data.sign_up && data.end_registration_at <= data.start_registration_at) {
-//       ctx.addIssue({
-//         message: 'Påmeldingsslutt må være etter påmeldingsstart',
-//         path: ['end_registration_at'],
-//         code: z.ZodIssueCode.custom,
-//       });
-//     }
+const formSchema = z
+  .object({
+    title: z.string().nonempty({ message: 'Tittelen kan ikke være tom' }),
+    location: z.string().nonempty({ message: 'Stedet kan ikke være tomt' }),
+    timePeriod: z.object({
+      from: z.date(),
+      to: z.date(),
+    }),
 
-//     if (data.end_date <= data.start_date) {
-//       ctx.addIssue({
-//         message: 'Sluttdato må være etter startdato',
-//         path: ['end_date'],
-//         code: z.ZodIssueCode.custom,
-//       });
-//     }
+    signUp: z.discriminatedUnion('enabled', [
+      z.object({ enabled: z.literal(false) }),
+      z.object({
+        enabled: z.literal(true),
+        registrationPeriod: z.object({
+          from: z.date(),
+          to: z.date(),
+        }),
+        signOffDeadline: z.date(),
 
-//     if (data.is_paid_event && data.price && data.price < 10) {
-//       ctx.addIssue({
-//         message: 'Prisen må være 10 eller høyere',
-//         path: ['price'],
-//         code: z.ZodIssueCode.custom,
-//       });
-//     }
-//   });
+        options: z.discriminatedUnion('type', [
+          z.object({
+            type: z.literal('simple'),
+            limit: z.coerce.number().positive(),
+          }),
+          z.object({
+            type: z.literal('advanced'),
 
-const formSchema = z.object({
-  title: z.string().nonempty({ message: 'Tittelen kan ikke være tom' }),
-  location: z.string().nonempty({ message: 'Stedet kan ikke være tomt' }),
-  timePeriod: z.object({
-    from: z.date(),
-    to: z.date(),
-  }),
-
-  signUp: z.discriminatedUnion('enabled', [
-    z.object({ enabled: z.literal(false) }),
-    z.object({
-      enabled: z.literal(true),
-      registrationPeriod: z.object({
-        from: z.date(),
-        to: z.date(),
+            allowNonPrioritized: z.discriminatedUnion('enabled', [
+              z.object({ enabled: z.literal(false) }),
+              z.object({
+                enabled: z.literal(true),
+                fillRemainingAfter: z.date(),
+              }),
+            ]),
+          }),
+        ]),
       }),
-      signOffDeadline: z.date(),
+    ]),
 
-      options: z.discriminatedUnion('type', [
-        z.object({
-          type: z.literal('simple'),
-          limit: z.coerce.number().positive(),
-        }),
-        z.object({
-          type: z.literal('advanced'),
-          
-          allowNonPrioritized: z.discriminatedUnion('enabled', [
-            z.object({ enabled: z.literal(false) }),
-            z.object({
-              enabled: z.literal(true),
-              fillRemainingAfter: z.date(),
-            }),
-          ]),
-        }),
-      ]),
-    }),
-  ]),
+    description: z.string().nonempty({ message: 'Beskrivelsen kan ikke være tom' }),
+    banner: z.string(),
+    bannerAlt: z.string(),
 
-  description: z.string().nonempty({ message: 'Beskrivelsen kan ikke være tom' }),
-  banner: z.string(),
-  bannerAlt: z.string(),
+    organizer: z.string().nonempty({ message: 'Du må velge en arrangør' }),
+    category: z.coerce.number({ required_error: 'Du må velge en kategori' }),
 
-  organizer: z.string().nonempty({ message: 'Du må velge en arrangør' }),
-  category: z.coerce.number({ required_error: 'Du må velge en kategori' }),
+    paid: z.discriminatedUnion('enabled', [
+      z.object({ enabled: z.literal(false) }),
+      z.object({
+        enabled: z.literal(true),
+        price: z.coerce.number().min(10, { message: 'Prisen må være 10kr eller høyere' }),
+      }),
+    ]),
 
-  paid: z.discriminatedUnion('enabled', [
-    z.object({ enabled: z.literal(false) }),
-    z.object({
-      enabled: z.literal(true),
-      price: z.coerce.number().min(10, { message: 'Prisen må være 10kr eller høyere' }),
-    }),
-  ]),
+    reactions: z.boolean(),
 
-  reactions: z.boolean(),
-
-  contactPerson: z.object({ user_id: z.string() }).nullable(),
-});
+    contactPerson: z.object({ user_id: z.string() }).nullable(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.timePeriod.from >= data.timePeriod.to) {
+      ctx.addIssue({
+        message: 'Tidsperioden er ikke gyldig. Startdato må være før sluttdato',
+        path: ['timePeriod'],
+        code: z.ZodIssueCode.custom,
+      });
+    }
+    if (data.signUp.enabled) {
+      if (data.signUp.registrationPeriod.from >= data.signUp.registrationPeriod.to) {
+        ctx.addIssue({
+          message: 'Påmeldingsperioden er ikke gyldig. Startdato må være før sluttdato',
+          path: ['signUp', 'registrationPeriod'],
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+  });
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { data, isLoading } = useEventById(eventId || -1);
@@ -196,47 +160,70 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     },
   });
 
-  // const setValues = useCallback(
-  //   (newValues: Event | null) => {
-  //     setPriorityPools(newValues?.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })) || []);
-  //     const category = newValues?.category as unknown as Category;
-  //     form.reset({
-  //       category: category?.id.toString() || '',
-  //       description: newValues?.description || '',
-  //       end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
-  //       end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
-  //       organizer: newValues?.organizer?.slug || '',
-  //       image: newValues?.image || '',
-  //       image_alt: newValues?.image_alt || '',
-  //       limit: newValues?.limit || 0,
-  //       location: newValues?.location || '',
-  //       sign_off_deadline: newValues?.sign_off_deadline ? parseISO(newValues.sign_off_deadline) : new Date(),
-  //       sign_up: newValues?.sign_up || false,
-  //       start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
-  //       start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
-  //       title: newValues?.title || '',
-  //       only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
-  //       can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
-  //       enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-  //       is_paid_event: newValues?.is_paid_event || false,
-  //       price: (newValues?.paid_information?.price && parseInt(newValues.paid_information.price.toString())) || 0,
-  //       paytime: '02:00',
-  //       contact_person: newValues?.contact_person || null,
-  //       emojis_allowed: newValues?.emojis_allowed || false,
-  //     });
-  //     if (!newValues) {
-  //       setTimeout(() => updateDates(new Date()), 10);
-  //     }
-  //   },
-  //   [form.reset],
-  // );
+  /**
+   * Sets the dates of the event to a standarized structure compared to the start-date. Runned when start-date is changed.
+   * Registration start -> 12:00, 7 days before start
+   * Registration end -> 12:00, same day as start
+   * Sign off deadline -> 12:00, 1 days start
+   * @param start The start-date
+   */
+  useEffect(() => {
+    const timePeriod = form.watch('timePeriod');
 
-  // /**
-  //  * Update the form-data when the opened event changes
-  //  */
-  // useEffect(() => {
-  //   setValues(data || null);
-  // }, [data, setValues]);
+    if (timePeriod?.from) {
+      const start = timePeriod.from;
+
+      const getDate = (daysBefore: number, hour: number) =>
+        startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
+      form.setValue('signUp.registrationPeriod', {
+        from: getDate(7, 12),
+        to: getDate(0, 12),
+      });
+      form.setValue('signUp.signOffDeadline', getDate(1, 12));
+    }
+  }, [form.watch('timePeriod')]);
+
+  useEffect(() => {
+    if (data && eventId) {
+      form.reset({
+        title: data.title,
+        location: data.location,
+        timePeriod: {
+          from: parseISO(data.start_date),
+          to: parseISO(data.end_date),
+        },
+        signUp: {
+          enabled: data.sign_up,
+          registrationPeriod: {
+            from: parseISO(data.start_registration_at),
+            to: parseISO(data.end_registration_at),
+          },
+          signOffDeadline: parseISO(data.sign_off_deadline),
+          options: {
+            type: data.sign_up ? 'simple' : 'advanced',
+            limit: data.limit,
+            allowNonPrioritized: {
+              enabled: data.only_allow_prioritized,
+              fillRemainingAfter: parseISO(data.end_registration_at),
+            },
+          },
+        },
+        description: data.description,
+        banner: data.image,
+        bannerAlt: data.image_alt,
+        organizer: data.organizer?.slug,
+        category: data.category,
+        paid: data.is_paid_event
+          ? {
+              enabled: true,
+              price: data.price,
+            }
+          : { enabled: false },
+        reactions: data.emojis_allowed,
+        contactPerson: data.contact_person,
+      });
+    }
+  }, [data, eventId, form]);
 
   const groupOptions = useMemo<Record<string, BaseGroup[]>>(() => {
     if (!permissions) {
@@ -337,6 +324,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    // eslint-disable-next-line no-console
     console.log('values:', values);
 
     // if (eventId) {
@@ -360,24 +348,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     //   });
   };
 
-  // /**
-  //  * Sets the dates of the event to a standarized structure compared to the start-date. Runned when start-date is changed.
-  //  * Registration start -> 12:00, 7 days before start
-  //  * Registration end -> 12:00, same day as start
-  //  * Sign off deadline -> 12:00, 1 days start
-  //  * End-date -> 2 hours after start
-  //  * @param start The start-date
-  //  */
-  // const updateDates = (start?: Date) => {
-  //   if (start && start instanceof Date && !isNaN(start.valueOf())) {
-  //     const getDate = (daysBefore: number, hour: number) =>
-  //       startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
-  //     form.setValue('start_registration_at', getDate(7, 12));
-  //     form.setValue('end_registration_at', getDate(0, 12));
-  //     form.setValue('sign_off_deadline', getDate(1, 12));
-  //     form.setValue('end_date', addHours(start, 2));
-  //   }
-  // };
   const categoryMap = useMemo(() => Object.fromEntries(categories.map((v) => [v.id.toString(), v.text])), [categories]);
 
   if (isLoading) {
@@ -388,119 +358,18 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     <Card>
       <CardContent className='py-6'>
         <Form {...form}>
-          <form
-            className='space-y-6'
-            onSubmit={(e) => {
-              console.log('form:', form.getValues());
-              return form.handleSubmit(onSubmit)(e);
-            }}>
+          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <FormField
-                control={form.control}
-                name='title'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Tittel <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name='location'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Sted <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <FormInput control={form.control} label='Tittel' name='title' placeholder='Navnet på arrangementet' required />
+              <FormInput control={form.control} label='Sted' name='location' placeholder='Hvor skal det være?' required />
             </div>
 
-            <FormField
-              control={form.control}
-              name='timePeriod'
-              render={({ field }) => {
-                const { from, to } = field.value ?? {};
-
-                let dateText = from ? format(from, 'PPP HH:mm', { locale: nb }) : undefined;
-                if (to) {
-                  dateText += ` - ${format(to, 'PPP HH:mm', { locale: nb })}`;
-                }
-
-                return (
-                  <FormItem>
-                    <FormLabel>Tidsperiode</FormLabel>
-                    <FormControl>
-                      <DateTimeRangePicker
-                        hideSeconds={true}
-                        onChange={(e) => {
-                          if (e === undefined) {
-                            return field.onChange(null);
-                          } else {
-                            field.onChange(e);
-                          }
-                        }}
-                        range={field.value}>
-                        <Button className={cn('w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')} variant='outline'>
-                          <CalendarIcon className='mr-2 h-4 w-4' />
-                          {field.value ? dateText : <span>Velg periode</span>}
-                        </Button>
-                      </DateTimeRangePicker>
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
-            />
+            <DateTimeRangePickerFormInput control={form.control} label='Tidsperiode' name='timePeriod' required />
 
             <BoolExpand description='Bestem start og slutt for påmelding' form={form} name='signUp.enabled' title='Påmelding'>
               <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-                <FormField
-                  control={form.control}
-                  name='signUp.registrationPeriod'
-                  render={({ field }) => {
-                    const { from, to } = field.value ?? {};
+                <DateTimeRangePickerFormInput control={form.control} label='Påmeldingsperiode' name='signUp.registrationPeriod' required />
 
-                    let dateText = from ? format(from, 'PPP HH:mm', { locale: nb }) : undefined;
-                    if (to) {
-                      dateText += ` - ${format(to, 'PPP HH:mm', { locale: nb })}`;
-                    }
-
-                    return (
-                      <FormItem className='w-full'>
-                        <FormLabel>Påmeldingsperiode</FormLabel>
-                        <FormControl>
-                          <DateTimeRangePicker
-                            hideSeconds={true}
-                            onChange={(e) => {
-                              if (e === undefined) {
-                                return field.onChange(null);
-                              } else {
-                                field.onChange(e);
-                              }
-                            }}
-                            range={field.value}>
-                            <Button className={cn('w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')} variant='outline'>
-                              <CalendarIcon className='mr-2 h-4 w-4' />
-                              {field.value ? dateText : <span>Velg periode</span>}
-                            </Button>
-                          </DateTimeRangePicker>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
-                />
                 <DateTimePicker form={form} hideSeconds label='Avmeldingsfrist' name='signUp.signOffDeadline' required />
               </div>
 
@@ -519,21 +388,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                     </TabsList>
                     <TabsContent value='simple'>
                       <Card className='p-4'>
-                        <FormField
-                          control={form.control}
-                          name='signUp.options.limit'
-                          render={({ field }) => (
-                            <FormItem className='w-full'>
-                              <FormLabel>
-                                Antall plasser <span className='text-red-300'>*</span>
-                              </FormLabel>
-                              <FormControl>
-                                <Input type='number' {...field} placeholder='0' value={(field.value ?? '').toString()} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <FormInput control={form.control} label='Antall plasser' name='signUp.options.limit' placeholder='0' required />
                       </Card>
                     </TabsContent>
                     <TabsContent value='advanced'>
@@ -550,19 +405,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
             <FormImageUpload form={form} label='Velg et banner bilde' name='banner' ratio='21:9' />
 
-            <FormField
-              control={form.control}
-              name='bannerAlt'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Alternativ bildetekst</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Skriv her...' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormInput control={form.control} label='Alternativ bildetekst' name='bannerAlt' />
+
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <FormField
                 control={form.control}
@@ -624,21 +468,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             </div>
 
             <BoolExpand description='Bestem en pris hvis du ønsker et betalt arrangement' form={form} name='paid.enabled' title='Betalt arrangement'>
-              <FormField
-                control={form.control}
-                name='paid.price'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Pris <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input type='number' {...field} placeholder='0' value={(field.value ?? '').toString()} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <FormInput control={form.control} label='Pris' name='paid.price' placeholder='0' required />
             </BoolExpand>
 
             <FormField
@@ -674,3 +504,37 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 };
 
 export default EventEditor;
+
+type FormInputProps<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>> = {
+  label: string | React.ReactNode;
+  control?: Control<TFieldValues>;
+  name: TName;
+  required?: boolean;
+  placeholder?: string;
+};
+export function FormInput<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>>(
+  props: FormInputProps<TFieldValues, TName>,
+) {
+  return (
+    <FormField
+      control={props.control}
+      name={props.name}
+      render={({ field }) => (
+        <FormItem className='w-full'>
+          <FormLabel>
+            {props.label} {props.required && <span className='text-red-300'>*</span>}
+          </FormLabel>
+          <FormControl>
+            <Input
+              type={typeof field.value === 'number' ? 'number' : 'text'}
+              {...field}
+              placeholder={props.placeholder}
+              value={(field.value ?? '').toString()}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
