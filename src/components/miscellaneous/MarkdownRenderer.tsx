@@ -1,4 +1,5 @@
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
+import type { Components } from 'react-markdown/lib';
 import rehypeRaw from 'rehype-raw';
 
 import { Event, EventList, JobPost, News } from 'types';
@@ -47,8 +48,6 @@ export type CodeBlockProps = {
 
 export const CodeBlock = ({ inline = false, className: language, children }: CodeBlockProps) => {
   const value = typeof children === 'string' ? children : String(children);
-  console.log('CHILDREN: ', value);
-  console.log('LANGUAGE: ', language);
   if (inline) {
     return <code className='bg-card p-1 rounded-md'>{value}</code>;
   } else if (language === LanguageTypes.EXPANDLIST) {
@@ -80,7 +79,7 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
   return <pre className='bg-card rounded-md p-2 overflow-x-auto'>{value}</pre>;
 };
 
-const components: any = {
+const components = {
   blockquote: ({ children }: { children: ReactNode[] }) => <blockquote className='p-2 pl-4 ml-4 my-2 border-l-4 border-l-primary'>{children}</blockquote>,
   code: CodeBlock,
   pre: ({ children }: { children: ReactNode[] }) => children,
@@ -99,7 +98,7 @@ const components: any = {
   ),
   hr: () => <Separator className='my-2' />,
   img: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className='object-contain max-w-full h-auto rounded-md' loading='lazy' src={src} />,
-};
+} as unknown as Components;
 
 export type MarkdownRendererProps = {
   value?: string;

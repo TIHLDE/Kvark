@@ -2,7 +2,6 @@ import { cn } from 'lib/utils';
 import { Slash } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import URLS, { WIKI_URLS } from 'URLS';
 
 import { useGroups } from 'hooks/Group';
 import { useWikiPage } from 'hooks/Wiki';

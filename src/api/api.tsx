@@ -16,7 +16,6 @@ import {
   EventMutate,
   EventStatistics,
   Feedback,
-  FeedbackAuthor,
   FileUploadResponse,
   Form,
   FormCreate,

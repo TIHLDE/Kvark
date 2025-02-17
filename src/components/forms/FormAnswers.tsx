@@ -23,7 +23,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
   const { data, isLoading, error } = useFormSubmissions(formId || '-', selectedPage + 1);
-  const [_selectedFields, setSelectedFields] = useState<string[]>(['Alle']);
+  const [, setSelectedFields] = useState<string[]>(['Alle']);
 
   const handleSelectFields = (values: MultiSelectOption[]) => {
     if (values.length === 0) {
@@ -134,15 +134,23 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
             Neste
           </Button>
           <Button onClick={downloadCSV} variant='outline'>
-          Last ned som CSV
-        </Button>
+            Last ned som CSV
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-function FormAnswer({ userSubmission, form, getTableCellText }: { userSubmission: UserSubmission; form: Form; getTableCellText: (f: any, s: any) => string }) {
+function FormAnswer({
+  userSubmission,
+  form,
+  getTableCellText,
+}: {
+  userSubmission: UserSubmission;
+  form: Form;
+  getTableCellText: (f: TextFormField | SelectFormField, s: UserSubmission) => string;
+}) {
   return (
     <Accordion className='' collapsible type='single'>
       <AccordionItem className='border-0' value='item-1'>

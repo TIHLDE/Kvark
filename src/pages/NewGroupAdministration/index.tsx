@@ -44,7 +44,7 @@ export default function NewGroupAdministration() {
         Object.keys(e.detail).forEach((key: string) => {
           if (key in data) {
             const errorKey = key as keyof GroupCreate;
-            const errorMessage = (e.detail as unknown as Record<string, any>)[key];
+            const errorMessage = (e.detail as unknown as Record<string, string | undefined>)[key];
             form.setError(errorKey, { message: errorMessage });
           }
         });
