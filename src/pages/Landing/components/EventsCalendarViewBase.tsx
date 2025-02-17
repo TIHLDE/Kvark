@@ -32,6 +32,7 @@ import { Button } from 'components/ui/button';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import EventsCalendarPopover from './EventsCalendarPopover';
+import { ScrollArea } from '../../../components/ui/scroll-area';
 
 export const monthEventVariants = cva('size-2 rounded-full', {
   variants: {
@@ -325,7 +326,9 @@ const CalendarMonthView = () => {
           );
 
           return (
-            <div className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')} key={_date.toString()}>
+            <ScrollArea
+              className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')}
+              key={_date.toString()}>
               <span className={cn('size-6 grid place-items-center rounded-full mb-1 sticky top-0', isToday(_date) && 'bg-primary text-primary-foreground')}>
                 {format(_date, 'd')}
               </span>
@@ -333,7 +336,7 @@ const CalendarMonthView = () => {
               {currentEvents.map((event) => (
                 <DayTile event={event} key={event.id} />
               ))}
-            </div>
+            </ScrollArea>
           );
         })}
       </div>
