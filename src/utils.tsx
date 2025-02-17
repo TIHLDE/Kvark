@@ -323,18 +323,7 @@ export const getICSFromEvent = (event: Event): string => {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const argsToParams = (data: Record<string, any>) => {
-  let args = '?';
-  for (const key in data) {
-    if (Array.isArray(data[key])) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      for (const value in data[key] as any) {
-        args += `&${key}=${data[key][value]}`;
-      }
-    } else if (!(data[key] === undefined || (typeof data[key] === 'string' && data[key].trim().length === 0))) {
-      args += `&${key}=${data[key]}`;
-    }
-  }
-  return args;
+  return '?' + new URLSearchParams(data).toString();
 };
 
 /**
