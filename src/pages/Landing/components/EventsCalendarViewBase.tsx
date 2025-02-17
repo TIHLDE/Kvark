@@ -31,8 +31,8 @@ import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffec
 import { Button } from 'components/ui/button';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
-import EventsCalendarPopover from './EventsCalendarPopover';
 import { ScrollArea } from '../../../components/ui/scroll-area';
+import EventsCalendarPopover from './EventsCalendarPopover';
 
 export const monthEventVariants = cva('size-2 rounded-full', {
   variants: {
