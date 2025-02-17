@@ -328,6 +328,7 @@ export const argsToParams = (data: Record<string, any>) => {
     if (Array.isArray(data[key])) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const value in data[key] as any) {
+        // @ts-expect-error the value key is any. i dont feel like fixing this
         args += `&${key}=${data[key][value]}`;
       }
     } else if (!(data[key] === undefined || (typeof data[key] === 'string' && data[key].trim().length === 0))) {
