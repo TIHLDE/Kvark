@@ -1,11 +1,9 @@
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import NewsEditor from '~/pages/NewsAdministration/components/NewsEditor';
+import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import NewsList from './components/NewsList';
 

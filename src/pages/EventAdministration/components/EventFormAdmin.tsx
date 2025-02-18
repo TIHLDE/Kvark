@@ -1,21 +1,18 @@
+import FormAdmin from '~/components/forms/FormAdmin';
+import FormFieldsEditor from '~/components/forms/FormFieldsEditor';
+import { FormViewTemplate } from '~/components/forms/FormView';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useEventById } from '~/hooks/Event';
+import { useCreateForm, useDeleteForm, useFormById, useFormTemplates } from '~/hooks/Form';
+import type { EventFormCreate, Form, FormCreate } from '~/types';
+import { EventFormType, FormResourceType } from '~/types/Enums';
+import { removeIdsFromFields } from '~/utils';
 import { BookCopy } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { removeIdsFromFields } from 'utils';
-
-import { EventFormCreate, Form, FormCreate } from 'types';
-import { EventFormType, FormResourceType } from 'types/Enums';
-
-import { useEventById } from 'hooks/Event';
-import { useCreateForm, useDeleteForm, useFormById, useFormTemplates } from 'hooks/Form';
-
-import FormAdmin from 'components/forms/FormAdmin';
-import FormFieldsEditor from 'components/forms/FormFieldsEditor';
-import { FormViewTemplate } from 'components/forms/FormView';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import { Skeleton } from 'components/ui/skeleton';
 
 export type EventFormAdminProps = {
   eventId: number;

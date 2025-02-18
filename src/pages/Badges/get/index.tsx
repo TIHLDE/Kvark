@@ -1,11 +1,9 @@
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { useCreateBadge } from '~/hooks/Badge';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { toast } from 'sonner';
-
-import { useCreateBadge } from 'hooks/Badge';
-
-import { Button } from 'components/ui/button';
-import { Input } from 'components/ui/input';
 
 const BadgesGet = () => {
   const { badgeId } = useParams();

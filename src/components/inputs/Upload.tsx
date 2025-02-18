@@ -1,18 +1,15 @@
+import API from '~/api/api';
+import { blobToFile, getCroppedImgAsBlob, readFile } from '~/components/inputs/ImageUploadUtils';
+import { Button } from '~/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog';
+import { Label } from '~/components/ui/label';
+import { useAnalytics } from '~/hooks/Utils';
 import { CloudUploadIcon, FilePlus } from 'lucide-react';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { DropzoneOptions, useDropzone } from 'react-dropzone';
 import Cropper, { Area } from 'react-easy-crop';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
-
-import API from 'api/api';
-
-import { useAnalytics } from 'hooks/Utils';
-
-import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
-import { Button } from 'components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from 'components/ui/dialog';
-import { Label } from 'components/ui/label';
 
 type FormImageMultipleUploadProps = {
   fileTypes: DropzoneOptions['accept'];

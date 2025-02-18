@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useDeleteWikiPage, useUpdateWikiPage } from '~/hooks/Wiki';
+import type { WikiPage } from '~/types';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
-import { urlEncode } from 'utils';
 import { z } from 'zod';
-
-import { WikiPage } from 'types';
-
-import { useDeleteWikiPage, useUpdateWikiPage } from 'hooks/Wiki';
-
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 import WikiPageTree from './WikiPageTree';
 

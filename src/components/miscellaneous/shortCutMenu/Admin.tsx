@@ -1,8 +1,6 @@
-import URLS from 'URLS';
-
-import { PermissionApp } from 'types/Enums';
-
-import { HavePermission } from 'hooks/User';
+import { HavePermission } from '~/hooks/User';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
 
 import { ShortCutMenuProps } from '.';
 import ShortCutLink from './Item';

@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { Gallery } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { Gallery } from '~/types';
+import URLS from '~/URLS';
+import { Link } from 'react-router';
 
 export type GalleryListItemProps = {
   gallery: Gallery;

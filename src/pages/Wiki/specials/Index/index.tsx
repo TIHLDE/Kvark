@@ -1,7 +1,6 @@
-import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
-import ErrorCard from 'pages/Wiki/specials/Index/ErrorCard';
-
-import InfoCard from 'components/layout/InfoCard';
+import InfoCard from '~/components/layout/InfoCard';
+import ChangelogCard from '~/pages/Wiki/specials/Index/ChangelogCard';
+import ErrorCard from '~/pages/Wiki/specials/Index/ErrorCard';
 
 export const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
 export const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';

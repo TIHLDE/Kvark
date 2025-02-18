@@ -1,14 +1,12 @@
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import BottomBar from '~/components/navigation/BottomBar';
+import Footer from '~/components/navigation/Footer';
+import Topbar from '~/components/navigation/Topbar';
+import { SHOW_NEW_STUDENT_INFO } from '~/constant';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useIsAuthenticated } from '~/hooks/User';
+import URLS from '~/URLS';
 import { ReactNode, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
-import URLS from 'URLS';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-
-import BottomBar from 'components/navigation/BottomBar';
-import Footer from 'components/navigation/Footer';
-import Topbar from 'components/navigation/Topbar';
 
 export type NavigationOptions = {
   noFooter: boolean;

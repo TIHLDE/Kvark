@@ -1,6 +1,6 @@
-import { GroupType, MembershipType } from 'types/Enums';
-import { Permissions } from 'types/Misc';
-import { User, UserBase, UserList } from 'types/User';
+import { GroupType, MembershipType } from '~/types/Enums';
+import type { Permissions } from '~/types/Misc';
+import type { User, UserBase, UserList } from '~/types/User';
 
 export type GroupPermissions = Permissions & {
   group_form: boolean;

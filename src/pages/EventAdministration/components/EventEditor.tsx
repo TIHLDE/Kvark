@@ -1,36 +1,32 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SelectGroup } from '@radix-ui/react-select';
+import BoolExpand from '~/components/inputs/BoolExpand';
+import DateTimePicker from '~/components/inputs/DateTimePicker';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import RendererPreview from '~/components/miscellaneous/RendererPreview';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Switch } from '~/components/ui/switch';
+import { useCategories } from '~/hooks/Categories';
+import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from '~/hooks/Event';
+import { useGroupsByType } from '~/hooks/Group';
+import { useUser, useUserMemberships, useUserPermissions } from '~/hooks/User';
+import EventEditPriorityPools from '~/pages/EventAdministration/components/EventEditPriorityPools';
+import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
+import type { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from '~/types';
+import { GroupType, MembershipType } from '~/types/Enums';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { Info } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from 'types';
-import { GroupType, MembershipType } from 'types/Enums';
-
-import { useCategories } from 'hooks/Categories';
-import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
-import { useGroupsByType } from 'hooks/Group';
-import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
-
-import EventEditPriorityPools from 'pages/EventAdministration/components/EventEditPriorityPools';
-import EventRenderer from 'pages/EventDetails/components/EventRenderer';
-
-import BoolExpand from 'components/inputs/BoolExpand';
-import DateTimePicker from 'components/inputs/DateTimePicker';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { SingleUserSearch } from 'components/inputs/UserSearch';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Switch } from 'components/ui/switch';
 
 import CloseEvent from './CloseEvent';
 import DeleteEvent from './DeleteEvent';

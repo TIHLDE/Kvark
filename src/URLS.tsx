@@ -1,4 +1,4 @@
-import { Badge, BadgeCategory, Group } from 'types';
+import type { Badge, BadgeCategory, Group } from '~/types';
 
 const WIKI = 'https://wiki.tihlde.org/';
 export const WIKI_URLS = {
@@ -72,6 +72,6 @@ const URLS = {
   pythonsLadies: 'https://pythons-damer.tihlde.org/',
   changelog: '/endringslogg',
   admissions: '/opptak/',
-};
+} as const;
 
 export default URLS;

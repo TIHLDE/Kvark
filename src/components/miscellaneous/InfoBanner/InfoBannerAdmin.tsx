@@ -1,16 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Page from '~/components/navigation/Page';
+import { PaginateButton } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
+import { Label } from '~/components/ui/label';
+import { Switch } from '~/components/ui/switch';
+import { useInfoBanners } from '~/hooks/InfoBanner';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-import { useInfoBanners } from 'hooks/InfoBanner';
-
-import Page from 'components/navigation/Page';
-import { PaginateButton } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormField, FormItem } from 'components/ui/form';
-import { Label } from 'components/ui/label';
-import { Switch } from 'components/ui/switch';
 
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
 

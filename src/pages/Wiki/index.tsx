@@ -1,22 +1,19 @@
-import { cn } from 'lib/utils';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import ShareButton from '~/components/miscellaneous/ShareButton';
+import Page from '~/components/navigation/Page';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
+import { Card, CardContent } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useGroups } from '~/hooks/Group';
+import { useWikiPage } from '~/hooks/Wiki';
+import { cn } from '~/lib/utils';
+import GroupItem from '~/pages/Groups/overview/GroupItem';
+import WikiAdmin from '~/pages/Wiki/components/WikiAdmin';
+import WikiNavigator from '~/pages/Wiki/components/WikiNavigator';
+import Index from '~/pages/Wiki/specials/Index';
 import { Slash } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-
-import { useGroups } from 'hooks/Group';
-import { useWikiPage } from 'hooks/Wiki';
-
-import GroupItem from 'pages/Groups/overview/GroupItem';
-import WikiAdmin from 'pages/Wiki/components/WikiAdmin';
-import WikiNavigator from 'pages/Wiki/components/WikiNavigator';
-import Index from 'pages/Wiki/specials/Index';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import ShareButton from 'components/miscellaneous/ShareButton';
-import Page from 'components/navigation/Page';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from 'components/ui/breadcrumb';
-import { Card, CardContent } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link, useLocation, useNavigate } from 'react-router';
 
 import WikiSearch from './components/WikiSearch';
 

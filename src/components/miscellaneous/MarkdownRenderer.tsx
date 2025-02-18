@@ -1,19 +1,16 @@
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
+import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
+import Expandable from '~/components/ui/expandable';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useEventById } from '~/hooks/Event';
+import { useJobPostById } from '~/hooks/JobPost';
+import { useNewsById } from '~/hooks/News';
+import type { Event, EventList, JobPost, News } from '~/types';
 import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
-import type { Components } from 'react-markdown/lib';
+import type { Components } from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-
-import { Event, EventList, JobPost, News } from 'types';
-
-import { useEventById } from 'hooks/Event';
-import { useJobPostById } from 'hooks/JobPost';
-import { useNewsById } from 'hooks/News';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
-import Expandable from 'components/ui/expandable';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 

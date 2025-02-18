@@ -1,26 +1,22 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { GoBackButton } from '~/components/ui/button';
+import { CardContent, CardHeader } from '~/components/ui/card';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { useGroup } from '~/hooks/Group';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useIsAuthenticated } from '~/hooks/User';
+import GroupInfo from '~/pages/Groups/about';
+import GroupAdmin from '~/pages/Groups/components/GroupAdmin';
+import GroupEvents from '~/pages/Groups/events';
+import GroupFines from '~/pages/Groups/fines';
+import { FinesProvider } from '~/pages/Groups/fines/FinesContext.client';
+import GroupForms from '~/pages/Groups/forms';
+import GroupLaws from '~/pages/Groups/laws';
+import type { FormGroupValues } from '~/types';
+import URLS from '~/URLS';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { FormGroupValues } from 'types';
-
-import { useGroup } from 'hooks/Group';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-
-import GroupInfo from 'pages/Groups/about';
-import GroupAdmin from 'pages/Groups/components/GroupAdmin';
-import GroupEvents from 'pages/Groups/events';
-import GroupFines from 'pages/Groups/fines';
-import { FinesProvider } from 'pages/Groups/fines/FinesContext';
-import GroupForms from 'pages/Groups/forms';
-import GroupLaws from 'pages/Groups/laws';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { GoBackButton } from 'components/ui/button';
-import { CardContent, CardHeader } from 'components/ui/card';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
+import { Link, Navigate, Route, Routes, useParams } from 'react-router';
 
 import AddFineDialog from './fines/AddFineDialog';
 

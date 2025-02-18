@@ -1,11 +1,9 @@
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import JobPostEditor from '~/pages/JobPostAdministration/components/JobPostEditor';
+import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import JobPostEditor from 'pages/JobPostAdministration/components/JobPostEditor';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import JobPostList from './components/JobPostList';
 

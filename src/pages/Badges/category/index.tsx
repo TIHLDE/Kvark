@@ -1,12 +1,10 @@
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { useBadgeCategory } from '~/hooks/Badge';
+import URLS from '~/URLS';
 import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
 import { Suspense } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useBadgeCategory } from 'hooks/Badge';
-
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { Link, Outlet, useParams } from 'react-router';
 
 const BadgeCategory = () => {
   const { categoryId } = useParams<'categoryId'>();

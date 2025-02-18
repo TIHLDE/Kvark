@@ -1,23 +1,23 @@
+import InfoBanner from '~/components/miscellaneous/InfoBanner/InfoBanner';
+import { Button } from '~/components/ui/button';
+import { useAnalytics } from '~/hooks/Utils';
+import EventsView from '~/pages/Landing/components/EventsView';
+import NewsListView from '~/pages/Landing/components/NewsListView';
+import NewStudentBox from '~/pages/Landing/components/NewStudentBox';
+import StoriesView from '~/pages/Landing/components/StoriesView';
+import Wave from '~/pages/Landing/components/Wave';
+import URLS from '~/URLS';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
+import { Link } from 'react-router';
 
-import { useAnalytics } from 'hooks/Utils';
+import type { Route } from './+types/index';
 
-import EventsView from 'pages/Landing/components/EventsView';
-import NewsListView from 'pages/Landing/components/NewsListView';
-import NewStudentBox from 'pages/Landing/components/NewStudentBox';
-import StoriesView from 'pages/Landing/components/StoriesView';
-import Wave from 'pages/Landing/components/Wave';
-
-import InfoBanner from 'components/miscellaneous/InfoBanner/InfoBanner';
-import { Button } from 'components/ui/button';
-
-const Landing = () => {
+export default function Landing({ loaderData }: Route.ComponentProps) {
   const { event } = useAnalytics();
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
-
+  // eslint-disable-next-line no-console
+  console.log(loaderData);
   return (
     <div>
       <Wave />
@@ -54,6 +54,4 @@ const Landing = () => {
       </div>
     </div>
   );
-};
-
-export default Landing;
+}

@@ -1,17 +1,13 @@
+import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
+import Page from '~/components/navigation/Page';
+import { useNewsById } from '~/hooks/News';
+import Http404 from '~/pages/Http404';
+import NewsRenderer, { NewsRendererLoading } from '~/pages/NewsDetails/components/NewsRenderer';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-import { urlEncode } from 'utils';
-
-import { useNewsById } from 'hooks/News';
-
-import Http404 from 'pages/Http404';
-import NewsRenderer, { NewsRendererLoading } from 'pages/NewsDetails/components/NewsRenderer';
-
-import Page from 'components/navigation/Page';
-
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+import { useNavigate, useParams } from 'react-router';
 
 const NewsDetails = () => {
   const { id } = useParams();

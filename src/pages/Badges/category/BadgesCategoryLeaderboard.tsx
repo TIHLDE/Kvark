@@ -1,8 +1,6 @@
-import { useParams } from 'react-router-dom';
-
-import { useBadgesOverallLeaderboard } from 'hooks/Badge';
-
-import BadgesLeaderboard from 'pages/Badges/BadgesLeaderboard';
+import { useBadgesOverallLeaderboard } from '~/hooks/Badge';
+import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
+import { useParams } from 'react-router';
 
 export const BadgesOverallLeaderboard = () => {
   const { categoryId } = useParams<'categoryId'>();

@@ -1,17 +1,14 @@
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useEventById } from '~/hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import EventEditor from '~/pages/EventAdministration/components/EventEditor';
+import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
+import URLS from '~/URLS';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useEventById } from 'hooks/Event';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
+import { Link, useNavigate, useParams } from 'react-router';
 
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';

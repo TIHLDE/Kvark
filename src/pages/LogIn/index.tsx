@@ -1,18 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Page from '~/components/navigation/Page';
+import { Button, buttonVariants } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { useRedirectUrl, useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useLogin } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
-
-import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useLogin } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
-import { Button, buttonVariants } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),

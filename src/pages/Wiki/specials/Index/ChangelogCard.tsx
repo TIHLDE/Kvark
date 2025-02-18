@@ -1,9 +1,8 @@
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
 import { Code } from 'lucide-react';
 import { useQuery } from 'react-query';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
 
 const LATEST_VERSION_INDEX = 3;
 const MARKDOWN_HEADER_DELIMITER = /(?=\n##\s *)/g;

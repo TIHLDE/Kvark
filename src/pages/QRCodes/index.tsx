@@ -1,20 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateQRCode, useQRCodes } from '~/hooks/QRCode';
+import URLS from '~/URLS';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
-
-import { useCreateQRCode, useQRCodes } from 'hooks/QRCode';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 import QRCodeItem from './components/QRCodeItem';
 

@@ -1,62 +1,58 @@
-import { lazy, ReactElement, Suspense, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import URLS from 'URLS';
+import InfoBannerAdmin from '~/components/miscellaneous/InfoBanner/InfoBannerAdmin';
+import { useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import Changelog from '~/pages/Changelog';
+import Companies from '~/pages/Companies';
+import EventDetails from '~/pages/EventDetails';
+import Events from '~/pages/Events';
+import Groups from '~/pages/Groups';
+import GroupDetails from '~/pages/Groups/GroupDetails';
+import GroupsOverview from '~/pages/Groups/overview';
+import JobPostDetails from '~/pages/JobPostDetails';
+import JobPosts from '~/pages/JobPosts';
+// import Landing from '~/pages/Landing';
+import News from '~/pages/News';
+import NewsDetails from '~/pages/NewsDetails';
+import NewStudent from '~/pages/NewStudent';
+import Profile from '~/pages/Profile';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import { lazy, type ReactElement, Suspense, useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router';
 
-import { PermissionApp } from 'types/Enums';
-
-import { useSetRedirectUrl } from 'hooks/Misc';
-import { useHavePermission, useIsAuthenticated } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Changelog from 'pages/Changelog';
-import Companies from 'pages/Companies';
-import EventDetails from 'pages/EventDetails';
-import Events from 'pages/Events';
-import Groups from 'pages/Groups';
-import GroupDetails from 'pages/Groups/GroupDetails';
-import GroupsOverview from 'pages/Groups/overview';
-import JobPostDetails from 'pages/JobPostDetails';
-import JobPosts from 'pages/JobPosts';
-import Landing from 'pages/Landing';
-import News from 'pages/News';
-import NewsDetails from 'pages/NewsDetails';
-import NewStudent from 'pages/NewStudent';
-import Profile from 'pages/Profile';
-
-import InfoBannerAdmin from 'components/miscellaneous/InfoBanner/InfoBannerAdmin';
-
-const Gallery = lazy(() => import('pages/Gallery'));
-const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
-const Badges = lazy(() => import('pages/Badges'));
-const BadgeCategoriesList = lazy(() => import('pages/Badges/overview/BadgeCategoriesList'));
-const BadgesList = lazy(() => import('pages/Badges/overview/BadgesList'));
-const BadgesOverallLeaderboard = lazy(() => import('pages/Badges/overview/BadgesOverallLeaderboard'));
-const BadgeDetails = lazy(() => import('pages/Badges/details'));
-const BadgeCategory = lazy(() => import('pages/Badges/category'));
-const BadgesGet = lazy(() => import('pages/Badges/get'));
-const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/BadgesCategoryLeaderboard'));
-const Cheatsheet = lazy(() => import('pages/Cheatsheet'));
-const EventAdministration = lazy(() => import('pages/EventAdministration'));
-const EventRegistration = lazy(() => import('pages/EventRegistration'));
-const NewGroupAdministration = lazy(() => import('pages/NewGroupAdministration'));
-const ForgotPassword = lazy(() => import('pages/ForgotPassword'));
-const Form = lazy(() => import('pages/Form'));
-const FormAdmin = lazy(() => import('pages/Form/FormAdmin'));
-const Http404 = lazy(() => import('pages/Http404'));
-const JobPostAdministration = lazy(() => import('pages/JobPostAdministration'));
-const LogIn = lazy(() => import('pages/LogIn'));
-const NewsAdministration = lazy(() => import('pages/NewsAdministration'));
-const Wiki = lazy(() => import('pages/Wiki'));
-const ShortLinks = lazy(() => import('pages/ShortLinks'));
-const QRCodes = lazy(() => import('pages/QRCodes'));
-const SignUp = lazy(() => import('pages/SignUp'));
-const SignUpOptions = lazy(() => import('pages/SignUpOptions'));
-const SignUpFeide = lazy(() => import('pages/SignUpFeide'));
-const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
-const Toddel = lazy(() => import('pages/Toddel'));
-const UserAdmin = lazy(() => import('pages/UserAdmin'));
-const Admissions = lazy(() => import('pages/Admissions'));
-const Feedback = lazy(() => import('pages/Feedback'));
+const Gallery = lazy(() => import('~/pages/Gallery'));
+const GalleryDetails = lazy(() => import('~/pages/GalleryDetails'));
+const Badges = lazy(() => import('~/pages/Badges'));
+const BadgeCategoriesList = lazy(() => import('~/pages/Badges/overview/BadgeCategoriesList'));
+const BadgesList = lazy(() => import('~/pages/Badges/overview/BadgesList'));
+const BadgesOverallLeaderboard = lazy(() => import('~/pages/Badges/overview/BadgesOverallLeaderboard'));
+const BadgeDetails = lazy(() => import('~/pages/Badges/details'));
+const BadgeCategory = lazy(() => import('~/pages/Badges/category'));
+const BadgesGet = lazy(() => import('~/pages/Badges/get'));
+const BadgesCategoryLeaderboard = lazy(() => import('~/pages/Badges/category/BadgesCategoryLeaderboard'));
+const Cheatsheet = lazy(() => import('~/pages/Cheatsheet'));
+const EventAdministration = lazy(() => import('~/pages/EventAdministration'));
+const EventRegistration = lazy(() => import('~/pages/EventRegistration'));
+const NewGroupAdministration = lazy(() => import('~/pages/NewGroupAdministration'));
+const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
+const Form = lazy(() => import('~/pages/Form'));
+const FormAdmin = lazy(() => import('~/pages/Form/FormAdmin'));
+const Http404 = lazy(() => import('~/pages/Http404'));
+const JobPostAdministration = lazy(() => import('~/pages/JobPostAdministration'));
+const LogIn = lazy(() => import('~/pages/LogIn'));
+const NewsAdministration = lazy(() => import('~/pages/NewsAdministration'));
+const Wiki = lazy(() => import('~/pages/Wiki'));
+const ShortLinks = lazy(() => import('~/pages/ShortLinks'));
+const QRCodes = lazy(() => import('~/pages/QRCodes'));
+const SignUp = lazy(() => import('~/pages/SignUp'));
+const SignUpOptions = lazy(() => import('~/pages/SignUpOptions'));
+const SignUpFeide = lazy(() => import('~/pages/SignUpFeide'));
+const StrikeAdmin = lazy(() => import('~/pages/StrikeAdmin'));
+const Toddel = lazy(() => import('~/pages/Toddel'));
+const UserAdmin = lazy(() => import('~/pages/UserAdmin'));
+const Admissions = lazy(() => import('~/pages/Admissions'));
+const Feedback = lazy(() => import('~/pages/Feedback'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -98,7 +94,7 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<div className='w-full min-h-screen' />}>
       <Routes>
-        <Route element={<Landing />} index />
+        {/* <Route element={<Landing />} index /> */}
         <Route element={<NewStudent />} path={URLS.newStudent} />
         <Route element={<AuthRoute element={<Feedback />} />} path={URLS.feedback} />
         <Route path={URLS.events}>

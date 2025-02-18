@@ -1,7 +1,6 @@
+import type { GroupFine } from '~/types';
 import constate from 'constate';
 import { useState } from 'react';
-
-import { GroupFine } from 'types';
 
 /**
  * Holds the state of which fines-filters is selected and which fines have been checked

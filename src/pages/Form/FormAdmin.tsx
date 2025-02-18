@@ -1,15 +1,11 @@
+import FormAdminComponent from '~/components/forms/FormAdmin';
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { useFormById } from '~/hooks/Form';
+import Http404 from '~/pages/Http404';
+import { EventFormType, FormResourceType } from '~/types/Enums';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-
-import { EventFormType, FormResourceType } from 'types/Enums';
-
-import { useFormById } from 'hooks/Form';
-
-import Http404 from 'pages/Http404';
-
-import FormAdminComponent from 'components/forms/FormAdmin';
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { useParams } from 'react-router';
 
 const FormPage = () => {
   const { id } = useParams<'id'>();

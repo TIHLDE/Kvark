@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMemo } from 'react';
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-
-import {
+import API from '~/api/api';
+import type {
   Group,
   GroupCreate,
   GroupFine,
@@ -21,10 +19,19 @@ import {
   PaginationResponse,
   RequestResponse,
   User,
-} from 'types';
-import { GroupType } from 'types/Enums';
-
-import API from 'api/api';
+} from '~/types';
+import { GroupType } from '~/types/Enums';
+import { useMemo } from 'react';
+import {
+  type QueryKey,
+  useInfiniteQuery,
+  type UseInfiniteQueryOptions,
+  useMutation,
+  type UseMutationResult,
+  useQuery,
+  useQueryClient,
+  type UseQueryOptions,
+} from 'react-query';
 
 export const GROUPS_QUERY_KEYS = {
   all: ['groups'] as const,

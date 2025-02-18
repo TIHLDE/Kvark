@@ -1,12 +1,10 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { News } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
-
-import { News } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import { useNavigate } from 'react-router';
 
 export type NewsListItemProps = {
   news: News;

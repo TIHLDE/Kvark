@@ -1,13 +1,9 @@
+import { PaginateButton } from '~/components/ui/button';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useGalleryPictures } from '~/hooks/Gallery';
+import PictureDialog from '~/pages/GalleryDetails/components/PictureDialog';
+import type { Gallery } from '~/types';
 import { useMemo } from 'react';
-
-import { Gallery } from 'types';
-
-import { useGalleryPictures } from 'hooks/Gallery';
-
-import PictureDialog from 'pages/GalleryDetails/components/PictureDialog';
-
-import { PaginateButton } from 'components/ui/button';
-import { Skeleton } from 'components/ui/skeleton';
 
 export const GalleryRendererLoading = () => {
   return (

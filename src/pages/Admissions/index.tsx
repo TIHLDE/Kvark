@@ -1,9 +1,7 @@
-import { GroupList } from 'types';
-
-import { useGroupsByType } from 'hooks/Group';
-import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
-
-import Page from 'components/navigation/Page';
+import Page from '~/components/navigation/Page';
+import { useGroupsByType } from '~/hooks/Group';
+import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
+import type { GroupList } from '~/types';
 
 import GroupAdmission, { GroupAdmissionLoading } from './components/GroupAdmission';
 

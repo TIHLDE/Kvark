@@ -1,14 +1,11 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { PaginateButton } from '~/components/ui/button';
+import { useBadges } from '~/hooks/Badge';
+import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-
-import { useBadges } from 'hooks/Badge';
-
-import BadgeItem, { BadgeItemLoading } from 'pages/Badges/components/BadgeItem';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
-import { PaginateButton } from 'components/ui/button';
+import { useParams } from 'react-router';
 
 export const BadgesList = () => {
   const { categoryId } = useParams<'categoryId'>();

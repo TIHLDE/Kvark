@@ -1,9 +1,7 @@
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { useEvents } from '~/hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useCallback, useState } from 'react';
-
-import { useEvents } from 'hooks/Event';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
 
 const NO_OF_EVENTS_TO_SHOW = 6;
 const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;

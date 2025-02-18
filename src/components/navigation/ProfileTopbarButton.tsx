@@ -1,17 +1,15 @@
+import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
+import TopbarNotifications from '~/components/navigation/TopbarNotifications';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useTheme } from '~/hooks/Theme';
+import { useIsAuthenticated, useUser } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { Bug, UserRoundIcon } from 'lucide-react';
 import { useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useSetRedirectUrl } from 'hooks/Misc';
-import { useTheme } from 'hooks/Theme';
-import { useIsAuthenticated, useUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import TopbarNotifications from 'components/navigation/TopbarNotifications';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Link } from 'react-router';
 
 const TUTORIAL_STORAGE_KEY = 'has-seen-bug-report-tutorial';
 

@@ -1,18 +1,15 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
+import { cn } from '~/lib/utils';
+import type { EventList } from '~/types';
+import { Category, Groups } from '~/types/Enums';
+import URLS from '~/URLS';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { cn } from 'lib/utils';
 import { Calendar, Shapes } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
-
-import { EventList } from 'types';
-import { Category, Groups } from 'types/Enums';
-
-import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type EventListItemProps = {
   event: EventList;

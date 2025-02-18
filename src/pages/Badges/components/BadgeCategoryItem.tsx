@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { BadgeCategory } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import type { BadgeCategory } from '~/types';
+import URLS from '~/URLS';
+import { Link } from 'react-router';
 
 export type BadgeItemProps = {
   badgeCategory: BadgeCategory;

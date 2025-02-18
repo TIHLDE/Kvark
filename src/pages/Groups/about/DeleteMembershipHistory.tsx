@@ -1,12 +1,9 @@
+import { Button } from '~/components/ui/button';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { useDeleteMembershipHistory } from '~/hooks/Membership';
+import type { MembershipHistory } from '~/types';
 import { Trash } from 'lucide-react';
 import { toast } from 'sonner';
-
-import { MembershipHistory } from 'types';
-
-import { useDeleteMembershipHistory } from 'hooks/Membership';
-
-import { Button } from 'components/ui/button';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 type DeleteMembershipHistoryProps = {
   membership: MembershipHistory;

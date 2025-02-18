@@ -1,8 +1,7 @@
-import { cn } from 'lib/utils';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { cn } from '~/lib/utils';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
 
 type FormInputProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

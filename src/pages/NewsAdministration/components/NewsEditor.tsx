@@ -1,24 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import RendererPreview from '~/components/miscellaneous/RendererPreview';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Switch } from '~/components/ui/switch';
+import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from '~/hooks/News';
+import NewsRenderer from '~/pages/NewsDetails/components/NewsRenderer';
+import type { News } from '~/types';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { News } from 'types';
-
-import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from 'hooks/News';
-
-import NewsRenderer from 'pages/NewsDetails/components/NewsRenderer';
-
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { SingleUserSearch } from 'components/inputs/UserSearch';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Switch } from 'components/ui/switch';
 
 import DeleteNews from './DeleteNews';
 import NewsEditorSkeleton from './NewsEditorSkeleton';

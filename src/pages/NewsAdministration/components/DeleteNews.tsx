@@ -1,5 +1,5 @@
-import { Button } from 'components/ui/button';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
+import { Button } from '~/components/ui/button';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 
 type DeleteNewsProps = {
   newsId: number | null;

@@ -1,12 +1,9 @@
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Separator } from '~/components/ui/separator';
+import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
+import { PermissionApp } from '~/types/Enums';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-
-import { PermissionApp } from 'types/Enums';
-
-import { useHavePermission, useIsAuthenticated } from 'hooks/User';
-
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from 'components/ui/dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
-import { Separator } from 'components/ui/separator';
 
 import ShortCutAdmin from './Admin';
 import ShortCutLogout from './Logout';

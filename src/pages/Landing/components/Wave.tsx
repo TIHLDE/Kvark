@@ -1,17 +1,14 @@
+import WaveBottom from '~/assets/img/waves/wave-bottom.svg';
+import WaveMid from '~/assets/img/waves/wave-mid.svg';
+import WaveTop from '~/assets/img/waves/wave-top.svg';
+import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
+import { Button } from '~/components/ui/button';
+import { useIsAuthenticated } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
+import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
 import { LogIn, Plus, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
-
-import { useIsAuthenticated } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { Button } from 'components/ui/button';
-
-import WaveBottom from 'assets/img/waves/wave-bottom.svg?react';
-import WaveMid from 'assets/img/waves/wave-mid.svg?react';
-import WaveTop from 'assets/img/waves/wave-top.svg?react';
+import { Link } from 'react-router';
 
 const Wave = () => {
   const { event } = useAnalytics();
@@ -65,16 +62,16 @@ const Wave = () => {
 
         <div className='absolute left-0 right-0 bottom-0 w-full overflow-hidden h-[130px] z-[15]'>
           <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-top z-10 opacity-50 origin-bottom'>
-            <WaveTop className='absolute w-full h-[200px]' />
-            <WaveTop className='absolute w-full h-[200px]' />
+            <img className='absolute w-full h-[200px]' src={WaveTop} />
+            <img className='absolute w-full h-[200px]' src={WaveTop} />
           </div>
           <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-middle z-5 opacity-60 origin-bottom-left'>
-            <WaveMid className='absolute w-full h-[200px]' />
-            <WaveMid className='absolute w-full h-[200px]' />
+            <img className='absolute w-full h-[200px]' src={WaveMid} />
+            <img className='absolute w-full h-[200px]' src={WaveMid} />
           </div>
           <div className='absolute left-0 bottom-0 w-[280%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-bottom z-1 opacity-70 origin-bottom-right'>
-            <WaveBottom className='absolute w-full h-[200px]' />
-            <WaveBottom className='absolute w-full h-[200px]' />
+            <img className='absolute w-full h-[200px]' src={WaveBottom} />
+            <img className='absolute w-full h-[200px]' src={WaveBottom} />
           </div>
         </div>
       </div>

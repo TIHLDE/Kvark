@@ -1,22 +1,19 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import DetailContent from '~/components/miscellaneous/DetailContent';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import ShareButton from '~/components/miscellaneous/ShareButton';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import { HavePermission } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import type { JobPost } from '~/types';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import { formatDate, getJobpostType } from '~/utils';
 import parseISO from 'date-fns/parseISO';
 import { PencilIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getJobpostType } from 'utils';
-
-import { JobPost } from 'types';
-import { PermissionApp } from 'types/Enums';
-
-import { HavePermission } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import DetailContent from 'components/miscellaneous/DetailContent';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import ShareButton from 'components/miscellaneous/ShareButton';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type JobPostRendererProps = {
   data: JobPost;

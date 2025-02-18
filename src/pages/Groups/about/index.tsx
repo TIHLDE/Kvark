@@ -1,15 +1,11 @@
-import { useParams } from 'react-router-dom';
-
-import { PermissionApp } from 'types/Enums';
-
-import { useGroup } from 'hooks/Group';
-import { useHavePermission, useIsAuthenticated } from 'hooks/User';
-
-import MembersCard from 'pages/Groups/about/MembersCard';
-import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Separator } from 'components/ui/separator';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Separator } from '~/components/ui/separator';
+import { useGroup } from '~/hooks/Group';
+import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
+import MembersCard from '~/pages/Groups/about/MembersCard';
+import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
+import { PermissionApp } from '~/types/Enums';
+import { useParams } from 'react-router';
 
 import GroupStatistics from '../components/GroupStatistics';
 

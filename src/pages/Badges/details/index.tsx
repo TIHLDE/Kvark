@@ -1,17 +1,15 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { PaginateButton } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { useBadge, useBadgeLeaderboard } from '~/hooks/Badge';
+import URLS from '~/URLS';
+import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { ArrowRight } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate } from 'utils';
-
-import { useBadge, useBadgeLeaderboard } from 'hooks/Badge';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { PaginateButton } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import { Link, useParams } from 'react-router';
 
 const BadgeDetails = () => {
   const { badgeId } = useParams<'badgeId'>();

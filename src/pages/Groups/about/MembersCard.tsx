@@ -1,20 +1,16 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { PaginateButton } from '~/components/ui/button';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useGroup } from '~/hooks/Group';
+import { useMemberships } from '~/hooks/Membership';
+import { useIsAuthenticated } from '~/hooks/User';
+import AddGroupMember from '~/pages/Groups/about/AddGroupMember';
+import MembershipListItem from '~/pages/Groups/about/MembershipListItem';
+import type { Group } from '~/types';
+import URLS from '~/URLS';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { Group } from 'types';
-
-import { useGroup } from 'hooks/Group';
-import { useMemberships } from 'hooks/Membership';
-import { useIsAuthenticated } from 'hooks/User';
-
-import AddGroupMember from 'pages/Groups/about/AddGroupMember';
-import MembershipListItem from 'pages/Groups/about/MembershipListItem';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { PaginateButton } from 'components/ui/button';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type MembersCardProps = {
   groupSlug: Group['slug'];

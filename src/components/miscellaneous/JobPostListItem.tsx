@@ -1,12 +1,10 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { JobPost } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, getJobpostType, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getJobpostType, urlEncode } from 'utils';
-
-import { JobPost } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;

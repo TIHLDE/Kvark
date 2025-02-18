@@ -1,24 +1,21 @@
+import StrikeCreateDialog from '~/components/miscellaneous/StrikeCreateDialog';
+import StrikeListItem from '~/components/miscellaneous/StrikeListItem';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import { Label } from '~/components/ui/label';
+import { Separator } from '~/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { useEventById, useUpdateEventRegistration } from '~/hooks/Event';
+import { useUserStrikes } from '~/hooks/User';
+import { cn } from '~/lib/utils';
+import type { Registration } from '~/types';
+import { formatDate, getUserAffiliation } from '~/utils';
 import parseISO from 'date-fns/parseISO';
-import { cn } from 'lib/utils';
 import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { formatDate, getUserAffiliation } from 'utils';
-
-import { Registration } from 'types';
-
-import { useEventById, useUpdateEventRegistration } from 'hooks/Event';
-import { useUserStrikes } from 'hooks/User';
-
-import StrikeCreateDialog from 'components/miscellaneous/StrikeCreateDialog';
-import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { Button } from 'components/ui/button';
-import { Checkbox } from 'components/ui/checkbox';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { Label } from 'components/ui/label';
-import { Separator } from 'components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
 
 import DeleteRegistration from './DeleteRegistration';
 import MoveParticipant from './MoveParticipant';

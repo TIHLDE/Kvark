@@ -1,7 +1,6 @@
-import { WikiPage } from 'types';
-import { PermissionApp } from 'types/Enums';
-
-import { HavePermission } from 'hooks/User';
+import { HavePermission } from '~/hooks/User';
+import type { WikiPage } from '~/types';
+import { PermissionApp } from '~/types/Enums';
 
 import CreateWikiPage from './CreateWikiPage';
 import UpdateWikiPage from './UpdateWikiPage';

@@ -1,8 +1,7 @@
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { ListChecks, ListPlus } from 'lucide-react';
-
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 import UserFilter from './components/UserFilter';
 

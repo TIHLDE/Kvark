@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { Reaction } from 'types';
-
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import type { Reaction } from '~/types';
+import URLS from '~/URLS';
+import { Link } from 'react-router';
 
 export const ReactionListItem = (reaction: Reaction) => {
   const userProfileUrl = `${URLS.profile}${reaction.user?.user_id}`;

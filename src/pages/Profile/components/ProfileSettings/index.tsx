@@ -1,17 +1,13 @@
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { useExportUserData, useForgotPassword } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import UserNotificationSettings, { ConnectWithDiscord } from '~/pages/Profile/components/ProfileSettings/NotificationSettings';
+import UserDeleteDialog from '~/pages/Profile/components/ProfileSettings/UserDeleteDialog';
+import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSettings';
+import type { User } from '~/types';
 import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
 import { toast } from 'sonner';
-
-import { User } from 'types';
-
-import { useExportUserData, useForgotPassword } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import UserNotificationSettings, { ConnectWithDiscord } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
-import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
-import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
-
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
 
 export type ProfileSettingsProps = {
   user: User;

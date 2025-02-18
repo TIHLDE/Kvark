@@ -1,18 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { FormSelect } from '~/components/inputs/Select';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form } from '~/components/ui/form';
+import { useCreateGroup } from '~/hooks/Group';
+import type { GroupCreate } from '~/types';
+import { GroupType } from '~/types/Enums';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { GroupCreate } from 'types';
-import { GroupType } from 'types/Enums';
-
-import { useCreateGroup } from 'hooks/Group';
-
-import FormInput from 'components/inputs/Input';
-import { FormSelect } from 'components/inputs/Select';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form } from 'components/ui/form';
 
 const schema = z.object({
   name: z.string({ message: 'Gruppenavn er påkrevd' }),

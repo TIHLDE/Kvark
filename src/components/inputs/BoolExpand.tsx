@@ -1,10 +1,9 @@
-import { cn } from 'lib/utils';
-import { ReactNode, useEffect, useState } from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from 'components/ui/form';
-import { Switch } from 'components/ui/switch';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Switch } from '~/components/ui/switch';
+import { cn } from '~/lib/utils';
+import { type ReactNode, useEffect, useState } from 'react';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type BoolExpandProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

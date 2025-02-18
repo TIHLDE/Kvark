@@ -1,8 +1,7 @@
-import { BACKEND_URL, FRONTEND_URL } from 'pages/Wiki/specials/Index';
-import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
-
-import InfoCard from 'components/layout/InfoCard';
-import Page from 'components/navigation/Page';
+import InfoCard from '~/components/layout/InfoCard';
+import Page from '~/components/navigation/Page';
+import { BACKEND_URL, FRONTEND_URL } from '~/pages/Wiki/specials/Index';
+import ChangelogCard from '~/pages/Wiki/specials/Index/ChangelogCard';
 
 const Changelog = () => {
   return (

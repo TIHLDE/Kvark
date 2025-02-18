@@ -1,11 +1,8 @@
+import Expandable from '~/components/ui/expandable';
+import { Tree, TreeDataItem } from '~/components/ui/tree';
+import { useWikiTree } from '~/hooks/Wiki';
+import type { WikiTree } from '~/types';
 import { Folder, Plus, Workflow } from 'lucide-react';
-
-import { WikiTree } from 'types';
-
-import { useWikiTree } from 'hooks/Wiki';
-
-import Expandable from 'components/ui/expandable';
-import { Tree, TreeDataItem } from 'components/ui/tree';
 
 type WikiPageTreeProps = {
   setSelectedNode: (newNode: string) => void;

@@ -1,26 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import DateTimePicker from '~/components/inputs/DateTimePicker';
+import FormInput from '~/components/inputs/Input';
+import FormTextarea from '~/components/inputs/Textarea';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoBanner } from '~/hooks/InfoBanner';
+import type { InfoBanner } from '~/types';
+import { formatDate } from '~/utils';
 import { formatDistance, parseISO } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import { Info, Pencil, Trash } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { formatDate } from 'utils';
 import { z } from 'zod';
-
-import { InfoBanner } from 'types';
-
-import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoBanner } from 'hooks/InfoBanner';
-
-import DateTimePicker from 'components/inputs/DateTimePicker';
-import FormInput from 'components/inputs/Input';
-import FormTextarea from 'components/inputs/Textarea';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 type InfoBannerFormProps = {
   bannerId?: string;

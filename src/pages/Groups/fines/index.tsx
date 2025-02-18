@@ -1,19 +1,16 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from '~/hooks/Group';
+import { useMemberships } from '~/hooks/Membership';
+import { useUser } from '~/hooks/User';
+import FineItem from '~/pages/Groups/fines/FineItem';
+import { useClearCheckedFines, useFinesFilter, useSetFinesFilter } from '~/pages/Groups/fines/FinesContext.client';
+import UserFineItem from '~/pages/Groups/fines/UserFineItem';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
-
-import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from 'hooks/Group';
-import { useMemberships } from 'hooks/Membership';
-import { useUser } from 'hooks/User';
-
-import FineItem from 'pages/Groups/fines/FineItem';
-import { useClearCheckedFines, useFinesFilter, useSetFinesFilter } from 'pages/Groups/fines/FinesContext';
-import UserFineItem from 'pages/Groups/fines/UserFineItem';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { PaginateButton } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
+import { useParams } from 'react-router';
 
 const PAYED_STATES = [
   { value: true, label: 'Betalt' },

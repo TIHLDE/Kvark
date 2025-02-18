@@ -1,22 +1,19 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useNotifications } from '~/hooks/Notification';
+import { useUser } from '~/hooks/User';
+import type { Notification } from '~/types';
+import { getTimeSince } from '~/utils';
 import parseISO from 'date-fns/parseISO';
 import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getTimeSince } from 'utils';
-
-import { Notification } from 'types';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useNotifications } from 'hooks/Notification';
-import { useUser } from 'hooks/User';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from 'components/ui/drawer';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import { ScrollArea } from 'components/ui/scroll-area';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 type NotificationItemProps = {
   notification: Notification;

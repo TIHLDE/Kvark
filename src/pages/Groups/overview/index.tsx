@@ -1,11 +1,8 @@
-import { GroupList } from 'types';
-
-import { useGroupsByType } from 'hooks/Group';
-import { useIsAuthenticated } from 'hooks/User';
-
-import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
-
-import { CardContent, CardHeader, CardTitle } from 'components/ui/card';
+import { CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { useGroupsByType } from '~/hooks/Group';
+import { useIsAuthenticated } from '~/hooks/User';
+import GroupItem, { GroupItemLoading } from '~/pages/Groups/overview/GroupItem';
+import type { GroupList } from '~/types';
 
 const GroupsOverview = () => {
   const isAuthenticated = useIsAuthenticated();

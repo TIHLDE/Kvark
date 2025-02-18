@@ -1,6 +1,6 @@
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "lib/utils"
+import { cn } from "~/lib/utils"
 import { forwardRef } from "react"
 
 const Drawer = ({

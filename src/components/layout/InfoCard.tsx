@@ -1,7 +1,6 @@
-import { ReactNode } from 'react';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { type ReactNode } from 'react';
 
 export type InfoCardProps = {
   header: string;

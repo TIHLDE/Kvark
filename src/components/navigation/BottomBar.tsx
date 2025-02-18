@@ -1,15 +1,13 @@
+import Logo from '~/components/miscellaneous/TihldeLogo';
+import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
+import { NavigationItem } from '~/components/navigation/Navigation';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
+import { useIsAuthenticated } from '~/hooks/User';
+import URLS from '~/URLS';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useIsAuthenticated } from 'hooks/User';
-
-import Logo from 'components/miscellaneous/TihldeLogo';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { NavigationItem } from 'components/navigation/Navigation';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 'components/ui/drawer';
+import { Link } from 'react-router';
 
 type Item = {
   icon: JSX.Element;

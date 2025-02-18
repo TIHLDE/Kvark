@@ -1,4 +1,4 @@
-import { useUser } from 'hooks/User';
+import { useUser } from '~/hooks/User';
 
 import { EmojiItem } from './EmojiItem';
 import { ReactionHandlerProps } from './ReactionHandler';
