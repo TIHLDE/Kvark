@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import 'assets/css/index.css';
 import 'delayed-scroll-restoration-polyfill';
-import createCache from '@emotion/cache';
-import { CacheProvider } from '@emotion/react';
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
@@ -23,8 +21,6 @@ import ShortCutMenu from 'components/miscellaneous/shortCutMenu';
 import Navigation from 'components/navigation/Navigation';
 import ScrollToTop from 'components/navigation/ScrollToTop';
 import { Toaster } from 'components/ui/sonner';
-
-export const cache = createCache({ key: 'tihlde-cache', prepend: true });
 
 inject(); // inject analytics Vercel
 
@@ -47,16 +43,14 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
 
   return (
-    <CacheProvider value={cache}>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-        <QueryClientProvider client={queryClient}>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <MiscProvider>{children}</MiscProvider>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <QueryClientProvider client={queryClient}>
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/* @ts-ignore */}
+        <MiscProvider>{children}</MiscProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 };
 
