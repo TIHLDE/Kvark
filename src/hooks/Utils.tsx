@@ -57,34 +57,26 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
       return () => clearTimeout(timeoutId);
     }
   }, [hasShared]);
-
-  /**
-   * Copies text to the clipboard
-   * @param text Text which should be copied to clipboard
-   * @param noSnackbar If the snackbar not should be shown even if snackbar text is given
-   */
-  const copyToClipboard = async (text: string, noSnackbar = false) => {
-    const { default: copyToClipboard } = await import('copy-to-clipboard');
-    const hasCopied = copyToClipboard(text);
-    setShared(hasCopied);
+  async function clip(link: string, noSnackbar = false) {
+    await navigator.clipboard.writeText(link);
     if (fallbackSnackbar && !noSnackbar) {
       toast.success(fallbackSnackbar);
     }
-  };
+  }
 
   /**
    * Triggers the Share functionality of your device if available.
    * Falls back to copying the content to the clipboard if not supported
    */
   const share = () => {
-    const fallbackCopyText = shareData.url || shareData.text || shareData.title || '';
+    const fallbackCopyText = shareData.url ?? shareData.text ?? shareData.title ?? '';
     if (navigator.share) {
       navigator
         .share(shareData)
         .then(() => setShared(true))
-        .catch(() => copyToClipboard(fallbackCopyText, true));
+        .catch(() => clip(fallbackCopyText, true));
     } else {
-      copyToClipboard(fallbackCopyText);
+      clip(fallbackCopyText);
     }
     if (onShare) {
       onShare();
