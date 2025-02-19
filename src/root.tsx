@@ -1,8 +1,11 @@
+import { inject } from '@vercel/analytics';
+import { Analytics } from '@vercel/analytics/react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
-import './assets/css/index.css';
 
+import './assets/css/index.css';
 import type { Route } from './+types/root';
-import { Providers } from './index';
+import API from './api/api';
+import { SHOW_NEW_STUDENT_INFO } from './constant';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -71,7 +74,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Providers>{children}</Providers>
+        <Analytics />
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -107,4 +111,36 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       )}
     </main>
   );
+}
+
+if (typeof window === 'object') {
+  inject();
+  console.log(
+    `%c
+            ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
+            ██║████╗  ██║██╔══██╗██╔════╝╚██╗██╔╝
+  Laget av  ██║██╔██╗ ██║██║  ██║█████╗   ╚███╔╝
+            ██║██║╚██╗██║██║  ██║██╔══╝   ██╔██╗
+            ██║██║ ╚████║██████╔╝███████╗██╔╝ ██╗
+            ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
+    'font-size: 1rem; color: #ff9400;',
+  );
+  console.log(
+    `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
+      SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
+    }`,
+    'font-weight: bold; font-size: 1rem;color: #ff9400;',
+  );
+  console.log(
+    'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
+    'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
+    '',
+  );
+  const rickroll = async () => {
+    const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
+    API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
+    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).badge = rickroll;
 }

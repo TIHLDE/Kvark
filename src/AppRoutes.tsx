@@ -1,11 +1,8 @@
 import InfoBannerAdmin from '~/components/miscellaneous/InfoBanner/InfoBannerAdmin';
-import { useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useRedirectUrl } from '~/hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import Changelog from '~/pages/Changelog';
-import Companies from '~/pages/Companies';
-import EventDetails from '~/pages/EventDetails';
-import Events from '~/pages/Events';
 import Groups from '~/pages/Groups';
 import GroupDetails from '~/pages/Groups/GroupDetails';
 import GroupsOverview from '~/pages/Groups/overview';
@@ -14,7 +11,6 @@ import JobPosts from '~/pages/JobPosts';
 // import Landing from '~/pages/Landing';
 import News from '~/pages/News';
 import NewsDetails from '~/pages/NewsDetails';
-import NewStudent from '~/pages/NewStudent';
 import Profile from '~/pages/Profile';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
@@ -33,11 +29,8 @@ const BadgesGet = lazy(() => import('~/pages/Badges/get'));
 const BadgesCategoryLeaderboard = lazy(() => import('~/pages/Badges/category/BadgesCategoryLeaderboard'));
 const Cheatsheet = lazy(() => import('~/pages/Cheatsheet'));
 const EventAdministration = lazy(() => import('~/pages/EventAdministration'));
-const EventRegistration = lazy(() => import('~/pages/EventRegistration'));
 const NewGroupAdministration = lazy(() => import('~/pages/NewGroupAdministration'));
 const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
-const Form = lazy(() => import('~/pages/Form'));
-const FormAdmin = lazy(() => import('~/pages/Form/FormAdmin'));
 const Http404 = lazy(() => import('~/pages/Http404'));
 const JobPostAdministration = lazy(() => import('~/pages/JobPostAdministration'));
 const LogIn = lazy(() => import('~/pages/LogIn'));
@@ -49,10 +42,8 @@ const SignUp = lazy(() => import('~/pages/SignUp'));
 const SignUpOptions = lazy(() => import('~/pages/SignUpOptions'));
 const SignUpFeide = lazy(() => import('~/pages/SignUpFeide'));
 const StrikeAdmin = lazy(() => import('~/pages/StrikeAdmin'));
-const Toddel = lazy(() => import('~/pages/Toddel'));
 const UserAdmin = lazy(() => import('~/pages/UserAdmin'));
 const Admissions = lazy(() => import('~/pages/Admissions'));
-const Feedback = lazy(() => import('~/pages/Feedback'));
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -65,7 +56,7 @@ type AuthRouteProps = {
  * Protects a route with permission checks. If `apps` is empty or not present, all authenticated users are given access.
  */
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const [, setLogInRedirectURL] = useRedirectUrl();
   const isAuthenticated = useIsAuthenticated();
   const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
@@ -95,19 +86,19 @@ const AppRoutes = () => {
     <Suspense fallback={<div className='w-full min-h-screen' />}>
       <Routes>
         {/* <Route element={<Landing />} index /> */}
-        <Route element={<NewStudent />} path={URLS.newStudent} />
-        <Route element={<AuthRoute element={<Feedback />} />} path={URLS.feedback} />
-        <Route path={URLS.events}>
-          <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} />} path={`:id/${URLS.eventRegister}`} />
-          <Route element={<EventDetails />} path=':id/*' />
-          <Route element={<Events />} index />
-        </Route>
-        <Route element={<Companies />} path={URLS.company} />
-        <Route element={<Toddel />} path={URLS.toddel} />
-        <Route path={URLS.form}>
-          <Route element={<AuthRoute element={<Form />} />} path={`:id/`} />
-          <Route element={<AuthRoute apps={[PermissionApp.GROUPFORM]} element={<FormAdmin />} />} path={`admin/:id/`} />
-        </Route>
+        {/* <Route element={<NewStudent />} path={URLS.newStudent} /> */}
+        {/* <Route element={<AuthRoute element={<Feedback />} />} path={URLS.feedback} /> */}
+        {/* <Route path={URLS.events}> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventRegistration />} />} path={`:id/${URLS.eventRegister}`} /> */}
+        {/* <Route element={<EventDetails />} path=':id/*' /> */}
+        {/* <Route element={<Events />} index /> */}
+        {/* </Route> */}
+        {/* <Route element={<Companies />} path={URLS.company} /> */}
+        {/* <Route element={<Toddel />} path={URLS.toddel} /> */}
+        {/* <Route path={URLS.form}> */}
+        {/* <Route element={<AuthRoute element={<Form />} />} path={`:id/`} /> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.GROUPFORM]} element={<FormAdmin />} />} path={`admin/:id/`} /> */}
+        {/* </Route> */}
         <Route element={<Groups />} path={`${URLS.groups.index}*`}>
           <Route element={<GroupsOverview />} index />
           <Route element={<GroupDetails />} path=':slug/*' />

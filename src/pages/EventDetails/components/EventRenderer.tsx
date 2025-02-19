@@ -23,7 +23,7 @@ import {
   useUpdateEventRegistration,
 } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
-import { useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useRedirectUrl } from '~/hooks/Misc';
 import { useUser } from '~/hooks/User';
 import { useAnalytics, useInterval } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
@@ -51,7 +51,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const [, setLogInRedirectURL] = useRedirectUrl();
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;

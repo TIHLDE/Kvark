@@ -5,7 +5,7 @@ import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useBatchUpdateUserGroupFines, useGroupUserFines } from '~/hooks/Group';
 import { useAnalytics } from '~/hooks/Utils';
 import FineItem, { FineItemProps } from '~/pages/Groups/fines/FineItem';
-import { useFinesFilter } from '~/pages/Groups/fines/FinesContext.client';
+import { useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import type { GroupUserFine } from '~/types';
 import { Check, HandCoins } from 'lucide-react';
 import { useMemo, useState } from 'react';

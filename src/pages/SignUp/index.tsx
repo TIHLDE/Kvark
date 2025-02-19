@@ -8,7 +8,7 @@ import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useConfetti } from '~/hooks/Confetti';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
-import { useRedirectUrl, useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useRedirectUrl } from '~/hooks/Misc';
 import { useCreateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { UserCreate } from '~/types';
@@ -45,8 +45,7 @@ const SignUp = () => {
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const redirectURL = useRedirectUrl();
+  const [redirectURL, setLogInRedirectURL] = useRedirectUrl();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -77,7 +76,7 @@ const SignUp = () => {
       onSuccess: () => {
         run();
         event('signup', 'auth', `Signed up`);
-        setLogInRedirectURL(null);
+        setLogInRedirectURL(undefined);
         navigate(redirectURL || URLS.login);
       },
       onError: (e) => {

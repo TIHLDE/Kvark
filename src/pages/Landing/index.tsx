@@ -10,14 +10,10 @@ import URLS from '~/URLS';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 
-import type { Route } from './+types/index';
-
-export default function Landing({ loaderData }: Route.ComponentProps) {
+export default function Landing() {
   const { event } = useAnalytics();
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
-  // eslint-disable-next-line no-console
-  console.log(loaderData);
   return (
     <div>
       <Wave />

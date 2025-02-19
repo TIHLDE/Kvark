@@ -1,7 +1,7 @@
 import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
 import TopbarNotifications from '~/components/navigation/TopbarNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useRedirectUrl } from '~/hooks/Misc';
 import { useTheme } from '~/hooks/Theme';
 import { useIsAuthenticated, useUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
@@ -17,7 +17,7 @@ const ProfileTopbarButton = () => {
   const { event } = useAnalytics();
   const { data: user } = useUser();
   const isAuthenticated = useIsAuthenticated();
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const [, setLogInRedirectURL] = useRedirectUrl();
   const theme = useTheme();
   const [showBugReportTutorial, setShowBugReportTutorial] = useState<boolean>(localStorage.getItem(TUTORIAL_STORAGE_KEY) !== 'true');
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
@@ -98,7 +98,6 @@ const ProfileTopbarButton = () => {
         <Link
           onClick={() => {
             setLogInRedirectURL(window.location.pathname);
-            analytics('log-in');
           }}
           to={URLS.login}>
           <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />

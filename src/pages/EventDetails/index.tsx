@@ -1,49 +1,40 @@
+import API from '~/api/api';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
-import { useEventById } from '~/hooks/Event';
-import EventRenderer, { EventRendererLoading } from '~/pages/EventDetails/components/EventRenderer';
-import Http404 from '~/pages/Http404';
-import URLS from '~/URLS';
-import { urlEncode } from '~/utils';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { useNavigate, useParams } from 'react-router';
+import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
+import { redirect } from 'react-router';
 
-const EventDetails = () => {
-  const { id } = useParams();
-  const { data, isLoading, isError } = useEventById(Number(id));
-  const navigate = useNavigate();
+import { Route } from './+types/index';
 
-  useEffect(() => {
-    if (data) {
-      const urlWithTitle = `${URLS.events}${id}/${urlEncode(data.title)}/`;
-      if (urlWithTitle !== window.location.pathname) {
-        navigate(urlWithTitle, { replace: true });
-      }
-    }
-  }, [id, data, navigate]);
-
-  if (isError) {
-    return <Http404 />;
+export async function clientLoader({ params }: Route.LoaderArgs) {
+  const eventId = Number(params.id);
+  if (Number.isNaN(eventId) || eventId < 0) {
+    throw redirect('/arrangementer/');
   }
+  try {
+    return {
+      event: await API.getEvent(eventId),
+    };
+  } catch (e) {
+    throw redirect('/arrangementer/');
+  }
+}
+
+export function meta({ data }: Route.MetaArgs) {
+  return [
+    { property: 'og:title', content: data.event.title },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: data.event.image || 'https://tihlde.org' + TIHLDELOGO },
+  ];
+}
+
+export default function EventDetails({ loaderData }: Route.ComponentProps) {
+  const { event } = loaderData;
 
   return (
     <Page>
-      {data && (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <Helmet>
-          <meta content={data.title} property='og:title' />
-          <meta content='website' property='og:type' />
-          <meta content={window.location.href} property='og:url' />
-          <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
-        </Helmet>
-      )}
-      <div>
-        <div>{isLoading ? <EventRendererLoading /> : data !== undefined && <EventRenderer data={data} />}</div>
-      </div>
+      <EventRenderer data={event} />
     </Page>
   );
-};
-
-export default EventDetails;
+}

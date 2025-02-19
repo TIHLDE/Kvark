@@ -9,7 +9,6 @@ import GroupInfo from '~/pages/Groups/about';
 import GroupAdmin from '~/pages/Groups/components/GroupAdmin';
 import GroupEvents from '~/pages/Groups/events';
 import GroupFines from '~/pages/Groups/fines';
-import { FinesProvider } from '~/pages/Groups/fines/FinesContext.client';
 import GroupForms from '~/pages/Groups/forms';
 import GroupLaws from '~/pages/Groups/laws';
 import type { FormGroupValues } from '~/types';
@@ -109,16 +108,7 @@ const GroupDetails = () => {
           <Route element={<GroupEvents />} path={`${URLS.groups.events_relative}`} />
           {showFinesAndLaws && (
             <>
-              <Route
-                element={
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  <FinesProvider>
-                    <GroupFines />
-                  </FinesProvider>
-                }
-                path={URLS.groups.fines_relative}
-              />
+              <Route element={<GroupFines />} path={URLS.groups.fines_relative} />
               <Route element={<GroupLaws />} path={`${URLS.groups.laws_relative}`} />
             </>
           )}

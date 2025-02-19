@@ -7,7 +7,7 @@ import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } 
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
-import { useClearCheckedFines, useFinesFilter, useSetFinesFilter } from '~/pages/Groups/fines/FinesContext.client';
+import { useClearCheckedFines, useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
@@ -31,8 +31,7 @@ const Fines = () => {
   const { data: members } = useMemberships(slug || '-');
 
   const [tab, setTab] = useState<string>('all');
-  const finesFilter = useFinesFilter();
-  const setFinesFilter = useSetFinesFilter();
+  const [finesFilter, setFinesFilter] = useFinesFilter();
   const clearCheckedFines = useClearCheckedFines();
 
   useEffect(() => clearCheckedFines(), [tab]);

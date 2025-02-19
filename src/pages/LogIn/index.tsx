@@ -4,7 +4,7 @@ import { Button, buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { useRedirectUrl, useSetRedirectUrl } from '~/hooks/Misc.client';
+import { useRedirectUrl } from '~/hooks/Misc';
 import { useLogin } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
@@ -21,8 +21,7 @@ const LogIn = () => {
   const navigate = useNavigate();
   const { event } = useAnalytics();
   const logIn = useLogin();
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const redirectURL = useRedirectUrl();
+  const [redirectURL, setLogInRedirectURL] = useRedirectUrl();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,7 +37,7 @@ const LogIn = () => {
       {
         onSuccess: () => {
           event('login', 'auth', `Logged in`);
-          setLogInRedirectURL(null);
+          setLogInRedirectURL(undefined);
           navigate(redirectURL || URLS.landing);
         },
         onError: (e) => {
