@@ -4,10 +4,11 @@ import { NavigationItem } from '~/components/navigation/Navigation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
 import { useIsAuthenticated } from '~/hooks/User';
-import URLS from '~/URLS';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { href, Link } from 'react-router';
+
+import NavLink from '../ui/navlink';
 
 type Item = {
   icon: JSX.Element;
@@ -27,22 +28,22 @@ const BottomBar = ({ items }: BottomBarProps) => {
     {
       icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
-      to: URLS.landing,
+      to: href('/'),
     },
     {
       icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
-      to: URLS.events,
+      to: href('/arrangementer'),
     },
     {
       icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Nyheter',
-      to: URLS.news,
+      to: href('/nyheter'),
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Karriere',
-      to: URLS.jobposts,
+      to: href('/karriere'),
     },
   ];
 
@@ -98,15 +99,15 @@ const BottomBar = ({ items }: BottomBarProps) => {
               </div>
 
               {isAuthenticated && (
-                <Link onClick={() => setMenuOpen(false)} to={URLS.profile}>
+                <NavLink onClick={() => setMenuOpen(false)} to='/profil/:userId?'>
                   Min profil
-                </Link>
+                </NavLink>
               )}
 
               {!isAuthenticated && (
-                <Link onClick={() => setMenuOpen(false)} to={URLS.login}>
+                <NavLink onClick={() => setMenuOpen(false)} to='/logg-inn'>
                   Logg inn
-                </Link>
+                </NavLink>
               )}
             </Accordion>
           </DrawerContent>

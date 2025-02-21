@@ -4,12 +4,12 @@ import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import { cn } from '~/lib/utils';
 import type { EventList } from '~/types';
 import { Category, Groups } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 import { Calendar, Shapes } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
+
+import NavLink from '../ui/navlink';
 
 export type EventListItemProps = {
   event: EventList;
@@ -50,9 +50,10 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
   };
 
   return (
-    <Link
+    <NavLink
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
-      to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
+      params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}
+      to='/arrangementer/:id/:urlTitle?'>
       <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
       <div className='py-2 space-y-1'>
@@ -68,7 +69,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
           </div>
         )}
       </div>
-    </Link>
+    </NavLink>
   );
 };
 

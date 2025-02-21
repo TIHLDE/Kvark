@@ -94,8 +94,6 @@ const AppRoutes = () => {
         {/* <Route element={<News />} index /> */}
         {/* </Route> */}
 
-        {/* TODO: Find out if this page is in use */}
-        {/* <Route element={<SlackConnectPage />} path='slack/' /> */}
         {/* <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}> */}
         {/* <Route element={<Profile />} path=':userId/' /> */}
         {/* </Route> */}

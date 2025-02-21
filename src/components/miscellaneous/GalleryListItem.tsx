@@ -2,15 +2,16 @@ import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { Gallery } from '~/types';
-import URLS from '~/URLS';
-import { Link } from 'react-router';
+import { urlEncode } from '~/utils';
+
+import NavLink from '../ui/navlink';
 
 export type GalleryListItemProps = {
   gallery: Gallery;
 };
 
 const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
-  <Link to={`${URLS.gallery}${gallery.id}/`}>
+  <NavLink params={{ id: gallery.id, urlTitle: urlEncode(gallery.title) }} to='/galleri/:id/:urlTitle?'>
     <Card className='h-[1/6]'>
       <CardHeader>
         <CardTitle className='text-black dark:text-white'>{gallery.title}</CardTitle>
@@ -20,7 +21,7 @@ const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
         <AspectRatioImg alt={gallery.image_alt || gallery.title} className='rounded-md' src={gallery.image} />
       </CardContent>
     </Card>
-  </Link>
+  </NavLink>
 );
 
 export default GalleryListItem;

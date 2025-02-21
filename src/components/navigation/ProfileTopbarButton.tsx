@@ -9,7 +9,7 @@ import URLS from '~/URLS';
 import { Bug, UserRoundIcon } from 'lucide-react';
 import { useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
-import { Link } from 'react-router';
+import { href, Link } from 'react-router';
 
 const TUTORIAL_STORAGE_KEY = 'has-seen-bug-report-tutorial';
 
@@ -78,7 +78,7 @@ const ProfileTopbarButton = () => {
       {Boolean(user) && (
         <>
           <TopbarNotifications />
-          <Link className='bug-button' to={URLS.feedback}>
+          <Link className='bug-button' to={href('/tilbakemelding')}>
             <Bug className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[2px]' />
           </Link>
         </>

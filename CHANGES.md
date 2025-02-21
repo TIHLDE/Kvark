@@ -1,8 +1,9 @@
 # Changes from React Router V7 re-write
 
 ### Pages rewritten:
-- `/grupper` - And it's subpaths now uses clientLoaders for data fetching
-- `/arrangementer/:id` - Uses data loaders for data fetching
+- Pages that use the new clientLoaders:
+  - `/grupper` - and all subpaths
+  - `arrangementer` - and all subpaths
 - `/arrangementer/:id/registrering` - Moved to `/arragementer/registrering/:id`
 - `/wiki` - Will now redirect to the new wiki: https://wiki.tihlde.org/
 
@@ -13,7 +14,7 @@
     - `/galleri`
     - `/galleri/:id`
     - `/admin/bannere` - not tested
-    - `/profil`
+    - `/profil` - borked for now
   - Need to test deletion of existing images
 
 ### Other changes
@@ -21,5 +22,10 @@
 - Added ~/ import alias for src/ (required by react-router)
 - Wave svgs converted to JSX components
 - Added uploadFileWithToast and uploadFormImage utility
+- New type-safe URL Link Component `<NavLink to="/:id" params={{ id: "1" }}>`
+
+### What i want to do.
+- Convert all `Link` to the typesafe variant either with `href()` or `NavLink`
+  - This will probably happen after merge with dev
 
 

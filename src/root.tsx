@@ -7,6 +7,8 @@ import type { Route } from './+types/root';
 import API from './api/api';
 import { SHOW_NEW_STUDENT_INFO } from './constant';
 
+const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
+
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   {
@@ -18,7 +20,40 @@ export const links: Route.LinksFunction = () => [
     rel: 'stylesheet',
     href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
   },
+  ...appleSizes.map((size) => ({
+    rel: 'apple-touch-icon',
+    sizes: size,
+    href: `/browser-icons/apple-icon-${size}.png`,
+  })),
 ];
+
+const metaData = {
+  url: 'https://tihlde.org',
+  title: 'TIHLDE',
+  image: '/browser-icons/cover-image.jpg',
+  description:
+    'Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU',
+};
+
+export const meta: Route.MetaFunction = () => [
+  { title: 'TIHLDE' },
+  { name: 'description', content: metaData.description },
+  { property: 'og:url', content: metaData.url },
+  { property: 'og:type', content: 'website' },
+  { property: 'og:title', conent: metaData.title },
+  { property: 'og:description', content: metaData.description },
+  { property: 'og:image', content: metaData.image },
+
+  { property: 'twitter:url', content: metaData.url },
+  { property: 'twitter:card', content: 'summary_large_image' },
+  { property: 'twitter:title', content: metaData.title },
+  { property: 'twitter:description', content: metaData.description },
+  { property: 'twitter:image', content: metaData.image },
+];
+
+export function clientLoader() {
+  throw new Error('Client loader not implemented');
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -30,39 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         {/* TODO: Convert the meta tags to the links export */}
         <meta content='#16356e' data-react-helmet='true' name='theme-color' />
-        <title>TIHLDE</title>
-        <meta
-          content='Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU'
-          name='description'
-        />
 
-        <meta content='https://tihlde.org' property='og:url' />
-        <meta content='website' property='og:type' />
-        <meta content='TIHLDE' property='og:title' />
-        <meta
-          content='Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU'
-          property='og:description'
-        />
-        <meta content='https://tihlde.org/browser-icons/cover-image.jpg' property='og:image' />
-
-        <meta content='https://tihlde.org' property='twitter:url' />
-        <meta content='summary_large_image' name='twitter:card' />
-        <meta content='TIHLDE' name='twitter:title' />
-        <meta
-          content='Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU'
-          name='twitter:description'
-        />
-        <meta content='https://tihlde.org/browser-icons/cover-image.jpg' name='twitter:image' />
-
-        <link href='/browser-icons/apple-icon-57x57.png' rel='apple-touch-icon' sizes='57x57' />
-        <link href='/browser-icons/apple-icon-72x72.png' rel='apple-touch-icon' sizes='72x72' />
-        <link href='/browser-icons/apple-icon-60x60.png' rel='apple-touch-icon' sizes='60x60' />
-        <link href='/browser-icons/apple-icon-76x76.png' rel='apple-touch-icon' sizes='76x76' />
-        <link href='/browser-icons/apple-icon-114x114.png' rel='apple-touch-icon' sizes='114x114' />
-        <link href='/browser-icons/apple-icon-120x120.png' rel='apple-touch-icon' sizes='120x120' />
-        <link href='/browser-icons/apple-icon-144x144.png' rel='apple-touch-icon' sizes='144x144' />
-        <link href='/browser-icons/apple-icon-152x152.png' rel='apple-touch-icon' sizes='152x152' />
-        <link href='/browser-icons/apple-icon-180x180.png' rel='apple-touch-icon' sizes='180x180' />
         <link href='/browser-icons/android-icon-192x192.png' rel='icon' sizes='192x192' type='image/png' />
         <link href='/browser-icons/favicon-32x32.png' rel='icon' sizes='32x32' type='image/png' />
         <link href='/browser-icons/favicon-96x96.png' rel='icon' sizes='96x96' type='image/png' />
@@ -115,6 +118,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 if (typeof window === 'object') {
   inject();
+  // eslint-disable-next-line no-console
   console.log(
     `%c
             ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
@@ -125,12 +129,14 @@ if (typeof window === 'object') {
             ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
     'font-size: 1rem; color: #ff9400;',
   );
+  // eslint-disable-next-line no-console
   console.log(
     `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
       SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
     }`,
     'font-weight: bold; font-size: 1rem;color: #ff9400;',
   );
+  // eslint-disable-next-line no-console
   console.log(
     'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
     'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',

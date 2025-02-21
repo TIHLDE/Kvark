@@ -17,8 +17,8 @@ export default [
       route(':id/:urlTitle?', './pages/EventDetails/index.tsx'),
     ]),
     route('bedrifter', './pages/Companies/index.tsx'),
-    // FIX: Borked route
-    // route('toddel', './pages/Toddel/index.tsx'),
+    // TODO: Fix image upload and file upload
+    route('toddel', './pages/Toddel/index.tsx'),
 
     ...prefix('sporreskjema', [
       // TODO: Auth this route (PermissionApp.GROUPFORM)

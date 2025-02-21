@@ -10,7 +10,7 @@ import NITO from '~/assets/img/nito.png';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
-import { Link } from 'react-router';
+import { href, Link } from 'react-router';
 
 const Footer = () => {
   const { event } = useAnalytics();
@@ -47,9 +47,7 @@ const Footer = () => {
             </div>
           ))}
           <h1 className='text-center'>
-            <Link className='' to={URLS.contactInfo}>
-              Kontakt oss
-            </Link>
+            <Link to={URLS.contactInfo}>Kontakt oss</Link>
           </h1>
         </div>
 
@@ -89,7 +87,7 @@ const Footer = () => {
 
       <div>
         <h1 className='text-center'>
-          Feil på siden? <Link to={URLS.feedback}>Rapporter til Index</Link>
+          Feil på siden? <Link to={href('/tilbakemelding')}>Rapporter til Index</Link>
         </h1>
       </div>
     </div>

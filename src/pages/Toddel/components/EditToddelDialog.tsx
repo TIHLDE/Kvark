@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
+// import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
@@ -141,10 +141,9 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
                 </FormItem>
               )}
             />
-
-            <FormImageUpload form={form} label='Velg bilde *' name='image' />
-
-            <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
+            {/* TODO: Fix file uploads */}
+            {/* <FormImageUpload form={form} label='Velg bilde *' name='image' /> */}
+            {/* <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' /> */}
 
             <Button className='w-full' disabled={updateToddel.isLoading} type='submit'>
               {updateToddel.isLoading ? 'Oppdaterer...' : 'Oppdater'}

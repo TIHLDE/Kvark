@@ -1,15 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import NavLink from '~/components/ui/navlink';
 import type { Reaction } from '~/types';
-import URLS from '~/URLS';
-import { Link } from 'react-router';
 
 export const ReactionListItem = (reaction: Reaction) => {
-  const userProfileUrl = `${URLS.profile}${reaction.user?.user_id}`;
-
   return (
-    <Link
+    <NavLink
       className='w-full px-4 py-2 rounded-md border bg-card flex justify-between items-center hover:bg-border transition-all duration-150'
-      to={userProfileUrl}>
+      params={{ userId: reaction.user?.user_id }}
+      to='/profil/:userId?'>
       <div className='flex items-center space-x-2'>
         <Avatar>
           <AvatarImage alt={reaction.user?.first_name} src={reaction.user?.image} />
@@ -21,6 +19,6 @@ export const ReactionListItem = (reaction: Reaction) => {
       </div>
 
       <p className='text-2xl'>{reaction.emoji}</p>
-    </Link>
+    </NavLink>
   );
 };
