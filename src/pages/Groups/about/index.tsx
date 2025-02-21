@@ -1,6 +1,5 @@
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
-// import { useGroup } from '~/hooks/Group';
 import { useIsAuthenticated } from '~/hooks/User';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
@@ -15,15 +14,14 @@ export default function GroupInfo({ matches }: Route.ComponentProps) {
 
   // TODO: Auth this admin request. Should be in the loader
   const isAdmin = true;
-
   return (
     <>
       {isAdmin && <GroupStatistics slug={group.slug} />}
-      {(group.description || group.contact_email) && (
-        <>
-          <MarkdownRenderer value={`# ${group.description}${group.contact_email ? ` \n\n Kontakt: ${group.contact_email}` : ''}`} />
+      {group.description && group.contact_email && (
+        <div className='mt-2'>
+          <MarkdownRenderer value={`${group.description}${group.contact_email ? ` \n\n Kontakt: ${group.contact_email}` : ''}`} />
           <Separator className='my-2' />
-        </>
+        </div>
       )}
       <MembersCard groupSlug={group.slug} />
       {isAuthenticated && <MembersHistoryCard groupSlug={group.slug} />}

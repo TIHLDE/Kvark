@@ -3,12 +3,6 @@ import { useRedirectUrl } from '~/hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import Changelog from '~/pages/Changelog';
-import Groups from '~/pages/Groups';
-import GroupDetails from '~/pages/Groups/GroupDetails';
-import GroupsOverview from '~/pages/Groups/overview';
-import JobPostDetails from '~/pages/JobPostDetails';
-import JobPosts from '~/pages/JobPosts';
-// import Landing from '~/pages/Landing';
 import News from '~/pages/News';
 import NewsDetails from '~/pages/NewsDetails';
 import Profile from '~/pages/Profile';
@@ -19,14 +13,6 @@ import { Navigate, Route, Routes, useLocation } from 'react-router';
 
 const Gallery = lazy(() => import('~/pages/Gallery'));
 const GalleryDetails = lazy(() => import('~/pages/GalleryDetails'));
-const Badges = lazy(() => import('~/pages/Badges'));
-const BadgeCategoriesList = lazy(() => import('~/pages/Badges/overview/BadgeCategoriesList'));
-const BadgesList = lazy(() => import('~/pages/Badges/overview/BadgesList'));
-const BadgesOverallLeaderboard = lazy(() => import('~/pages/Badges/overview/BadgesOverallLeaderboard'));
-const BadgeDetails = lazy(() => import('~/pages/Badges/details'));
-const BadgeCategory = lazy(() => import('~/pages/Badges/category'));
-const BadgesGet = lazy(() => import('~/pages/Badges/get'));
-const BadgesCategoryLeaderboard = lazy(() => import('~/pages/Badges/category/BadgesCategoryLeaderboard'));
 const Cheatsheet = lazy(() => import('~/pages/Cheatsheet'));
 const EventAdministration = lazy(() => import('~/pages/EventAdministration'));
 const NewGroupAdministration = lazy(() => import('~/pages/NewGroupAdministration'));
@@ -99,30 +85,30 @@ const AppRoutes = () => {
         {/* <Route element={<AuthRoute element={<Form />} />} path={`:id/`} /> */}
         {/* <Route element={<AuthRoute apps={[PermissionApp.GROUPFORM]} element={<FormAdmin />} />} path={`admin/:id/`} /> */}
         {/* </Route> */}
-        <Route element={<Groups />} path={`${URLS.groups.index}*`}>
-          <Route element={<GroupsOverview />} index />
-          <Route element={<GroupDetails />} path=':slug/*' />
-        </Route>
-        <Route path={`${URLS.badges.index}`}>
-          <Route element={<Badges />} path='*'>
-            <Route element={<BadgesOverallLeaderboard />} index />
-            <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} />
-            <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} />
-            <Route path={URLS.badges.get_badge_relative}>
-              <Route element={<AuthRoute element={<BadgesGet />} />} index />
-              <Route element={<AuthRoute element={<BadgesGet />} />} path=':badgeId' />
-            </Route>
-          </Route>
-          <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}>
-            <Route element={<BadgesCategoryLeaderboard />} index />
-            <Route element={<BadgesList />} path={URLS.badges.category_badges_relative} />
-          </Route>
-          <Route element={<BadgeDetails />} path=':badgeId/' />
-        </Route>
-        <Route path={URLS.jobposts}>
-          <Route element={<JobPostDetails />} path=':id/*' />
-          <Route element={<JobPosts />} index />
-        </Route>
+        {/* <Route element={<Groups />} path={`${URLS.groups.index}*`}> */}
+        {/* <Route element={<GroupsOverview />} index /> */}
+        {/* <Route element={<GroupDetails />} path=':slug/*' /> */}
+        {/* </Route> */}
+        {/* <Route path={`${URLS.badges.index}`}> */}
+        {/* <Route element={<Badges />} path='*'> */}
+        {/* <Route element={<BadgesOverallLeaderboard />} index /> */}
+        {/* <Route element={<BadgeCategoriesList />} path={URLS.badges.category_relative} /> */}
+        {/* <Route element={<BadgesList />} path={URLS.badges.public_badges_relative} /> */}
+        {/* <Route path={URLS.badges.get_badge_relative}> */}
+        {/* <Route element={<AuthRoute element={<BadgesGet />} />} index /> */}
+        {/* <Route element={<AuthRoute element={<BadgesGet />} />} path=':badgeId' /> */}
+        {/* </Route> */}
+        {/* </Route> */}
+        {/* <Route element={<BadgeCategory />} path={`${URLS.badges.category_relative}:categoryId/*`}> */}
+        {/* <Route element={<BadgesCategoryLeaderboard />} index /> */}
+        {/* <Route element={<BadgesList />} path={URLS.badges.category_badges_relative} /> */}
+        {/* </Route> */}
+        {/* <Route element={<BadgeDetails />} path=':badgeId/' /> */}
+        {/* </Route> */}
+        {/* <Route path={URLS.jobposts}> */}
+        {/* <Route element={<JobPostDetails />} path=':id/*' /> */}
+        {/* <Route element={<JobPosts />} index /> */}
+        {/* </Route> */}
         <Route path={URLS.gallery}>
           <Route element={<GalleryDetails />} path=':id/*' />
           <Route element={<Gallery />} index />

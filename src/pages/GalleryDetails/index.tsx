@@ -37,7 +37,7 @@ const GalleryDetails = () => {
             <HavePermission apps={[PermissionApp.PICTURE]}>
               {data && (
                 <div className='flex items-center space-x-2'>
-                  <PictureUpload id={data.id} />
+                  {/* <PictureUpload id={data.id} /> */}
                   <GalleryEditorDialog id={data.id} />
                 </div>
               )}

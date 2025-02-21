@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 import CreateGallery from './components/CreateGallery';
 
-const Galleries = () => {
+export default function Galleries() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
   const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -38,6 +38,4 @@ const Galleries = () => {
       </div>
     </Page>
   );
-};
-
-export default Galleries;
+}

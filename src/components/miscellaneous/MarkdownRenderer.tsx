@@ -3,14 +3,12 @@ import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellane
 import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
-import { Skeleton } from '~/components/ui/skeleton';
 import { useEventById } from '~/hooks/Event';
 import { useJobPostById } from '~/hooks/JobPost';
 import { useNewsById } from '~/hooks/News';
 import type { Event, EventList, JobPost, News } from '~/types';
-import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
+import { createElement, lazy, ReactNode } from 'react';
 import type { Components } from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -99,30 +97,30 @@ const components = {
 
 export type MarkdownRendererProps = {
   value?: string;
-  className?: string;
 };
 
-const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
-  const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
+export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
+  return <ReactMarkdown components={components}>{value ?? ''}</ReactMarkdown>;
+}
 
-  return (
-    <Suspense
-      fallback={
-        <div className='space-y-2'>
-          {skeletonWidthArray.map((width, index) => (
-            <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
-          ))}
-        </div>
-      }>
-      <ReactMarkdown
-        className={className}
-        components={components}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        rehypePlugins={[rehypeRaw] as any}>
-        {value || ''}
-      </ReactMarkdown>
-    </Suspense>
-  );
-};
+// const _MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
+//   const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
-export default MarkdownRenderer;
+//   return (
+//     <Suspense
+//       fallback={
+//         <div className='space-y-2'>
+//           {skeletonWidthArray.map((width, index) => (
+//             <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
+//           ))}
+//         </div>
+//       }>
+//       <ReactMarkdown
+//         components={components}
+//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//         rehypePlugins={[rehypeRaw] as any}>
+//         {value || ''}
+//       </ReactMarkdown>
+//     </Suspense>
+//   );
+// };
