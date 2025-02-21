@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { uploadFormImage } from '~/api/upload';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
-import FormInput from '~/components/inputs/Input';
+import FormInput, { FormInputBase } from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { FileObjectSchema, ImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
+import { Form, FormField } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
@@ -26,7 +27,7 @@ type InfoBannerFormProps = {
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Feltet er påkrevd' }),
   description: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  image: z.string().optional(),
+  image: z.array(FileObjectSchema).max(1, { message: 'Du kan kun laste opp ett bilde' }),
   image_alt: z.string().optional(),
   url: z.string().optional(),
   visible_from: z.date(),
@@ -43,7 +44,15 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     defaultValues: {
       title: banner?.title || '',
       description: banner?.description || '',
-      image: banner?.image || '',
+      image: banner?.image
+        ? [
+            {
+              id: banner.id ?? 'existing-image',
+              file: banner.image,
+              name: banner.image,
+            },
+          ]
+        : [],
       image_alt: banner?.image_alt || '',
       url: banner?.url || '',
       visible_from: banner ? parseISO(banner.visible_from) : new Date(),
@@ -54,7 +63,15 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   const setValues = useCallback(
     (newValues: InfoBanner | null) => {
       form.reset({
-        image: newValues?.image || '',
+        image: newValues?.image
+          ? [
+              {
+                id: newValues.id ?? 'existing-image',
+                file: newValues.image,
+                name: newValues.image,
+              },
+            ]
+          : [],
         image_alt: newValues?.image_alt || '',
         title: newValues?.title || '',
         description: newValues?.description || '',
@@ -76,12 +93,16 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     setValues(banner || null);
   }, [banner, setValues]);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (updateBanner.isLoading || createBanner.isLoading) {
       return;
     }
+
+    const image_url = (await uploadFormImage(values.image[0])) ?? '';
+
     const infoBanner = {
       ...values,
+      image: image_url,
       visible_from: values.visible_from.toJSON(),
       visible_until: values.visible_until.toJSON(),
     } as InfoBanner;
@@ -133,7 +154,16 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
 
             <FormTextarea form={form} label='Beskrivelse' name='description' required />
 
-            <FormImageUpload form={form} label='Bilde' name='image' ratio='21:9' />
+            <FormField
+              control={form.control}
+              name='image'
+              render={({ field }) => (
+                <FormInputBase label='Bildet til banneret'>
+                  <ImageUpload onChange={field.onChange} title='Last opp et banner' value={field.value} />
+                </FormInputBase>
+              )}
+            />
+            {/* <FormImageUpload form={form} label='Bilde' name='image' ratio='21:9' /> */}
 
             <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
 

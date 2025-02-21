@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import API from '~/api/api';
+import { uploadFormImage } from '~/api/upload';
 import FormInput, { FormInputBase } from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
 import { FileObjectSchema, ImageUpload } from '~/components/inputs/Upload';
@@ -70,25 +70,7 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
     const image = values.image[0];
     setIsSubmitting(true);
 
-    const image_url = image
-      ? await new Promise<string>((res) => {
-          if (typeof image.file === 'string') {
-            return res(image.file);
-          }
-          toast.promise(API.uploadFile(image.file as File), {
-            loading: 'Laster opp bilde',
-            success: ({ url }) => {
-              res(url);
-              return 'Bildet lastet opp';
-            },
-            error: () => {
-              setIsSubmitting(false);
-              res('');
-              return 'Kunne ikke laste opp bilde';
-            },
-          });
-        })
-      : '';
+    const image_url = (await uploadFormImage(image)) ?? '';
 
     const data: Partial<Gallery> = {
       title: values.title,

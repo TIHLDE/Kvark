@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
-import { FormImageUpload } from '~/components/inputs/Upload';
+// import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
@@ -92,7 +92,7 @@ const CreateWikiPage = ({ page }: CreateWikiPageProps) => {
 
             <MarkdownEditor form={form} label='Innhold' name='content' />
 
-            <FormImageUpload form={form} label='Velg bilde' name='image' />
+            {/* <FormImageUpload form={form} label='Velg bilde' name='image' /> */}
 
             <FormField
               control={form.control}

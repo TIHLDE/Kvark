@@ -1,35 +1,10 @@
-import InfoBannerAdmin from '~/components/miscellaneous/InfoBanner/InfoBannerAdmin';
 import { useRedirectUrl } from '~/hooks/Misc';
 import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
-import Changelog from '~/pages/Changelog';
-import News from '~/pages/News';
-import NewsDetails from '~/pages/NewsDetails';
-import Profile from '~/pages/Profile';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
-import { lazy, type ReactElement, Suspense, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router';
-
-const Gallery = lazy(() => import('~/pages/Gallery'));
-const GalleryDetails = lazy(() => import('~/pages/GalleryDetails'));
-const Cheatsheet = lazy(() => import('~/pages/Cheatsheet'));
-const EventAdministration = lazy(() => import('~/pages/EventAdministration'));
-const NewGroupAdministration = lazy(() => import('~/pages/NewGroupAdministration'));
-const ForgotPassword = lazy(() => import('~/pages/ForgotPassword'));
-const Http404 = lazy(() => import('~/pages/Http404'));
-const JobPostAdministration = lazy(() => import('~/pages/JobPostAdministration'));
-const LogIn = lazy(() => import('~/pages/LogIn'));
-const NewsAdministration = lazy(() => import('~/pages/NewsAdministration'));
-const Wiki = lazy(() => import('~/pages/Wiki'));
-const ShortLinks = lazy(() => import('~/pages/ShortLinks'));
-const QRCodes = lazy(() => import('~/pages/QRCodes'));
-const SignUp = lazy(() => import('~/pages/SignUp'));
-const SignUpOptions = lazy(() => import('~/pages/SignUpOptions'));
-const SignUpFeide = lazy(() => import('~/pages/SignUpFeide'));
-const StrikeAdmin = lazy(() => import('~/pages/StrikeAdmin'));
-const UserAdmin = lazy(() => import('~/pages/UserAdmin'));
-const Admissions = lazy(() => import('~/pages/Admissions'));
+import { type ReactElement, Suspense, useEffect } from 'react';
+import { Navigate, Routes, useLocation } from 'react-router';
 
 type AuthRouteProps = {
   /** List of permissions where the user must have access through at least one of them to be given access */
@@ -109,53 +84,53 @@ const AppRoutes = () => {
         {/* <Route element={<JobPostDetails />} path=':id/*' /> */}
         {/* <Route element={<JobPosts />} index /> */}
         {/* </Route> */}
-        <Route path={URLS.gallery}>
-          <Route element={<GalleryDetails />} path=':id/*' />
-          <Route element={<Gallery />} index />
-        </Route>
-        <Route element={<Wiki />} path={`/wiki/*`} />
-        <Route path={URLS.news}>
-          <Route element={<NewsDetails />} path=':id/*' />
-          <Route element={<News />} index />
-        </Route>
+        {/* <Route path={URLS.gallery}> */}
+        {/* <Route element={<GalleryDetails />} path=':id/*' /> */}
+        {/* <Route element={<Gallery />} index /> */}
+        {/* </Route> */}
+        {/* <Route element={<Wiki />} path={`/wiki/*`} /> */}
+        {/* <Route path={URLS.news}> */}
+        {/* <Route element={<NewsDetails />} path=':id/*' /> */}
+        {/* <Route element={<News />} index /> */}
+        {/* </Route> */}
 
         {/* TODO: Find out if this page is in use */}
         {/* <Route element={<SlackConnectPage />} path='slack/' /> */}
-        <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}>
-          <Route element={<Profile />} path=':userId/' />
-        </Route>
+        {/* <Route element={<AuthRoute element={<Profile />} />} path={URLS.profile}> */}
+        {/* <Route element={<Profile />} path=':userId/' /> */}
+        {/* </Route> */}
 
-        <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
-        <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
-        <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />
-        <Route element={<AuthRoute element={<QRCodes />} />} path={URLS.qrCodes} />
-        <Route element={<AuthRoute element={<Admissions />} />} path={URLS.admissions} />
-        <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}>
-          <Route element={<InfoBannerAdmin />} />
-        </Route>
-        <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<NewGroupAdministration />} />} path={URLS.newGroupAdmin} />
+        {/* <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} /> */}
+        {/* <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} /> */}
+        {/* <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} /> */}
+        {/* <Route element={<AuthRoute element={<QRCodes />} />} path={URLS.qrCodes} /> */}
+        {/* <Route element={<AuthRoute element={<Admissions />} />} path={URLS.admissions} /> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.BANNERS]} element={<InfoBannerAdmin />} />} path={URLS.bannerAdmin}> */}
+        {/* <Route element={<InfoBannerAdmin />} /> */}
+        {/* </Route> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.GROUP]} element={<NewGroupAdministration />} />} path={URLS.newGroupAdmin} /> */}
 
-        <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}>
-          <Route element={<JobPostAdministration />} path=':jobPostId/' />
-        </Route>
-        <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventAdministration />} />} path={URLS.eventAdmin}>
-          <Route element={<EventAdministration />} path=':eventId/' />
-        </Route>
-        <Route element={<AuthRoute apps={[PermissionApp.NEWS]} element={<NewsAdministration />} />} path={URLS.newsAdmin}>
-          <Route element={<NewsAdministration />} path=':newsId/' />
-        </Route>
-        <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} />
-        <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
+        {/* <Route element={<AuthRoute apps={[PermissionApp.JOBPOST]} element={<JobPostAdministration />} />} path={URLS.jobpostsAdmin}> */}
+        {/* <Route element={<JobPostAdministration />} path=':jobPostId/' /> */}
+        {/* </Route> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.EVENT]} element={<EventAdministration />} />} path={URLS.eventAdmin}> */}
+        {/* <Route element={<EventAdministration />} path=':eventId/' /> */}
+        {/* </Route> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.NEWS]} element={<NewsAdministration />} />} path={URLS.newsAdmin}> */}
+        {/* <Route element={<NewsAdministration />} path=':newsId/' /> */}
+        {/* </Route> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} /> */}
+        {/* <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} /> */}
 
-        <Route element={<LogIn />} path={URLS.login} />
-        <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
-        <Route element={<SignUp />} path={URLS.signupForm} />
-        <Route element={<SignUpOptions />} path={URLS.signup} />
-        <Route element={<SignUpFeide />} path={URLS.signupFeide} />
+        {/* <Route element={<LogIn />} path={URLS.login} /> */}
+        {/* <Route element={<ForgotPassword />} path={URLS.forgotPassword} /> */}
+        {/* <Route element={<SignUp />} path={URLS.signupForm} /> */}
+        {/* <Route element={<SignUpOptions />} path={URLS.signup} /> */}
+        {/* <Route element={<SignUpFeide />} path={URLS.signupFeide} /> */}
 
-        <Route element={<Changelog />} path={URLS.changelog} />
+        {/* <Route element={<Changelog />} path={URLS.changelog} /> */}
 
-        <Route element={<Http404 />} path='*' />
+        {/* <Route element={<Http404 />} path='*' /> */}
       </Routes>
     </Suspense>
   );

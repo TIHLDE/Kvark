@@ -1,3 +1,4 @@
+import FEIDE_ICON from '~/assets/icons/feide.svg';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -7,8 +8,6 @@ import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI }
 import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 import { Link } from 'react-router';
-
-import FEIDE_ICON from 'assets/icons/feide.svg';
 
 const SignUpOptions = () => {
   const createFeideSession = () => {

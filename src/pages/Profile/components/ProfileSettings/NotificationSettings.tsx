@@ -1,3 +1,4 @@
+import DISCORD from '~/assets/icons/discord.svg';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Switch } from '~/components/ui/switch';
@@ -6,8 +7,6 @@ import type { User, UserNotificationSetting, UserNotificationSettingChoice } fro
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
-
-import DISCORD from 'assets/icons/discord.svg';
 
 type ConnectWithSlackProps = {
   className?: string;

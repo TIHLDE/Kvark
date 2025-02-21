@@ -72,6 +72,49 @@ export default [
       route(':id/:urlTitle?', './pages/GalleryDetails/index.tsx'),
     ]),
 
+    // Redirects to new wiki: https://wiki.tihlde.org/
+    route('wiki/*', './pages/Wiki/index.tsx'),
+
+    ...prefix('nyheter', [
+      index('./pages/News/index.tsx'),
+      route(':id/:urtlTitle?', './pages/NewsDetails/index.tsx'),
+      //
+    ]),
+
+    // TODO: Auth these routes
+    route('profil/:userId?', './pages/Profile/index.tsx'),
     route('kokebok/:studyId?/:recipeId?', './pages/Cheatsheet/index.tsx'),
+    route('linker', './pages/ShortLinks/index.tsx'),
+    route('qr-koder', './pages/QRCodes/index.tsx'),
+    route('opptak', './pages/Admissions/index.tsx'),
+
+    // TODO: Auth these routes
+    ...prefix('admin', [
+      // TODO: Auth PermissionApp.BANNERS
+      // WTF why is this in the components folder?
+      route('bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
+      // TODO: Auth PermissionApp.GROUP
+      route('ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
+      // TODO: Auth PermissionApp.JOBPOST
+      route('karriere/:jobPostId?', './pages/JobPostAdministration/index.tsx'),
+      // TODO: Auth PermissionApp.EVENT
+      route('arrangementer/:eventId?', './pages/EventAdministration/index.tsx'),
+      // TODO: Auth PermissionApp.NEWS
+      route('nyheter/:newsId?', './pages/NewsAdministration/index.tsx'),
+      // TODO: Auth PermissionApp.USER
+      route('brukere', './pages/UserAdmin/index.tsx'),
+      // TODO: Auth PermissionApp.STRIKE
+      route('prikker', './pages/StrikeAdmin/index.tsx'),
+    ]),
+
+    route('logg-inn', './pages/LogIn/index.tsx'),
+    route('glemt-passord', './pages/ForgotPassword/index.tsx'),
+    route('ny-bruker/skjema', './pages/SignUp/index.tsx'),
+    route('ny-bruker', './pages/SignUpOptions/index.tsx'),
+    route('ny-bruker/feide', './pages/SignUpFeide/index.tsx'),
+    route('endringslogg', './pages/Changelog/index.tsx'),
+
+    // IMPORTANT! Keep this at the bottom
+    route('*', './pages/Http404/index.tsx'),
   ]),
 ] satisfies RouteConfig;

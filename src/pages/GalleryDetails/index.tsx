@@ -10,7 +10,6 @@ import Helmet from 'react-helmet';
 import { useNavigate, useParams } from 'react-router';
 
 import GalleryEditorDialog from './components/GalleryEditor';
-import PictureUpload from './components/PictureUpload';
 
 const GalleryDetails = () => {
   const { id } = useParams<'id'>();
