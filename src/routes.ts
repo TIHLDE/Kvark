@@ -1,6 +1,5 @@
 import { index, layout, prefix, route, type RouteConfig } from '@react-router/dev/routes';
 
-/* prettier-ignore */
 export default [
   layout('./pages/MainLayout.tsx', [
     index('./pages/Landing/index.tsx'),
@@ -25,6 +24,18 @@ export default [
       route('admin/:id', './pages/Form/FormAdmin.tsx'),
       // TODO: Auth this route
       route(':id', './pages/Form/index.tsx'),
+    ]),
+    ...prefix('grupper', [
+      index('./pages/Groups/overview/index.tsx'),
+
+      // TODO: Auth is not required but content on these is dependent on auth
+      route(':slug', './pages/Groups/GroupDetails.tsx', [
+        index('./pages/Groups/about/index.tsx'),
+        route('arrangementer', './pages/Groups/events/index.tsx'),
+        route('boter', './pages/Groups/fines/index.tsx'),
+        route('lovverk', './pages/Groups/laws/index.tsx'),
+        route('sporreskjema', './pages/Groups/forms/index.tsx'),
+      ]),
     ]),
 
     route('kokebok/:studyId?/:recipeId?', './pages/Cheatsheet/index.tsx'),
