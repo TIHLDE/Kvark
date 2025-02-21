@@ -8,6 +8,9 @@ export default defineConfig(({ command, mode }) => {
     ssr: {
       noExternal: command === 'build' ? true : undefined,
     },
+    build: {
+      sourcemap: true,
+    },
 
     plugins: [reactRouter(), tsconfigPaths()],
   };
