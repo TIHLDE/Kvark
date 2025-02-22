@@ -393,13 +393,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <DateTimePicker form={form} label='Start' name='start_date' onDateChange={updateDates} required />
 
               <DateTimePicker form={form} label='Slutt' name='end_date' required />
             </div>
-
             <BoolExpand description='Bestem start og slutt for påmelding' form={form} name='sign_up' title='Påmelding'>
               <div className='space-y-4'>
                 <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
@@ -483,11 +481,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </Expandable>
               </div>
             </BoolExpand>
-
             <MarkdownEditor form={form} label='Innhold' name='description' required />
-
-            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
-
+            {/* TODO: Fix ratio handling */}
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
             <FormField
               control={form.control}
               name='image_alt'
@@ -501,7 +497,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <FormField
                 control={form.control}
@@ -566,7 +561,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <BoolExpand description='Bestem en pris hvis du ønsker et betalt arrangement' form={form} name='is_paid_event' title='Betalt arrangement'>
               <FormField
                 control={form.control}
@@ -584,7 +578,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </BoolExpand>
-
             <FormField
               control={form.control}
               name='emojis_allowed'
@@ -600,9 +593,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <SingleUserSearch className='w-full' form={form} label='Kontaktperson' name='contact_person' />
-
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
               <DeleteEvent deleteEvent={remove} eventId={eventId} />
               <CloseEvent closeEvent={closeEvent} eventId={eventId} />

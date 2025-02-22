@@ -12,7 +12,7 @@ import { useUserStrikes } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import type { Registration } from '~/types';
 import { formatDate, getUserAffiliation } from '~/utils';
-import parseISO from 'date-fns/parseISO';
+import { parseISO } from 'date-fns';
 import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';

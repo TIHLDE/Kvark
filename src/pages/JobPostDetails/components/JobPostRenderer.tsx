@@ -11,7 +11,7 @@ import type { JobPost } from '~/types';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { formatDate, getJobpostType } from '~/utils';
-import parseISO from 'date-fns/parseISO';
+import { parseISO } from 'date-fns';
 import { PencilIcon } from 'lucide-react';
 import { Link } from 'react-router';
 

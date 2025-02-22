@@ -113,7 +113,6 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
                 name='user'
                 required
               />
-
               <div className='rounded-md p-4 border space-y-2'>
                 <FormSelect
                   form={form}
@@ -128,13 +127,9 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
                 />
                 <MarkdownRenderer value={laws.find((law) => law.id === form.getValues('description'))?.description ?? ''} />
               </div>
-
               <FormInput form={form} label='Forslag til antall bøter' name='amount' required type='number' />
-
               <MarkdownEditor form={form} label='Begrunnelse' name='reason' required />
-
-              <FormImageUpload form={form} label='Bildebevis (Valgfritt)' name='image' />
-
+              {/* NOT TESTED */} <FormImageUpload form={form} label='Bevis (Valgfritt)' name='image' title='Last opp bildebevis' />
               <Button className='w-full' disabled={createFine.isLoading} type='submit'>
                 {createFine.isLoading ? 'Oppretter bot...' : 'Opprett bot'}
               </Button>

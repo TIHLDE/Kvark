@@ -1,5 +1,5 @@
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import nb from 'date-fns/locale/nb';
 import { WatchIcon } from 'lucide-react';
 
 type UpdatedAgoProps = {

@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFormImage } from '~/api/upload';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
-import FormInput, { FormInputBase } from '~/components/inputs/Input';
+import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FileObjectSchema, ImageUpload } from '~/components/inputs/Upload';
+import { FileObjectSchema, FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
-import { Form, FormField } from '~/components/ui/form';
+import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
@@ -13,7 +13,7 @@ import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoB
 import type { InfoBanner } from '~/types';
 import { formatDate } from '~/utils';
 import { formatDistance, parseISO } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+import nb from 'date-fns/locale/nb';
 import { Info, Pencil, Trash } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -143,30 +143,15 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
         <Form {...form}>
           <form className='space-y-4 px-2 py-6' onSubmit={form.handleSubmit(onSubmit)}>
             <FormInput form={form} label='Tittel' name='title' required />
-
             <div className='w-full flex items-center space-x-4'>
               <DateTimePicker form={form} label='Start' name='visible_from' required />
 
               <DateTimePicker form={form} label='Slutt' name='visible_until' required />
             </div>
-
             <FormInput description='F.eks: https://tihlde.org eller https://nrk.no' form={form} label='Url' name='url' />
-
             <FormTextarea form={form} label='Beskrivelse' name='description' required />
-
-            <FormField
-              control={form.control}
-              name='image'
-              render={({ field }) => (
-                <FormInputBase label='Bildet til banneret'>
-                  <ImageUpload onChange={field.onChange} title='Last opp et banner' value={field.value} />
-                </FormInputBase>
-              )}
-            />
-            {/* <FormImageUpload form={form} label='Bilde' name='image' ratio='21:9' /> */}
-
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Bilde til banneret' name='image' title='Last opp et banner' />
             <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
-
             <Button className='w-full' disabled={createBanner.isLoading || updateBanner.isLoading}>
               {createBanner.isLoading || updateBanner.isLoading ? 'Lagrer...' : 'Lagre'}
             </Button>
@@ -223,7 +208,7 @@ const InfoBannerItem = ({ banner }: InfoBannerItemProps) => {
                 : formatDistance(parseISO(banner.visible_until), new Date(), {
                     includeSeconds: true,
                     addSuffix: true,
-                    locale: nbLocale,
+                    locale: nb,
                   })
             }. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}
           </p>

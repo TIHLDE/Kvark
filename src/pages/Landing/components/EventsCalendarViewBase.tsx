@@ -26,7 +26,7 @@ import {
   subWeeks,
   subYears,
 } from 'date-fns';
-import { nb } from 'date-fns/locale';
+import nb from 'date-fns/locale/nb';
 import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';

@@ -10,7 +10,7 @@ import { useNotifications } from '~/hooks/Notification';
 import { useUser } from '~/hooks/User';
 import type { Notification } from '~/types';
 import { getTimeSince } from '~/utils';
-import parseISO from 'date-fns/parseISO';
+import { parseISO } from 'date-fns';
 import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router';

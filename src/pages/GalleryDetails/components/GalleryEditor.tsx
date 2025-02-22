@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { uploadFormImage } from '~/api/upload';
-import FormInput, { FormInputBase } from '~/components/inputs/Input';
+import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FileObjectSchema, ImageUpload } from '~/components/inputs/Upload';
+import { FileObjectSchema, FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
-import { Form, FormField } from '~/components/ui/form';
+import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
@@ -101,25 +101,12 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
         <Form {...form}>
           <form className='space-y-6 pl-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
             <FormInput form={form} label='Tittel' name='title' required />
-
             <FormTextarea form={form} label='Beskrivelse' name='description' />
-
-            <FormField
-              control={form.control}
-              name='image'
-              render={({ field }) => (
-                <FormInputBase label='Cover-bilde'>
-                  <ImageUpload onChange={field.onChange} title='Last opp et cover-bilde' value={field.value} />
-                </FormInputBase>
-              )}
-            />
-
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Cover-bilde' name='image' title='Last opp et cover-bilde' />
             <FormInput form={form} label='Bildetekst' name='image_alt' />
-
             <Button className='w-full' disabled={isSubmitting || editGallery.isLoading} type='submit'>
               Oppdater galleri
             </Button>
-
             <ResponsiveAlertDialog
               action={remove}
               description='Er du sikker på at du vil slette galleriet?'

@@ -166,7 +166,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <FormField
                 control={form.control}
@@ -186,11 +185,9 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
 
               <SingleUserSearch className='w-[800px]' form={form} label='Forfatter' name='creator' />
             </div>
-
             <MarkdownEditor form={form} label='Innhold' name='body' required />
-
-            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
-
+            {/* TODO: Fix Ratio handling */}
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
             <FormField
               control={form.control}
               name='image_alt'
@@ -204,7 +201,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name='emojis_allowed'
@@ -220,7 +216,6 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
               <DeleteNews deleteNews={remove} newsId={newsId} />
 

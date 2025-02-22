@@ -35,7 +35,7 @@ import type { Event, Registration } from '~/types';
 import URLS from '~/URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from '~/utils';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+import nb from 'date-fns/locale/nb';
 import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
@@ -228,12 +228,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const ApplyInfo = () => {
     const [notOpenText, setNotOpenText] = useState<string | null>(
-      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }) : null,
+      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nb }) : null,
     );
 
     useInterval(() => {
       if (isFuture(userStartRegistrationDate)) {
-        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }));
+        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nb }));
       } else {
         !notOpenText || setNotOpenText(null);
       }

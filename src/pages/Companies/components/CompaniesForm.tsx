@@ -9,7 +9,7 @@ import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import type { CompaniesEmail } from '~/types';
-import addMonths from 'date-fns/addMonths';
+import { addMonths } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';

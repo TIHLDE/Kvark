@@ -51,10 +51,6 @@ export const meta: Route.MetaFunction = () => [
   { property: 'twitter:image', content: metaData.image },
 ];
 
-export function clientLoader() {
-  throw new Error('Client loader not implemented');
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>

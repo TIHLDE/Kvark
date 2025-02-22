@@ -223,7 +223,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <FormField
               control={form.control}
               name='ingress'
@@ -237,9 +236,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <MarkdownEditor form={form} label='Innhold' name='body' required />
-
             <FormField
               control={form.control}
               name='is_continuously_hiring'
@@ -255,7 +252,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <DateTimePicker form={form} label='Utløpsdato' name='deadline' required />
 
@@ -273,9 +269,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 )}
               />
             </div>
-
-            <FormImageUpload form={form} label='Velg logo' name='image' ratio='21:9' />
-
+            {/* TODO: Fix ratio handling */}
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg logo' name='image' ratio='21:9' />
             <FormField
               control={form.control}
               name='image_alt'
@@ -289,7 +284,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <FormField
                 control={form.control}
@@ -321,7 +315,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <div className='w-full flex space-x-4'>
                 <FormField
@@ -400,7 +393,6 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
               <DeleteJobPost deleteJobPost={remove} jobPostId={jobpostId} />
 

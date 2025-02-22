@@ -74,15 +74,11 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
         <Form {...form}>
           <form className='py-6 px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
             <FormInput form={form} label='Gruppenavn' name='name' required />
-
-            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='1:1' />
-
+            {/* TODO: Fix ratio handling */}
+            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde' name='image' ratio='1:1' />
             <MarkdownEditor form={form} label='Gruppebeskrivelse' name='description' />
-
             <FormInput form={form} label='Kontakt e-post' name='contact_email' type='email' />
-
             <FormBasicSwitch className='pt-4' form={form} label='Botsystem' name='fines_activated' />
-
             {watchFinesActivated && (
               <>
                 <SingleUserSearch form={form} inGroup={group.slug} label='Botsjef' name='fines_admin' user={group.fines_admin} />
@@ -90,7 +86,6 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
                 <MarkdownEditor form={form} label='Botsystem praktiske detaljer' name='fine_info' required />
               </>
             )}
-
             <Button className='w-full' disabled={updateGroup.isLoading} type='submit'>
               {updateGroup.isLoading ? 'Oppdaterer...' : 'Oppdater'}
             </Button>

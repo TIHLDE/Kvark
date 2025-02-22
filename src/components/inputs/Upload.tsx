@@ -287,7 +287,11 @@ import { cn } from '~/lib/utils';
 import { uuidv4 } from '~/utils';
 import { ImagePlus, Trash2, Upload, X } from 'lucide-react';
 import { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
+
+import { FormField } from '../ui/form';
+import { FormInputBase } from './Input';
 
 const zodFile = z.instanceof(File).refine((f) => f instanceof File, { message: 'Invalid file' });
 
@@ -489,6 +493,38 @@ export function ImageUpload(props: ImageUploadProps) {
         </div>
       )}
     </div>
+  );
+}
+
+type FormImageUploadProps<TFormValues extends FieldValues> = {
+  form: UseFormReturn<TFormValues>;
+  name: Path<TFormValues>;
+  label?: string;
+  title?: string;
+  dropZoneDescription?: string;
+  description?: string;
+  multiple?: boolean;
+  accept?: AcceptImageFormats;
+  required?: boolean;
+};
+export function FormImageUpload<TFieldValues extends FieldValues>(props: FormImageUploadProps<TFieldValues>) {
+  return (
+    <FormField
+      control={props.form.control}
+      name={props.name}
+      render={({ field }) => (
+        <FormInputBase description={props.description} label={props.label} required={props.required}>
+          <ImageUpload
+            accept={props.accept}
+            description={props.dropZoneDescription}
+            multiple={props.multiple}
+            onChange={field.onChange}
+            title={props.title}
+            value={field.value}
+          />
+        </FormInputBase>
+      )}
+    />
   );
 }
 
