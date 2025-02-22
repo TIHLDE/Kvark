@@ -1,5 +1,6 @@
 import { ACCESS_TOKEN } from '~/constant';
-import { MembershipType } from '~/types/Enums';
+import { Permissions } from '~/types';
+import { MembershipType, PermissionApp } from '~/types/Enums';
 import { z } from 'zod';
 
 import API from './api';
@@ -64,4 +65,25 @@ export async function authClient() {
   });
 
   return authObject;
+}
+
+/**
+ * Checks if the user has write permission for the given app(s)
+ * @param permissions the user permissions
+ * @param app the app(s) to check agains
+ * @param some if true, the user must only have write permission for one of the apps
+ * @returns if the user has write or write_all permission
+ */
+export function userHasWritePermission(permissions: Record<string, Permissions>, app: PermissionApp | PermissionApp[], some: boolean = false): boolean {
+  if (!Array.isArray(app)) {
+    const perm = permissions[app];
+    if (!perm) {
+      return false;
+    }
+    return Boolean(perm.write) || Boolean(perm.write_all);
+  }
+  if (some) {
+    return app.some((p) => userHasWritePermission(permissions, p));
+  }
+  return app.every((p) => userHasWritePermission(permissions, p));
 }

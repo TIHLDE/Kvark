@@ -6,12 +6,10 @@ export default [
     index('./pages/Landing/index.tsx'),
     route('ny-student', './pages/NewStudent/index.tsx'),
 
-    // TODO: Auth this route
     route('tilbakemelding', './pages/Feedback/index.tsx'),
 
     ...prefix('arrangementer', [
       index('./pages/Events/index.tsx'),
-      // TODO: Auth this route (PermissionApp.EVENT)
       // TODO: This route has also been re-written from :id/registrering
       route('registrering/:id', './pages/EventRegistration/index.tsx'),
       route(':id/:urlTitle?', './pages/EventDetails/index.tsx'),

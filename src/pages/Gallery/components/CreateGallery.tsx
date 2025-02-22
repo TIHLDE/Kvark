@@ -34,7 +34,7 @@ const CreateGallery = () => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     const data = {
       ...values,
       slug: '_',
