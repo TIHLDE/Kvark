@@ -35,7 +35,7 @@ import type { Event, Registration } from '~/types';
 import URLS from '~/URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from '~/utils';
 import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';

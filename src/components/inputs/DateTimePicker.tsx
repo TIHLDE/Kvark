@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover
 import { TimePickerDisplay } from '~/components/ui/timePicker/display';
 import { cn } from '~/lib/utils';
 import { format } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 

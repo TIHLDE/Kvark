@@ -4,7 +4,7 @@ import type { Category, EventList } from '~/types';
 import { Category as CategoryEnum, Groups } from '~/types/Enums';
 import { VariantProps } from 'class-variance-authority';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
