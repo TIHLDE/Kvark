@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FilterX } from 'lucide-react';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { argsToParams } from 'utils';
+import { argsToParams, getJobpostType } from 'utils';
 import { z } from 'zod';
+import { JobPostType } from 'types/Enums';
 
 import { useJobPosts } from 'hooks/JobPost';
 import { useAnalytics } from 'hooks/Utils';
@@ -11,11 +13,11 @@ import { useAnalytics } from 'hooks/Utils';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Switch } from 'components/ui/switch';
+import { PaginateButton } from 'components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel } from 'components/ui/form';
+
+import FormMultiCheckbox from '../../components/inputs/MultiCheckbox';
+import { FormSelect } from '../../components/inputs/Select';
 
 type FormState = {
   search?: string;
@@ -68,19 +70,73 @@ const JobPosts = () => {
     navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
   };
 
+  const handleFilterChange = (values: z.infer<typeof formSchema>) => {
+    event('search', 'jobposts', JSON.stringify(values));
+
+    const filters = {
+      search: values.search,
+      expired: values.expired,
+      classes: values.classes !== 'all' ? values.classes : undefined,
+    };
+
+    setFilters(filters);
+    navigate('${location.pathname}${argsToParams(filters)}', { replace: true });
+  };
+
+  // useEffect(() => {
+  //   handleFilterChange(filters);
+  // }, [filters]);
+
+  const grade = useMemo(
+    () =>
+      [...Array(5).keys()].map((index) => {
+        return {
+          label: (index + 1).toString() + '. klasse',
+          value: (index + 1).toString(),
+        };
+      }),
+    [],
+  );
+
+  const jobType = useMemo(() => {
+    return Object.keys(JobPostType).map((key) => ({
+      label: getJobpostType(key as JobPostType),
+      value: key as JobPostType,
+    }));
+  }, [JobPostType]);
+
+  const locations = [
+    { label: 'Oslo', value: 'Oslo' },
+    { label: 'Bergen', value: 'Bergen' },
+    { label: 'Trondheim', value: 'Trondheim' },
+    { label: 'Tromsø', value: 'Tromsø' },
+    { label: 'Annet', value: 'Annet' },
+  ];
+
+  const filterType = [
+    { label: 'Frist', value: 'Frist' },
+    { label: 'Bedrift', value: 'Bedrift' },
+    { label: 'Publisert', value: 'Publisert' },
+  ];
+
   const SearchForm = () => (
     <Form {...form}>
-      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+      <form className='space-y-4 pb-2' onSubmit={form.handleSubmit(onSubmit)}>
+        <div className={'flex flex-row gap-2 items-center justify-between'}>
+          <FormLabel className={'text-2xl'}>Filter</FormLabel>
+          <div className={'cursor-pointer hover:bg-secondary rounded-md p-2'} onClick={resetFilters}>
+            <FilterX size={25} />
+          </div>
+        </div>
+
         <FormField
           control={form.control}
-          name='search'
+          name='classes'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Søk</FormLabel>
               <FormControl>
-                <Input {...field} placeholder='Skriv her...' />
+                <FormSelect form={form} label={'Filtrer etter'} name={'search'} options={filterType} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
@@ -90,40 +146,38 @@ const JobPosts = () => {
           name='classes'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Årstrinn</FormLabel>
-              <Select defaultValue={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Velg et årstrinn' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='all'>Alle</SelectItem>
-                  {[...Array(5).keys()].map((cls, index) => (
-                    <SelectItem key={index} value={(cls + 1).toString()}>
-                      {cls + 1}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
+              <FormControl>
+                <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='search' />
+              </FormControl>
             </FormItem>
           )}
         />
 
         <FormField
           control={form.control}
-          name='expired'
+          name='classes'
           render={({ field }) => (
-            <FormItem className='flex space-x-2'>
+            <FormItem>
               <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                <FormMultiCheckbox form={form} items={jobType} label={'Jobbtype'} name='search' />
               </FormControl>
-              <FormLabel>Tidligere</FormLabel>
             </FormItem>
           )}
         />
 
+        <FormField
+          control={form.control}
+          name='classes'
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <FormMultiCheckbox form={form} items={locations} label={'Sted'} name='search' />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+{/*
         <div className='space-y-2'>
           <Button className='w-full' type='submit'>
             {isFetching ? 'Søker...' : 'Søk'}
@@ -133,6 +187,7 @@ const JobPosts = () => {
             Tilbakestill
           </Button>
         </div>
+*/}
       </form>
     </Form>
   );

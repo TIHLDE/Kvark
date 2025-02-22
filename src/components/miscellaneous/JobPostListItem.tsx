@@ -20,7 +20,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
     <div className={'flex flex-col sm:flex-row'}>
       <AspectRatioImg
         alt={jobPost.image_alt || jobPost.title}
-        className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none sm:w-[350px] md:w-[350px] xl:w-[400px]'
+        className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none sm:w-[350px] xl:w-[400px]'
         ratio={'16:9'}
         src={jobPost.image}
       />
@@ -63,12 +63,31 @@ export default JobPostListItem;
 export const JobPostListItemLoading = () => (
   <div className='grid lg:grid-cols-1 gap-4'>
     {Array.from(Array(6).keys()).map((index) => (
-      <div className='rounded-md bg-card space-y-2 p-4' key={index}>
-        <Skeleton className='h-60 w-full' />
+      <div className={'flex flex-col sm:flex-row bg-card border rounded-md '} key={index}>
+        <Skeleton className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none sm:w-[350px] xl:w-[400px]' />
+        <div className={'flex flex-col w-full justify-between py-2'}>
+          <div className='flex flex-row'>
+            <div className='px-4 py-2 flex-wrap w-full items-start gap-2 flex flex-col'>
+              <Skeleton className='h-6 w-3/4' />
+              <div className={'flex gap-2'}>
+                <Skeleton className='h-6 w-20 rounded-full' />
+                <Skeleton className='h-6 w-28 rounded-full' />
+              </div>
+              <Separator className={'bg-secondary h-[3px]'} />
+            </div>
+          </div>
 
-        <div className='space-y-2'>
-          <Skeleton className='h-6 w-3/4' />
-          <Skeleton className='h-4 w-1/2' />
+          <div className={'flex flex-col gap-5 px-4 py-2 mt-1'}>
+            <div className={'flex flex-row gap-2 item-center'}>
+              <Skeleton className='h-4 w-28 rounded-full' />
+            </div>
+            <div className={'flex flex-row gap-2 items-center'}>
+              <Skeleton className='h-4 w-28 rounded-full' />
+            </div>
+            <div className={'flex flex-row gap-2 items-center'}>
+              <Skeleton className='h-4 w-36 rounded-full' />
+            </div>
+          </div>
         </div>
       </div>
     ))}
