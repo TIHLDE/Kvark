@@ -3,7 +3,7 @@ import FormInput from '~/components/inputs/Input';
 import { FormSelect } from '~/components/inputs/Select';
 import { FormDetailSwitch } from '~/components/inputs/Switch';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FileObjectSchema, FormImageUpload } from '~/components/inputs/Upload';
+import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
 import { useUpdateUser } from '~/hooks/User';
@@ -23,7 +23,7 @@ const formSchema = z.object({
   first_name: z.string({ required_error: 'Fornavn er påkrevd' }).min(1, { message: 'Fornavn er påkrevd' }),
   last_name: z.string({ required_error: 'Etternavn er påkrevd' }).min(1, { message: 'Etternavn er påkrevd' }),
   email: z.string().email({ message: 'Epost er ugyldig' }),
-  image: z.array(FileObjectSchema).max(1, { message: 'Du kan kun laste opp ett bilde' }),
+  image: z.string().optional(),
   gender: z.string(),
   allergy: z.string().optional(),
   tool: z.string().optional(),
@@ -75,7 +75,9 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
             <FormInput form={form} label='Epost' name='email' required type='email' />
           </div>
         )}
-        {/* NOT TESTED */} <FormImageUpload form={form} label='Profilbilde' name='image' />
+
+        <FormImageUpload form={form} label='Velg profilbilde' name='image' />
+
         <FormSelect
           form={form}
           label='Kjønn'
@@ -86,14 +88,18 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
             { label: 'Annet', value: 3 },
           ]}
         />
+
         <FormInput form={form} label='Kjøkkenredskap' name='tool' />
+
         <FormTextarea description='Dine allergier vises til arrangører ved arrangementer' form={form} label='Dine allergier' name='allergy' />
+
         <FormDetailSwitch
           description='Bestemmer om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer, og om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.'
           form={form}
           label='Offentlige arrangementspåmeldinger'
           name='public_event_registrations'
         />
+
         <FormDetailSwitch
           description={
             <Link className='text-primary' to='/wiki/arrangementsregler/'>
@@ -104,12 +110,14 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
           label='Aksepterer arrangementreglene'
           name='accepts_event_rules'
         />
+
         <FormDetailSwitch
           description='Godtar at bilder av deg kan deles på TIHLDE sine plattformer'
           form={form}
           label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
           name='allows_photo_by_default'
         />
+
         <Button className='w-full' type='submit'>
           {updateUser.isLoading ? 'Lagrer...' : 'Lagre'}
         </Button>

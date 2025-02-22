@@ -118,7 +118,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       end_date: data?.end_date ? parseISO(data.end_date) : new Date(),
       end_registration_at: data?.end_registration_at ? parseISO(data.end_registration_at) : new Date(),
       organizer: data?.organizer?.slug || '',
-      image: data?.image || '',
+      image: data?.image ?? '',
       image_alt: data?.image_alt || '',
       limit: data?.limit || 0,
       location: data?.location || '',
@@ -150,7 +150,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
         organizer: newValues?.organizer?.slug || '',
-        image: newValues?.image || '',
+        image: newValues?.image ?? '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
         location: newValues?.location || '',
@@ -482,8 +482,9 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
               </div>
             </BoolExpand>
             <MarkdownEditor form={form} label='Innhold' name='description' required />
-            {/* TODO: Fix ratio handling */}
-            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
+
+            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
+
             <FormField
               control={form.control}
               name='image_alt'

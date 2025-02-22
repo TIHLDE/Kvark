@@ -1,18 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { uploadFormImage } from '~/api/upload';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FileObjectSchema, FormImageUpload } from '~/components/inputs/Upload';
+import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useDeleteGallery, useGalleryById, useUpdateGallery } from '~/hooks/Gallery';
-import type { Gallery, GalleryRequired } from '~/types';
+import type { Gallery } from '~/types';
 import URLS from '~/URLS';
 import { Pencil } from 'lucide-react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
@@ -25,7 +23,7 @@ export type GalleryEditorProps = {
 const formSchema = z.object({
   title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
   description: z.string().optional(),
-  image: z.array(FileObjectSchema).max(1, { message: 'Du kan kun laste opp max ett bilde' }),
+  image: z.string().optional(),
   image_alt: z.string().optional(),
 });
 
@@ -35,22 +33,12 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
   const deleteGallery = useDeleteGallery(id);
   const navigate = useNavigate();
 
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: data?.title || '',
       description: data?.description || '',
-      image: data?.image
-        ? [
-            {
-              id: data.image,
-              file: data.image,
-              name: data.image,
-            },
-          ]
-        : [],
+      image: data?.image ?? '',
       image_alt: data?.image_alt || '',
     },
   });
@@ -67,18 +55,11 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
     });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const image = values.image[0];
-    setIsSubmitting(true);
-
-    const image_url = (await uploadFormImage(image)) ?? '';
-
-    const data: Partial<Gallery> = {
-      title: values.title,
-      description: values.description,
-      image: image_url,
-      image_alt: values.image_alt,
+    const data = {
+      ...values,
+      slug: '_',
     };
-    editGallery.mutate(data as GalleryRequired, {
+    editGallery.mutate(data, {
       onSuccess: () => {
         toast.success('Galleriet ble oppdatert');
       },
@@ -101,12 +82,17 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
         <Form {...form}>
           <form className='space-y-6 pl-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
             <FormInput form={form} label='Tittel' name='title' required />
+
             <FormTextarea form={form} label='Beskrivelse' name='description' />
-            {/* NOT TESTED */} <FormImageUpload form={form} label='Cover-bilde' name='image' title='Last opp et cover-bilde' />
+
+            <FormImageUpload form={form} label='Cover-bilde' name='image' />
+
             <FormInput form={form} label='Bildetekst' name='image_alt' />
-            <Button className='w-full' disabled={isSubmitting || editGallery.isLoading} type='submit'>
+
+            <Button className='w-full' disabled={editGallery.isLoading} type='submit'>
               Oppdater galleri
             </Button>
+
             <ResponsiveAlertDialog
               action={remove}
               description='Er du sikker på at du vil slette galleriet?'

@@ -1,9 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { uploadFormImage } from '~/api/upload';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
-import { FileObjectSchema, FormImageUpload } from '~/components/inputs/Upload';
+import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
@@ -13,7 +12,7 @@ import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoB
 import type { InfoBanner } from '~/types';
 import { formatDate } from '~/utils';
 import { formatDistance, parseISO } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { Info, Pencil, Trash } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,7 +26,7 @@ type InfoBannerFormProps = {
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Feltet er påkrevd' }),
   description: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  image: z.array(FileObjectSchema).max(1, { message: 'Du kan kun laste opp ett bilde' }),
+  image: z.string().optional(),
   image_alt: z.string().optional(),
   url: z.string().optional(),
   visible_from: z.date(),
@@ -44,15 +43,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     defaultValues: {
       title: banner?.title || '',
       description: banner?.description || '',
-      image: banner?.image
-        ? [
-            {
-              id: banner.id ?? 'existing-image',
-              file: banner.image,
-              name: banner.image,
-            },
-          ]
-        : [],
+      image: banner?.image ?? '',
       image_alt: banner?.image_alt || '',
       url: banner?.url || '',
       visible_from: banner ? parseISO(banner.visible_from) : new Date(),
@@ -63,15 +54,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   const setValues = useCallback(
     (newValues: InfoBanner | null) => {
       form.reset({
-        image: newValues?.image
-          ? [
-              {
-                id: newValues.id ?? 'existing-image',
-                file: newValues.image,
-                name: newValues.image,
-              },
-            ]
-          : [],
+        image: newValues?.image ?? '',
         image_alt: newValues?.image_alt || '',
         title: newValues?.title || '',
         description: newValues?.description || '',
@@ -93,16 +76,13 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     setValues(banner || null);
   }, [banner, setValues]);
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (updateBanner.isLoading || createBanner.isLoading) {
       return;
     }
 
-    const image_url = (await uploadFormImage(values.image[0])) ?? '';
-
     const infoBanner = {
       ...values,
-      image: image_url,
       visible_from: values.visible_from.toJSON(),
       visible_until: values.visible_until.toJSON(),
     } as InfoBanner;
@@ -143,15 +123,21 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
         <Form {...form}>
           <form className='space-y-4 px-2 py-6' onSubmit={form.handleSubmit(onSubmit)}>
             <FormInput form={form} label='Tittel' name='title' required />
+
             <div className='w-full flex items-center space-x-4'>
               <DateTimePicker form={form} label='Start' name='visible_from' required />
 
               <DateTimePicker form={form} label='Slutt' name='visible_until' required />
             </div>
+
             <FormInput description='F.eks: https://tihlde.org eller https://nrk.no' form={form} label='Url' name='url' />
+
             <FormTextarea form={form} label='Beskrivelse' name='description' required />
-            {/* NOT TESTED */} <FormImageUpload form={form} label='Bilde til banneret' name='image' title='Last opp et banner' />
+
+            <FormImageUpload form={form} label='Bilde' name='image' ratio='21:9' />
+
             <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
+
             <Button className='w-full' disabled={createBanner.isLoading || updateBanner.isLoading}>
               {createBanner.isLoading || updateBanner.isLoading ? 'Lagrer...' : 'Lagre'}
             </Button>

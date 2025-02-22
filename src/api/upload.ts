@@ -34,6 +34,12 @@ export function uploadFileWithToaster(file: File, options: UploadWithSonnerOptio
   });
 }
 
+/**
+ * If the FileObject contains a file, upload it and return the URL
+ * If the FileObject is a string, return it as is
+ * @param image the FileObject to potentially upload
+ * @returns image url or undefined (image is undefined)
+ */
 export async function uploadFormImage(image?: FileObject) {
   if (!image) {
     return undefined;

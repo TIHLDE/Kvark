@@ -3,12 +3,15 @@ import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellane
 import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
 import { useEventById } from '~/hooks/Event';
 import { useJobPostById } from '~/hooks/JobPost';
 import { useNewsById } from '~/hooks/News';
 import type { Event, EventList, JobPost, News } from '~/types';
 import { createElement, lazy, ReactNode } from 'react';
+import React from 'react';
 import type { Components } from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -100,27 +103,23 @@ export type MarkdownRendererProps = {
 };
 
 export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
-  return <ReactMarkdown components={components}>{value ?? ''}</ReactMarkdown>;
+  const skeletonWidthArray = React.useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
+
+  return (
+    <React.Suspense
+      fallback={
+        <div className='space-y-2'>
+          {skeletonWidthArray.map((width, index) => (
+            <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
+          ))}
+        </div>
+      }>
+      <ReactMarkdown
+        components={components}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rehypePlugins={[rehypeRaw] as any}>
+        {value || ''}
+      </ReactMarkdown>
+    </React.Suspense>
+  );
 }
-
-// const _MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
-//   const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
-
-//   return (
-//     <Suspense
-//       fallback={
-//         <div className='space-y-2'>
-//           {skeletonWidthArray.map((width, index) => (
-//             <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
-//           ))}
-//         </div>
-//       }>
-//       <ReactMarkdown
-//         components={components}
-//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//         rehypePlugins={[rehypeRaw] as any}>
-//         {value || ''}
-//       </ReactMarkdown>
-//     </Suspense>
-//   );
-// };

@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
@@ -11,7 +10,7 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateToddel } from '~/hooks/Toddel';
 import { cn } from '~/lib/utils';
 import { format, formatISO9075, parseISO } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { CalendarIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -90,6 +89,7 @@ const CreateToddelDialog = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name='title'
@@ -105,6 +105,7 @@ const CreateToddelDialog = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name='published_at'
@@ -136,9 +137,11 @@ const CreateToddelDialog = () => {
                 </FormItem>
               )}
             />
-            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde *' name='image' />
-            {/* TODO: Implement PDF file upload */}
-            {/* <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' /> */}
+
+            <FormImageUpload form={form} label='Velg bilde *' name='image' />
+
+            <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
+
             <Button className='w-full' disabled={createToddel.isLoading} type='submit'>
               {createToddel.isLoading ? 'Oppretter...' : 'Opprett'}
             </Button>

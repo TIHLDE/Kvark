@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
@@ -12,7 +11,7 @@ import { useDeleteToddel, useUpdateToddel } from '~/hooks/Toddel';
 import { cn } from '~/lib/utils';
 import type { Toddel } from '~/types';
 import { format, formatISO9075, parseISO } from 'date-fns';
-import nb from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { CalendarIcon, EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -141,9 +140,8 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
                 </FormItem>
               )}
             />
-            {/* NOT TESTED */} <FormImageUpload form={form} label='Velg bilde *' name='image' />
-            {/* TODO: Fix file uploads */}
-            {/* <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' /> */}
+            <FormImageUpload form={form} label='Velg bilde *' name='image' />
+            <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
             <Button className='w-full' disabled={updateToddel.isLoading} type='submit'>
               {updateToddel.isLoading ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
