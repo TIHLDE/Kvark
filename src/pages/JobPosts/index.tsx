@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams, getJobpostType } from 'utils';
 import { z } from 'zod';
+
 import { JobPostType } from 'types/Enums';
 
 import { useJobPosts } from 'hooks/JobPost';
@@ -176,18 +177,6 @@ const JobPosts = () => {
             </FormItem>
           )}
         />
-
-{/*
-        <div className='space-y-2'>
-          <Button className='w-full' type='submit'>
-            {isFetching ? 'Søker...' : 'Søk'}
-          </Button>
-
-          <Button className='w-full' onClick={resetFilters} variant='secondary'>
-            Tilbakestill
-          </Button>
-        </div>
-*/}
       </form>
     </Form>
   );
