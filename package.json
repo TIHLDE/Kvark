@@ -82,6 +82,7 @@
   },
   "devDependencies": {
     "@react-router/dev": "^7.2.0",
+    "@react-router/serve": "^7.2.0",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^22.13.4",
     "@types/react": "^18.3.12",

@@ -5,5 +5,5 @@ export default {
   appDirectory: 'src',
   // Convert from SPA to Server Side Rendering by setting ssr to true
   ssr: false,
-  presets: [vercelPreset],
+  presets: [vercelPreset()],
 } satisfies Config;
