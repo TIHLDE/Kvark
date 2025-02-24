@@ -1,30 +1,29 @@
-import API from '~/api/api';
+import { getGroup } from '~/api/api.cached';
+import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
 import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
-import type { Group } from '~/types/Group';
+import { FormGroupValues } from '~/types';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
-import { Link, Outlet } from 'react-router';
+import { href, Link, Outlet } from 'react-router';
 
 import type { Route } from './+types/GroupDetails';
-
-const GroupCache = new Map<string, { expire: Date; group: Group }>();
+import GroupAdmin from './components/GroupAdmin';
+import AddFineDialog from './fines/AddFineDialog';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const cache = GroupCache.get(params.slug);
-
-  if (cache && cache.expire > new Date()) {
-    return { group: cache.group };
-  }
-
-  const group = await API.getGroup(params.slug);
-  GroupCache.set(params.slug, { expire: new Date(Date.now() + 1000 * 60), group });
+  const auth = await authClient();
+  const group = await getGroup(params.slug);
 
   return {
     group,
+    hasWriteAcccess: Boolean(group.permissions.write),
+    isMemberOfGroup: Boolean(group.viewer_is_member),
+    isFinesActive: Boolean(group.fines_activated),
+    isAuthenticated: Boolean(auth),
   };
 }
 
@@ -45,30 +44,37 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 }
 
 export default function GroupPage({ loaderData }: Route.ComponentProps) {
-  const { group } = loaderData;
+  const { group, hasWriteAcccess, isAuthenticated, isFinesActive, isMemberOfGroup } = loaderData;
+
+  const showFinesAndLaws = isFinesActive && (isMemberOfGroup || hasWriteAcccess);
+  const showForms = isAuthenticated;
 
   const tabs = [
     { label: 'Om', to: `/grupper/${group.slug}`, icon: Info },
     { label: 'Arrangementer', to: `/grupper/${group.slug}/arrangementer`, icon: CalendarRange },
     // TODO: Toggle hidden when auth is done
-    { label: 'Bøter', to: `/grupper/${group.slug}/boter`, icon: CircleDollarSign, hidden: false },
-    { label: 'Lovverk', to: `/grupper/${group.slug}/lovverk`, icon: Scale, hidden: false },
-    { label: 'Spørreskjemaer', to: `/grupper/${group.slug}/sporreskjemaer`, icon: CircleHelp, hidden: false },
+    { label: 'Bøter', to: `/grupper/${group.slug}/boter`, icon: CircleDollarSign, hidden: !showFinesAndLaws },
+    { label: 'Lovverk', to: `/grupper/${group.slug}/lovverk`, icon: Scale, hidden: !showFinesAndLaws },
+    { label: 'Spørreskjemaer', to: `/grupper/${group.slug}/sporreskjemaer`, icon: CircleHelp, hidden: !showForms },
   ];
 
   return (
     <Page className='max-w-6xl mx-auto'>
       <Card>
         <CardHeader>
-          <div className='flex items-center space-x-4'>
-            <GoBackButton url='/grupper' />
-            <div className='flex items-center space-x-2'>
-              <AspectRatioImg alt={group.image_alt ?? ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={group.image ?? ''} />
-              <h1 className='text-3xl md:text-5xl font-bold'>{group.name}</h1>
+          {isMemberOfGroup && isFinesActive && <AddFineDialog groupSlug={group.slug} />}
+
+          <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+            <div className='flex items-center space-x-4'>
+              <GoBackButton url={href('/grupper')} />
+              <div className='flex items-center space-x-2'>
+                <AspectRatioImg alt={group.image_alt ?? ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={group.image ?? ''} />
+                <h1 className='text-3xl md:text-5xl font-bold'>{group.name}</h1>
+              </div>
             </div>
+
+            {hasWriteAcccess && <GroupAdmin group={group as FormGroupValues} />}
           </div>
-          {/* TODO: Implement when auth is done */}
-          {/* {hasWriteAcccess && <GroupAdmin group={data as FormGroupValues} />} */}
         </CardHeader>
         <CardContent>
           <ScrollArea className='w-full whitespace-nowrap p-0'>

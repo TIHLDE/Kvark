@@ -1,19 +1,27 @@
+import { getGroup } from '~/api/api.cached';
+import { authClient, userHasWritePermission } from '~/api/auth';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
-import { useIsAuthenticated } from '~/hooks/User';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
+import { PermissionApp } from '~/types/Enums';
 
 import GroupStatistics from '../components/GroupStatistics';
 import type { Route } from './+types/index';
 
-export default function GroupInfo({ matches }: Route.ComponentProps) {
-  const isAuthenticated = useIsAuthenticated();
-  const { data: parentLoader } = matches[2];
-  const { group } = parentLoader;
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const auth = await authClient();
+  const group = await getGroup(params.slug);
+  return {
+    group,
+    isAuthenticated: Boolean(auth),
+    isAdmin: userHasWritePermission(auth?.permissions ?? {}, PermissionApp.GROUP),
+  };
+}
 
-  // TODO: Auth this admin request. Should be in the loader
-  const isAdmin = true;
+export default function GroupInfo({ loaderData }: Route.ComponentProps) {
+  const { group, isAuthenticated, isAdmin } = loaderData;
+
   return (
     <>
       {isAdmin && <GroupStatistics slug={group.slug} />}
