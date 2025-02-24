@@ -13,7 +13,7 @@
 ## Neste versjon
 
 
-## Versjon 2025.02.24
+## Versjon 2025.24.02
 
 - ✨ **Kjøp og Salg** La til en knapp til TIHLDEs kjøp og salg facebook-gruppe for betalte arrangementer.
 
