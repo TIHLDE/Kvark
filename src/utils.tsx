@@ -387,6 +387,10 @@ export const parseLawParagraphNumber = (input: string): number => {
   }
 };
 
+/**
+ * Generates a Universally Unique Identifier (UUID)
+ * @returns A random UUIDv4
+ */
 export function uuidv4() {
   const uuid = new Array(36);
   for (let i = 0; i < 36; i++) {

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -14,12 +15,17 @@ import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { Route } from './+types';
 import QRCodeItem from './components/QRCodeItem';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Navn må fylles ut' }),
   content: z.string().min(1, { message: 'Innhold må fylles ut' }).url({ message: 'Ugyldig URL' }),
 });
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const QRCodes = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

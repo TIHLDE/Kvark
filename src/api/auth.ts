@@ -1,12 +1,17 @@
 import { ACCESS_TOKEN } from '~/constant';
 import { Permissions } from '~/types';
 import { MembershipType, PermissionApp } from '~/types/Enums';
+import { href, redirect } from 'react-router';
 import { z } from 'zod';
 
 import API from './api';
 import { cachified } from './cache';
 import { getCookie } from './cookie';
 
+/**
+ * Gets tha authenticated user and their permissions
+ * @returns auth object with user and permissions
+ */
 export async function authClient() {
   const token = getCookie(ACCESS_TOKEN);
   if (!token) {
@@ -86,4 +91,29 @@ export function userHasWritePermission(permissions: Record<string, Permissions>,
     return app.some((p) => userHasWritePermission(permissions, p));
   }
   return app.every((p) => userHasWritePermission(permissions, p));
+}
+
+/**
+ * Attempts to authenticate the user and redirects to the login page if not authenticated
+ * @param request the request object from the loader
+ * @returns auth object if authenticated
+ * @throws redirect to login page if not authenticated
+ */
+export async function authClientWithRedirect(request: Request) {
+  const auth = await authClient();
+  if (!auth) {
+    throw redirect(createLoginRedirectUrl(request));
+  }
+  return auth;
+}
+
+/**
+ * Returns the URL to redirect to the login page with the current URL as the redirect target
+ * @param request the current request object
+ * @returns URL string to redirect to the login page
+ */
+export function createLoginRedirectUrl(request: Request) {
+  const searchParams = new URLSearchParams();
+  searchParams.set('redirectTo', new URL(request.url).pathname);
+  return href('/logg-inn') + '?' + searchParams.toString();
 }

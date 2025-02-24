@@ -1,4 +1,4 @@
-import { authClient } from '~/api/auth';
+import { authClient, createLoginRedirectUrl } from '~/api/auth';
 import { QRButton } from '~/components/miscellaneous/QRButton';
 import Page from '~/components/navigation/Page';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
@@ -33,16 +33,16 @@ import {
   UsersIcon,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { href, redirect, useParams } from 'react-router';
+import { redirect, useParams } from 'react-router';
 
 import { Route } from './+types';
 import EditBioButton from './components/BioEditor/EditBioButton';
 
-export function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const auth = authClient();
+export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
+  const auth = await authClient();
   // If trying to access your own profile without being logged in, redirect to login page
   if (!params.userId && !auth) {
-    return redirect(href('/logg-inn'));
+    return redirect(createLoginRedirectUrl(request));
   }
 }
 

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authClient } from '~/api/auth';
+import { authClientWithRedirect } from '~/api/auth';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
@@ -13,9 +13,14 @@ import { useUser, useUserMemberships } from '~/hooks/User';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { href, redirect } from 'react-router';
 import { toast } from 'sonner';
 import * as z from 'zod';
+
+import { Route } from './+types';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 type Filters = {
   search?: string;
@@ -59,13 +64,6 @@ const bugFormSchema = z.object({
       message: 'Beskrivelsen kan ikke overstige 500 tegn.',
     }),
 });
-
-export async function clientLoader() {
-  const auth = await authClient();
-  if (!auth) {
-    return redirect(href('/logg-inn'));
-  }
-}
 
 export default function Feedback() {
   const [openIdea, setOpenIdea] = useState(false);

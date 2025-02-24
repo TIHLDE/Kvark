@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
@@ -6,10 +7,13 @@ import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
 import { useInfoBanners } from '~/hooks/InfoBanner';
+import { PermissionApp } from '~/types/Enums';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { href, redirect } from 'react-router';
 import { z } from 'zod';
 
+import { Route } from './+types/InfoBannerAdmin';
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
 
 type Filters = {
@@ -22,7 +26,15 @@ const formSchema = z.object({
   is_expired: z.boolean(),
 });
 
-const InfoBannerAdmin = () => {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (userHasWritePermission(auth.permissions, PermissionApp.BANNERS)) {
+    return redirect(href('/'));
+  }
+}
+
+function InfoBannerAdmin() {
   const [filters, setFilters] = useState<Filters>({ is_visible: false, is_expired: false });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,7 +96,7 @@ const InfoBannerAdmin = () => {
       {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
   );
-};
+}
 
 const CreateInfoBannerAdminDialog = () => {
   return (

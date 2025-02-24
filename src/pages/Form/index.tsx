@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
 import FormView from '~/components/forms/FormView';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -19,6 +20,12 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { Route } from './+types';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
+
 const formSchema = z.object({
   answers: z.array(
     z.object({
@@ -31,7 +38,7 @@ const formSchema = z.object({
   ),
 });
 
-const FormPage = () => {
+export default function FormPage() {
   const navigate = useNavigate();
   const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
@@ -162,6 +169,4 @@ const FormPage = () => {
       </Card>
     </Page>
   );
-};
-
-export default FormPage;
+}

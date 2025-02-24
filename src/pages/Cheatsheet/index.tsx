@@ -1,3 +1,4 @@
+import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
@@ -11,6 +12,12 @@ import { getUserStudyShort } from '~/utils';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+
+import { Route } from './+types';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const Cheetsheet = () => {
   const { studyId, classId } = useParams();

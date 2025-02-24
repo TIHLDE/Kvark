@@ -1,3 +1,4 @@
+import { authClientWithRedirect } from '~/api/auth';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { useCreateBadge } from '~/hooks/Badge';
@@ -5,7 +6,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
-const BadgesGet = () => {
+import { Route } from './+types';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
+
+export default function BadgesGet() {
   const { badgeId } = useParams();
   const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
@@ -37,6 +44,4 @@ const BadgesGet = () => {
       </Button>
     </div>
   );
-};
-
-export default BadgesGet;
+}

@@ -1,11 +1,22 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import JobPostEditor from '~/pages/JobPostAdministration/components/JobPostEditor';
+import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { href, Link, redirect, useNavigate, useParams } from 'react-router';
 
+import { Route } from './+types';
 import JobPostList from './components/JobPostList';
+
+export async function clientLoader({ request }: Route.ClientActionArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.JOBPOST)) {
+    return redirect(href('/'));
+  }
+}
 
 const JobPostAdministration = () => {
   const navigate = useNavigate();

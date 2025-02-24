@@ -1,5 +1,5 @@
 import { CheckedState } from '@radix-ui/react-checkbox';
-import { authClient, userHasWritePermission } from '~/api/auth';
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -18,6 +18,17 @@ import QrScanner from 'qr-scanner';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { href, redirect, useParams } from 'react-router';
 import { toast } from 'sonner';
+
+import { Route } from './+types';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+  // TODO: Check if this actually works
+  if (userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+    // TODO: Display an unauthorized page
+    return redirect(href('/arrangementer'));
+  }
+}
 
 type QrScanProps = {
   onScan: (userId: string) => Promise<Registration>;
@@ -168,15 +179,4 @@ const EventRegistration = () => {
   );
 };
 
-export async function clientLoader() {
-  const auth = await authClient();
-  if (!auth) {
-    return redirect(href('/logg-inn'));
-  }
-  // TODO: Check if this actually works
-  if (userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
-    // TODO: Display an unauthorized page
-    return redirect(href('/arrangementer'));
-  }
-}
 export default EventRegistration;

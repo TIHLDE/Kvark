@@ -1,3 +1,4 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import NavLink from '~/components/ui/navlink';
@@ -6,17 +7,23 @@ import { useEventById } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import EventEditor from '~/pages/EventAdministration/components/EventEditor';
 import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
+import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { href, redirect, useNavigate } from 'react-router';
 
 import { Route } from './+types';
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
-export function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+    return redirect(href('/'));
+  }
   return {
     eventId: params.eventId,
   };
