@@ -19,7 +19,7 @@ import { Form, FormControl, FormField, FormItem } from 'components/ui/form';
 
 import FormMultiCheckbox from '../../components/inputs/MultiCheckbox';
 import { FormSelect } from '../../components/inputs/Select';
-import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../../components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible';
 
 type FormState = {
   search?: string;
