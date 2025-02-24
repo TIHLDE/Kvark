@@ -30,8 +30,8 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
           <div className='px-4 py-2 flex-wrap w-full items-start gap-2 flex flex-col'>
             <h1 className='truncate text-wrap text-xl md:text-2xl font-bold'>{jobPost.title}</h1>
             <div className={'flex gap-2'}>
-              <div className={'px-4 bg-primary text-white dark:text-black rounded-full'}>{getJobpostType(jobPost.job_type)}</div>
-              <div className={'px-4 bg-primary text-white dark:text-black rounded-full'}>{jobPost.company}</div>
+              <div className={'px-4 bg-primary text-white text-sm dark:text-black rounded-full'}>{getJobpostType(jobPost.job_type)}</div>
+              <div className={'px-4 bg-primary text-white text-sm dark:text-black rounded-full'}>{jobPost.company}</div>
             </div>
             <Separator className={'bg-secondary h-[3px]'} />
           </div>
