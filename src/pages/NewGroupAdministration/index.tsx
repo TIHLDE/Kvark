@@ -1,24 +1,33 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import FormInput from '~/components/inputs/Input';
+import { FormSelect } from '~/components/inputs/Select';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form } from '~/components/ui/form';
+import { useCreateGroup } from '~/hooks/Group';
+import type { GroupCreate } from '~/types';
+import { GroupType, PermissionApp } from '~/types/Enums';
 import { useForm } from 'react-hook-form';
+import { href, redirect } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { GroupCreate } from 'types';
-import { GroupType } from 'types/Enums';
-
-import { useCreateGroup } from 'hooks/Group';
-
-import FormInput from 'components/inputs/Input';
-import { FormSelect } from 'components/inputs/Select';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form } from 'components/ui/form';
+import { Route } from './+types';
 
 const schema = z.object({
   name: z.string({ message: 'Gruppenavn er påkrevd' }),
   slug: z.string({ message: 'Gruppeslug er påkrevd' }),
   type: z.nativeEnum(GroupType, { message: 'Gruppetype er påkrevd' }),
 });
+
+export async function clientLoader({ request }: Route.ClientActionArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.GROUP)) {
+    return redirect(href('/'));
+  }
+}
 
 export default function NewGroupAdministration() {
   const createGroup = useCreateGroup();

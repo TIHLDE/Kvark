@@ -1,36 +1,32 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SelectGroup } from '@radix-ui/react-select';
+import BoolExpand from '~/components/inputs/BoolExpand';
+import DateTimePicker from '~/components/inputs/DateTimePicker';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import RendererPreview from '~/components/miscellaneous/RendererPreview';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Switch } from '~/components/ui/switch';
+import { useCategories } from '~/hooks/Categories';
+import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from '~/hooks/Event';
+import { useGroupsByType } from '~/hooks/Group';
+import { useUser, useUserMemberships, useUserPermissions } from '~/hooks/User';
+import EventEditPriorityPools from '~/pages/EventAdministration/components/EventEditPriorityPools';
+import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
+import type { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from '~/types';
+import { GroupType, MembershipType } from '~/types/Enums';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
 import { Info } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from 'types';
-import { GroupType, MembershipType } from 'types/Enums';
-
-import { useCategories } from 'hooks/Categories';
-import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from 'hooks/Event';
-import { useGroupsByType } from 'hooks/Group';
-import { useUser, useUserMemberships, useUserPermissions } from 'hooks/User';
-
-import EventEditPriorityPools from 'pages/EventAdministration/components/EventEditPriorityPools';
-import EventRenderer from 'pages/EventDetails/components/EventRenderer';
-
-import BoolExpand from 'components/inputs/BoolExpand';
-import DateTimePicker from 'components/inputs/DateTimePicker';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { SingleUserSearch } from 'components/inputs/UserSearch';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Switch } from 'components/ui/switch';
 
 import CloseEvent from './CloseEvent';
 import DeleteEvent from './DeleteEvent';
@@ -122,7 +118,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       end_date: data?.end_date ? parseISO(data.end_date) : new Date(),
       end_registration_at: data?.end_registration_at ? parseISO(data.end_registration_at) : new Date(),
       organizer: data?.organizer?.slug || '',
-      image: data?.image || '',
+      image: data?.image ?? '',
       image_alt: data?.image_alt || '',
       limit: data?.limit || 0,
       location: data?.location || '',
@@ -154,7 +150,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
         end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
         organizer: newValues?.organizer?.slug || '',
-        image: newValues?.image || '',
+        image: newValues?.image ?? '',
         image_alt: newValues?.image_alt || '',
         limit: newValues?.limit || 0,
         location: newValues?.location || '',
@@ -397,13 +393,11 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <DateTimePicker form={form} label='Start' name='start_date' onDateChange={updateDates} required />
 
               <DateTimePicker form={form} label='Slutt' name='end_date' required />
             </div>
-
             <BoolExpand description='Bestem start og slutt for påmelding' form={form} name='sign_up' title='Påmelding'>
               <div className='space-y-4'>
                 <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
@@ -487,7 +481,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </Expandable>
               </div>
             </BoolExpand>
-
             <MarkdownEditor form={form} label='Innhold' name='description' required />
 
             <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
@@ -505,7 +498,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
               <FormField
                 control={form.control}
@@ -570,7 +562,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </div>
-
             <BoolExpand description='Bestem en pris hvis du ønsker et betalt arrangement' form={form} name='is_paid_event' title='Betalt arrangement'>
               <FormField
                 control={form.control}
@@ -588,7 +579,6 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 )}
               />
             </BoolExpand>
-
             <FormField
               control={form.control}
               name='emojis_allowed'
@@ -604,9 +594,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                 </FormItem>
               )}
             />
-
             <SingleUserSearch className='w-full' form={form} label='Kontaktperson' name='contact_person' />
-
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
               <DeleteEvent deleteEvent={remove} eventId={eventId} />
               <CloseEvent closeEvent={closeEvent} eventId={eventId} />

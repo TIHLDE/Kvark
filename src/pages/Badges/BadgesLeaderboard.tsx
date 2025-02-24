@@ -1,20 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { PaginateButton } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
+import type { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
+import URLS from '~/URLS';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
+import type { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
+import { Link } from 'react-router';
 import { z } from 'zod';
-
-import { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from 'types';
-
-import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from 'components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
 export type BadgesLeaderboard = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

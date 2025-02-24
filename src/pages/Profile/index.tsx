@@ -1,4 +1,24 @@
-import { cn } from 'lib/utils';
+import { authClient, createLoginRedirectUrl } from '~/api/auth';
+import { QRButton } from '~/components/miscellaneous/QRButton';
+import Page from '~/components/navigation/Page';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useHavePermission, useLogout, useUser } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import { cn } from '~/lib/utils';
+import Http404 from '~/pages/Http404';
+import ProfileAdmin from '~/pages/Profile/components/ProfileAdmin';
+import ProfileBadges from '~/pages/Profile/components/ProfileBadges';
+import ProfileEvents from '~/pages/Profile/components/ProfileEvents';
+import ProfileForms from '~/pages/Profile/components/ProfileForms';
+import ProfileGroups from '~/pages/Profile/components/ProfileGroups';
+import ProfileSettings from '~/pages/Profile/components/ProfileSettings';
+import ProfileStrikes from '~/pages/Profile/components/ProfileStrikes';
+import { PermissionApp } from '~/types/Enums';
+import { getUserAffiliation } from '~/utils';
 import {
   BadgeIcon,
   CalendarDaysIcon,
@@ -13,32 +33,18 @@ import {
   UsersIcon,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getUserAffiliation } from 'utils';
+import { redirect, useParams } from 'react-router';
 
-import { PermissionApp } from 'types/Enums';
-
-import { useHavePermission, useLogout, useUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Http404 from 'pages/Http404';
-import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
-import ProfileBadges from 'pages/Profile/components/ProfileBadges';
-import ProfileEvents from 'pages/Profile/components/ProfileEvents';
-import ProfileForms from 'pages/Profile/components/ProfileForms';
-import ProfileGroups from 'pages/Profile/components/ProfileGroups';
-import ProfileSettings from 'pages/Profile/components/ProfileSettings';
-import ProfileStrikes from 'pages/Profile/components/ProfileStrikes';
-
-import { QRButton } from 'components/miscellaneous/QRButton';
-import Page from 'components/navigation/Page';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
-
+import { Route } from './+types';
 import EditBioButton from './components/BioEditor/EditBioButton';
+
+export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
+  const auth = await authClient();
+  // If trying to access your own profile without being logged in, redirect to login page
+  if (!params.userId && !auth) {
+    return redirect(createLoginRedirectUrl(request));
+  }
+}
 
 const Profile = () => {
   const { userId } = useParams();

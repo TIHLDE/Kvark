@@ -1,13 +1,11 @@
+import Page from '~/components/navigation/Page';
+import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useIsAuthenticated } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
+import { Link } from 'react-router';
 
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';

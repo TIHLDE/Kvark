@@ -1,13 +1,22 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import NewsEditor from '~/pages/NewsAdministration/components/NewsEditor';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
+import { href, Link, redirect, useNavigate, useParams } from 'react-router';
 
-import NewsEditor from 'pages/NewsAdministration/components/NewsEditor';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-
+import { Route } from './+types';
 import NewsList from './components/NewsList';
+
+export async function clientLoader({ request }: Route.ClientActionArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.NEWS)) {
+    return redirect(href('/'));
+  }
+}
 
 const NewsAdministration = () => {
   const navigate = useNavigate();

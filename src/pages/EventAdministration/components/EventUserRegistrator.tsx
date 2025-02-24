@@ -1,17 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateEventRegistrationAdmin } from '~/hooks/Event';
+import useMediaQuery, { SMALL_SCREEN } from '~/hooks/MediaQuery';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { useCreateEventRegistrationAdmin } from 'hooks/Event';
-import useMediaQuery, { SMALL_SCREEN } from 'hooks/MediaQuery';
-
-import { SingleUserSearch } from 'components/inputs/UserSearch';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type EventMessageSenderProps = {
   eventId: number;

@@ -1,23 +1,19 @@
-import parseISO from 'date-fns/parseISO';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
+import ShareButton from '~/components/miscellaneous/ShareButton';
+import UpdatedAgo from '~/components/miscellaneous/UpdatedAgo';
+import { Button } from '~/components/ui/button';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { HavePermission, useUser } from '~/hooks/User';
+import type { News } from '~/types';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import { formatDate } from '~/utils';
+import { parseISO } from 'date-fns';
 import { PencilIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate } from 'utils';
-
-import { News } from 'types';
-import { PermissionApp } from 'types/Enums';
-
-import { HavePermission, useUser } from 'hooks/User';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
-import ShareButton from 'components/miscellaneous/ShareButton';
-import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
-import { Button } from 'components/ui/button';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
-
-import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
+import { Link } from 'react-router';
 
 export type NewsRendererProps = {
   data: News;

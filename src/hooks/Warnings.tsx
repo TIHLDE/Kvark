@@ -1,11 +1,9 @@
-import { WARNINGS_READ } from 'constant';
+import API from '~/api/api';
+import { getCookie, setCookie } from '~/api/cookie';
+import { WARNINGS_READ } from '~/constant';
+import type { RequestResponse, Warning } from '~/types';
 import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-
-import { RequestResponse, Warning } from 'types';
-
-import API from 'api/api';
-import { getCookie, setCookie } from 'api/cookie';
 
 export const WARNINGS_QUERY_KEY = 'warnings';
 

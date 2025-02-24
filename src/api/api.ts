@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {
+import { IFetch } from '~/api/fetch';
+import type {
   Badge,
   BadgeCategory,
   BadgeLeaderboard,
@@ -74,10 +75,8 @@ import {
   WikiPage,
   WikiRequired,
   WikiTree,
-} from 'types';
-import { CheatsheetStudy, MembershipType } from 'types/Enums';
-
-import { IFetch } from 'api/fetch';
+} from '~/types';
+import { CheatsheetStudy, MembershipType } from '~/types/Enums';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';

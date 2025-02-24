@@ -1,8 +1,6 @@
-import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from 'react-query';
-
-import { createFeedbackInput, Feedback, PaginationResponse, RequestResponse } from 'types';
-
-import API from 'api/api';
+import API from '~/api/api';
+import type { createFeedbackInput, Feedback, PaginationResponse, RequestResponse } from '~/types';
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 type Filters = {
   search?: string;

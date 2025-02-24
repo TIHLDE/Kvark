@@ -1,6 +1,8 @@
-import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
-
-import {
+import API from '~/api/api';
+import { EVENT_QUERY_KEYS } from '~/hooks/Event';
+import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
+import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from '~/hooks/User';
+import type {
   Form,
   FormCreate,
   FormStatistics,
@@ -11,14 +13,9 @@ import {
   Submission,
   TextFieldSubmission,
   UserSubmission,
-} from 'types';
-import { FormFieldType, FormResourceType } from 'types/Enums';
-
-import API from 'api/api';
-
-import { EVENT_QUERY_KEYS } from 'hooks/Event';
-import { GROUPS_QUERY_KEYS } from 'hooks/Group';
-import { USER_FORMS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
+} from '~/types';
+import { FormFieldType, FormResourceType } from '~/types/Enums';
+import { useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';

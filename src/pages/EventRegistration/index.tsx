@@ -1,25 +1,34 @@
 import { CheckedState } from '@radix-ui/react-checkbox';
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { PaginateButton } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useEventById, useEventRegistrations, useUpdateEventRegistration } from '~/hooks/Event';
+import { useDebounce } from '~/hooks/Utils';
+import Http404 from '~/pages/Http404';
+import type { Registration } from '~/types';
+import { PermissionApp } from '~/types/Enums';
 import { ListChecks, QrCode } from 'lucide-react';
 import QrScanner from 'qr-scanner';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { href, redirect, useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { Registration } from 'types';
+import { Route } from './+types';
 
-import { useEventById, useEventRegistrations, useUpdateEventRegistration } from 'hooks/Event';
-import { useDebounce } from 'hooks/Utils';
-
-import Http404 from 'pages/Http404';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { PaginateButton } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { Checkbox } from 'components/ui/checkbox';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+  // TODO: Check if this actually works
+  if (userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+    // TODO: Display an unauthorized page
+    return redirect(href('/arrangementer'));
+  }
+}
 
 type QrScanProps = {
   onScan: (userId: string) => Promise<Registration>;

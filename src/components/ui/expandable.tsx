@@ -1,8 +1,8 @@
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Button } from "./button";
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
-import { cn } from "lib/utils";
+import { cn } from "~/lib/utils";
 
 
 type ExpandableProps = {

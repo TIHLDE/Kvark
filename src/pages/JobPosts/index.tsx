@@ -1,21 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Switch } from '~/components/ui/switch';
+import { useJobPosts } from '~/hooks/JobPost';
+import { useAnalytics } from '~/hooks/Utils';
+import { argsToParams } from '~/utils';
 import { Fragment, useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { argsToParams } from 'utils';
+import { FieldValues, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 import { z } from 'zod';
-
-import { useJobPosts } from 'hooks/JobPost';
-import { useAnalytics } from 'hooks/Utils';
-
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Switch } from 'components/ui/switch';
 
 type FormState = {
   search?: string;
@@ -29,7 +27,7 @@ const formSchema = z.object({
   expired: z.boolean(),
 });
 
-const JobPosts = () => {
+export default function JobPosts() {
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): FormState => {
     const params = new URLSearchParams(location.search);
@@ -68,7 +66,57 @@ const JobPosts = () => {
     navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
   };
 
-  const SearchForm = () => (
+  return (
+    <Page className='space-y-8'>
+      <div>
+        <h1 className='text-3xl md:text-5xl font-bold'>Karriere</h1>
+      </div>
+      <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
+        <div>
+          {isLoading && <JobPostListItemLoading />}
+          {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
+          {error && <h1>{error.detail}</h1>}
+          {data !== undefined && (
+            <div className='space-y-4'>
+              <div className='grid lg:grid-cols-2 gap-4'>
+                {data.pages.map((page, index) => (
+                  <Fragment key={index}>
+                    {page.results.map((jobPost) => (
+                      <JobPostListItem jobPost={jobPost} key={jobPost.id} />
+                    ))}
+                  </Fragment>
+                ))}
+              </div>
+              {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+            </div>
+          )}
+        </div>
+        <div className='border rounded-md bg-card p-4'>
+          <SearchForm form={form} isFetching={isFetching} onResetFilters={resetFilters} onSubmit={onSubmit} />
+        </div>
+      </div>
+    </Page>
+  );
+}
+
+type SearchFormProps<TFormReturn extends FieldValues> = {
+  form: UseFormReturn<TFormReturn>;
+  onSubmit: SubmitHandler<TFormReturn>;
+  isFetching: boolean;
+  onResetFilters: () => void;
+};
+
+function SearchForm({
+  form,
+  onSubmit,
+  isFetching,
+  onResetFilters,
+}: SearchFormProps<{
+  expired: boolean;
+  search?: string | undefined;
+  classes?: string | undefined;
+}>) {
+  return (
     <Form {...form}>
       <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
@@ -129,45 +177,11 @@ const JobPosts = () => {
             {isFetching ? 'Søker...' : 'Søk'}
           </Button>
 
-          <Button className='w-full' onClick={resetFilters} variant='secondary'>
+          <Button className='w-full' onClick={onResetFilters} variant='secondary'>
             Tilbakestill
           </Button>
         </div>
       </form>
     </Form>
   );
-
-  return (
-    <Page className='space-y-8'>
-      <div>
-        <h1 className='text-3xl md:text-5xl font-bold'>Karriere</h1>
-      </div>
-      <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
-        <div>
-          {isLoading && <JobPostListItemLoading />}
-          {isEmpty && <NotFoundIndicator header='Fant ingen annonser' />}
-          {error && <h1>{error.detail}</h1>}
-          {data !== undefined && (
-            <div className='space-y-4'>
-              <div className='grid lg:grid-cols-2 gap-4'>
-                {data.pages.map((page, index) => (
-                  <Fragment key={index}>
-                    {page.results.map((jobPost) => (
-                      <JobPostListItem jobPost={jobPost} key={jobPost.id} />
-                    ))}
-                  </Fragment>
-                ))}
-              </div>
-              {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
-            </div>
-          )}
-        </div>
-        <div className='border rounded-md bg-card p-4'>
-          <SearchForm />
-        </div>
-      </div>
-    </Page>
-  );
-};
-
-export default JobPosts;
+}

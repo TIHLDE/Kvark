@@ -1,4 +1,4 @@
-import { useGroupStatistics } from 'hooks/Group';
+import { useGroupStatistics } from '~/hooks/Group';
 
 export type GroupStatisticsProps = {
   slug: string;

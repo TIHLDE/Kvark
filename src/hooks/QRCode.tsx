@@ -1,8 +1,6 @@
-import { useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
-
-import { CreateQRCode, QRCode, RequestResponse } from 'types';
-
-import API from 'api/api';
+import API from '~/api/api';
+import type { CreateQRCode, QRCode, RequestResponse } from '~/types';
+import { useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const QR_CODE_QUERY_KEY = 'qr-code';
 

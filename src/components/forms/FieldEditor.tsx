@@ -1,16 +1,14 @@
-import { cn } from 'lib/utils';
+import { Button } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { Textarea } from '~/components/ui/textarea';
+import { cn } from '~/lib/utils';
+import type { SelectFormField, TextFormField } from '~/types';
+import { FormFieldType } from '~/types/Enums';
 import { Circle, GripHorizontal, Square, Trash, X } from 'lucide-react';
 import { useMemo, useRef } from 'react';
-import { useDrag, useDrop, XYCoord } from 'react-dnd';
-
-import { SelectFormField, TextFormField } from 'types';
-import { FormFieldType } from 'types/Enums';
-
-import { Button } from 'components/ui/button';
-import { Checkbox } from 'components/ui/checkbox';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import { Textarea } from 'components/ui/textarea';
+import { useDrag, useDrop, type XYCoord } from 'react-dnd';
 
 export type FieldEditorProps = {
   index: number;

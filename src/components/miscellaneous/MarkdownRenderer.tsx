@@ -1,19 +1,17 @@
-import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
-import type { Components } from 'react-markdown/lib';
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
+import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
+import Expandable from '~/components/ui/expandable';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useEventById } from '~/hooks/Event';
+import { useJobPostById } from '~/hooks/JobPost';
+import { useNewsById } from '~/hooks/News';
+import type { Event, EventList, JobPost, News } from '~/types';
+import { createElement, lazy, ReactNode } from 'react';
+import React from 'react';
+import type { Components } from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-
-import { Event, EventList, JobPost, News } from 'types';
-
-import { useEventById } from 'hooks/Event';
-import { useJobPostById } from 'hooks/JobPost';
-import { useNewsById } from 'hooks/News';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
-import Expandable from 'components/ui/expandable';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -102,14 +100,13 @@ const components = {
 
 export type MarkdownRendererProps = {
   value?: string;
-  className?: string;
 };
 
-const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
-  const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
+export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
+  const skeletonWidthArray = React.useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
-    <Suspense
+    <React.Suspense
       fallback={
         <div className='space-y-2'>
           {skeletonWidthArray.map((width, index) => (
@@ -118,14 +115,11 @@ const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
         </div>
       }>
       <ReactMarkdown
-        className={className}
         components={components}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rehypePlugins={[rehypeRaw] as any}>
         {value || ''}
       </ReactMarkdown>
-    </Suspense>
+    </React.Suspense>
   );
-};
-
-export default MarkdownRenderer;
+}

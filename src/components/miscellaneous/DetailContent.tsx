@@ -1,6 +1,5 @@
+import { Skeleton } from '~/components/ui/skeleton';
 import { ReactNode } from 'react';
-
-import { Skeleton } from 'components/ui/skeleton';
 
 export type DetailContentProps = {
   title: string | ReactNode;

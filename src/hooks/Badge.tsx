@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-
-import { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from 'types';
-
-import API from 'api/api';
-
-import { USER_BADGES_QUERY_KEY } from 'hooks/User';
+import API from '~/api/api';
+import { USER_BADGES_QUERY_KEY } from '~/hooks/User';
+import type { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
+import {
+  type QueryKey,
+  useInfiniteQuery,
+  type UseInfiniteQueryOptions,
+  useMutation,
+  type UseMutationResult,
+  useQuery,
+  useQueryClient,
+  type UseQueryOptions,
+} from 'react-query';
 
 export const BADGES_QUERY_KEYS = {
   self: ['badges'] as const,

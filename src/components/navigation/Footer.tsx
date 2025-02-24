@@ -1,19 +1,16 @@
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useAnalytics } from 'hooks/Utils';
-
-import { Separator } from 'components/ui/separator';
-
-import DISCORD from 'assets/icons/discord.svg';
-import FACEBOOK from 'assets/icons/facebook.svg';
-import INSTAGRAM from 'assets/icons/instagram.svg';
-import NOTION from 'assets/icons/notion.svg';
-import SNAPCHAT from 'assets/icons/snapchat.svg';
-import TWITTER from 'assets/icons/twitter.svg';
-import VERCEL from 'assets/icons/vercel.svg';
-import MAINSPONSOR from 'assets/img/mainSponsor.svg';
-import NITO from 'assets/img/nito.png';
+import DISCORD from '~/assets/icons/discord.svg';
+import FACEBOOK from '~/assets/icons/facebook.svg';
+import INSTAGRAM from '~/assets/icons/instagram.svg';
+import NOTION from '~/assets/icons/notion.svg';
+import SNAPCHAT from '~/assets/icons/snapchat.svg';
+import TWITTER from '~/assets/icons/twitter.svg';
+import VERCEL from '~/assets/icons/vercel.svg';
+import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
+import NITO from '~/assets/img/nito.png';
+import { Separator } from '~/components/ui/separator';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
+import { href, Link } from 'react-router';
 
 const Footer = () => {
   const { event } = useAnalytics();
@@ -50,9 +47,7 @@ const Footer = () => {
             </div>
           ))}
           <h1 className='text-center'>
-            <Link className='' to={URLS.contactInfo}>
-              Kontakt oss
-            </Link>
+            <Link to={URLS.contactInfo}>Kontakt oss</Link>
           </h1>
         </div>
 
@@ -92,7 +87,7 @@ const Footer = () => {
 
       <div>
         <h1 className='text-center'>
-          Feil på siden? <Link to={URLS.feedback}>Rapporter til Index</Link>
+          Feil på siden? <Link to={href('/tilbakemelding')}>Rapporter til Index</Link>
         </h1>
       </div>
     </div>

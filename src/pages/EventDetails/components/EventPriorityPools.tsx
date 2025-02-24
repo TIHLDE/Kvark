@@ -1,13 +1,10 @@
+import { Card, CardContent } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
+import { useUser } from '~/hooks/User';
+import type { PriorityPool } from '~/types';
+import { GroupType } from '~/types/Enums';
+import { getStudyyearAsClass } from '~/utils';
 import { useCallback } from 'react';
-import { getStudyyearAsClass } from 'utils';
-
-import { PriorityPool } from 'types';
-import { GroupType } from 'types/Enums';
-
-import { useUser } from 'hooks/User';
-
-import { Card, CardContent } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
 
 export type EventPriorityPoolsProps = {
   priorityPools: Array<PriorityPool>;

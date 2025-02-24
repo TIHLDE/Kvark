@@ -1,20 +1,23 @@
+import { authClientWithRedirect } from '~/api/auth';
+import Page from '~/components/navigation/Page';
+import { Card, CardContent } from '~/components/ui/card';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { useCheatsheet } from '~/hooks/Cheatsheet';
+import { useInterval } from '~/hooks/Utils';
+import Files from '~/pages/Cheatsheet/components/Files';
+import { CheatsheetStudy } from '~/types/Enums';
+import URLS from '~/URLS';
+import { getUserStudyShort } from '~/utils';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-import { getUserStudyShort } from 'utils';
+import { useNavigate, useParams } from 'react-router';
 
-import { CheatsheetStudy } from 'types/Enums';
+import { Route } from './+types';
 
-import { useCheatsheet } from 'hooks/Cheatsheet';
-import { useInterval } from 'hooks/Utils';
-
-import Files from 'pages/Cheatsheet/components/Files';
-
-import Page from 'components/navigation/Page';
-import { Card, CardContent } from 'components/ui/card';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const Cheetsheet = () => {
   const { studyId, classId } = useParams();

@@ -1,30 +1,34 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Page from '~/components/navigation/Page';
+import { Button, buttonVariants } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { useLogin } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 
-import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useLogin } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
-import { Button, buttonVariants } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
+import { Route } from './+types';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),
   password: z.string().min(1, { message: 'Passorde er påkrevd' }),
 });
 
-const LogIn = () => {
+export function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const searchParams = new URL(request.url).searchParams;
+  return {
+    redirectUrl: searchParams.get('redirectTo'),
+  };
+}
+
+const LogIn = ({ loaderData: { redirectUrl } }: Route.ComponentProps) => {
   const navigate = useNavigate();
   const { event } = useAnalytics();
   const logIn = useLogin();
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const redirectURL = useRedirectUrl();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,8 +44,7 @@ const LogIn = () => {
       {
         onSuccess: () => {
           event('login', 'auth', `Logged in`);
-          setLogInRedirectURL(null);
-          navigate(redirectURL || URLS.landing);
+          navigate(redirectUrl || URLS.landing);
         },
         onError: (e) => {
           form.setError('username', { message: e.detail || 'Noe gikk galt' });

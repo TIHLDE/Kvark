@@ -1,9 +1,8 @@
-import { cn } from 'lib/utils';
+import { Checkbox } from '~/components/ui/checkbox';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { cn } from '~/lib/utils';
 import { useEffect } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { Checkbox } from 'components/ui/checkbox';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 
 type FormMultiCheckboxProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

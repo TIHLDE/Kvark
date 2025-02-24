@@ -1,10 +1,8 @@
+import { useEvents } from '~/hooks/Event';
+import { useJobPosts } from '~/hooks/JobPost';
+import { useNews } from '~/hooks/News';
+import Story, { StoryLoading } from '~/pages/Landing/components/Story';
 import { useMemo } from 'react';
-
-import { useEvents } from 'hooks/Event';
-import { useJobPosts } from 'hooks/JobPost';
-import { useNews } from 'hooks/News';
-
-import Story, { StoryLoading } from 'pages/Landing/components/Story';
 
 const STORIES_TO_DISPLAY = 10;
 

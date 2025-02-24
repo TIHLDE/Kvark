@@ -1,8 +1,7 @@
-import { cn } from 'lib/utils';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { cn } from '~/lib/utils';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from 'components/ui/select';
 
 type FormSelectProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

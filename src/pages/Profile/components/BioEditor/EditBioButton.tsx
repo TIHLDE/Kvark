@@ -1,11 +1,9 @@
+import { Button } from '~/components/ui/button';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import type { UserBio } from '~/types';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
-
-import { UserBio } from 'types';
-
-import { Button } from 'components/ui/button';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 import UserBioForm from './BioEditor';
 

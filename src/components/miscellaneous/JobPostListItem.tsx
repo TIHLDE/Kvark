@@ -1,19 +1,20 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { JobPost } from '~/types';
+import { formatDate, getJobpostType, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getJobpostType, urlEncode } from 'utils';
 
-import { JobPost } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import NavLink from '../ui/navlink';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
 };
 
 const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
-  <Link className='border rounded-md bg-card space-y-4 text-black dark:text-white' to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
+  <NavLink
+    className='border rounded-md bg-card space-y-4 text-black dark:text-white'
+    params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
+    to='/karriere/:id/:urlTitle?'>
     <AspectRatioImg alt={jobPost.image_alt || jobPost.title} className='rounded-t-sm' src={jobPost.image} />
 
     <div>
@@ -43,7 +44,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
         <h1 className='text-sm'>{jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false })}</h1>
       </div>
     </div>
-  </Link>
+  </NavLink>
 );
 
 export default JobPostListItem;

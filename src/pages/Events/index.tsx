@@ -1,15 +1,13 @@
+import Page from '~/components/navigation/Page';
+import { Skeleton } from '~/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import EventsDefaultView from '~/pages/Events/components/EventsDefaultView';
 import { Calendar, List, PartyPopper } from 'lucide-react';
 import { lazy, Suspense } from 'react';
 
-import EventsDefaultView from 'pages/Events/components/EventsDefaultView';
-
-import Page from 'components/navigation/Page';
-import { Skeleton } from 'components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
-
 import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 
-const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ 'pages/Landing/components/EventsCalendarView'));
+const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ '~/pages/Landing/components/EventsCalendarView'));
 
 const Events = () => {
   return (

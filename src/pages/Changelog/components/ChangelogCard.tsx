@@ -1,9 +1,8 @@
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
 import { Code } from 'lucide-react';
 import { useQuery } from 'react-query';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
 
 const LATEST_VERSION_INDEX = 3;
 const MARKDOWN_HEADER_DELIMITER = /(?=\n##\s *)/g;
@@ -34,8 +33,8 @@ const ChangelogCard = ({ title, changelogURL, className }: ChangelogCardProps) =
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <MarkdownRenderer className='mb-4' value={data[LATEST_VERSION_INDEX]} />
-        <Expandable icon={<Code className='h-4 w-4 stroke-[1.5px]' />} title='Tidligere endringer'>
+        <MarkdownRenderer value={data[LATEST_VERSION_INDEX]} />
+        <Expandable className='mt-4' icon={<Code className='h-4 w-4 stroke-[1.5px]' />} title='Tidligere endringer'>
           {data.slice(LATEST_VERSION_INDEX + 1).map((field, i) => (
             <Expandable icon={<Code className='h-4 w-4 stroke-[1.5px]' />} key={i} title={getReleaseTitle(field)}>
               <MarkdownRenderer value={getReleaseBody(field)} />

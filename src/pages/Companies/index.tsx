@@ -1,15 +1,12 @@
+import InfoCard from '~/components/layout/InfoCard';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import CompaniesForm from '~/pages/Companies/components/CompaniesForm';
+import { UserStudy } from '~/types/Enums';
+import URLS from '~/URLS';
+import { getUserStudyLong } from '~/utils';
 import { Mail } from 'lucide-react';
 import { useRef } from 'react';
-import URLS from 'URLS';
-import { getUserStudyLong } from 'utils';
-
-import { UserStudy } from 'types/Enums';
-
-import CompaniesForm from 'pages/Companies/components/CompaniesForm';
-
-import InfoCard from 'components/layout/InfoCard';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
 
 const Companies = () => {
   const formRef = useRef<HTMLDivElement>(null);

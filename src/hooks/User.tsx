@@ -1,9 +1,6 @@
-import { ACCESS_TOKEN } from 'constant';
-import type { ReactNode } from 'react';
-import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
-
+import API from '~/api/api';
+import { getCookie, removeCookie, setCookie } from '~/api/cookie';
+import { ACCESS_TOKEN } from '~/constant';
 import type {
   Badge,
   EventList,
@@ -20,11 +17,12 @@ import type {
   UserNotificationSetting,
   UserNotificationSettingChoice,
   UserPermissions,
-} from 'types';
-import type { PermissionApp } from 'types/Enums';
-
-import API from 'api/api';
-import { getCookie, removeCookie, setCookie } from 'api/cookie';
+} from '~/types';
+import type { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import type { ReactNode } from 'react';
+import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from 'react-query';
+import { useNavigate } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';

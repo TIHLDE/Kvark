@@ -1,16 +1,13 @@
+import { Skeleton } from '~/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useEvents } from '~/hooks/Event';
+import EventsListView from '~/pages/Landing/components/EventsListView';
 import { Calendar, List, PartyPopper } from 'lucide-react';
 import { lazy, Suspense, useCallback, useState } from 'react';
 
-import { useEvents } from 'hooks/Event';
-
-import EventsListView from 'pages/Landing/components/EventsListView';
-
-import { Skeleton } from 'components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
-
 import ActivityEventsListView from './ActivityEventsListView';
 
-const EventsCalendarView = lazy(() => import('pages/Landing/components/EventsCalendarView'));
+const EventsCalendarView = lazy(() => import('~/pages/Landing/components/EventsCalendarView'));
 
 type Filters = {
   activity: boolean;

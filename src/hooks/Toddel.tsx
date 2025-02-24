@@ -1,8 +1,6 @@
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQueryClient } from 'react-query';
-
-import { PaginationResponse, RequestResponse, Toddel, ToddelMutate } from 'types';
-
-import { TODDEL_API } from 'api/toddel';
+import { TODDEL_API } from '~/api/toddel';
+import type { PaginationResponse, RequestResponse, Toddel, ToddelMutate } from '~/types';
+import { type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 export const TODDEL_QUERY_KEYS = {
   all: ['toddel'],

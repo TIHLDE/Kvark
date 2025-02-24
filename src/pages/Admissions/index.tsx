@@ -1,11 +1,15 @@
-import { GroupList } from 'types';
+import { authClientWithRedirect } from '~/api/auth';
+import Page from '~/components/navigation/Page';
+import { useGroupsByType } from '~/hooks/Group';
+import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
+import type { GroupList } from '~/types';
 
-import { useGroupsByType } from 'hooks/Group';
-import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
-
-import Page from 'components/navigation/Page';
-
+import { Route } from './+types';
 import GroupAdmission, { GroupAdmissionLoading } from './components/GroupAdmission';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const Admissions = () => {
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, isLoading } = useGroupsByType({ overview: true });

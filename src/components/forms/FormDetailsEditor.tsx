@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { FormDetailSwitch } from '~/components/inputs/Switch';
+import FormTextarea from '~/components/inputs/Textarea';
+import { Button } from '~/components/ui/button';
+import { Form as FormWrapper } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateForm, useDeleteForm, useUpdateForm } from '~/hooks/Form';
+import type { EventForm, Form, FormCreate, GroupForm, TemplateForm } from '~/types';
+import { FormResourceType } from '~/types/Enums';
+import { removeIdsFromFields } from '~/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { removeIdsFromFields } from 'utils';
 import { z } from 'zod';
-
-import { EventForm, Form, FormCreate, GroupForm, TemplateForm } from 'types';
-import { FormResourceType } from 'types/Enums';
-
-import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
-
-import FormInput from 'components/inputs/Input';
-import { FormDetailSwitch } from 'components/inputs/Switch';
-import FormTextarea from 'components/inputs/Textarea';
-import { Button } from 'components/ui/button';
-import { Form as FormWrapper } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type FormDetailsEditorProps = {
   form: Form;

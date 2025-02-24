@@ -1,6 +1,5 @@
+import { useLogout } from '~/hooks/User';
 import { LogOut } from 'lucide-react';
-
-import { useLogout } from 'hooks/User';
 
 import { ShortCutMenuProps } from '.';
 

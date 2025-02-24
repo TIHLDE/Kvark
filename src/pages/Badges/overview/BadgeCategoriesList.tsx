@@ -1,11 +1,8 @@
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from '~/components/ui/button';
+import { useBadgeCategories } from '~/hooks/Badge';
+import BadgeCategoryItem from '~/pages/Badges/components/BadgeCategoryItem';
 import { useMemo } from 'react';
-
-import { useBadgeCategories } from 'hooks/Badge';
-
-import BadgeCategoryItem from 'pages/Badges/components/BadgeCategoryItem';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { PaginateButton } from 'components/ui/button';
 
 export const BadgeCategoriesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgeCategories();

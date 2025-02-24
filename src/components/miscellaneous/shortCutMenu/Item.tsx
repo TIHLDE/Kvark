@@ -1,6 +1,6 @@
 import { Link as LinkIcon, SquareArrowOutUpRight } from 'lucide-react';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 type MenuItemProps = {
   title: string;

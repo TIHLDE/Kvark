@@ -1,19 +1,15 @@
-import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
+import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from '~/api/api';
+import { getCookie } from '~/api/cookie';
+import MultiSelect, { MultiSelectOption } from '~/components/inputs/MultiSelect';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
+import { Button } from '~/components/ui/button';
+import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
+import { useFormById, useFormSubmissions } from '~/hooks/Form';
+import type { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from '~/types';
+import { FormFieldType, FormResourceType } from '~/types/Enums';
+import { urlEncode } from '~/utils';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { urlEncode } from 'utils';
-
-import { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
-import { FormFieldType, FormResourceType } from 'types/Enums';
-
-import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
-import { getCookie } from 'api/cookie';
-
-import { useFormById, useFormSubmissions } from 'hooks/Form';
-
-import MultiSelect, { MultiSelectOption } from 'components/inputs/MultiSelect';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
-import { Button } from 'components/ui/button';
 
 export type FormAnswersProps = {
   formId: string | null;
