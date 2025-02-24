@@ -141,7 +141,7 @@ const JobPosts = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='search' />
+                          <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
                         </FormControl>
                       </FormItem>
                     )}
