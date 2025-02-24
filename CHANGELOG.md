@@ -15,6 +15,10 @@
 
 ## Versjon 2025.02.24
 
+- ✨ **Kjøp og Salg** La til en knapp til TIHLDEs kjøp og salg facebook-gruppe for betalte arrangementer.
+
+- ✨ **Profilbilder** Brukere kan nå oppdatere profilbildet sitt på nettsiden.
+
 - 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 - 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.
