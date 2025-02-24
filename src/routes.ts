@@ -68,6 +68,7 @@ export default [
 
     // Redirects to new wiki: https://wiki.tihlde.org/
     route('wiki/*', './pages/Wiki/index.tsx'),
+    route('wiki-old/*', './pages/Wiki/index.old.tsx'),
 
     ...prefix('nyheter', [
       index('./pages/News/index.tsx'),
