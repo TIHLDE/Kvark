@@ -12,6 +12,9 @@
 
 ## Neste versjon
 
+
+## Versjon 2025.02.24
+
 - 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 - 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.
@@ -34,7 +37,6 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
-
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
