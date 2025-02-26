@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- 🦟 **Kalender** Tidligre arrangementer forsvinner ikke fra kalenderen
 
 ## Versjon 2025.24.02
 

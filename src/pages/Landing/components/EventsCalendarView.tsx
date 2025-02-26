@@ -48,7 +48,7 @@ export type EventsCalendarViewProps = {
 const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   const { event } = useAnalytics();
   const [filters, setFilters] = useState<Filters>({ start_range: startOfMonth(new Date()).toISOString(), end_range: endOfMonth(new Date()).toISOString() });
-  const { data, fetchNextPage } = useEvents({ category, filters });
+  const { data, fetchNextPage } = useEvents({ category, ...filters });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   useEffect(() => {
