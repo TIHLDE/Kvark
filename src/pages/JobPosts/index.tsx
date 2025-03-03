@@ -1,12 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronDownIcon, ChevronUpIcon, FilterX, Loader, LoaderCircle, Search } from "lucide-react";
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import { ChevronDownIcon, ChevronUpIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { argsToParams, getJobpostType } from 'utils';
+import { argsToParams } from 'utils';
 import { z } from 'zod';
-
-import { JobPostType } from 'types/Enums';
 
 import { useJobPosts } from 'hooks/JobPost';
 import { useAnalytics } from 'hooks/Utils';
@@ -17,22 +15,23 @@ import Page from 'components/navigation/Page';
 import { Button, PaginateButton } from 'components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
 import { Input } from 'components/ui/input';
+import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group';
 
 import FormMultiCheckbox from '../../components/inputs/MultiCheckbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible';
 
 type FormState = {
   search?: string;
-  classes?: string | 'all';
+  classes?: string[] | undefined;
   expired: boolean;
   job_type?: string;
 };
 
 const formSchema = z.object({
   search: z.string().optional(),
-  classes: z.string().array().optional(),
+  classes: z.array(z.string()).optional(),
   expired: z.boolean(),
-  job_type: z.string().array().optional(),
+  job_type: z.string().optional(),
 });
 
 const JobPosts = () => {
@@ -42,7 +41,8 @@ const JobPosts = () => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
-    const classes = params.get('classes') || undefined;
+    const classesParam = params.get('classes');
+    const classes = classesParam ? classesParam.split(',') : undefined;
     const job_type = params.get('job_type') || undefined;
     return { classes, expired, search, job_type };
   }, []);
@@ -60,13 +60,11 @@ const JobPosts = () => {
 
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
-  //const classes = formBackEndFilter.watch('classes');
-
   const resetFilters = () => {
     form.setValue('search', '');
     form.setValue('expired', false);
-    form.setValue('classes', ['']);
-    form.setValue('job_type', ['']);
+    form.setValue('classes', []);
+    form.setValue('job_type', '');
 
     setFilters({ expired: false });
 
@@ -75,14 +73,20 @@ const JobPosts = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     event('search', 'jobposts', JSON.stringify(values));
-    const filters = {
+    const urlFilters = {
       search: values.search,
       expired: values.expired,
-      classes: values.classes !== 'all' ? values.classes : undefined,
-      job_type: values.job_type,
+      classes: values.classes && values.classes.length > 0 ? values.classes.join(',') : undefined,
+      job_type: values.job_type || undefined,
     };
-    setFilters(filters);
-    navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
+    const stateFilters: FormState = {
+      search: values.search,
+      expired: values.expired,
+      classes: values.classes,
+      job_type: values.job_type || undefined,
+    };
+    setFilters(stateFilters);
+    navigate(`${location.pathname}${argsToParams(urlFilters)}`, { replace: true });
   };
 
   const grade = useMemo(
@@ -96,12 +100,12 @@ const JobPosts = () => {
     [],
   );
 
-  const jobType = useMemo(() => {
+  /*const jobType = useMemo(() => {
     return Object.keys(JobPostType).map((key) => ({
       label: getJobpostType(key as JobPostType),
       value: key as JobPostType,
     }));
-  }, [JobPostType]);
+  }, [JobPostType]);*/
 
   const [isOpen, setIsOpen] = useState<boolean>(window.innerWidth > 1000);
 
@@ -113,12 +117,12 @@ const JobPosts = () => {
             <div className='flex items-center space-x-4'>
               <span className='font-medium truncate max-w-md'>Filter</span>
             </div>
-            <div className={'cursor-not-allowed rounded-md p-2 h-10 w-10'} onClick={resetFilters}>
+            <div className={'cursor-pointer hover:bg-secondary rounded-md p-2 h-10 w-10'} onClick={resetFilters}>
               <FilterX size={25} />
             </div>
           </div>
-          <CollapsibleTrigger className='flex items-center justify-between py-2'>
-            <div className='flex items-center space-x-4 pr-3'>{isOpen ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}</div>
+          <CollapsibleTrigger className='w-10 flex items-center justify-center py-2'>
+            <div className='flex items-center space-x-4'>{isOpen ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}</div>
           </CollapsibleTrigger>
         </div>
         <CollapsibleContent>
@@ -147,7 +151,44 @@ const JobPosts = () => {
 
                   <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
 
-                  <FormMultiCheckbox form={form} items={jobType} label={'Jobbtype'} name='job_type' />
+                  <FormField
+                    control={form.control}
+                    name='job_type'
+                    render={({ field }) => (
+                      <FormItem className='space-y-3'>
+                        <FormLabel>Jobbtype</FormLabel>
+                        <FormControl>
+                          <RadioGroup className='flex flex-col space-y-1' defaultValue={field.value} onValueChange={field.onChange}>
+                            <FormItem className='flex items-center space-x-3 space-y-0'>
+                              <FormControl>
+                                <RadioGroupItem value='SUMMER_JOB' />
+                              </FormControl>
+                              <FormLabel className='font-normal'>Sommerjobb</FormLabel>
+                            </FormItem>
+                            <FormItem className='flex items-center space-x-3 space-y-0'>
+                              <FormControl>
+                                <RadioGroupItem value='PART_TIME' />
+                              </FormControl>
+                              <FormLabel className='font-normal'>Deltid</FormLabel>
+                            </FormItem>
+                            <FormItem className='flex items-center space-x-3 space-y-0'>
+                              <FormControl>
+                                <RadioGroupItem value='FULL_TIME' />
+                              </FormControl>
+                              <FormLabel className='font-normal'>Fulltid</FormLabel>
+                            </FormItem>
+                            <FormItem className='flex items-center space-x-3 space-y-0'>
+                              <FormControl>
+                                <RadioGroupItem value='OTHER' />
+                              </FormControl>
+                              <FormLabel className='font-normal'>Annet</FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </div>
             </form>
