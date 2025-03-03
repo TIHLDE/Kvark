@@ -165,7 +165,7 @@ export default function Feedback() {
 
   const handleThumbsDown = (item: Feedback) => {
     createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
-    item.downvotes = item.downvotes ? item.downvotes - 1 : 1;
+    item.downvotes = item.downvotes ? item.downvotes + 1 : 1;
   };
 
   return (
