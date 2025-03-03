@@ -36,7 +36,6 @@ export default [
       ]),
     ]),
 
-    // TODO: Badges endpoints has not been tested
     ...prefix('badges', [
       layout('./pages/Badges/index.tsx', [
         index('./pages/Badges/overview/BadgesOverallLeaderboard.tsx'),
@@ -47,8 +46,7 @@ export default [
       route('kategorier/:categoryId', './pages/Badges/category/index.tsx', [
         index('./pages/Badges/category/BadgesCategoryLeaderboard.tsx'),
         //
-        // TODO: React Router cant have the same file twice. Make a new file for this
-        // route('badges', './pages/Badges/overview/BadgesList.tsx'),
+        route('badges', './pages/Badges/category/CategoryBadgesList.tsx'),
       ]),
       route(':badgeId', './pages/Badges/details/index.tsx'),
     ]),
@@ -77,7 +75,7 @@ export default [
     ]),
 
     route('profil/:userId?', './pages/Profile/index.tsx'),
-    route('kokebok/:studyId?/:recipeId?', './pages/Cheatsheet/index.tsx'),
+    route('kokebok/:studyId?/:classId?', './pages/Cheatsheet/index.tsx'),
     route('linker', './pages/ShortLinks/index.tsx'),
     route('qr-koder', './pages/QRCodes/index.tsx'),
     route('opptak', './pages/Admissions/index.tsx'),

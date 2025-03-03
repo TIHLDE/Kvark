@@ -23,8 +23,7 @@ import { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);
-  // TODO: Check if this actually works
-  if (userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+  if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
     // TODO: Display an unauthorized page
     return redirect(href('/arrangementer'));
   }

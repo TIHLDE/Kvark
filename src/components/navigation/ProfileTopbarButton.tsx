@@ -1,26 +1,28 @@
 import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
 import TopbarNotifications from '~/components/navigation/TopbarNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { useRedirectUrl } from '~/hooks/Misc';
+import { useOptionalAuth } from '~/hooks/auth';
 import { useTheme } from '~/hooks/Theme';
-import { useIsAuthenticated, useUser } from '~/hooks/User';
-import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
+// import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
 import { useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
-import { href, Link } from 'react-router';
+import { createPath, createSearchParams, href, Link } from 'react-router';
+
+import NavLink from '../ui/navlink';
 
 const TUTORIAL_STORAGE_KEY = 'has-seen-bug-report-tutorial';
 
 const ProfileTopbarButton = () => {
-  const { event } = useAnalytics();
-  const { data: user } = useUser();
-  const isAuthenticated = useIsAuthenticated();
-  const [, setLogInRedirectURL] = useRedirectUrl();
+  const auth = useOptionalAuth();
+
+  const isAuthenticated = Boolean(auth);
   const theme = useTheme();
   const [showBugReportTutorial, setShowBugReportTutorial] = useState<boolean>(localStorage.getItem(TUTORIAL_STORAGE_KEY) !== 'true');
-  const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
+
+  // TODO: Add analytics back
+  // const { event } = useAnalytics();
+  // const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     if (data.action === ACTIONS.CLOSE) {
@@ -75,7 +77,7 @@ const ProfileTopbarButton = () => {
         />
       )}
 
-      {Boolean(user) && (
+      {Boolean(auth) && (
         <>
           <TopbarNotifications />
           <Link className='bug-button' to={href('/tilbakemelding')}>
@@ -84,22 +86,24 @@ const ProfileTopbarButton = () => {
         </>
       )}
       <ThemeSettings />
-      {user ? (
-        <Link onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
+      {auth?.user ? (
+        <NavLink to='/profil/:userId?'>
           <Avatar>
-            <AvatarImage alt={user.first_name} src={user.image} />
+            <AvatarImage alt={auth.user.firstName} src={auth.user.image} />
             <AvatarFallback>
-              {user.first_name[0]}
-              {user.last_name[0]}
+              {auth.user.firstName}
+              {auth.user.lastName}
             </AvatarFallback>
           </Avatar>
-        </Link>
+        </NavLink>
       ) : (
         <Link
-          onClick={() => {
-            setLogInRedirectURL(window.location.pathname);
-          }}
-          to={URLS.login}>
+          to={createPath({
+            pathname: href('/logg-inn'),
+            search: createSearchParams({
+              redirectTo: location.pathname,
+            }).toString(),
+          })}>
           <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
         </Link>
       )}

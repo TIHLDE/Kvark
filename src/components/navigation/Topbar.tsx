@@ -23,15 +23,16 @@ const TopBarItem = (props: NavigationItem) => {
 
     return (
       <NavigationMenuItem>
-        <Link to={props.to}>
-          <NavigationMenuLink
+        <NavigationMenuLink asChild>
+          <Link
             className={cn(
               'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
               selected && 'dark:text-white text-muted-foreground font-bold',
-            )}>
+            )}
+            to={props.to}>
             {props.text}
-          </NavigationMenuLink>
-        </Link>
+          </Link>
+        </NavigationMenuLink>
       </NavigationMenuItem>
     );
   }

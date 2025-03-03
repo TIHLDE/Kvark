@@ -1,6 +1,6 @@
 import InfoBanner from '~/components/miscellaneous/InfoBanner/InfoBanner';
 import { Button } from '~/components/ui/button';
-import { useAnalytics } from '~/hooks/Utils';
+import { analyticsEvent } from '~/hooks/Utils';
 import EventsView from '~/pages/Landing/components/EventsView';
 import NewsListView from '~/pages/Landing/components/NewsListView';
 import NewStudentBox from '~/pages/Landing/components/NewStudentBox';
@@ -11,9 +11,8 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 
 export default function Landing() {
-  const { event } = useAnalytics();
-  const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
-  const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
+  const openEventsAnalytics = () => analyticsEvent('go-to-all-events', 'events-list-view', `Go to all events`);
+  const openNewsAnalytics = () => analyticsEvent('go-to-all-news', 'news-list-view', `Go to all news`);
   return (
     <div>
       <Wave />
