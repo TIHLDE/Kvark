@@ -134,8 +134,8 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
             Neste
           </Button>
           <Button onClick={downloadCSV} variant='outline'>
-          Last ned som CSV
-        </Button>
+            Last ned som CSV
+          </Button>
         </div>
       </div>
     </div>

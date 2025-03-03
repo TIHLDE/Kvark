@@ -160,12 +160,12 @@ export default function Feedback() {
 
   const handleThumbsUp = (item: Feedback) => {
     createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' });
-    setThumbsUp(thumbsUpCount + 1);
+    item.upvotes = item.upvotes ? item.upvotes + 1 : 1;
   };
 
   const handleThumbsDown = (item: Feedback) => {
     createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
-    setThumbsDown(thumbsDownCount + 1);
+    item.downvotes = item.downvotes ? item.downvotes - 1 : 1;
   };
 
   return (
