@@ -29,7 +29,7 @@ const formSchema = z.object({
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);
 
-  if (userHasWritePermission(auth.permissions, PermissionApp.BANNERS)) {
+  if (!userHasWritePermission(auth.permissions, PermissionApp.BANNERS)) {
     return redirect(href('/'));
   }
 }
