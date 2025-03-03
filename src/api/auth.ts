@@ -54,7 +54,7 @@ export async function authClient() {
           firstName: z.string(),
           lastName: z.string(),
           email: z.string(),
-          image: z.string(),
+          image: z.string().nullish(),
           groups: z.array(
             z.object({
               id: z.string(),
