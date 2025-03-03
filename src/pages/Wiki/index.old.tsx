@@ -13,6 +13,7 @@ import WikiNavigator from '~/pages/Wiki/components/WikiNavigator';
 import Index from '~/pages/Wiki/specials/Index';
 import { Slash } from 'lucide-react';
 import { useMemo } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router';
 
 import WikiSearch from './components/WikiSearch';
@@ -39,8 +40,8 @@ const Wiki = () => {
       <Breadcrumb>
         <BreadcrumbList>
           {levels.slice(0, levels.length - 1).map((level, index) => (
-            <>
-              <BreadcrumbItem key={index}>
+            <React.Fragment key={index}>
+              <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link to={`/${levels.slice(0, index + 1).join('/')}`}>{level.replace(/-/gi, ' ')}</Link>
                 </BreadcrumbLink>
@@ -48,7 +49,7 @@ const Wiki = () => {
               <BreadcrumbSeparator>
                 <Slash />
               </BreadcrumbSeparator>
-            </>
+            </React.Fragment>
           ))}
           <BreadcrumbItem>{data?.title.toLowerCase()}</BreadcrumbItem>
         </BreadcrumbList>

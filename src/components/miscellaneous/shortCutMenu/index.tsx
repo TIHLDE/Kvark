@@ -35,13 +35,13 @@ const ShortCutMenu = () => {
       return;
     }
 
+    const abortController = new AbortController();
+
     // Attach the event listener to the document
-    document.addEventListener('keydown', (event: KeyboardEvent) => generateHotKeys(event, setOpen, isOpen));
+    document.addEventListener('keydown', (event: KeyboardEvent) => generateHotKeys(event, setOpen, isOpen), { signal: abortController.signal });
 
     // Cleanup the event listener on component unmount
-    return () => {
-      document.removeEventListener('keydown', (event: KeyboardEvent) => generateHotKeys(event, setOpen, isOpen));
-    };
+    return () => abortController.abort();
   }, [isOpen, isAuthenticated]);
 
   if (!isAuthenticated) {

@@ -8,7 +8,7 @@ import { cn } from '~/lib/utils';
 import AddGroupFormDialog from '~/pages/Groups/forms/AddGroupFormDialog';
 import type { GroupForm } from '~/types';
 import URLS from '~/URLS';
-import { ArrowRight, CircleHelp, Eye, Infinity, Info, LockOpen, Settings, Users } from 'lucide-react';
+import { ArrowRight, CircleHelp, Eye, Infinity as InfinityIcon, Info, LockOpen, Settings, Users } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router';
 
 const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
@@ -18,7 +18,7 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
     <div className='flex items-center space-x-2'>
       <LockOpen className={cn('w-4 h-4 stroke-[1.5px]', form.is_open_for_submissions ? 'text-emerald-500' : 'text-red-500')} />
       <Users className={cn('w-4 h-4 stroke-[1.5px]', form.only_for_group_members ? 'text-red-500' : 'text-emerald-500')} />
-      <Infinity className={cn('w-4 h-4 stroke-[1.5px]', form.can_submit_multiple ? 'text-emerald-500' : 'text-red-500')} />
+      <InfinityIcon className={cn('w-4 h-4 stroke-[1.5px]', form.can_submit_multiple ? 'text-emerald-500' : 'text-red-500')} />
     </div>
   );
 

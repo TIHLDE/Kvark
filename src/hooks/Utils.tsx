@@ -99,7 +99,7 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
         return JSON.parse(getCookie(COOKIE_KEY) as string) as unknown as T;
       }
       return defaultValue;
-    } catch (e) {
+    } catch {
       return defaultValue;
     }
   });
@@ -118,11 +118,13 @@ export const useAnalytics = () => {
    * @param action - The type of interaction, eg 'play'
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
-  const event = useCallback((action: string, category: string, label: string) => {
-    va.track(category, { action, label });
-  }, []);
+  const event = useCallback(analyticsEvent, []);
 
   return useMemo(() => {
     return { event };
   }, [event]);
 };
+
+export function analyticsEvent(action: string, category: string, label: string) {
+  va.track(category, { action, label });
+}
