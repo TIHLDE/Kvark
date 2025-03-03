@@ -36,7 +36,6 @@ export default [
       ]),
     ]),
 
-    // TODO: Badges endpoints has not been tested
     ...prefix('badges', [
       layout('./pages/Badges/index.tsx', [
         index('./pages/Badges/overview/BadgesOverallLeaderboard.tsx'),
@@ -47,8 +46,7 @@ export default [
       route('kategorier/:categoryId', './pages/Badges/category/index.tsx', [
         index('./pages/Badges/category/BadgesCategoryLeaderboard.tsx'),
         //
-        // TODO: React Router cant have the same file twice. Make a new file for this
-        // route('badges', './pages/Badges/overview/BadgesList.tsx'),
+        route('badges', './pages/Badges/category/CategoryBadgesList.tsx'),
       ]),
       route(':badgeId', './pages/Badges/details/index.tsx'),
     ]),

@@ -10,10 +10,8 @@ import { useNavigate } from 'react-router';
 const TreeView = () => {
   const { data } = useWikiTree();
   const navigate = useNavigate();
-
   const createNodes = (node: WikiTree, parentPath: string): TreeDataItem => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
-
     return {
       id,
       title: node.title,
@@ -30,14 +28,13 @@ const TreeView = () => {
   if (!data) {
     return null;
   }
-
   return (
     <Tree
       className='h-[300px]'
       data={[createNodes(data, '')]}
       folderIcon={Folder}
       itemIcon={Workflow}
-      onSelectChange={(item) => navigate(cleansePath(item?.id || ''))}
+      onSelectChange={(item) => navigate('/wiki-old/' + cleansePath(item?.id || ''))}
     />
   );
 };
