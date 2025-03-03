@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowDown, ChevronDown, ChevronDownIcon, ChevronUpIcon, FilterX } from 'lucide-react';
+import { ChevronDownIcon, ChevronUpIcon, FilterX, Loader, LoaderCircle, Search } from "lucide-react";
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -14,47 +14,59 @@ import { useAnalytics } from 'hooks/Utils';
 import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
 import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
 import Page from 'components/navigation/Page';
-import { PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem } from 'components/ui/form';
+import { Button, PaginateButton } from 'components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
+import { Input } from 'components/ui/input';
 
 import FormMultiCheckbox from '../../components/inputs/MultiCheckbox';
-import { FormSelect } from '../../components/inputs/Select';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible';
 
 type FormState = {
   search?: string;
   classes?: string | 'all';
   expired: boolean;
+  job_type?: string;
 };
 
 const formSchema = z.object({
   search: z.string().optional(),
-  classes: z.string().optional(),
+  classes: z.string().array().optional(),
   expired: z.boolean(),
+  job_type: z.string().array().optional(),
 });
 
 const JobPosts = () => {
   const { event } = useAnalytics();
+
   const getInitialFilters = useCallback((): FormState => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
     const classes = params.get('classes') || undefined;
-    return { classes, expired, search };
+    const job_type = params.get('job_type') || undefined;
+    return { classes, expired, search, job_type };
   }, []);
-  const navigate = useNavigate();
+
   const [filters, setFilters] = useState<FormState>(getInitialFilters());
+
+  const navigate = useNavigate();
+
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: getInitialFilters(),
   });
+
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
+
+  //const classes = formBackEndFilter.watch('classes');
 
   const resetFilters = () => {
     form.setValue('search', '');
     form.setValue('expired', false);
-    form.setValue('classes', '');
+    form.setValue('classes', ['']);
+    form.setValue('job_type', ['']);
 
     setFilters({ expired: false });
 
@@ -67,6 +79,7 @@ const JobPosts = () => {
       search: values.search,
       expired: values.expired,
       classes: values.classes !== 'all' ? values.classes : undefined,
+      job_type: values.job_type,
     };
     setFilters(filters);
     navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
@@ -90,90 +103,51 @@ const JobPosts = () => {
     }));
   }, [JobPostType]);
 
-  const locations = [
-    { label: 'Oslo', value: 'Oslo' },
-    { label: 'Bergen', value: 'Bergen' },
-    { label: 'Trondheim', value: 'Trondheim' },
-    { label: 'Tromsø', value: 'Tromsø' },
-    { label: 'Annet', value: 'Annet' },
-  ];
-
-  const filterType = [
-    { label: 'Frist', value: 'Frist' },
-    { label: 'Bedrift', value: 'Bedrift' },
-    { label: 'Publisert', value: 'Publisert' },
-  ];
-
   const [isOpen, setIsOpen] = useState<boolean>(window.innerWidth > 1000);
 
   const SearchForm = () => (
     <>
       <Collapsible onOpenChange={setIsOpen} open={isOpen}>
-        <CollapsibleTrigger className='w-full flex items-center justify-between py-2'>
-          <div className='flex items-center space-x-4'>
-            <span className='font-medium truncate max-w-md'>Filter</span>
+        <div className={'flex flex-row justify-between'}>
+          <div className={'flex flex-row gap-2'}>
+            <div className='flex items-center space-x-4'>
+              <span className='font-medium truncate max-w-md'>Filter</span>
+            </div>
+            <div className={'cursor-not-allowed rounded-md p-2 h-10 w-10'} onClick={resetFilters}>
+              <FilterX size={25} />
+            </div>
           </div>
-          <div className='flex items-center space-x-4 pr-3'>{isOpen ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}</div>
-        </CollapsibleTrigger>
+          <CollapsibleTrigger className='flex items-center justify-between py-2'>
+            <div className='flex items-center space-x-4 pr-3'>{isOpen ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}</div>
+          </CollapsibleTrigger>
+        </div>
         <CollapsibleContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className={'flex flex-row gap-2 justify-between'}>
                 <div className={'space-y-4 py-2'}>
-                  {/*
-            <FormField
-              control={form.control}
-              name='classes'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <RadioButtons form={form} items={filterType} label={'Filtrer etter'} name={'search'} />
-                    <FormSelect form={form} label={'Filtrer etter'} name={'search'} options={filterType} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-    */}
-
                   <FormField
                     control={form.control}
-                    name='classes'
+                    name='search'
                     render={({ field }) => (
                       <FormItem>
+                        <FormLabel>Søk</FormLabel>
                         <FormControl>
-                          <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
+                          <div className={'flex flex-row gap-3'}>
+                            <Input className={'flex-2'} {...field} placeholder='Skriv her...' />
+                            <Button className='p-3 h-10 w-10' type='submit'>
+                              {isFetching ? <LoaderCircle className={'animate-spin'} /> : <Search size={25} />}
+                            </Button>
+                          </div>
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name='classes'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <FormMultiCheckbox form={form} items={jobType} label={'Jobbtype'} name='search' />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                  <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
 
-                  <FormField
-                    control={form.control}
-                    name='classes'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <FormMultiCheckbox form={form} items={locations} label={'Sted'} name='search' />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className={'cursor-pointer hover:bg-secondary rounded-md p-2 h-10 w-10'} onClick={resetFilters}>
-                  <FilterX size={25} />
+                  <FormMultiCheckbox form={form} items={jobType} label={'Jobbtype'} name='job_type' />
                 </div>
               </div>
             </form>
