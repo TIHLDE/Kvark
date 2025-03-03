@@ -1,11 +1,11 @@
 import { ACCESS_TOKEN } from '~/constant';
-import { Permissions } from '~/types';
+import { Permissions, User } from '~/types';
 import { MembershipType, PermissionApp } from '~/types/Enums';
-import { href, redirect } from 'react-router';
+import { createPath, createSearchParams, href, redirect } from 'react-router';
 import { z } from 'zod';
 
 import API from './api';
-import { cachified } from './cache';
+import { cache, cachified } from './cache';
 import { getCookie } from './cookie';
 
 /**
@@ -40,7 +40,7 @@ export async function authClient() {
         })),
         //TODO: Check if more fields are needed
       };
-      return { user: authUser, permissions: permission.permissions };
+      return { user: authUser, permissions: permission.permissions, tihldeUser: user };
     },
     checkValue: z.object({
       user: z.object({
@@ -66,10 +66,22 @@ export async function authClient() {
           destroy: z.boolean().optional(),
         }),
       ),
+      tihldeUser: z.custom<User>(),
     }),
   });
 
   return authObject;
+}
+
+/**
+ * Invalidates the auth used by authClient for the specified token
+ * @param token The token to invalidate
+ */
+export function invalidateAuth(token: string) {
+  const cached = cache.get(`auth:${token}`);
+  if (cached) {
+    cached.metadata.ttl = 0;
+  }
 }
 
 /**
@@ -102,7 +114,8 @@ export function userHasWritePermission(permissions: Record<string, Permissions>,
 export async function authClientWithRedirect(request: Request) {
   const auth = await authClient();
   if (!auth) {
-    throw redirect(createLoginRedirectUrl(request));
+    const path = createLoginRedirectUrl(request);
+    throw redirect(path);
   }
   return auth;
 }
@@ -113,7 +126,10 @@ export async function authClientWithRedirect(request: Request) {
  * @returns URL string to redirect to the login page
  */
 export function createLoginRedirectUrl(request: Request) {
-  const searchParams = new URLSearchParams();
-  searchParams.set('redirectTo', new URL(request.url).pathname);
-  return href('/logg-inn') + '?' + searchParams.toString();
+  return createPath({
+    pathname: href('/logg-inn'),
+    search: createSearchParams({
+      redirectTo: new URL(request.url).pathname,
+    }).toString(),
+  }).toString();
 }

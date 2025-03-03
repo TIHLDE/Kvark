@@ -3,8 +3,9 @@ import { Analytics } from '@vercel/analytics/react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
 import './assets/css/index.css';
-import type { Route } from './+types/root';
+import type { Info, Route } from './+types/root';
 import API from './api/api';
+import { authClient } from './api/auth';
 import { SHOW_NEW_STUDENT_INFO } from './constant';
 
 const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
@@ -51,6 +52,16 @@ export const meta: Route.MetaFunction = () => [
   { property: 'twitter:image', content: metaData.image },
 ];
 
+export type RootLoaderData = Info['loaderData'];
+
+export async function clientLoader() {
+  const auth = await authClient();
+
+  return {
+    auth,
+  };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
@@ -84,6 +95,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return <Outlet />;
+}
+
+// TODO: Add skeleton rendering for hydration fallback
+export function HydrateFallback() {
+  return null;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
