@@ -11,16 +11,21 @@ import URLS from '~/URLS';
 import { getUserStudyShort } from '~/utils';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { Route } from './+types';
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
+
+  return {
+    studyId: params.studyId,
+    classId: params.classId,
+  };
 }
 
-const Cheetsheet = () => {
-  const { studyId, classId } = useParams();
+export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
+  const { studyId, classId } = loaderData;
   const navigate = useNavigate();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
@@ -174,6 +179,4 @@ const Cheetsheet = () => {
       </Card>
     </Page>
   );
-};
-
-export default Cheetsheet;
+}

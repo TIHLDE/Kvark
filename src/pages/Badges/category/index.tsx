@@ -1,17 +1,20 @@
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useBadgeCategory } from '~/hooks/Badge';
-import URLS from '~/URLS';
 import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
-import { Suspense } from 'react';
-import { Link, Outlet, useParams } from 'react-router';
+import { href, Link, Outlet } from 'react-router';
 
-const BadgeCategory = () => {
-  const { categoryId } = useParams<'categoryId'>();
-  const { data } = useBadgeCategory(categoryId || '_');
-  const leaderboardTab = { to: URLS.badges.category_leaderboard(categoryId || '_'), label: 'Ledertavle', icon: BarChart2 };
-  const badgesTab = { to: URLS.badges.category_badges(categoryId || '_'), label: 'Offentlige badges', icon: Trophy };
-  const tabs = [leaderboardTab, badgesTab];
+import { Route } from './+types';
+
+export function clientLoader({ params }: Route.ClientLoaderArgs) {
+  return {
+    categoryId: params.categoryId,
+  };
+}
+
+export default function BadgeCategory({ loaderData }: Route.ComponentProps) {
+  const { categoryId } = loaderData;
+  const { data } = useBadgeCategory(categoryId);
 
   const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
     <Link
@@ -33,17 +36,12 @@ const BadgeCategory = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center space-x-4'>
-            {tabs.map((tab, index) => (
-              <TabLink key={index} {...tab} Icon={tab.icon} />
-            ))}
+            <TabLink Icon={BarChart2} label='Ledertavle' to={href('/badges/kategorier/:categoryId', { categoryId })} />
+            <TabLink Icon={Trophy} label='Offentlige badges' to={href('/badges/kategorier/:categoryId/badges', { categoryId })} />
           </div>
-          <Suspense fallback={null}>
-            <Outlet />
-          </Suspense>
+          <Outlet />
         </CardContent>
       </Card>
     </Page>
   );
-};
-
-export default BadgeCategory;
+}

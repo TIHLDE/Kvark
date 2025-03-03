@@ -169,7 +169,7 @@ const Profile = () => {
           <Card>
             <CardContent className='p-0 grid grid-cols-2 md:grid-cols-1'>
               {tabs.map((tab) => (
-                <NavListItem {...tab} key={tab.label} />
+                <NavListItem key={tab.label} {...tab} />
               ))}
             </CardContent>
           </Card>

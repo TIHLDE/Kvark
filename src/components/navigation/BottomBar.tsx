@@ -4,6 +4,7 @@ import { NavigationItem } from '~/components/navigation/Navigation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
 import { useIsAuthenticated } from '~/hooks/User';
+import { cn } from '~/lib/utils';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
 import { useState } from 'react';
 import { href, Link } from 'react-router';
@@ -18,9 +19,10 @@ type Item = {
 
 export type BottomBarProps = {
   items: Array<NavigationItem>;
+  className?: string;
 };
 
-const BottomBar = ({ items }: BottomBarProps) => {
+const BottomBar = ({ items, className }: BottomBarProps) => {
   const isAuthenticated = useIsAuthenticated();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
@@ -48,7 +50,11 @@ const BottomBar = ({ items }: BottomBarProps) => {
   ];
 
   return (
-    <div className='fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <div
+      className={cn(
+        'fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        className,
+      )}>
       <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
           <Link className='text-center' key={index} to={action.to}>

@@ -21,7 +21,7 @@ const ShortCutLink = ({ title, path, setOpen, external, hotKey }: MenuItemProps)
       <div className='flex items-center'>
         {!external ? <LinkIcon className='mr-2 w-4 h-4 stroke-[1.5px]' /> : <SquareArrowOutUpRight className='mr-2 w-4 h-4 stroke-[1.5px]' />} {title}
       </div>
-      {hotKey && hotKey}
+      {hotKey}
     </Link>
   );
 };

@@ -22,7 +22,7 @@ import type { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import type { ReactNode } from 'react';
 import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from 'react-query';
-import { useNavigate } from 'react-router';
+import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -144,11 +144,14 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
 export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
 
 export const useLogout = () => {
+  const { revalidate } = useRevalidator();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
+    // Submit to the root action to refetch the loader
+    revalidate();
     navigate(URLS.landing);
   };
 };

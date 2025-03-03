@@ -6,8 +6,17 @@ import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
-export const BadgesList = () => {
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges();
+import { Route } from './+types';
+
+export function clientLoader({ params }: Route.ClientLoaderArgs) {
+  return {
+    categoryId: params.categoryId,
+  };
+}
+
+export default function CategoryBadgesList({ loaderData }: Route.ComponentProps) {
+  const { categoryId } = loaderData;
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges({ badge_category: categoryId });
   const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
@@ -33,6 +42,4 @@ export const BadgesList = () => {
       {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
   );
-};
-
-export default BadgesList;
+}

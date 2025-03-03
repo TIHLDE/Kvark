@@ -15,7 +15,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
     return {
       event: await API.getEvent(eventId),
     };
-  } catch (e) {
+  } catch {
     throw redirect('/arrangementer/');
   }
 }
