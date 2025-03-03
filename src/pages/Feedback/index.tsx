@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
+import type { Feedback } from 'types/Feedback';
+
+import { useCreateReaction } from 'hooks/EmojiReaction';
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks, useFeedbackVotes } from 'hooks/Feedback';
 import { useUser, useUserMemberships } from 'hooks/User';
 
@@ -84,6 +87,8 @@ export default function Feedback() {
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
 
+  const { mutate: createReaction } = useCreateReaction();
+
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
     defaultValues: {
@@ -153,11 +158,13 @@ export default function Feedback() {
     });
   };
 
-  const handleThumbsUp = () => {
+  const handleThumbsUp = (item: Feedback) => {
+    createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' });
     setThumbsUp(thumbsUpCount + 1);
   };
 
-  const handleThumbsDown = () => {
+  const handleThumbsDown = (item: Feedback) => {
+    createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
     setThumbsDown(thumbsDownCount + 1);
   };
 
@@ -313,13 +320,13 @@ export default function Feedback() {
                   <div className='flex flex-row items-center space-x-8'>
                     <div className='flex space-x-4'>
                       <div className='flex items-center space-x-2'>
-                        <button className='flex items-center space-x-2' type='button'>
+                        <button className='flex items-center space-x-2' onClick={() => handleThumbsUp(item)} type='button'>
                           👍
                         </button>
                         <span>{item.upvotes}</span>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <button className='flex items-center space-x-2' type='button'>
+                        <button className='flex items-center space-x-2' onClick={() => handleThumbsDown(item)} type='button'>
                           👎
                         </button>
                         <span>{item.downvotes}</span>
