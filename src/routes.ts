@@ -91,6 +91,7 @@ export default [
       route('nyheter/:newsId?', './pages/NewsAdministration/index.tsx'),
       route('brukere', './pages/UserAdmin/index.tsx'),
       route('prikker', './pages/StrikeAdmin/index.tsx'),
+      route('betalings-oversikt', './pages/EventPaymentOrders/index.tsx'),
     ]),
 
     route('logg-inn', './pages/LogIn/index.tsx'),

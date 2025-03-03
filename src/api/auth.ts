@@ -94,6 +94,27 @@ export function userHasWritePermission(permissions: Record<string, Permissions>,
 }
 
 /**
+ * Checks if the user has write_all permission for the given app(s)
+ * @param permissions the user permissions
+ * @param app the app(s) to check agains
+ * @param some if true, the user must only have write permission for one of the apps
+ * @returns if the user has write_all permission
+ */
+export function userHasWriteAllPermission(permissions: Record<string, Permissions>, app: PermissionApp | PermissionApp[], some: boolean = false): boolean {
+  if (!Array.isArray(app)) {
+    const perm = permissions[app];
+    if (!perm) {
+      return false;
+    }
+    return Boolean(perm.write_all);
+  }
+  if (some) {
+    return app.some((p) => userHasWriteAllPermission(permissions, p));
+  }
+  return app.every((p) => userHasWriteAllPermission(permissions, p));
+}
+
+/**
  * Attempts to authenticate the user and redirects to the login page if not authenticated
  * @param request the request object from the loader
  * @returns auth object if authenticated
