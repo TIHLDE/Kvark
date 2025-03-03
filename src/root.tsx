@@ -1,6 +1,7 @@
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { useEffect } from 'react';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
 
 import './assets/css/index.css';
 import type { Info, Route } from './+types/root';
@@ -55,11 +56,31 @@ export const meta: Route.MetaFunction = () => [
 export type RootLoaderData = Info['loaderData'];
 
 export async function clientLoader() {
-  const auth = await authClient();
+  try {
+    const auth = await authClient();
+    return {
+      fetched: true,
+      auth,
+    };
+  } catch {
+    return {
+      fetched: true,
+      auth: undefined,
+    };
+  }
+}
 
-  return {
-    auth,
-  };
+export default function App() {
+  const loaderData = useLoaderData<RootLoaderData>();
+  const revalidator = useRevalidator();
+  // TODO: This is ugly fix this once react-router fixes their loaderData bug
+  useEffect(() => {
+    if (!loaderData?.fetched) {
+      revalidator.revalidate();
+    }
+  }, [loaderData, revalidator]);
+
+  return <Outlet />;
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -91,10 +112,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   );
-}
-
-export default function App() {
-  return <Outlet />;
 }
 
 // TODO: Add skeleton rendering for hydration fallback

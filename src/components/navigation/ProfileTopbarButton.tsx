@@ -89,7 +89,7 @@ const ProfileTopbarButton = () => {
       {auth?.user ? (
         <NavLink to='/profil/:userId?'>
           <Avatar>
-            <AvatarImage alt={auth.user.firstName} src={auth.user.image} />
+            <AvatarImage alt={auth.user.firstName} src={auth.user.image ?? ''} />
             <AvatarFallback>
               {auth.user.firstName}
               {auth.user.lastName}
