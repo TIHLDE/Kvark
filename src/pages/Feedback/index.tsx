@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from 'hooks/Feedback';
+import { useCreateFeedback, useDeleteFeedback, useFeedbacks, useFeedbackVotes } from 'hooks/Feedback';
 import { useUser, useUserMemberships } from 'hooks/User';
 
 import { Button, PaginateButton } from 'components/ui/button';
@@ -78,7 +78,7 @@ export default function Feedback() {
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
 
-  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbacks(filters);
+  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbackVotes(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
 
   const createFeedback = useCreateFeedback();
@@ -316,13 +316,13 @@ export default function Feedback() {
                         <button className='flex items-center space-x-2' type='button'>
                           👍
                         </button>
-                        <span>0</span>
+                        <span>{item.upvotes}</span>
                       </div>
                       <div className='flex items-center space-x-2'>
                         <button className='flex items-center space-x-2' type='button'>
                           👎
                         </button>
-                        <span>0</span>
+                        <span>{item.downvotes}</span>
                       </div>
                     </div>
                     {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
