@@ -129,7 +129,7 @@ const JobPosts = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className={'flex flex-row gap-2 justify-between'}>
-                <div className={'space-y-4 py-2'}>
+                <div className={'space-y-4 py-2 pl-1'}>
                   <FormField
                     control={form.control}
                     name='search'
@@ -139,7 +139,7 @@ const JobPosts = () => {
                         <FormControl>
                           <div className={'flex flex-row gap-3'}>
                             <Input className={'flex-2'} {...field} placeholder='Skriv her...' />
-                            <Button className='p-3 h-10 w-10' type='submit'>
+                            <Button className='p-3 h-9 w-9 ' type='submit'>
                               {isFetching ? <LoaderCircle className={'animate-spin'} /> : <Search size={25} />}
                             </Button>
                           </div>
@@ -149,7 +149,15 @@ const JobPosts = () => {
                     )}
                   />
 
-                  <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
+                  <FormMultiCheckbox
+                    form={form}
+                    items={grade}
+                    label={'Klassetrinn'}
+                    name='classes'
+                    onChange={(newClasses) => {
+                      onSubmit({ ...form.getValues(), classes: newClasses });
+                    }}
+                  />
 
                   <FormField
                     control={form.control}

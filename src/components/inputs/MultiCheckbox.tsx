@@ -18,6 +18,7 @@ type FormMultiCheckboxProps<TFormValues extends FieldValues> = {
   multiple?: boolean;
   disabled?: boolean;
   defaultValue?: string;
+  onChange?: (newValue: string[]) => void;
 };
 
 const FormMultiCheckbox = <TFormValues extends FieldValues>({
@@ -31,6 +32,7 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
   defaultValue,
   disabled = false,
   multiple = true,
+  onChange,
 }: FormMultiCheckboxProps<TFormValues>) => {
   useEffect(() => {
     const value = form.getValues(name);
@@ -82,6 +84,11 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
                             } else {
                               newValue[0] = itemValue;
                             }
+                          }
+
+                          form.setValue(name, newValue);
+                          if (onChange) {
+                            onChange(newValue);
                           }
 
                           return field.onChange(newValue);
