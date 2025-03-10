@@ -149,7 +149,12 @@ const JobPosts = () => {
                     )}
                   />
 
-                  <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
+                  <FormMultiCheckbox
+                    form={form}
+                    items={grade}
+                    label={'Klassetrinn'}
+                    name='classes'
+                  />
 
                   <FormField
                     control={form.control}
@@ -158,7 +163,15 @@ const JobPosts = () => {
                       <FormItem className='space-y-3'>
                         <FormLabel>Jobbtype</FormLabel>
                         <FormControl>
-                          <RadioGroup className='flex flex-col space-y-1' defaultValue={field.value} onValueChange={field.onChange}>
+                          <RadioGroup
+                            className='flex flex-col space-y-1'
+                            defaultValue={field.value}
+                            onValueChange={(value) => {
+                              form.setValue('job_type', value);
+                              const updatedFilters = { ...filters, job_type: value };
+                              setFilters(updatedFilters);
+                              navigate(`${location.pathname}${argsToParams(updatedFilters)}`, { replace: true });
+                            }}>
                             <FormItem className='flex items-center space-x-3 space-y-0'>
                               <FormControl>
                                 <RadioGroupItem value='SUMMER_JOB' />
