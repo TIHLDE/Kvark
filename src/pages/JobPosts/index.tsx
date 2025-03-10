@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronDownIcon, ChevronUpIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
@@ -149,12 +149,7 @@ const JobPosts = () => {
                     )}
                   />
 
-                  <FormMultiCheckbox
-                    form={form}
-                    items={grade}
-                    label={'Klassetrinn'}
-                    name='classes'
-                  />
+                  <FormMultiCheckbox form={form} items={grade} label={'Klassetrinn'} name='classes' />
 
                   <FormField
                     control={form.control}
