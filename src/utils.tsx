@@ -1,9 +1,8 @@
+import type { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from '~/types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from '~/types/Enums';
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import slugify from 'slugify';
-
-import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -230,7 +229,7 @@ export const formatDate = (
 ) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
   const formatDateString = `${fullDayOfWeek ? 'EEEE' : 'E'} do ${fullMonth ? 'MMMM' : 'MMM'}${isDifferentYear ? ' yyyy' : ''}`;
-  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nbLocale });
+  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nb });
   return capitalizeFirstLetter ? `${formatted.charAt(0).toUpperCase()}${formatted.slice(1)}` : formatted;
 };
 
@@ -328,6 +327,7 @@ export const argsToParams = (data: Record<string, any>) => {
     if (Array.isArray(data[key])) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const value in data[key] as any) {
+        // @ts-expect-error the value key is any. i dont feel like fixing this
         args += `&${key}=${data[key][value]}`;
       }
     } else if (!(data[key] === undefined || (typeof data[key] === 'string' && data[key].trim().length === 0))) {
@@ -386,3 +386,13 @@ export const parseLawParagraphNumber = (input: string): number => {
     return parseFloat(`${integerPart}.${decimalPart}`);
   }
 };
+
+/**
+ * Generates a Universally Unique Identifier (UUID)
+ * @returns A random UUIDv4
+ */
+export function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    .split('')
+    .reduce((c, i) => c + (i === 'x' ? Math.floor(Math.random() * 0xf).toString(16) : i === 'y' ? Math.floor(Math.random() * 4 + 8).toString(16) : i), '');
+}

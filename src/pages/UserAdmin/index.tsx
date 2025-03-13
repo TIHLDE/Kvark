@@ -1,10 +1,21 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { PermissionApp } from '~/types/Enums';
 import { ListChecks, ListPlus } from 'lucide-react';
+import { href, redirect } from 'react-router';
 
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
-
+import { Route } from './+types';
 import UserFilter from './components/UserFilter';
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.USER)) {
+    return redirect(href('/'));
+  }
+}
 
 const UserAdmin = () => {
   const membersTab = { value: 'members', label: 'Medlemmer', icon: ListChecks };

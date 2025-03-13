@@ -1,17 +1,14 @@
-import { cn } from 'lib/utils';
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useGroupForms } from '~/hooks/Group';
+import { cn } from '~/lib/utils';
+import type { GroupForm, GroupList } from '~/types';
+import URLS from '~/URLS';
 import { ArrowRight, LoaderCircle, Lock } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { GroupForm, GroupList } from 'types';
-
-import { useGroupForms } from 'hooks/Group';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 type GroupAdmissionProps = {
   group: GroupList;

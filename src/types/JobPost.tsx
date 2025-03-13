@@ -1,4 +1,4 @@
-import { JobPostType } from 'types/Enums';
+import { JobPostType } from '~/types/Enums';
 
 export type JobPostRequired = Partial<JobPost> & Pick<JobPost, 'body' | 'company' | 'ingress' | 'location' | 'title'>;
 

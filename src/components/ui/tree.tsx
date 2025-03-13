@@ -1,5 +1,5 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { cn } from "lib/utils";
+import { cn } from "~/lib/utils";
 import { ChevronRight, LucideIcon } from "lucide-react";
 import { forwardRef, useCallback, useMemo, useState } from "react";
 import { ScrollArea } from "./scroll-area";

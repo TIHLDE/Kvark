@@ -1,9 +1,8 @@
-import { cn } from 'lib/utils';
+import { Button } from '~/components/ui/button';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { cn } from '~/lib/utils';
 import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
-
-import { Button } from 'components/ui/button';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type QRButtonProps = {
   children: React.ReactNode;

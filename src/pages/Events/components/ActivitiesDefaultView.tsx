@@ -1,24 +1,22 @@
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Separator } from '~/components/ui/separator';
+import { Switch } from '~/components/ui/switch';
+import { useEvents } from '~/hooks/Event';
+import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
+import { useIsAuthenticated } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import { argsToParams } from '~/utils';
 import { Search } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { argsToParams } from 'utils';
+import { useNavigate } from 'react-router';
 import { z } from 'zod';
-
-import { useEvents } from 'hooks/Event';
-import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Separator } from 'components/ui/separator';
-import { Switch } from 'components/ui/switch';
 
 type Filters = {
   activity: boolean;

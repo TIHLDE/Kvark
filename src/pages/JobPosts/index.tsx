@@ -1,24 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormMultiCheckbox from '~/components/inputs/MultiCheckbox';
+import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
+import { useJobPosts } from '~/hooks/JobPost';
+import { useAnalytics } from '~/hooks/Utils';
+import { argsToParams } from '~/utils';
 import { ChevronDownIcon, ChevronUpIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { argsToParams } from 'utils';
+import { useNavigate } from 'react-router';
 import { z } from 'zod';
-
-import { useJobPosts } from 'hooks/JobPost';
-import { useAnalytics } from 'hooks/Utils';
-
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { RadioGroup, RadioGroupItem } from 'components/ui/radio-group';
-
-import FormMultiCheckbox from '../../components/inputs/MultiCheckbox';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../components/ui/collapsible';
 
 type FormState = {
   search?: string;
@@ -34,7 +31,7 @@ const formSchema = z.object({
   job_type: z.string().optional(),
 });
 
-const JobPosts = () => {
+export default function JobPosts() {
   const { event } = useAnalytics();
 
   const getInitialFilters = useCallback((): FormState => {
@@ -245,6 +242,4 @@ const JobPosts = () => {
       </div>
     </Page>
   );
-};
-
-export default JobPosts;
+}

@@ -1,10 +1,8 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { Toddel } from '~/types';
+import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
-import { formatDate } from 'utils';
-
-import { Toddel } from 'types';
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
 
 import EditToddelDialog from './EditToddelDialog';
 

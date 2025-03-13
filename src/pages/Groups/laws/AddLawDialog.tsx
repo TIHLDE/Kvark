@@ -1,21 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import FormTextarea from '~/components/inputs/Textarea';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateGroupLaw } from '~/hooks/Group';
+import type { Group } from '~/types';
+import { parseLawParagraphNumber } from '~/utils';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { parseLawParagraphNumber } from 'utils';
 import { z } from 'zod';
-
-import { Group } from 'types';
-
-import { useCreateGroupLaw } from 'hooks/Group';
-
-import FormInput from 'components/inputs/Input';
-import FormTextarea from 'components/inputs/Textarea';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type AddLawDialogProps = {
   groupSlug: Group['slug'];

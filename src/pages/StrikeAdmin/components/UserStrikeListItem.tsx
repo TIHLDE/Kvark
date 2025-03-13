@@ -1,12 +1,9 @@
-import { getUserAffiliation } from 'utils';
-
-import { UserList } from 'types';
-
-import { useUserStrikes } from 'hooks/User';
-
-import StrikeListItem from 'components/miscellaneous/StrikeListItem';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import Expandable from 'components/ui/expandable';
+import StrikeListItem from '~/components/miscellaneous/StrikeListItem';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import Expandable from '~/components/ui/expandable';
+import { useUserStrikes } from '~/hooks/User';
+import type { UserList } from '~/types';
+import { getUserAffiliation } from '~/utils';
 
 export type StrikeListProps = {
   user: UserList;

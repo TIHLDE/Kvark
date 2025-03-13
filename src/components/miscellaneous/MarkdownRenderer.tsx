@@ -1,18 +1,17 @@
-import { createElement, lazy, ReactNode, Suspense, useMemo } from 'react';
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
+import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
+import Expandable from '~/components/ui/expandable';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useEventById } from '~/hooks/Event';
+import { useJobPostById } from '~/hooks/JobPost';
+import { useNewsById } from '~/hooks/News';
+import type { Event, EventList, JobPost, News } from '~/types';
+import { createElement, lazy, ReactNode } from 'react';
+import React from 'react';
+import type { Components } from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-
-import { Event, EventList, JobPost, News } from 'types';
-
-import { useEventById } from 'hooks/Event';
-import { useJobPostById } from 'hooks/JobPost';
-import { useNewsById } from 'hooks/News';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
-import JobPostListItem, { JobPostListItemLoading } from 'components/miscellaneous/JobPostListItem';
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
-import Expandable from 'components/ui/expandable';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -47,8 +46,6 @@ export type CodeBlockProps = {
 
 export const CodeBlock = ({ inline = false, className: language, children }: CodeBlockProps) => {
   const value = typeof children === 'string' ? children : String(children);
-  console.log('CHILDREN: ', value);
-  console.log('LANGUAGE: ', language);
   if (inline) {
     return <code className='bg-card p-1 rounded-md'>{value}</code>;
   } else if (language === LanguageTypes.EXPANDLIST) {
@@ -80,7 +77,7 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
   return <pre className='bg-card rounded-md p-2 overflow-x-auto'>{value}</pre>;
 };
 
-const components: any = {
+const components = {
   blockquote: ({ children }: { children: ReactNode[] }) => <blockquote className='p-2 pl-4 ml-4 my-2 border-l-4 border-l-primary'>{children}</blockquote>,
   code: CodeBlock,
   pre: ({ children }: { children: ReactNode[] }) => children,
@@ -99,18 +96,17 @@ const components: any = {
   ),
   hr: () => <Separator className='my-2' />,
   img: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} className='object-contain max-w-full h-auto rounded-md' loading='lazy' src={src} />,
-};
+} as unknown as Components;
 
 export type MarkdownRendererProps = {
   value?: string;
-  className?: string;
 };
 
-const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
-  const skeletonWidthArray = useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
+export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
+  const skeletonWidthArray = React.useMemo(() => Array.from({ length: (value?.length || 100) / 90 + 1 }).map(() => 50 + 40 * Math.random()), [value]);
 
   return (
-    <Suspense
+    <React.Suspense
       fallback={
         <div className='space-y-2'>
           {skeletonWidthArray.map((width, index) => (
@@ -119,14 +115,11 @@ const MarkdownRenderer = ({ value, className }: MarkdownRendererProps) => {
         </div>
       }>
       <ReactMarkdown
-        className={className}
         components={components}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rehypePlugins={[rehypeRaw] as any}>
         {value || ''}
       </ReactMarkdown>
-    </Suspense>
+    </React.Suspense>
   );
-};
-
-export default MarkdownRenderer;
+}

@@ -1,16 +1,19 @@
-import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
-import { cn } from 'lib/utils';
-import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'sonner';
-import URLS from 'URLS';
-import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from 'utils';
-
-import { Event, Registration } from 'types';
-
-import { useConfetti } from 'hooks/Confetti';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import FormUserAnswers from '~/components/forms/FormUserAnswers';
+import DetailContent from '~/components/miscellaneous/DetailContent';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import QRButton from '~/components/miscellaneous/QRButton';
+import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
+import ShareButton from '~/components/miscellaneous/ShareButton';
+import UpdatedAgo from '~/components/miscellaneous/UpdatedAgo';
+import { Alert, AlertDescription } from '~/components/ui/alert';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
+import Expandable from '~/components/ui/expandable';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useConfetti } from '~/hooks/Confetti';
 import {
   useCreateEventRegistration,
   useDeleteEventRegistration,
@@ -18,33 +21,25 @@ import {
   useEventRegistration,
   useEventSetIsFavorite,
   useUpdateEventRegistration,
-} from 'hooks/Event';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useSetRedirectUrl } from 'hooks/Misc';
-import { useUser } from 'hooks/User';
-import { useAnalytics, useInterval } from 'hooks/Utils';
-
-import CountdownTimer from 'pages/EventDetails/components/CountdownTimer';
-import EventPriorityPools from 'pages/EventDetails/components/EventPriorityPools';
-import EventPublicRegistrationsList from 'pages/EventDetails/components/EventPublicRegistrationsList';
-import { EventsSubscription } from 'pages/Profile/components/ProfileEvents';
-
-import FormUserAnswers from 'components/forms/FormUserAnswers';
-import DetailContent from 'components/miscellaneous/DetailContent';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import QRButton from 'components/miscellaneous/QRButton';
-import { ReactionHandler } from 'components/miscellaneous/reactions/ReactionHandler';
-import ShareButton from 'components/miscellaneous/ShareButton';
-import UpdatedAgo from 'components/miscellaneous/UpdatedAgo';
-import { Alert, AlertDescription } from 'components/ui/alert';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { Checkbox } from 'components/ui/checkbox';
-import Expandable from 'components/ui/expandable';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import { Skeleton } from 'components/ui/skeleton';
-
-import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
+} from '~/hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useRedirectUrl } from '~/hooks/Misc';
+import { useUser } from '~/hooks/User';
+import { useAnalytics, useInterval } from '~/hooks/Utils';
+import { cn } from '~/lib/utils';
+import CountdownTimer from '~/pages/EventDetails/components/CountdownTimer';
+import EventPriorityPools from '~/pages/EventDetails/components/EventPriorityPools';
+import EventPublicRegistrationsList from '~/pages/EventDetails/components/EventPublicRegistrationsList';
+import { EventsSubscription } from '~/pages/Profile/components/ProfileEvents';
+import type { Event, Registration } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from '~/utils';
+import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
+import { nb } from 'date-fns/locale';
+import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { toast } from 'sonner';
 
 export type EventRendererProps = {
   data: Event;
@@ -56,7 +51,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const [, setLogInRedirectURL] = useRedirectUrl();
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -233,12 +228,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
 
   const ApplyInfo = () => {
     const [notOpenText, setNotOpenText] = useState<string | null>(
-      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }) : null,
+      isFuture(userStartRegistrationDate) ? formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nb }) : null,
     );
 
     useInterval(() => {
       if (isFuture(userStartRegistrationDate)) {
-        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nbLocale }));
+        setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nb }));
       } else {
         !notOpenText || setNotOpenText(null);
       }
@@ -389,6 +384,12 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                     <DetailContent info={formatDate(endRegistrationDate)} title='Stenger:' />
                   )}
                 </>
+              )}
+
+              {data.is_paid_event && (registration?.has_paid_order || data.list_count >= data.limit) && (
+                <Link to='https://www.facebook.com/groups/598608738731749/'>
+                  <Button className='my-4 w-full'>{registration?.has_paid_order ? 'Selg billetten din her' : 'Sjekk om noen selger billett her'}</Button>
+                </Link>
               )}
             </CardContent>
           </Card>

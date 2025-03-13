@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
-
-import { Gallery, GalleryCreate, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from 'types';
-
-import API from 'api/api';
+import API from '~/api/api';
+import type { Gallery, GalleryCreate, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from '~/types';
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const GALLERY_QUERY_KEYS = {
   all: ['gallery'] as const,

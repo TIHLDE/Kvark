@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import {
   addDays,
@@ -25,12 +27,10 @@ import {
   subYears,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
 import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { Button } from 'components/ui/button';
-
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
+import { ScrollArea } from '../../../components/ui/scroll-area';
 import EventsCalendarPopover from './EventsCalendarPopover';
 
 export const monthEventVariants = cva('size-2 rounded-full', {
@@ -325,7 +325,9 @@ const CalendarMonthView = () => {
           );
 
           return (
-            <div className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')} key={_date.toString()}>
+            <ScrollArea
+              className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')}
+              key={_date.toString()}>
               <span className={cn('size-6 grid place-items-center rounded-full mb-1 sticky top-0', isToday(_date) && 'bg-primary text-primary-foreground')}>
                 {format(_date, 'd')}
               </span>
@@ -333,7 +335,7 @@ const CalendarMonthView = () => {
               {currentEvents.map((event) => (
                 <DayTile event={event} key={event.id} />
               ))}
-            </div>
+            </ScrollArea>
           );
         })}
       </div>
@@ -527,8 +529,6 @@ const getDaysInMonth = (date: Date) => {
     calendar.push(new Date(currentDate));
     currentDate = addDays(currentDate, 1);
   }
-
-  console.log(calendar);
 
   return calendar;
 };

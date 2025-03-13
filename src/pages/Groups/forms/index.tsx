@@ -1,19 +1,15 @@
-import { cn } from 'lib/utils';
-import { ArrowRight, CircleHelp, Eye, Infinity, Info, LockOpen, Settings, Users } from 'lucide-react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { GroupForm } from 'types';
-
-import { useGroup, useGroupForms } from 'hooks/Group';
-
-import AddGroupFormDialog from 'pages/Groups/forms/AddGroupFormDialog';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import ShareButton from 'components/miscellaneous/ShareButton';
-import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import ShareButton from '~/components/miscellaneous/ShareButton';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { useGroup, useGroupForms } from '~/hooks/Group';
+import { cn } from '~/lib/utils';
+import AddGroupFormDialog from '~/pages/Groups/forms/AddGroupFormDialog';
+import type { GroupForm } from '~/types';
+import URLS from '~/URLS';
+import { ArrowRight, CircleHelp, Eye, Infinity as InfinityIcon, Info, LockOpen, Settings, Users } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router';
 
 const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
   const navigate = useNavigate();
@@ -22,7 +18,7 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
     <div className='flex items-center space-x-2'>
       <LockOpen className={cn('w-4 h-4 stroke-[1.5px]', form.is_open_for_submissions ? 'text-emerald-500' : 'text-red-500')} />
       <Users className={cn('w-4 h-4 stroke-[1.5px]', form.only_for_group_members ? 'text-red-500' : 'text-emerald-500')} />
-      <Infinity className={cn('w-4 h-4 stroke-[1.5px]', form.can_submit_multiple ? 'text-emerald-500' : 'text-red-500')} />
+      <InfinityIcon className={cn('w-4 h-4 stroke-[1.5px]', form.can_submit_multiple ? 'text-emerald-500' : 'text-red-500')} />
     </div>
   );
 

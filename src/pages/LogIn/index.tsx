@@ -1,30 +1,54 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import API from '~/api/api';
+import { setCookie } from '~/api/cookie';
+import Page from '~/components/navigation/Page';
+import { Button, buttonVariants } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { ACCESS_TOKEN } from '~/constant';
+import { analyticsEvent } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
+import { data, href, Link, redirect, useSubmit } from 'react-router';
 import { z } from 'zod';
 
-import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useLogin } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
-import { Button, buttonVariants } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
+import { queryClient } from '../MainLayout';
+import { Route } from './+types';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),
   password: z.string().min(1, { message: 'Passorde er påkrevd' }),
 });
 
-const LogIn = () => {
-  const navigate = useNavigate();
-  const { event } = useAnalytics();
-  const logIn = useLogin();
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const redirectURL = useRedirectUrl();
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+  const username = formData.get('username');
+  const password = formData.get('password');
+
+  const { data: safeData, success, error } = formSchema.safeParse({ username, password });
+
+  if (!success) {
+    return data({ errors: error }, { status: 400 });
+  }
+
+  const redirectUrl = new URL(request.url).searchParams.get('redirectTo') ?? href('/');
+
+  try {
+    const { token } = await API.authenticate(safeData.username, safeData.password);
+    analyticsEvent('login', 'auth', 'Logged inn');
+    setCookie(ACCESS_TOKEN, token);
+    queryClient.invalidateQueries('user');
+    queryClient.refetchQueries('user');
+    return redirect(redirectUrl);
+  } catch {
+    return data({ errors: {} });
+  }
+}
+
+export default function LoginPage() {
+  // const { event } = useAnalytics();
+  const submit = useSubmit();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,19 +59,7 @@ const LogIn = () => {
   });
 
   const onLogin = async (values: z.infer<typeof formSchema>) => {
-    logIn.mutate(
-      { username: values.username, password: values.password },
-      {
-        onSuccess: () => {
-          event('login', 'auth', `Logged in`);
-          setLogInRedirectURL(null);
-          navigate(redirectURL || URLS.landing);
-        },
-        onError: (e) => {
-          form.setError('username', { message: e.detail || 'Noe gikk galt' });
-        },
-      },
-    );
+    await submit(values, { method: 'POST' });
   };
 
   return (
@@ -92,8 +104,8 @@ const LogIn = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={logIn.isLoading} size='lg' type='submit'>
-                {logIn.isLoading ? 'Logger inn...' : 'Logg inn'}
+              <Button className='w-full' disabled={form.formState.isSubmitting} size='lg' type='submit'>
+                {form.formState.isSubmitting ? 'Logger inn...' : 'Logg inn'}
               </Button>
             </form>
           </Form>
@@ -111,6 +123,4 @@ const LogIn = () => {
       </Card>
     </Page>
   );
-};
-
-export default LogIn;
+}

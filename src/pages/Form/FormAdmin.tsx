@@ -1,17 +1,24 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import FormAdminComponent from '~/components/forms/FormAdmin';
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { useFormById } from '~/hooks/Form';
+import Http404 from '~/pages/Http404';
+import { EventFormType, FormResourceType, PermissionApp } from '~/types/Enums';
 import { useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { href, redirect, useParams } from 'react-router';
 
-import { EventFormType, FormResourceType } from 'types/Enums';
+import { Route } from './+types/FormAdmin';
 
-import { useFormById } from 'hooks/Form';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
 
-import Http404 from 'pages/Http404';
+  if (!userHasWritePermission(auth.permissions, PermissionApp.GROUPFORM)) {
+    return redirect(href('/'));
+  }
+}
 
-import FormAdminComponent from 'components/forms/FormAdmin';
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-
-const FormPage = () => {
+export default function FormPage() {
   const { id } = useParams<'id'>();
   const { data: form, isError } = useFormById(id || '-');
 
@@ -35,6 +42,4 @@ const FormPage = () => {
       </Card>
     </Page>
   );
-};
-
-export default FormPage;
+}

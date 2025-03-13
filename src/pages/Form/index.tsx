@@ -1,27 +1,30 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
+import FormView from '~/components/forms/FormView';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form } from '~/components/ui/form';
+import { Separator } from '~/components/ui/separator';
+import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from '~/hooks/Form';
+import { useAnalytics } from '~/hooks/Utils';
+import Http404 from '~/pages/Http404';
+import type { SelectFieldSubmission, Submission, TextFieldSubmission } from '~/types';
+import { EventFormType, FormResourceType } from '~/types/Enums';
+import URLS from '~/URLS';
+import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
-import { formatDate } from 'utils';
 import { z } from 'zod';
 
-import { SelectFieldSubmission, Submission, TextFieldSubmission } from 'types';
-import { EventFormType, FormResourceType } from 'types/Enums';
+import { Route } from './+types';
 
-import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from 'hooks/Form';
-import { useAnalytics } from 'hooks/Utils';
-
-import Http404 from 'pages/Http404';
-
-import FormView from 'components/forms/FormView';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form } from 'components/ui/form';
-import { Separator } from 'components/ui/separator';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const formSchema = z.object({
   answers: z.array(
@@ -35,7 +38,7 @@ const formSchema = z.object({
   ),
 });
 
-const FormPage = () => {
+export default function FormPage() {
   const navigate = useNavigate();
   const { event: GAEvent } = useAnalytics();
   const { id } = useParams<'id'>();
@@ -166,6 +169,4 @@ const FormPage = () => {
       </Card>
     </Page>
   );
-};
-
-export default FormPage;
+}

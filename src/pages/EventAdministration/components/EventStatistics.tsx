@@ -1,9 +1,7 @@
-import { cn } from 'lib/utils';
-import { useSearchParams } from 'react-router-dom';
-
-import { Event } from 'types';
-
-import { useEventStatistics } from 'hooks/Event';
+import { useEventStatistics } from '~/hooks/Event';
+import { cn } from '~/lib/utils';
+import type { Event } from '~/types';
+import { useSearchParams } from 'react-router';
 
 type StatProps = {
   label: string;

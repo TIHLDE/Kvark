@@ -1,17 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { FormSelect } from '~/components/inputs/Select';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { PaginateButton } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
+import { useUsers } from '~/hooks/User';
+import { useDebounce } from '~/hooks/Utils';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
-import { useUsers } from 'hooks/User';
-import { useDebounce } from 'hooks/Utils';
-
-import FormInput from 'components/inputs/Input';
-import { FormSelect } from 'components/inputs/Select';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { PaginateButton } from 'components/ui/button';
-import { Form } from 'components/ui/form';
 
 import PersonListItem, { PersonListItemLoading } from './PersonListItem';
 

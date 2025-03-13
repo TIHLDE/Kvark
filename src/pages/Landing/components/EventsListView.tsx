@@ -1,9 +1,7 @@
-import { EventList } from 'types';
-import { Category, Groups } from 'types/Enums';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import EventListItem, { EventListItemLoading } from 'components/miscellaneous/EventListItem';
+import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import type { EventList } from '~/types';
+import { Category, Groups } from '~/types/Enums';
 
 export type EventsListViewProps = {
   events: Array<EventList>;

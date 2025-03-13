@@ -1,10 +1,8 @@
+import { Button } from '~/components/ui/button';
+import { useAnalytics, useShare } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { Share2Icon } from 'lucide-react';
 import { useMemo } from 'react';
-import URLS from 'URLS';
-
-import { useAnalytics, useShare } from 'hooks/Utils';
-
-import { Button } from 'components/ui/button';
 
 export type ShareProps = {
   title: string;

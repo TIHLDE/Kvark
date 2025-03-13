@@ -1,15 +1,12 @@
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import { Card, CardContent } from '~/components/ui/card';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { Membership } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, getMembershipType } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getMembershipType } from 'utils';
-
-import { Membership } from 'types';
-
-import { Card, CardContent } from 'components/ui/card';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
-
-import TIHLDE_LOGO from 'assets/img/TihldeBackground.jpg';
+import { Link } from 'react-router';
 
 export type MembershipItemProps = {
   membership: Membership;

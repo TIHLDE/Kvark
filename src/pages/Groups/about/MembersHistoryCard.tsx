@@ -1,14 +1,10 @@
+import { PaginateButton } from '~/components/ui/button';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useGroup } from '~/hooks/Group';
+import { useMembershipHistories } from '~/hooks/Membership';
+import MembershipHistoryListItem from '~/pages/Groups/about/MembershipHistoryListItem';
+import type { Group } from '~/types';
 import { useMemo } from 'react';
-
-import { Group } from 'types';
-
-import { useGroup } from 'hooks/Group';
-import { useMembershipHistories } from 'hooks/Membership';
-
-import MembershipHistoryListItem from 'pages/Groups/about/MembershipHistoryListItem';
-
-import { PaginateButton } from 'components/ui/button';
-import { Skeleton } from 'components/ui/skeleton';
 
 export type MembersHistoryCardProps = {
   groupSlug: Group['slug'];

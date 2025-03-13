@@ -1,22 +1,22 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { JobPost } from '~/types';
+import { formatDate, getJobpostType, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { CalendarClock, GraduationCap, MapPin } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getJobpostType, urlEncode } from 'utils';
+import { CalendarClock, MapPin } from 'lucide-react';
 
-import { JobPost } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
-
-import { Separator } from '../ui/separator';
+import NavLink from '../ui/navlink';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
 };
 
 const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
-  <Link className='border rounded-md bg-card space-y-4 text-black dark:text-white' to={`${URLS.jobposts}${jobPost.id}/${urlEncode(jobPost.title)}/`}>
+  <NavLink
+    className='border rounded-md bg-card space-y-4 text-black dark:text-white'
+    params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
+    to='/stillingsannonser/:id/:urlTitle?'>
     <div className={'flex flex-col sm:flex-row'}>
       <div className={'w-full'}>
         <AspectRatioImg
@@ -54,7 +54,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
         </div>
       </div>
     </div>
-  </Link>
+  </NavLink>
 );
 
 export default JobPostListItem;

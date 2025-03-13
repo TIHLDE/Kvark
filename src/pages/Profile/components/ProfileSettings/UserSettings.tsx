@@ -1,21 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { FormSelect } from '~/components/inputs/Select';
+import { FormDetailSwitch } from '~/components/inputs/Switch';
+import FormTextarea from '~/components/inputs/Textarea';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import { useUpdateUser } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import type { User } from '~/types';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { User } from 'types';
-
-import { useUpdateUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import FormInput from 'components/inputs/Input';
-import { FormSelect } from 'components/inputs/Select';
-import { FormDetailSwitch } from 'components/inputs/Switch';
-import FormTextarea from 'components/inputs/Textarea';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
 
 export type UserSettingsProps = {
   user: User;
