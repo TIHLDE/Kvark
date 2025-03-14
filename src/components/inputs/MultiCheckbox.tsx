@@ -4,6 +4,8 @@ import { cn } from '~/lib/utils';
 import { useEffect } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
+import { Label } from '../ui/label';
+
 type FormMultiCheckboxProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;
   name: Path<TFormValues>;
@@ -106,5 +108,54 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
     />
   );
 };
+
+type FormMultiCheckboxComponentProps = {
+  items: string[] | { value: string; label: string }[];
+  label: string;
+  type?: string;
+  description?: string;
+  placeholder?: string;
+  required?: boolean;
+  className?: string;
+  multiple?: boolean;
+  disabled?: boolean;
+  value: string[];
+  onChange: (newValue: string[]) => void;
+};
+
+export function FormMultiCheckboxComponent({ className, label, required, description, items, value, onChange, disabled }: FormMultiCheckboxComponentProps) {
+  return (
+    <div className={cn('w-full', className)}>
+      <div className='mb-4'>
+        <Label className='text-base'>
+          {label} {required && <span className='text-red-300'>*</span>}
+        </Label>
+        {description && <p className='text-sm text-muted-foreground'>{description}</p>}
+      </div>
+      {items.map((item, index) => {
+        const itemValue = typeof item === 'object' ? item.value : item;
+        return (
+          <div className='mt-3' key={index}>
+            <div className='flex flex-row items-start space-x-3'>
+              <Checkbox
+                checked={value.includes(itemValue)}
+                disabled={disabled}
+                onCheckedChange={(checked) => {
+                  if (checked && !value.includes(itemValue)) {
+                    onChange([...value, itemValue]);
+                  }
+                  if (!checked) {
+                    onChange(value.filter((v) => v !== itemValue));
+                  }
+                }}
+              />
+              <Label className='font-normal'>{typeof item === 'object' ? item.label : item}</Label>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default FormMultiCheckbox;
