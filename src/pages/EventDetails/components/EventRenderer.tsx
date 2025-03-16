@@ -344,7 +344,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
           <DetailContent info={data.location} title='Sted:' />
           <DetailContent
             // TODO: Fix Event types
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             info={data.category?.text || 'Laster...'}
             title='Hva:'
@@ -355,7 +354,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               info={
                 <Link
                   className='text-blue-500 dark:text-indigo-300'
-                  to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>
+                  to={`${URLS.profile}${data.contact_person?.user_id}/`}
+                >{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>
               }
               title='Kontaktperson:'
             />

@@ -38,7 +38,8 @@ export const FileMultipleUpload = ({ fileTypes, setFiles, label = 'Velg eller dr
     <div {...getRootProps()} className='flex items-center justify-center w-full'>
       <label
         className='cursor-pointer flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600'
-        htmlFor='image-upload-button'>
+        htmlFor='image-upload-button'
+      >
         <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
           <CloudUploadIcon className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
           <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
@@ -84,7 +85,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -129,7 +130,6 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
 
       event('upload', 'file-upload', 'Uploaded file');
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, data.url);
       toast.success('Bilde ble lastet opp');
@@ -141,7 +141,6 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
   };
 
   const removeImg = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     form.setValue(name, '');
   };
@@ -156,7 +155,8 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
               : 'cursor-pointer' +
                 ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
           }
-          htmlFor='image-upload-button'>
+          htmlFor='image-upload-button'
+        >
           <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
             <CloudUploadIcon className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
             <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
@@ -221,7 +221,6 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const removeFile = () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     form.setValue(name, '');
   };
@@ -233,7 +232,6 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
       try {
         const data = await API.uploadFile(file);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         form.setValue(name, data.url);
         toast.success('Filen ble opplastet');
@@ -271,7 +269,8 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
               : 'cursor-pointer' +
                 ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
           }
-          htmlFor='file-upload-button'>
+          htmlFor='file-upload-button'
+        >
           <div className='flex flex-col items-center justify-center pt-5 pb-6 space-y-4'>
             <FilePlus className='w-10 h-10 text-gray-400 dark:text-gray-300 stroke-[1.5]' />
             <p className='mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold'>{label}</p>
@@ -385,7 +384,7 @@ export function ImageUpload(props: ImageUploadProps) {
     props.onChange?.(files);
   }, [files]);
 
-  const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : props.accept ?? 'image/*';
+  const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : (props.accept ?? 'image/*');
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -437,7 +436,8 @@ export function ImageUpload(props: ImageUploadProps) {
           onDragEnter={handleDragEnter}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
-          onDrop={handleDrop}>
+          onDrop={handleDrop}
+        >
           <div className='rounded-full bg-background p-3 shadow-sm'>
             <ImagePlus className='h-6 w-6 text-muted-foreground' />
           </div>
@@ -475,7 +475,8 @@ export function ImageUpload(props: ImageUploadProps) {
                     e.stopPropagation();
                     setPreviewId(file.id);
                   }}
-                  variant='ghost'>
+                  variant='ghost'
+                >
                   <FileImage alt={`preview-${file.id}`} className='h-full w-full' src={file.file} />
                 </Button>
                 <span className='truncate'>{file.name}</span>
@@ -541,7 +542,7 @@ export function FileImage(props: FileImageProps) {
     };
   }, [src]);
 
-  return <img {...imgProps} src={typeof src === 'string' ? src : previewUrl ?? ''} />;
+  return <img {...imgProps} src={typeof src === 'string' ? src : (previewUrl ?? '')} />;
 }
 
 type FileImagePreviewProps = {

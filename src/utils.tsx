@@ -320,12 +320,12 @@ export const getICSFromEvent = (event: Event): string => {
  * @param data A JSON-object
  * @returns String with format: `?key1=value1&key2=value2`
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const argsToParams = (data: Record<string, any>) => {
   let args = '?';
   for (const key in data) {
     if (Array.isArray(data[key])) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
       for (const value in data[key] as any) {
         // @ts-expect-error the value key is any. i dont feel like fixing this
         args += `&${key}=${data[key][value]}`;
@@ -345,11 +345,11 @@ export const argsToParams = (data: Record<string, any>) => {
 export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
   const newFields: Array<TextFormField | SelectFormField> = [];
   fields.forEach((field) => {
-    const { id, ...restField } = field; // eslint-disable-line
+    const { id, ...restField } = field;
     const newOptions: Array<SelectFormFieldOption> = [];
     if (field.type !== FormFieldType.TEXT_ANSWER) {
       field.options.forEach((option) => {
-        const { id, ...restOption } = option; // eslint-disable-line
+        const { id, ...restOption } = option;
         newOptions.push(restOption as SelectFormFieldOption);
       });
     }

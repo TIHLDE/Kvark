@@ -19,11 +19,11 @@ export type StoryProps = {
 };
 
 const Story = ({ items }: StoryProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   const instanceOfEvent = (object: any): object is EventList => 'start_date' in object;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   const instanceOfNews = (object: any): object is News => 'header' in object;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   const instanceOfJobPost = (object: any): object is JobPost => 'company' in object;
 
   const storyItems = useMemo(() => {

@@ -31,7 +31,7 @@ export const readFile = (file: File): Promise<string> => {
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {string} imgType - type of image
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const getCroppedImgAsBlob = async (imageSrc: string, pixelCrop: any, imgType = 'image/png'): Promise<Blob> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');

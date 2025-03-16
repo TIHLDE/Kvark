@@ -147,25 +147,25 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 if (typeof window === 'object') {
   inject();
-  // eslint-disable-next-line no-console
+  // biome-ignore lint: Allow Console logs
   console.log(
     `%c
-            ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
-            ██║████╗  ██║██╔══██╗██╔════╝╚██╗██╔╝
-  Laget av  ██║██╔██╗ ██║██║  ██║█████╗   ╚███╔╝
-            ██║██║╚██╗██║██║  ██║██╔══╝   ██╔██╗
-            ██║██║ ╚████║██████╔╝███████╗██╔╝ ██╗
-            ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
+    ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
+    ██║████╗  ██║██╔══██╗██╔════╝╚██╗██╔╝
+    Laget av  ██║██╔██╗ ██║██║  ██║█████╗   ╚███╔╝
+    ██║██║╚██╗██║██║  ██║██╔══╝   ██╔██╗
+    ██║██║ ╚████║██████╔╝███████╗██╔╝ ██╗
+    ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
     'font-size: 1rem; color: #ff9400;',
   );
-  // eslint-disable-next-line no-console
+  // biome-ignore lint: Allow Console logs
   console.log(
     `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
       SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
     }`,
     'font-weight: bold; font-size: 1rem;color: #ff9400;',
   );
-  // eslint-disable-next-line no-console
+  // biome-ignore lint: Allow Console logs
   console.log(
     'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
     'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
@@ -176,6 +176,6 @@ if (typeof window === 'object') {
     API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   (window as any).badge = rickroll;
 }

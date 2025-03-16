@@ -7,7 +7,7 @@ export const WIKI_QUERY_KEY_TREE = `${WIKI_QUERY_KEY}/tree`;
 
 export const useWikiTree = () => useQuery<WikiTree, RequestResponse>(WIKI_QUERY_KEY_TREE, () => API.getWikiTree());
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useWikiSearch = (filters: Record<string, any>) => {
   return useInfiniteQuery<PaginationResponse<WikiChildren>, RequestResponse>(
     [WIKI_QUERY_KEY, filters],

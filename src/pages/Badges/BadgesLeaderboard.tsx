@@ -14,7 +14,7 @@ import { Link } from 'react-router';
 import { z } from 'zod';
 
 export type BadgesLeaderboard = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   filters?: any;
   options?: UseInfiniteQueryOptions<
     PaginationResponse<BadgesOverallLeaderboard>,
@@ -123,7 +123,8 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
               <Link
                 className='flex items-center justify-between space-x-4 p-2 border hover:bg-muted rounded-lg w-full text-black dark:text-white'
                 key={index}
-                to={`${URLS.profile}${entry.user.user_id}/`}>
+                to={`${URLS.profile}${entry.user.user_id}/`}
+              >
                 <div className='flex items-center space-x-2'>
                   <Avatar>
                     <AvatarImage alt={entry.user.first_name} src={entry.user.image} />

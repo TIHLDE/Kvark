@@ -66,7 +66,6 @@ const QrScan = ({ onScan }: QrScanProps) => {
   return (
     <video
       className='object-cover aspect-square w-full h-[400px]'
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       ref={videoTag}
     />
@@ -94,7 +93,8 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
         <div className='grid leading-none'>
           <label
             className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
-            htmlFor={user.user_info.user_id}>
+            htmlFor={user.user_info.user_id}
+          >
             Ankommet
           </label>
         </div>

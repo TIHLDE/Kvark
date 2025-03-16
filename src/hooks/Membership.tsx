@@ -9,7 +9,7 @@ export const MEMBERSHIP_HISTORY_QUERY_KEY = 'membership-history';
 
 export const useMemberships = (
   groupSlug: Group['slug'],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<Membership>, RequestResponse, PaginationResponse<Membership>, PaginationResponse<Membership>, QueryKey>,
 ) => {
@@ -23,7 +23,7 @@ export const useMemberships = (
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useMembershipHistories = (groupSlug: Group['slug'], filters?: any) => {
   return useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>(
     [MEMBERSHIP_QUERY_KEY, groupSlug, MEMBERSHIP_HISTORY_QUERY_KEY],

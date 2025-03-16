@@ -30,7 +30,6 @@ const NewsDetails = () => {
   return (
     <Page>
       {data && (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         <Helmet>
           <meta content={data.title} property='og:title' />

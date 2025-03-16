@@ -113,11 +113,13 @@ export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
             <Skeleton className={`h-[38px] w-[${width}%]`} key={index} />
           ))}
         </div>
-      }>
+      }
+    >
       <ReactMarkdown
         components={components}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        rehypePlugins={[rehypeRaw] as any}>
+        // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+        rehypePlugins={[rehypeRaw] as any}
+      >
         {value || ''}
       </ReactMarkdown>
     </React.Suspense>

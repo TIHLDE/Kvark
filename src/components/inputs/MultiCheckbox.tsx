@@ -38,13 +38,11 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
   useEffect(() => {
     const value = form.getValues(name);
     if (!value || (Array.isArray(value) && !value.length)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, []);
     }
 
     if (defaultValue && (!value || (Array.isArray(value) && !value.length))) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, [defaultValue]);
     }
@@ -73,8 +71,6 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
                   <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
                     <FormControl>
                       <Checkbox
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         checked={field.value?.includes(typeof item === 'object' ? item.value : item)}
                         disabled={disabled}
                         onCheckedChange={(checked) => {

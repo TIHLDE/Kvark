@@ -4,7 +4,7 @@ import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQue
 
 export const BANNER_QUERY_KEY = 'banners';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useInfoBanners = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<InfoBanner>, RequestResponse>(
     [BANNER_QUERY_KEY, filters],
@@ -19,7 +19,7 @@ export const useInfoBanner = (bannerId: InfoBanner['id']) => {
   return useQuery<InfoBanner, RequestResponse>([BANNER_QUERY_KEY, bannerId], () => API.getInfoBanner(bannerId), { enabled: bannerId !== '' });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useVisibleInfoBanners = (filters?: any) => {
   return useQuery<Array<InfoBanner>>([BANNER_QUERY_KEY, filters], () => API.getVisibleInfoBanners(), {});
 };

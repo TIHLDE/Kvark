@@ -8,7 +8,7 @@ export const useJobPostById = (id: number) => {
   return useQuery<JobPost, RequestResponse>([JOBPOST_QUERY_KEY, id], () => API.getJobPost(id), { enabled: id !== -1 });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useJobPosts = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<JobPost>, RequestResponse>(
     [JOBPOST_QUERY_KEY, filters],

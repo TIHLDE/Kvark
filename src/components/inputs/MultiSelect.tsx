@@ -53,7 +53,6 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
 
   useEffect(() => {
     onChange?.(selected);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   return (
@@ -75,7 +74,8 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
                   onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                  }}>
+                  }}
+                >
                   <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                 </button>
               </Badge>
@@ -113,7 +113,8 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
                       onSelect={() => {
                         setInputValue('');
                         setSelected((prev) => [...prev, option]);
-                      }}>
+                      }}
+                    >
                       {option.label}
                     </CommandItem>
                   );

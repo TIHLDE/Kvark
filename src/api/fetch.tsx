@@ -8,7 +8,7 @@ type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type FetchProps = {
   method: RequestMethodType;
   url: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
   file?: File | File[] | Blob;

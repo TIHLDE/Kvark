@@ -78,7 +78,7 @@ export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useUserForms = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
     [USER_FORMS_QUERY_KEY, filters],
@@ -120,7 +120,7 @@ export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestRes
   });
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
 export const useUsers = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
     [USERS_QUERY_KEY, filters],
