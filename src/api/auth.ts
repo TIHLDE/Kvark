@@ -1,6 +1,6 @@
 import { ACCESS_TOKEN } from '~/constant';
-import { Permissions, User } from '~/types';
-import { MembershipType, PermissionApp } from '~/types/Enums';
+import type { Permissions, User } from '~/types';
+import { MembershipType, type PermissionApp } from '~/types/Enums';
 import { createPath, createSearchParams, href, redirect } from 'react-router';
 import { z } from 'zod';
 
@@ -104,7 +104,7 @@ export function invalidateAuth(token: string) {
  * @param some if true, the user must only have write permission for one of the apps
  * @returns if the user has write or write_all permission
  */
-export function userHasWritePermission(permissions: Record<string, Permissions>, app: PermissionApp | PermissionApp[], some: boolean = false): boolean {
+export function userHasWritePermission(permissions: Record<string, Permissions>, app: PermissionApp | PermissionApp[], some = false): boolean {
   if (!Array.isArray(app)) {
     const perm = permissions[app];
     if (!perm) {

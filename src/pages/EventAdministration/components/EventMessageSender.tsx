@@ -73,7 +73,8 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
       onOpenChange={setDialogOpen}
       open={dialogOpen}
       title='Send melding til påmeldte'
-      trigger={!isTablet ? SmallOpenButton : OpenButton}>
+      trigger={!isTablet ? SmallOpenButton : OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-4 px-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

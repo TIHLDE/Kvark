@@ -6,7 +6,7 @@ import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export function clientLoader({ params }: Route.ClientLoaderArgs) {
   return {
@@ -17,7 +17,7 @@ export function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function CategoryBadgesList({ loaderData }: Route.ComponentProps) {
   const { categoryId } = loaderData;
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges({ badge_category: categoryId });
-  const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const badges = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='mt-4 space-y-4'>

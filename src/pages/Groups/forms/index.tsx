@@ -43,7 +43,8 @@ const GroupFormAdminListItem = ({ form }: { form: GroupForm }) => {
             className='w-full text-black dark:text-white'
             disabled={!form.is_open_for_submissions}
             onClick={() => navigate(`${URLS.form}${form.id}/`)}
-            variant='outline'>
+            variant='outline'
+          >
             <Eye className='w-5 h-5 mr-2' />
             Svar på/se skjema
           </Button>
@@ -83,7 +84,8 @@ const GroupForms = () => {
             <Link
               className='flex items-center justify-between p-4 border rounded-md hover:bg-border transition-all duration-150 text-black dark:text-white'
               key={form.id}
-              to={`${URLS.form}${form.id}/`}>
+              to={`${URLS.form}${form.id}/`}
+            >
               <h1>{form.title}</h1>
               <ArrowRight className='w-5 h-5' />
             </Link>

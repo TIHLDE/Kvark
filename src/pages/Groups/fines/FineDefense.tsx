@@ -55,7 +55,8 @@ const FineDefense = ({ groupSlug, fineId, defense }: FineDefenseProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title={defense ? 'Endre forsvar' : 'Legg til forsvar'}
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-6 px-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
           <MarkdownEditor form={form} label='Forsvar' name='defense' required />

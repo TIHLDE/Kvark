@@ -8,7 +8,7 @@ import { EventFormType, FormResourceType, PermissionApp } from '~/types/Enums';
 import { useMemo } from 'react';
 import { href, redirect, useParams } from 'react-router';
 
-import { Route } from './+types/FormAdmin';
+import type { Route } from './+types/FormAdmin';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);

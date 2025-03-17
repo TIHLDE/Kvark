@@ -13,7 +13,7 @@ import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
@@ -55,7 +55,7 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
   }, [classId]);
 
   const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || CheatsheetStudy.DATAING, getClass() || 1, { search: search });
-  const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const files = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const isURLValid = useCallback(() => {
     const study = getStudy();
@@ -123,8 +123,8 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     return direction === 0 && liveCheatingAmount < max
       ? liveCheatingAmount + 1
       : direction === 1 && liveCheatingAmount > 0
-      ? liveCheatingAmount - 1
-      : liveCheatingAmount;
+        ? liveCheatingAmount - 1
+        : liveCheatingAmount;
   }, [liveCheatingAmount]);
 
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);

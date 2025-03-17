@@ -1,6 +1,6 @@
 import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from '~/api/api';
 import { getCookie } from '~/api/cookie';
-import MultiSelect, { MultiSelectOption } from '~/components/inputs/MultiSelect';
+import MultiSelect, { type MultiSelectOption } from '~/components/inputs/MultiSelect';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Button } from '~/components/ui/button';
 import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
@@ -123,7 +123,8 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
               }
             }}
             size='sm'
-            variant='outline'>
+            variant='outline'
+          >
             Forrige
           </Button>
           <Button disabled={!data.next} onClick={() => data.next && setSelectedPage(selectedPage + 1)} size='sm' variant='outline'>

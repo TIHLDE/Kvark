@@ -7,7 +7,7 @@ import { Input } from '~/components/ui/input';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateWikiPage } from '~/hooks/Wiki';
-import { WikiPage } from '~/types';
+import type { WikiPage } from '~/types';
 import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { Plus } from 'lucide-react';

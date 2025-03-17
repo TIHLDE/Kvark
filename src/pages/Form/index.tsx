@@ -20,7 +20,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);

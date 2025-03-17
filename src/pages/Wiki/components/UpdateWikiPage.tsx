@@ -8,7 +8,7 @@ import { Label } from '~/components/ui/label';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useDeleteWikiPage, useUpdateWikiPage } from '~/hooks/Wiki';
-import { WikiPage } from '~/types';
+import type { WikiPage } from '~/types';
 import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { Pencil } from 'lucide-react';

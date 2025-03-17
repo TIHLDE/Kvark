@@ -15,7 +15,7 @@ const BadgeDetails = () => {
   const { badgeId } = useParams<'badgeId'>();
   const { data: badge } = useBadge(badgeId || '_');
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgeLeaderboard(badgeId || '_');
-  const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const leaderboardEntries = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <Page className='mx-auto max-w-5xl'>
@@ -42,7 +42,8 @@ const BadgeDetails = () => {
                   <Link
                     className='w-full px-4 py-2 rounded-md border bg-card flex items-center justify-between hover:bg-border transition-all duration-150'
                     key={index}
-                    to={`${URLS.profile}${entry.user.user_id}/`}>
+                    to={`${URLS.profile}${entry.user.user_id}/`}
+                  >
                     <div className='flex items-center space-x-2'>
                       <Avatar>
                         <AvatarImage alt={entry.user.first_name} src={entry.user.image} />

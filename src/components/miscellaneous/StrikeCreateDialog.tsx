@@ -82,7 +82,8 @@ const StrikeCreateDialog = ({ userId, eventId }: StrikeCreateDialogProps) => {
       onOpenChange={setOpen}
       open={open}
       title='Opprett prikk'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

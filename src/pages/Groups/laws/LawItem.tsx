@@ -56,7 +56,7 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const data = {
-      amount: parseInt(values.amount),
+      amount: Number.parseInt(values.amount),
       description: values.description || '',
       paragraph: parseLawParagraphNumber(values.paragraph),
       title: values.title,
@@ -97,7 +97,8 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
           onOpenChange={setEditOpen}
           open={editOpen}
           title='Endre lovparagraf'
-          trigger={OpenButton}>
+          trigger={OpenButton}
+        >
           <ScrollArea className='h-[60vh]'>
             <Form {...form}>
               <form className='space-y-6 pb-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>

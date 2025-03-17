@@ -70,7 +70,7 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
       ...values,
       description,
       image: values.image || null,
-      amount: parseInt(values.amount),
+      amount: Number.parseInt(values.amount),
     };
 
     createFine.mutate(data, {

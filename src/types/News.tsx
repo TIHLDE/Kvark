@@ -1,4 +1,4 @@
-import { UserBase } from '~/types/User';
+import type { UserBase } from '~/types/User';
 
 export type NewsRequired = Omit<Partial<News>, 'creator'> &
   Pick<News, 'title' | 'header' | 'body'> & {

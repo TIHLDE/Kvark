@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
@@ -79,7 +79,7 @@ export default function Feedback() {
 
   const { data: user } = useUser();
   const { data: userGroups } = useUserMemberships();
-  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.flatMap((page) => page.results) : []), [userGroups]);
 
   const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbacks(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
@@ -183,7 +183,8 @@ export default function Feedback() {
                 <PlusIcon className='w-4 h-4' />
                 Ny Idé
               </Button>
-            }>
+            }
+          >
             <div className='pl-5 pr-5'>
               <Form {...ideaForm}>
                 <form className='space-y-8' onSubmit={ideaForm.handleSubmit(onSubmitIdea)}>
@@ -228,7 +229,8 @@ export default function Feedback() {
                 <PlusIcon className='w-4 h-4' />
                 Ny Feil
               </Button>
-            }>
+            }
+          >
             <div className='pl-5 pr-5'>
               <Form {...bugForm}>
                 <form className='space-y-8' onSubmit={bugForm.handleSubmit(onSubmitBug)}>
@@ -282,7 +284,8 @@ export default function Feedback() {
               className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
               key={index}
               onOpenChange={() => toggleItem(item.id)}
-              open={openItems.includes(item.id)}>
+              open={openItems.includes(item.id)}
+            >
               <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
                 <div className='flex items-center space-x-4'>
                   {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}

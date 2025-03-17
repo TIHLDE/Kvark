@@ -6,7 +6,7 @@ import { PermissionApp } from '~/types/Enums';
 import { DotSquare, Users } from 'lucide-react';
 import { href, redirect } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import AllStrikesList from './components/AllStrikeList';
 import UserStrikeList from './components/UserStrikeList';
 

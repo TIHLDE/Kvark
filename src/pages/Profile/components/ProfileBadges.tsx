@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 const ProfileBadges = () => {
   const { userId } = useParams();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useUserBadges(userId);
-  const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const badges = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div>

@@ -379,11 +379,11 @@ export const navigateToExternalURL = (url: string) => window.open(url, '_blank')
 export const parseLawParagraphNumber = (input: string): number => {
   const parts = input.split('.');
   if (parts.length === 1) {
-    return parseFloat(input);
+    return Number.parseFloat(input);
   } else {
     const integerPart = parts[0];
     const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
-    return parseFloat(`${integerPart}.${decimalPart}`);
+    return Number.parseFloat(`${integerPart}.${decimalPart}`);
   }
 };
 

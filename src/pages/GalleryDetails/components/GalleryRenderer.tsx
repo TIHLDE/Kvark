@@ -21,7 +21,7 @@ export type GalleryRendererProps = {
 
 const GalleryRenderer = ({ id }: GalleryRendererProps) => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(id);
-  const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const pictures = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>

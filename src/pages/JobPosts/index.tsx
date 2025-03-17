@@ -177,7 +177,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                   <button
                     aria-label='Fjern søkefilter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() => setQueryFilters({ ...queryFilters, search: '' })}>
+                    onClick={() => setQueryFilters({ ...queryFilters, search: '' })}
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>
@@ -189,7 +190,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                   <button
                     aria-label='Fjern jobbtype-filter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}>
+                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>
@@ -206,7 +208,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                         ...queryFilters,
                         classes: queryFilters.classes.filter((c) => c !== classValue),
                       })
-                    }>
+                    }
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>

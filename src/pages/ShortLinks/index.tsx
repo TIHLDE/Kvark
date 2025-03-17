@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
@@ -147,7 +147,8 @@ const ShortLinks = () => {
           onOpenChange={setIsOpen}
           open={isOpen}
           title='Ny lenke'
-          trigger={CreateButton}>
+          trigger={CreateButton}
+        >
           <Form {...form}>
             <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
               <FormField

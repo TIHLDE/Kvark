@@ -46,7 +46,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
       return;
     }
     updateUser.mutate(
-      { userId: user.user_id, user: { ...user, ...values, gender: parseInt(values.gender) } },
+      { userId: user.user_id, user: { ...user, ...values, gender: Number.parseInt(values.gender) } },
       {
         onSuccess: () => {
           toast.success('Bruker oppdatert');

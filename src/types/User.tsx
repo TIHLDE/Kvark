@@ -1,7 +1,7 @@
-import { PermissionApp } from '~/types/Enums';
-import { Group, MembershipWithoutUser } from '~/types/Group';
-import { Permissions } from '~/types/Misc';
-import { UserBio } from '~/types/UserBio';
+import type { PermissionApp } from '~/types/Enums';
+import type { Group, MembershipWithoutUser } from '~/types/Group';
+import type { Permissions } from '~/types/Misc';
+import type { UserBio } from '~/types/UserBio';
 
 export type LoginRequestResponse = {
   token: string;

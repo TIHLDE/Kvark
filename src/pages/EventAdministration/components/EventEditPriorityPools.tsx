@@ -154,7 +154,8 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
                   e.preventDefault();
                   e.stopPropagation();
                 }}
-                type='button'>
+                type='button'
+              >
                 <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
               </button>
             </Badge>
@@ -193,7 +194,8 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
                         onSelect={() => {
                           setInputValue('');
                           addGroupToPriorityPool(option.group, poolIndex);
-                        }}>
+                        }}
+                      >
                         {getGroupName(option.group.slug)}
                       </CommandItem>
                     )}

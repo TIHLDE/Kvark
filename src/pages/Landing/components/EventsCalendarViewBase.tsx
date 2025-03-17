@@ -2,7 +2,7 @@
 
 import { Button } from '~/components/ui/button';
 import { cn } from '~/lib/utils';
-import { cva, VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import {
   addDays,
   addMonths,
@@ -16,7 +16,7 @@ import {
   isSameMonth,
   isToday,
   isWithinInterval,
-  Locale,
+  type Locale,
   setHours,
   setMonth,
   startOfMonth,
@@ -27,7 +27,7 @@ import {
   subYears,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, forwardRef, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { ScrollArea } from '../../../components/ui/scroll-area';
@@ -135,7 +135,8 @@ const Calendar = ({
         onEventClick,
         onChangeView,
         today: new Date(),
-      }}>
+      }}
+    >
       {children}
     </Context.Provider>
   );
@@ -160,7 +161,8 @@ const CalendarViewTrigger = forwardRef<
       onClick={() => {
         setView(view);
         onChangeView?.(view);
-      }}>
+      }}
+    >
       {children}
     </Button>
   );
@@ -183,7 +185,8 @@ const EventGroup = ({ events, hour }: { events: CalendarEvent[]; hour: Date }) =
               style={{
                 top: `${startPosition * 100}%`,
                 height: `${hoursDifference * 100}%`,
-              }}>
+              }}
+            >
               {event.title}
             </div>
           );
@@ -252,7 +255,8 @@ const CalendarWeekView = () => {
               'text-center flex-1 gap-1 pb-2 text-sm text-muted-foreground flex items-center justify-center',
               [0, 6].includes(i) && 'text-muted-foreground/50',
             )}
-            key={date.toString()}>
+            key={date.toString()}
+          >
             {format(date, 'E', { locale })}
             <span className={cn('h-6 grid place-content-center', isToday(date) && 'bg-primary text-primary-foreground rounded-full size-6')}>
               {format(date, 'd')}
@@ -269,7 +273,8 @@ const CalendarWeekView = () => {
             return (
               <div
                 className={cn('h-full text-sm text-muted-foreground border-l first:border-l-0', [0, 6].includes(i) && 'bg-muted/50')}
-                key={hours[0].toString()}>
+                key={hours[0].toString()}
+              >
                 {hours.map((hour) => (
                   <EventGroup events={events} hour={hour} key={hour.toString()} />
                 ))}
@@ -293,7 +298,7 @@ const DayTile = ({ event }: { event: CalendarEvent }) => {
         </div>
       </PopoverTrigger>
       <PopoverContent>
-        <EventsCalendarPopover id={parseInt(event.id)} />
+        <EventsCalendarPopover id={Number.parseInt(event.id)} />
       </PopoverContent>
     </Popover>
   );
@@ -327,7 +332,8 @@ const CalendarMonthView = () => {
           return (
             <ScrollArea
               className={cn('ring-1 p-2 text-sm ring-border overflow-auto', !isSameMonth(date, _date) && 'text-muted-foreground/50')}
-              key={_date.toString()}>
+              key={_date.toString()}
+            >
               <span className={cn('size-6 grid place-items-center rounded-full mb-1 sticky top-0', isToday(_date) && 'bg-primary text-primary-foreground')}>
                 {format(_date, 'd')}
               </span>
@@ -384,7 +390,8 @@ const CalendarYearView = () => {
                     className={cn(
                       'aspect-square grid place-content-center size-full tabular-nums',
                       isSameDay(today, _date) && getMonth(_date) === i && 'bg-primary text-primary-foreground rounded-full',
-                    )}>
+                    )}
+                  >
                     {format(_date, 'd')}
                   </div>
                 </div>
@@ -421,7 +428,8 @@ const CalendarNextTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
       onClick={(e) => {
         next();
         onClick?.(e);
-      }}>
+      }}
+    >
       {children}
     </Button>
   );
@@ -452,7 +460,8 @@ const CalendarPrevTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<H
       onClick={(e) => {
         prev();
         onClick?.(e);
-      }}>
+      }}
+    >
       {children}
     </Button>
   );
@@ -474,7 +483,8 @@ const CalendarTodayTrigger = forwardRef<HTMLButtonElement, React.HTMLAttributes<
       onClick={(e) => {
         jumpToToday();
         onClick?.(e);
-      }}>
+      }}
+    >
       {children}
     </Button>
   );
@@ -504,7 +514,8 @@ const TimeTable = () => {
                 className='absolute z- left-full translate-x-2 w-dvw h-[2px] bg-red-500'
                 style={{
                   top: `${(now.getMinutes() / 60) * 100}%`,
-                }}>
+                }}
+              >
                 <div className='size-2 rounded-full bg-red-500 absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2'></div>
               </div>
             )}

@@ -3,7 +3,7 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { Separator } from '~/components/ui/separator';
 import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
 import { PermissionApp } from '~/types/Enums';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import ShortCutAdmin from './Admin';
 import ShortCutLogout from './Logout';

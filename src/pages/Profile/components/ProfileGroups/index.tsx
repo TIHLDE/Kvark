@@ -10,7 +10,7 @@ import { useParams } from 'react-router';
 const Memberships = () => {
   const { userId } = useParams();
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useUserMemberships(userId);
-  const memberships = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const memberships = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <>
@@ -31,7 +31,7 @@ const Memberships = () => {
 const MembershipHistories = () => {
   const { userId } = useParams();
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useUserMembershipHistories(userId);
-  const membershipHistories = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const membershipHistories = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <>

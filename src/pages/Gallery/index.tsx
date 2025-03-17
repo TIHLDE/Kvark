@@ -11,7 +11,7 @@ import CreateGallery from './components/CreateGallery';
 
 export default function Galleries() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
-  const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const galleries = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <Page className='space-y-12'>

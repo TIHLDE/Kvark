@@ -6,7 +6,7 @@ import { useMemo } from 'react';
 
 export const BadgeCategoriesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgeCategories();
-  const badgeCategories = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const badgeCategories = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <>

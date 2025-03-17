@@ -6,7 +6,7 @@ import { PermissionApp } from '~/types/Enums';
 import { ListChecks, ListPlus } from 'lucide-react';
 import { href, redirect } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import UserFilter from './components/UserFilter';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {

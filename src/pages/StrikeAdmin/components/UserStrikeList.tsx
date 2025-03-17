@@ -39,7 +39,7 @@ const UserStrikeList = () => {
   );
   const filters = useDebounce(formFilters, 500);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ has_active_strikes: true, ...filters });
-  const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const users = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='space-y-4'>

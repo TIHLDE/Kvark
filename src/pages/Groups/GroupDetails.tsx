@@ -6,8 +6,8 @@ import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
-import { FormGroupValues } from '~/types';
-import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
+import type { FormGroupValues } from '~/types';
+import { CalendarRange, CircleDollarSign, CircleHelp, Info, type LucideIcon, Scale } from 'lucide-react';
 import { href, Link, Outlet } from 'react-router';
 
 import type { Route } from './+types/GroupDetails';
@@ -90,7 +90,8 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
 const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
   <Link
     className={cn('flex items-center space-x-2 p-2', location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground')}
-    to={to}>
+    to={to}
+  >
     {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
     <h1>{label}</h1>
   </Link>

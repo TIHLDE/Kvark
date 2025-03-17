@@ -2,7 +2,7 @@ import { useUserMemberships } from '~/hooks/User';
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
 
-import { ShortCutMenuProps } from '.';
+import type { ShortCutMenuProps } from '.';
 import LoadingSpinnner from '../LoadingSpinner';
 import ShortCutLink from './Item';
 import ShortCutSectionWrapper from './SectionWrapper';
@@ -10,7 +10,7 @@ import ShortCutSectionWrapper from './SectionWrapper';
 const ShortCutMembership = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
   const { userId } = useParams();
   const { data, isLoading } = useUserMemberships(userId);
-  const memberships = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const memberships = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <ShortCutSectionWrapper title='Mine Medlemskap'>

@@ -46,14 +46,16 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         className='dark:bg-card'
         description='Bestem hvor du ønsker å motta ulike typer varsler'
         icon={<BellPlusIcon className='stroke-[1.5px]' />}
-        title='Varslingsinnstillinger'>
+        title='Varslingsinnstillinger'
+      >
         <UserNotificationSettings user={user} />
       </Expandable>
       <Expandable
         className='dark:bg-card'
         description='Motta en link i din epost til side der du kan endre passord'
         icon={<KeyRoundIcon className='stroke-[1.5px]' />}
-        title='Endre passord'>
+        title='Endre passord'
+      >
         <Button className='w-full' disabled={forgotPassword.isLoading} onClick={resetPassword} size='lg' variant='outline'>
           Endre Passord
         </Button>
@@ -62,14 +64,16 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         className='dark:bg-card'
         description='Endre informasjon om deg selv'
         icon={<UserCogIcon className='stroke-[1.5px]' />}
-        title='Profil-innstillinger'>
+        title='Profil-innstillinger'
+      >
         <UserSettings user={user} />
       </Expandable>
       <Expandable
         className='dark:bg-card'
         description='Få tilsendt alle data vi har lagret i tilknytning til din bruker'
         icon={<CloudDownloadIcon className='stroke-[1.5px]' />}
-        title='Eksporter brukerdata'>
+        title='Eksporter brukerdata'
+      >
         <Button className='w-full' disabled={forgotPassword.isLoading} onClick={runExportUserdata} size='lg' variant='outline'>
           Eksporter brukerdata
         </Button>
@@ -78,7 +82,8 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         className='dark:bg-card'
         description='Slett din bruker og alle tilhørende data vi har lagret'
         icon={<TrashIcon className='stroke-[1.5px]' />}
-        title='Slett brukerkonto'>
+        title='Slett brukerkonto'
+      >
         <div className='space-y-2'>
           <h1 className='text-destructive text-xl font-semibold'>Slett brukerkonto</h1>
           <p className='text-sm'>

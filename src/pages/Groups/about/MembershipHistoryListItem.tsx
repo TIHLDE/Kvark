@@ -34,7 +34,8 @@ const MembershipHistoryListItem = ({ membership, isAdmin }: MembershipHistoryLis
         fullMonth: true,
       })} - ${getMembershipType(membership.membership_type)}`}
       icon={<UserAvatar />}
-      title={`${user.first_name} ${user.last_name}`}>
+      title={`${user.first_name} ${user.last_name}`}
+    >
       <div className='space-y-4'>
         <div className='text-sm'>
           <p>

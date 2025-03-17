@@ -69,7 +69,8 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title='Rediger gruppen'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <ScrollArea className='h-[60vh]'>
         <Form {...form}>
           <form className='py-6 px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>

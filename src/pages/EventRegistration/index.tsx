@@ -1,4 +1,4 @@
-import { CheckedState } from '@radix-ui/react-checkbox';
+import type { CheckedState } from '@radix-ui/react-checkbox';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -19,7 +19,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { href, redirect, useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);
@@ -110,7 +110,7 @@ const EventRegistration = () => {
   const debouncedSearch = useDebounce(search, 500);
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useEventRegistrations(Number(id), { is_on_wait: false, search: debouncedSearch });
   const updateRegistration = useUpdateEventRegistration(Number(id));
-  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const registrations = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const updateAttendedStatus = async (userId: string, attendedStatus: boolean) =>
     updateRegistration.mutateAsync(

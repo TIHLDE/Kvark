@@ -58,7 +58,8 @@ export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title={`Slett ${isAdmin && 'din'} konto`}
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput form={form} label='Brukernavn' name='userId' required />

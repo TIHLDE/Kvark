@@ -7,13 +7,13 @@ import URLS from '~/URLS';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { ChevronRight, List } from 'lucide-react';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
 const EventList = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, hasNextPage, fetchNextPage, isLoading } = useEvents();
-  const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const items = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <ResponsiveDialog
@@ -25,7 +25,8 @@ const EventList = () => {
         <Button size='icon' variant='outline'>
           <List className='w-6 h-6' />
         </Button>
-      }>
+      }
+    >
       <ScrollArea className='h-[60vh] pr-4'>
         {items.length === 0 && isLoading && (
           <div className='flex justify-center w-full'>

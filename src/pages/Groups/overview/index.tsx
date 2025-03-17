@@ -5,7 +5,7 @@ import { useIsAuthenticated } from '~/hooks/User';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
 import type { GroupList } from '~/types';
 import { GroupType } from '~/types/Enums';
-import React from 'react';
+import type React from 'react';
 
 import type { Route } from './+types/index';
 

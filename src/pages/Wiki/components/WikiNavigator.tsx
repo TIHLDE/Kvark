@@ -1,9 +1,9 @@
 import { Button } from '~/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
-import { Tree, TreeDataItem } from '~/components/ui/tree';
+import { Tree, type TreeDataItem } from '~/components/ui/tree';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useWikiTree } from '~/hooks/Wiki';
-import { WikiTree } from '~/types';
+import type { WikiTree } from '~/types';
 import { Folder, List, Workflow } from 'lucide-react';
 import { useNavigate } from 'react-router';
 

@@ -14,7 +14,7 @@ type FetchProps = {
   file?: File | File[] | Blob;
 };
 
-export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {

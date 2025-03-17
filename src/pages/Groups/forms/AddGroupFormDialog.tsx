@@ -62,7 +62,8 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
       className='max-w-2xl'
       description='Alle TIHLDE-medlemmer vil kunne svare på skjemaet, flere ganger om de ønsker. Du kan legge til spørsmål etter at du har opprettet skjemaet. Spørsmålene kan endres helt til noen har svart på skjemaet.'
       title='Nytt spørreskjema'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput form={form} label='Tittel' name='title' required />

@@ -7,7 +7,7 @@ import { cn } from '~/lib/utils';
 import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type DateTimePickerProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

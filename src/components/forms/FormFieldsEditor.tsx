@@ -141,7 +141,8 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 onClick={() => {
                   addField(FormFieldType.TEXT_ANSWER);
                   setAddButtonOpen(false);
-                }}>
+                }}
+              >
                 Tekstspørsmål
               </p>
               <p
@@ -149,7 +150,8 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 onClick={() => {
                   addField(FormFieldType.SINGLE_SELECT);
                   setAddButtonOpen(false);
-                }}>
+                }}
+              >
                 Flervalgsspørsmål
               </p>
               <p
@@ -157,7 +159,8 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 onClick={() => {
                   addField(FormFieldType.MULTIPLE_SELECT);
                   setAddButtonOpen(false);
-                }}>
+                }}
+              >
                 Avkrysningsspørsmål
               </p>
             </PopoverContent>

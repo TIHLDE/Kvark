@@ -74,7 +74,7 @@ import type {
   WikiRequired,
   WikiTree,
 } from '~/types';
-import { CheatsheetStudy, MembershipType } from '~/types/Enums';
+import { CheatsheetStudy, type MembershipType } from '~/types/Enums';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';

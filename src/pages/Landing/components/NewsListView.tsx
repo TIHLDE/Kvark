@@ -6,7 +6,7 @@ const NO_OF_NEWS_TO_SHOW = 2;
 
 const NewsListView = () => {
   const { data, isLoading } = useNews();
-  const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const news = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   if (isLoading) {
     return <NewsListItemLoading />;

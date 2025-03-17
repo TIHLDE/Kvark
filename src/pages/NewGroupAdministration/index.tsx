@@ -13,7 +13,7 @@ import { href, redirect } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 const schema = z.object({
   name: z.string({ message: 'Gruppenavn er påkrevd' }),

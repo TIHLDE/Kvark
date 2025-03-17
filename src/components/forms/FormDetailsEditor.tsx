@@ -172,7 +172,8 @@ const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
         className='max-w-2xl'
         description='Når du lager en mal så kan du enkelt bruke feltene i dette skjemaet i andre skjemaer senere. Gi malen en passende tittel.'
         title='Lagre som mal'
-        trigger={OpenButton}>
+        trigger={OpenButton}
+      >
         <div className='space-y-6'>
           <div className='space-y-1'>
             <Label>Tittel</Label>

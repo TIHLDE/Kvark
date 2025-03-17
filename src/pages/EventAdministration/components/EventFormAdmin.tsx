@@ -171,7 +171,8 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         <Expandable
           description='Velg en mal for å bruke som utgangspunkt når du oppretter ett skjema.'
           icon={<BookCopy className='w-5 h-5' />}
-          title='Bruk en mal'>
+          title='Bruk en mal'
+        >
           <FormTemplatesList formType={formType} />
         </Expandable>
       </>

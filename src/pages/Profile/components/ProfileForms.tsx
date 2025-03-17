@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 const ProfileForms = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserForms({ unanswered: true });
-  const forms = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const forms = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   if (!data) {
     return <Skeleton className='h-20' />;
@@ -27,7 +27,8 @@ const ProfileForms = () => {
             <Link
               className='w-full flex items-center justify-between p-4 rounded-md border bg-card text-black dark:text-white'
               key={index}
-              to={`${URLS.form}${form.id}/`}>
+              to={`${URLS.form}${form.id}/`}
+            >
               <div className='space-y-2'>
                 <h1>
                   {form.resource_type === FormResourceType.EVENT_FORM

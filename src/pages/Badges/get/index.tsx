@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);

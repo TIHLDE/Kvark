@@ -2,7 +2,7 @@ import { useEvents } from '~/hooks/Event';
 import { useAnalytics } from '~/hooks/Utils';
 import type { Category, EventList } from '~/types';
 import { Category as CategoryEnum, Groups } from '~/types/Enums';
-import { VariantProps } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -12,12 +12,12 @@ import { Card } from '../../../components/ui/card';
 import {
   Calendar,
   CalendarCurrentDate,
-  CalendarEvent,
+  type CalendarEvent,
   CalendarMonthView,
   CalendarNextTrigger,
   CalendarPrevTrigger,
   CalendarTodayTrigger,
-  monthEventVariants,
+  type monthEventVariants,
 } from './EventsCalendarViewBase';
 
 const getColor = (event: EventList): VariantProps<typeof monthEventVariants>['variant'] => {
@@ -49,7 +49,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   const { event } = useAnalytics();
   const [filters, setFilters] = useState<Filters>({ start_range: startOfMonth(new Date()).toISOString(), end_range: endOfMonth(new Date()).toISOString() });
   const { data, fetchNextPage } = useEvents({ category, ...filters });
-  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const events = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   useEffect(() => {
     event('open', 'calendar', 'Open calendar on landing page');
@@ -72,7 +72,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
             end: parseISO(event.end_date),
             id: event.id.toString(),
             color: getColor(event),
-          } satisfies CalendarEvent),
+          }) satisfies CalendarEvent,
       ),
     [data],
   );
@@ -83,7 +83,8 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
       locale={nb}
       onSetDate={(date: Date) => {
         setFilters({ start_range: startOfMonth(date).toISOString(), end_range: endOfMonth(date).toISOString() });
-      }}>
+      }}
+    >
       <Card className='h-dvh py-6 flex flex-col'>
         <div className='flex px-6 items-center gap-2 mb-6'>
           <CalendarCurrentDate />

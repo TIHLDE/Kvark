@@ -9,7 +9,7 @@ import { useDebounce } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
 import type { Group, UserBase } from '~/types';
 import { useState } from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import MultiSelect from './MultiSelect';
 
@@ -61,8 +61,8 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                     {user && !selectedUser
                       ? `${user.first_name} ${user.last_name}`
                       : selectedUser
-                      ? `${selectedUser.first_name} ${selectedUser.last_name}`
-                      : 'Søk etter bruker'}
+                        ? `${selectedUser.first_name} ${selectedUser.last_name}`
+                        : 'Søk etter bruker'}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align='start' className='w-[400px] p-0'>
@@ -79,7 +79,8 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                                 field.onChange(option);
                                 setSelectedUser(option);
                                 setOpen(false);
-                              }}>
+                              }}
+                            >
                               {`${option.first_name} ${option.last_name}`}
                             </CommandItem>
                           ))}
@@ -126,7 +127,8 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                               field.onChange(option);
                               setSelectedUser(option);
                               setOpen(false);
-                            }}>
+                            }}
+                          >
                             {`${option.first_name} ${option.last_name}`}
                           </CommandItem>
                         ))}

@@ -55,7 +55,8 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
       onOpenChange={setShowDialog}
       open={showDialog}
       title='Avslå bruker'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-4' onSubmit={form.handleSubmit(decline)}>
           <FormTextarea form={form} label='Begrunnelse (valgfri)' name='reason' />
@@ -103,7 +104,8 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
       icon={UserAvatar}
       onOpenChange={setExpanded}
       open={expanded}
-      title={`${user.first_name} ${user.last_name}`}>
+      title={`${user.first_name} ${user.last_name}`}
+    >
       <div>
         {is_TIHLDE_member ? (
           data && (

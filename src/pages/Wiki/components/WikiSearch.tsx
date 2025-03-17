@@ -4,9 +4,9 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useAnalytics, useDebounce } from '~/hooks/Utils';
 import { useWikiSearch } from '~/hooks/Wiki';
-import { WikiChildren } from '~/types';
+import type { WikiChildren } from '~/types';
 import { ChevronRight, FileText, Loader2, Search } from 'lucide-react';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
 const WikiSearch = () => {
@@ -22,7 +22,7 @@ const WikiSearch = () => {
     return filters;
   }, [debouncedSearch]);
   const { data, hasNextPage, fetchNextPage, isLoading } = useWikiSearch(filters);
-  const pages = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const pages = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,7 +37,8 @@ const WikiSearch = () => {
           <Search className='mr-2 w-5 h-5 stroke-[1.5px]' />
           Søk
         </Button>
-      }>
+      }
+    >
       <div className='px-2 py-4 space-y-8'>
         <Input onChange={(e) => setSearch(e.target.value)} placeholder='Søk...' value={search} />
 

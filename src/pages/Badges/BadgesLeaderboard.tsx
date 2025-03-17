@@ -56,7 +56,7 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
   );
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useHook({ ...formFilters, ...filters }, { ...options });
-  const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const leaderboardEntries = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='space-y-4 py-4'>

@@ -72,14 +72,16 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
     <Expandable
       description={hideUserInfo ? formatDate(parseISO(fine.created_at), { fullDayOfWeek: true, fullMonth: true }) : fine.description}
       icon={FineAmount}
-      title={Title}>
+      title={Title}
+    >
       <div className='space-y-4'>
         <div className='flex items-center space-x-2'>
           <div
             className={cn(
               'flex items-center space-x-1 px-2 py-1 rounded-md border text-sm',
               fine.approved ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
-            )}>
+            )}
+          >
             <Check className='w-4 h-4' />
             <span>{fine.approved ? 'Godkjent' : 'Ikke godkjent'}</span>
           </div>
@@ -88,7 +90,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
             className={cn(
               'flex items-center space-x-1 px-2 py-1 rounded-md border text-sm',
               fine.payed ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
-            )}>
+            )}
+          >
             <HandCoins className='w-4 h-4' />
             <span>{fine.payed ? 'Betalt' : 'Ikke betalt'}</span>
           </div>

@@ -14,7 +14,7 @@ import { data, href, Link, redirect, useSubmit } from 'react-router';
 import { z } from 'zod';
 
 import { queryClient } from '../MainLayout';
-import { Route } from './+types';
+import type { Route } from './+types';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),

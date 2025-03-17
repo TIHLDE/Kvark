@@ -80,7 +80,8 @@ const UpdateMembershipHistory = ({ membership }: UpdateMembershipHistoryProps) =
       onOpenChange={setIsOpen}
       open={isOpen}
       title='Oppdater medlemskap'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-4 px-2 py-4' onSubmit={form.handleSubmit(onSubmit)}>
           <DateTimePicker form={form} label='Startdato' name='start_date' required />

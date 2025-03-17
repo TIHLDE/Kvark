@@ -7,7 +7,7 @@ import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
 import { href, Link, redirect, useNavigate, useParams } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import JobPostList from './components/JobPostList';
 
 export async function clientLoader({ request }: Route.ClientActionArgs) {

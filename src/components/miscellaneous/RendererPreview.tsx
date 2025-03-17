@@ -1,7 +1,7 @@
 import { Button } from '~/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
-import { FunctionComponent, useState } from 'react';
+import { type FunctionComponent, useState } from 'react';
 
 export type RendererPreviewProps<Type> = {
   /** Function to be runned to get the data which can be passed to the renderer-component */
@@ -14,7 +14,7 @@ export type RendererPreviewProps<Type> = {
  * Preview content. Generic which means that is supports all types as long as it has a component
  * which can be passed the data to preview through the `data`-prop and a `preview`-prop set to `true`.
  */
-const RendererPreview = <Type extends unknown>({ getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
+const RendererPreview = <Type,>({ getContent, renderer: Renderer }: RendererPreviewProps<Type>) => {
   const [content, setContent] = useState<Type | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 

@@ -52,7 +52,7 @@ const UserFilter = ({ is_TIHLDE_member }: UserFilterProps) => {
     studyyear: filters.studyyear === 'all' ? undefined : filters.studyyear,
     search: filters.search === '' ? undefined : filters.search,
   });
-  const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const users = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const membersAmount = useMemo(
     () => `${data?.pages[0]?.count || '0'} medlemmer

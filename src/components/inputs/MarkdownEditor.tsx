@@ -6,7 +6,7 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 const guide = `
   ___
@@ -229,7 +229,8 @@ const MarkdownEditor = <TFormValues extends FieldValues>({ form, name, label, re
           <Button className='justify-start' variant='link'>
             Hvordan formaterer jeg teksten?
           </Button>
-        }>
+        }
+      >
         <ScrollArea className='w-full h-[60vh] pr-4'>
           <MarkdownRenderer value={guide} />
         </ScrollArea>

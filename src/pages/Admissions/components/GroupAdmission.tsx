@@ -39,7 +39,8 @@ const GroupAdmission = ({ group, disabled }: GroupAdmissionProps) => {
       <Button asChild variant='outline'>
         <Link
           className='whitespace-normal py-8 w-full bg-white dark:bg-inherit dark:hover:bg-secondary flex justify-between items-center rounded-sm'
-          to={URLS.groups.details(group.slug)}>
+          to={URLS.groups.details(group.slug)}
+        >
           <div className='flex items-center space-x-2 md:space-x-4 w-full overflow-hidden'>
             <Logo />
             <div className='text-start break-words'>

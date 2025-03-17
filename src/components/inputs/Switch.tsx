@@ -2,7 +2,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/
 import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
 import { cn } from '~/lib/utils';
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type FormBasicSwitchProps<TFormValues extends FieldValues> = {

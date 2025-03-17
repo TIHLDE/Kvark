@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import URLS from '~/URLS';
-import { BarChart2, CirclePlus, LucideIcon, Shapes, Trophy } from 'lucide-react';
+import { BarChart2, CirclePlus, type LucideIcon, Shapes, Trophy } from 'lucide-react';
 import { Suspense } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
 
@@ -21,7 +21,8 @@ const Badges = () => {
   const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
     <Link
       className={`flex items-center space-x-2 p-2 ${location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}
-      to={to}>
+      to={to}
+    >
       {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
       <h1>{label}</h1>
     </Link>

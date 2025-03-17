@@ -12,7 +12,7 @@ const GroupEvents = () => {
   const { data: permissions } = useUserPermissions();
   const { data: group } = useGroup(slug || '-');
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ organizer: slug });
-  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const events = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div>

@@ -10,10 +10,10 @@ import { cn } from '~/lib/utils';
 import { uuidv4 } from '~/utils';
 import { CloudUploadIcon, FilePlus } from 'lucide-react';
 import { ImagePlus, Trash2, Upload, X } from 'lucide-react';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { ChangeEvent, useEffect, useMemo, useRef } from 'react';
-import Cropper, { Area } from 'react-easy-crop';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
+import Cropper, { type Area } from 'react-easy-crop';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 

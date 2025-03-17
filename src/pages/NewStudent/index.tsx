@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';
 import { useToddels } from '../../hooks/Toddel';
-import { GroupList } from '../../types/Group';
+import type { GroupList } from '../../types/Group';
 import GroupItem from '../Groups/overview/GroupItem';
 
 const NewStudent = () => {
@@ -21,7 +21,7 @@ const NewStudent = () => {
   const isTablet = useMediaQuery(MEDIUM_SCREEN);
 
   const { data: toddelsData } = useToddels();
-  const toddels = useMemo(() => (toddelsData ? toddelsData.pages.map((page) => page.results).flat() : []), [toddelsData]);
+  const toddels = useMemo(() => (toddelsData ? toddelsData.pages.flatMap((page) => page.results) : []), [toddelsData]);
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS } = useGroupsByType({ overview: true });
@@ -154,7 +154,8 @@ const NewStudent = () => {
               href={contact.url}
               key={index}
               rel='noreferrer'
-              target='_blank'>
+              target='_blank'
+            >
               {<contact.icon className='h-12 w-12 lg:h-32 lg:w-32 mb-4' />}
               <p className='dark:text-slate-300 text-slate-700 text-sm lg:text-base'>{contact.text}</p>
             </a>

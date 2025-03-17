@@ -68,7 +68,8 @@ const EventUserRegistrator = ({ eventId }: EventMessageSenderProps) => {
       onOpenChange={setDialogOpen}
       open={dialogOpen}
       title='Legg til deltager'
-      trigger={!isTablet ? SmallOpenButton : OpenButton}>
+      trigger={!isTablet ? SmallOpenButton : OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-4 px-4' onSubmit={form.handleSubmit(onSubmit)}>
           <SingleUserSearch form={form} label='Bruker' name='user' required />

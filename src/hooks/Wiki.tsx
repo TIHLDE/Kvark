@@ -1,6 +1,6 @@
 import API from '~/api/api';
 import type { PaginationResponse, RequestResponse, WikiChildren, WikiPage, WikiRequired, WikiTree } from '~/types';
-import { QueryClient, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
+import { type QueryClient, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const WIKI_QUERY_KEY = 'wiki';
 export const WIKI_QUERY_KEY_TREE = `${WIKI_QUERY_KEY}/tree`;

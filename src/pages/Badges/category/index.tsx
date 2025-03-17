@@ -1,10 +1,10 @@
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useBadgeCategory } from '~/hooks/Badge';
-import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
+import { BarChart2, type LucideIcon, Trophy } from 'lucide-react';
 import { href, Link, Outlet } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export function clientLoader({ params }: Route.ClientLoaderArgs) {
   return {
@@ -19,7 +19,8 @@ export default function BadgeCategory({ loaderData }: Route.ComponentProps) {
   const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
     <Link
       className={`flex items-center space-x-2 p-2 ${location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}
-      to={to}>
+      to={to}
+    >
       {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
       <h1>{label}</h1>
     </Link>

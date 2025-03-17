@@ -19,7 +19,7 @@ export type MembersCardProps = {
 const MembersCard = ({ groupSlug }: MembersCardProps) => {
   const isAuthenticated = useIsAuthenticated();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(groupSlug, { onlyMembers: true }, { enabled: isAuthenticated });
-  const memberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const memberships = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
   const { data: group } = useGroup(groupSlug);
   const hasWriteAcccess = Boolean(group?.permissions.write);
   const leader = group?.leader;
@@ -45,7 +45,8 @@ const MembersCard = ({ groupSlug }: MembersCardProps) => {
             <h1 className='text-xl font-bold'>Leder:</h1>
             <Link
               className='flex items-center space-x-2 p-4 border rounded-md bg-card hover:bg-secondary text-black dark:text-white'
-              to={`${URLS.profile}${leader.user_id}/`}>
+              to={`${URLS.profile}${leader.user_id}/`}
+            >
               <Avatar>
                 <AvatarImage alt={leader.first_name} src={leader.image} />
                 <AvatarFallback>{leader.first_name[0] + leader.last_name[0]}</AvatarFallback>

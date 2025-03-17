@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import QRCodeItem from './components/QRCodeItem';
 
 const formSchema = z.object({
@@ -78,7 +78,8 @@ const QRCodes = () => {
           onOpenChange={setIsOpen}
           open={isOpen}
           title='Ny QR kode'
-          trigger={CreateButton}>
+          trigger={CreateButton}
+        >
           <Form {...form}>
             <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
               <FormField

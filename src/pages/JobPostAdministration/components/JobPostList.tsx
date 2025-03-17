@@ -5,13 +5,13 @@ import { useJobPosts } from '~/hooks/JobPost';
 import type { JobPost } from '~/types';
 import URLS from '~/URLS';
 import { ChevronRight, List } from 'lucide-react';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 
 const JobPostList = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, hasNextPage, fetchNextPage, isLoading } = useJobPosts();
-  const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const items = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <ResponsiveDialog
@@ -23,7 +23,8 @@ const JobPostList = () => {
         <Button size='icon' variant='outline'>
           <List className='w-6 h-6' />
         </Button>
-      }>
+      }
+    >
       <ScrollArea className='h-[60vh] pr-4'>
         {items.length === 0 && isLoading && (
           <div className='flex justify-center w-full'>

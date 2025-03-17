@@ -1,5 +1,5 @@
 import { ArrowBigUp, Command, Option } from 'lucide-react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 type HotKeyProps = {
   modifiers: Array<'shift' | 'alt' | 'ctrl' | undefined>;

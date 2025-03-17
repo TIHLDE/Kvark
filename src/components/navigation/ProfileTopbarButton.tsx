@@ -6,7 +6,7 @@ import { useTheme } from '~/hooks/Theme';
 // import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
 import { useState } from 'react';
-import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
+import Joyride, { ACTIONS, type CallBackProps } from 'react-joyride';
 import { createPath, createSearchParams, href, Link } from 'react-router';
 
 import NavLink from '../ui/navlink';
@@ -103,7 +103,8 @@ const ProfileTopbarButton = () => {
             search: createSearchParams({
               redirectTo: location.pathname,
             }).toString(),
-          })}>
+          })}
+        >
           <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
         </Link>
       )}

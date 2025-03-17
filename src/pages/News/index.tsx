@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 
 const News = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNews();
-  const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const news = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <Page className='space-y-8 max-w-screen-2xl mx-auto'>

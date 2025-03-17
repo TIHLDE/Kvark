@@ -2,7 +2,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { cn } from '~/lib/utils';
 import { useEffect } from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import { Label } from '../ui/label';
 

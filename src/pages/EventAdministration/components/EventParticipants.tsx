@@ -50,7 +50,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     defaultValues: { names: false, emails: false },
   });
 
-  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const registrations = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   useEffect(() => {
     refetch();
@@ -149,7 +149,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                         <FormItem className='w-full'>
                           <label
                             className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='names'>
+                            htmlFor='names'
+                          >
                             <FormControl>
                               <Checkbox checked={field.value} id='names' onCheckedChange={field.onChange} />
                             </FormControl>
@@ -169,7 +170,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                         <FormItem className='w-full'>
                           <label
                             className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='emails'>
+                            htmlFor='emails'
+                          >
                             <FormControl>
                               <Checkbox checked={field.value} id='emails' onCheckedChange={field.onChange} />
                             </FormControl>

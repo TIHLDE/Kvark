@@ -35,10 +35,7 @@ export const useNotifications = (
       getNextPageParam: (lastPage) => lastPage.next,
       onSuccess: async (data) => {
         // Get not read notifications
-        const notifications = data.pages
-          .map((page) => page.results)
-          .flat()
-          .filter((not) => !not.read);
+        const notifications = data.pages.flatMap((page) => page.results).filter((not) => !not.read);
         // If some not read notifications exists, mark them as read
         if (notifications.length) {
           await Promise.allSettled(notifications.map((notification) => API.updateNotification(notification.id, { read: true })));

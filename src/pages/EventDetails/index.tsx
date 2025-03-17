@@ -4,7 +4,7 @@ import Page from '~/components/navigation/Page';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
 import { redirect } from 'react-router';
 
-import { Route } from './+types/index';
+import type { Route } from './+types/index';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const eventId = Number(params.id);

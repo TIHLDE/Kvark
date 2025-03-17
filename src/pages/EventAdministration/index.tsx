@@ -14,7 +14,7 @@ import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucid
 import { useEffect } from 'react';
 import { href, redirect, useNavigate } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
@@ -85,7 +85,8 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
                     id: eventId,
                     urlTitle: event?.title ? urlEncode(event.title) : undefined,
                   }}
-                  to='/arrangementer/:id/:urlTitle?'>
+                  to='/arrangementer/:id/:urlTitle?'
+                >
                   Se arrangement
                   <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
                 </NavLink>

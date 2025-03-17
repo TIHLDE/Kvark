@@ -118,7 +118,8 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     <ResponsiveDialog
       description={bannerId ? 'Her kan du redigere et banner' : 'Her kan du opprette et nytt banner'}
       title={bannerId ? 'Rediger banner' : 'Nytt banner'}
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <ScrollArea className='h-[60vh]'>
         <Form {...form}>
           <form className='space-y-4 px-2 py-6' onSubmit={form.handleSubmit(onSubmit)}>

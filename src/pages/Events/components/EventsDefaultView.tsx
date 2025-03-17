@@ -253,7 +253,8 @@ const EventsDefaultView = () => {
                   </Badge>
                 )}
               </div>
-            }>
+            }
+          >
             <div className='pt-4'>
               <SearchForm />
             </div>
@@ -274,7 +275,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('search', '');
                     search({ ...filters, search: '' });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -289,7 +291,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('category', '');
                     search({ ...filters, category: '' });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -304,7 +307,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('expired', false);
                     search({ ...filters, expired: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -319,7 +323,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('open_for_sign_up', false);
                     search({ ...filters, open_for_sign_up: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -334,7 +339,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('user_favorite', false);
                     search({ ...filters, user_favorite: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>

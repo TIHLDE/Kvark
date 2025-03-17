@@ -63,6 +63,7 @@ export default JobPostListItem;
 export const JobPostListItemLoading = () => (
   <div className='space-y-4'>
     {Array.from({ length: 3 }).map((_, index) => (
+      // biome-ignore lint/suspicious/noArrayIndexKey: This is a skeleton loading component
       <div className='rounded-lg overflow-hidden shadow-sm flex flex-col sm:flex-row h-full bg-muted/30' key={index}>
         {/* Skeleton Image */}
         <div className='w-full sm:w-2/5'>

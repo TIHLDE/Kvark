@@ -4,7 +4,7 @@ import Topbar from '~/components/navigation/Topbar';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
 import { useIsAuthenticated } from '~/hooks/User';
 import URLS from '~/URLS';
-import { ReactNode, useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 
 export type NavigationOptions = {
   noFooter: boolean;

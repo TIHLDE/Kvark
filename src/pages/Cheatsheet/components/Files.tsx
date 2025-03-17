@@ -50,7 +50,8 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                 className='flex items-center justify-between px-3 py-2 rounded-md hover:bg-muted text-black dark:text-white'
                 href={file.url}
                 rel='noopener noreferrer'
-                target='_blank'>
+                target='_blank'
+              >
                 <div className='flex items-center space-x-2 justify-start w-full'>
                   <Icon cheatsheet={file} />
                   <p>{file.title}</p>

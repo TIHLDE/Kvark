@@ -1,4 +1,4 @@
-import { FileObject } from '~/components/inputs/Upload';
+import type { FileObject } from '~/components/inputs/Upload';
 import { toast } from 'sonner';
 
 import API from './api';

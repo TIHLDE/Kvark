@@ -12,7 +12,7 @@ export type MembersHistoryCardProps = {
 
 const MembersHistoryCard = ({ groupSlug }: MembersHistoryCardProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMembershipHistories(groupSlug);
-  const prevMemberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const prevMemberships = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
   const { data: group } = useGroup(groupSlug);
   const hasWriteAcccess = Boolean(group?.permissions.write);
 

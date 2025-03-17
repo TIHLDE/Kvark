@@ -18,7 +18,8 @@ const Stat = ({ label, number, active, onClick }: StatProps) => {
   return (
     <button
       className={cn('p-4 rounded-md border text-center hover:bg-accent hover:text-accent-foreground', active ? 'border-primary' : null)}
-      onClick={() => onClickStat(label)}>
+      onClick={() => onClickStat(label)}
+    >
       <h1 className='text-2xl font-bold'>{number}</h1>
       <p className='text-xs lg:text-base text-muted-foreground line-clamp-1'>{label}</p>
     </button>

@@ -27,7 +27,7 @@ import {
   GripIcon,
   Linkedin,
   LogOutIcon,
-  LucideIcon,
+  type LucideIcon,
   SettingsIcon,
   ShieldCheckIcon,
   UsersIcon,
@@ -35,7 +35,7 @@ import {
 import { useEffect, useState } from 'react';
 import { redirect, useParams } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import EditBioButton from './components/BioEditor/EditBioButton';
 
 export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
@@ -91,7 +91,8 @@ const Profile = () => {
     <Button
       className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
       onClick={onClick ? onClick : () => setTab(label)}
-      variant={tab === label ? 'outline' : 'ghost'}>
+      variant={tab === label ? 'outline' : 'ghost'}
+    >
       <Icon className='mr-2 stroke-[1.5px] shrink-0' /> <p className='truncate ...'>{label}</p>
     </Button>
   );

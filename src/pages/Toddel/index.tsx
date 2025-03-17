@@ -11,7 +11,7 @@ import CreateToddelDialog from './components/CreateToddelDialog';
 
 const ToddelPage = () => {
   const { data, error, isLoading, isFetching, hasNextPage, fetchNextPage } = useToddels();
-  const toddels = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const toddels = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <Page className='space-y-8'>

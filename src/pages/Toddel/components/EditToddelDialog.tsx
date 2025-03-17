@@ -90,7 +90,8 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title='Rediger publikasjon'
-      trigger={EditButton}>
+      trigger={EditButton}
+    >
       <ScrollArea className='h-[70vh] space-y-6'>
         <Form {...form}>
           <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>

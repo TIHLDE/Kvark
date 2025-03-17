@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 
 export const BadgesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges();
-  const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const badges = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='mt-4 space-y-4'>

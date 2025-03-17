@@ -38,7 +38,7 @@ const Fines = () => {
 
   const { data: statistics } = useGroupFinesStatistics(slug || '-');
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useGroupFines(slug || '-', finesFilter, { enabled: tab === 'all' });
-  const fines = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const fines = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
   const {
     data: userFinesData,
     isLoading: userFinesIsLoading,
@@ -46,7 +46,7 @@ const Fines = () => {
     isFetching: userFinesIsFetching,
     fetchNextPage: userFinesFetchNextPage,
   } = useGroupUsersFines(slug || '-', finesFilter, { enabled: tab === 'users' });
-  const userFines = useMemo(() => (userFinesData ? userFinesData.pages.map((page) => page.results).flat() : []), [userFinesData]);
+  const userFines = useMemo(() => (userFinesData ? userFinesData.pages.flatMap((page) => page.results) : []), [userFinesData]);
 
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
 
@@ -99,7 +99,8 @@ const Fines = () => {
           <div className='flex items-center space-x-2'>
             <Select
               defaultValue='none'
-              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))}>
+              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))}
+            >
               <SelectTrigger className='w-[150px]'>
                 <SelectValue placeholder='Sorter etter' />
               </SelectTrigger>
@@ -114,7 +115,8 @@ const Fines = () => {
 
             <Select
               defaultValue='false'
-              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, payed: value === 'true' ? true : value === 'false' ? false : undefined }))}>
+              onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, payed: value === 'true' ? true : value === 'false' ? false : undefined }))}
+            >
               <SelectTrigger className='w-[150px]'>
                 <SelectValue placeholder='Sorter etter' />
               </SelectTrigger>

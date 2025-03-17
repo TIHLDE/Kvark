@@ -163,7 +163,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
         can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
         enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
         is_paid_event: newValues?.is_paid_event || false,
-        price: (newValues?.paid_information?.price && parseInt(newValues.paid_information.price.toString())) || 0,
+        price: (newValues?.paid_information?.price && Number.parseInt(newValues.paid_information.price.toString())) || 0,
         paytime: '02:00',
         contact_person: newValues?.contact_person || null,
         emojis_allowed: newValues?.emojis_allowed || false,
@@ -184,7 +184,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
 
   const { data: permissions } = useUserPermissions();
   const { data: userGroups } = useUserMemberships();
-  const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
+  const memberships = useMemo(() => (userGroups ? userGroups.pages.flatMap((page) => page.results) : []), [userGroups]);
   const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
 
@@ -228,7 +228,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     const values = form.getValues();
     return {
       ...values,
-      category: parseInt(values.category),
+      category: Number.parseInt(values.category),
       organizer: groups?.find((g) => g.slug === values.organizer) || null,
       list_count: 0,
       priority_pools: priorityPools.map((pool) => ({ groups: pool.groups.map((group) => groups?.find((g) => g.slug === group)) })) as Array<PriorityPool>,
@@ -331,7 +331,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const getCategoryValue = (value: string): string => {
-    const category = categories.find((category) => category.id === parseInt(value));
+    const category = categories.find((category) => category.id === Number.parseInt(value));
     if (category) {
       return category.id.toString();
     }
@@ -339,7 +339,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   };
 
   const getCategoryName = (value: string): string => {
-    const category = categories.find((category) => category.id === parseInt(value));
+    const category = categories.find((category) => category.id === Number.parseInt(value));
     if (category) {
       return category.text;
     }
@@ -418,7 +418,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                           Antall plasser <span className='text-red-300'>*</span>
                         </FormLabel>
                         <FormControl>
-                          <Input type='number' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} placeholder='0' />
+                          <Input type='number' {...field} onChange={(event) => field.onChange(Number.parseInt(event.target.value))} placeholder='0' />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -543,7 +543,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                     <Select
                       // defaultValue={getCategoryValue(field.value)} onValueChange={(value) => field.onChange(parseInt(value))}
                       defaultValue={getCategoryValue(field.value)}
-                      onValueChange={field.onChange}>
+                      onValueChange={field.onChange}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder={getCategoryName(field.value)} />
@@ -572,7 +573,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
                       Pris <span className='text-red-300'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input type='number' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} placeholder='0' />
+                      <Input type='number' {...field} onChange={(event) => field.onChange(Number.parseInt(event.target.value))} placeholder='0' />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

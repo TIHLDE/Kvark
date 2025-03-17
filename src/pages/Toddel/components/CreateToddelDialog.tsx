@@ -83,7 +83,12 @@ const CreateToddelDialog = () => {
                     Utgave <span className='text-red-300'>*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder='Skriv nummer her...' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} type='number' />
+                    <Input
+                      placeholder='Skriv nummer her...'
+                      {...field}
+                      onChange={(event) => field.onChange(Number.parseInt(event.target.value))}
+                      type='number'
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

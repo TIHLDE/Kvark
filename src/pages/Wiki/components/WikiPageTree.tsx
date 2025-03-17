@@ -1,7 +1,7 @@
 import Expandable from '~/components/ui/expandable';
-import { Tree, TreeDataItem } from '~/components/ui/tree';
+import { Tree, type TreeDataItem } from '~/components/ui/tree';
 import { useWikiTree } from '~/hooks/Wiki';
-import { WikiTree } from '~/types';
+import type { WikiTree } from '~/types';
 import { Folder, Plus, Workflow } from 'lucide-react';
 
 type WikiPageTreeProps = {

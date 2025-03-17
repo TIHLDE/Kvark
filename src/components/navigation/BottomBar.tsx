@@ -1,6 +1,6 @@
 import Logo from '~/components/miscellaneous/TihldeLogo';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
-import { NavigationItem } from '~/components/navigation/Navigation';
+import type { NavigationItem } from '~/components/navigation/Navigation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
 import { useIsAuthenticated } from '~/hooks/User';
@@ -54,7 +54,8 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
       className={cn(
         'fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
         className,
-      )}>
+      )}
+    >
       <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
           <Link className='text-center' key={index} to={action.to}>

@@ -61,7 +61,8 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title='Legg til medlem'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <SingleUserSearch form={form} label='Søk etter bruker' name='user' />

@@ -1,7 +1,7 @@
 import { useUser } from '~/hooks/User';
 
 import { EmojiItem } from './EmojiItem';
-import { ReactionHandlerProps } from './ReactionHandler';
+import type { ReactionHandlerProps } from './ReactionHandler';
 
 export const EmojiShowcase = ({ data, content_type }: ReactionHandlerProps) => {
   const user = useUser();

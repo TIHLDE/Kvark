@@ -37,7 +37,7 @@ const EditFine = ({ groupSlug, fine }: EditFineProps) => {
   const onUpdate = (values: z.infer<typeof formSchema>) => {
     const data = {
       reason: values.reason,
-      amount: parseInt(values.amount),
+      amount: Number.parseInt(values.amount),
     };
     editFine.mutate(data, {
       onSuccess: () => {
