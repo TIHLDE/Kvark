@@ -44,8 +44,6 @@ const CompaniesForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values.type);
-    console.log(values.time);
     if (isLoading) {
       return;
     }
