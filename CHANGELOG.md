@@ -14,6 +14,8 @@
 
 - 🦟 **Kalender** Tidligre arrangementer forsvinner ikke fra kalenderen
 
+- 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden
+
 ## Versjon 2025.24.02
 
 - ✨ **Kjøp og Salg** La til en knapp til TIHLDEs kjøp og salg facebook-gruppe for betalte arrangementer.
@@ -42,6 +44,7 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
+
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
