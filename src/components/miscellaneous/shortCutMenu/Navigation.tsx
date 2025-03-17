@@ -22,8 +22,8 @@ const ShortCutNavigation = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => 
       path: '/nyheter',
     },
     {
-      title: 'Karriere',
-      path: '/karriere',
+      title: 'Stillingsannonser',
+      path: '/stillingsannonser',
     },
     {
       title: 'Wiki',

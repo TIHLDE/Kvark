@@ -44,8 +44,8 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
-      text: 'Karriere',
-      to: href('/karriere'),
+      text: 'Stillinger',
+      to: href('/stillingsannonser'),
     },
   ];
 
