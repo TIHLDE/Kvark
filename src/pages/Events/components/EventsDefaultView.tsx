@@ -1,5 +1,8 @@
-'use client';
-
+import { Search, FilterX, SlidersHorizontal } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { z } from 'zod';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Badge } from '~/components/ui/badge';
@@ -17,11 +20,6 @@ import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { argsToParams } from '~/utils';
-import { FilterX, Search, SlidersHorizontal } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { z } from 'zod';
 
 type Filters = {
   search?: string;

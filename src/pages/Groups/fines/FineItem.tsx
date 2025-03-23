@@ -1,3 +1,6 @@
+import { parseISO } from 'date-fns';
+import { Check, HandCoins } from 'lucide-react';
+import { toast } from 'sonner';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -7,9 +10,6 @@ import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
 import type { Group, GroupFine, UserBase } from '~/types';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Check, HandCoins } from 'lucide-react';
-import { toast } from 'sonner';
 
 import DeleteFine from './DeleteFine';
 import EditFine from './EditFine';
@@ -29,7 +29,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
 
   const toggleApproved = () => {
-    event('update', 'fines', `Approved a single fine`);
+    event('update', 'fines', 'Approved a single fine');
     updateFine.mutate(
       { approved: !fine.approved },
       {
@@ -44,7 +44,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   };
 
   const togglePayed = () => {
-    event('update', 'fines', `Payed a single fine`);
+    event('update', 'fines', 'Payed a single fine');
     updateFine.mutate(
       { payed: !fine.payed },
       {

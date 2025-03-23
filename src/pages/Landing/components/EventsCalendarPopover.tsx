@@ -1,8 +1,8 @@
-import { useEventById } from '~/hooks/Event';
-import URLS from '~/URLS';
-import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 import { Link } from 'react-router';
+import URLS from '~/URLS';
+import { useEventById } from '~/hooks/Event';
+import { formatDate, urlEncode } from '~/utils';
 
 import { Skeleton } from '../../../components/ui/skeleton';
 
@@ -52,7 +52,7 @@ const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
         <>
           <p className='text-sm'>
             <span className='font-bold'>Påmeldte:</span> {data.list_count}
-            {data.limit > 0 && '/' + data.limit}
+            {data.limit > 0 && `/${data.limit}`}
           </p>
           {data.waiting_list_count > 0 && (
             <p className='text-sm'>

@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
@@ -6,10 +10,6 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useDeleteUser, useLogout } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { User } from '~/types';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type UserDeleteDialogProps = {
   user: User;

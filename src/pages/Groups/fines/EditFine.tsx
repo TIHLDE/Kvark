@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import { Button } from '~/components/ui/button';
@@ -6,11 +11,6 @@ import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useUpdateGroupFine } from '~/hooks/Group';
 import type { GroupFine } from '~/types';
-import { Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 type EditFineProps = {
   groupSlug: string;

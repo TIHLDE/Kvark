@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from '~/api/api';
 import { getCookie } from '~/api/cookie';
 import MultiSelect, { type MultiSelectOption } from '~/components/inputs/MultiSelect';
@@ -8,8 +10,6 @@ import { useFormById, useFormSubmissions } from '~/hooks/Form';
 import type { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from '~/types';
 import { FormFieldType, FormResourceType } from '~/types/Enums';
 import { urlEncode } from '~/utils';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 export type FormAnswersProps = {
   formId: string | null;
@@ -32,11 +32,14 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
 
   if (isLoading || isFormLoading) {
     return <h1 className='text-center'>Laster statistikken...</h1>;
-  } else if (error) {
+  }
+  if (error) {
     return <h1 className='text-center'>Noe gikk galt: {error.detail}</h1>;
-  } else if (!form || !formId || !data) {
+  }
+  if (!form || !formId || !data) {
     return <h1 className='text-center'>Du må opprette et skjema for å se svar</h1>;
-  } else if (!data.results.length) {
+  }
+  if (!data.results.length) {
     return <h1 className='text-center'>Ingen har svart på dette skjemaet</h1>;
   }
 
@@ -44,11 +47,11 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     const answer = submission.answers.find((ans) => ans.field.id === field.id);
     if (answer === undefined) {
       return '';
-    } else if (field.type === FormFieldType.TEXT_ANSWER) {
-      return (answer as TextFieldSubmission).answer_text;
-    } else {
-      return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
     }
+    if (field.type === FormFieldType.TEXT_ANSWER) {
+      return (answer as TextFieldSubmission).answer_text;
+    }
+    return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
   };
 
   // TODO: Add this later
@@ -153,7 +156,7 @@ function FormAnswer({
       <AccordionItem className='border-0' value='item-1'>
         <AccordionTrigger className='px-4 py-4 border-b'>
           <div className='grid grid-cols-[3fr_3fr_3fr_2fr] size-full gap-3 text-left text-ellipsis'>
-            <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.first_name + ' ' + userSubmission.user.last_name}</div>
+            <div className='font-normal text-sm min-h-10 content-center'>{`${userSubmission.user.first_name} ${userSubmission.user.last_name}`}</div>
             <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.email}</div>
             <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.study.group.name}</div>
             <div className='font-normal text-sm min-h-10 content-center'>{userSubmission.user.studyyear.group.name}</div>

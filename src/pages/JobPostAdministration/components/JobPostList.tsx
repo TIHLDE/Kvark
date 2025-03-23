@@ -1,12 +1,12 @@
+import { ChevronRight, List } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useJobPosts } from '~/hooks/JobPost';
 import type { JobPost } from '~/types';
-import URLS from '~/URLS';
-import { ChevronRight, List } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const JobPostList = () => {
   const [open, setOpen] = useState<boolean>(false);

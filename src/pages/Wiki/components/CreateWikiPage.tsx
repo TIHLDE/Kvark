@@ -1,4 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
@@ -8,14 +15,7 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateWikiPage } from '~/hooks/Wiki';
 import type { WikiPage } from '~/types';
-import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
-import { Plus } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),

@@ -1,3 +1,5 @@
+import { parseISO } from 'date-fns';
+import { Trash } from 'lucide-react';
 import EventListItem from '~/components/miscellaneous/EventListItem';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -6,8 +8,6 @@ import { useDeleteStrike } from '~/hooks/Strike';
 import { useUserPermissions } from '~/hooks/User';
 import type { Strike, UserBase } from '~/types';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Trash } from 'lucide-react';
 
 export type StrikeProps = {
   strike: Strike;

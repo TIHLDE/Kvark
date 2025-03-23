@@ -1,12 +1,12 @@
-import { Button } from '~/components/ui/button';
-import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
-import { useIsAuthenticated, useUser } from '~/hooks/User';
-import { useAnalytics, usePersistedState } from '~/hooks/Utils';
-import URLS from '~/URLS';
 import { getYear } from 'date-fns';
 import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router';
+import URLS from '~/URLS';
+import { Button } from '~/components/ui/button';
+import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
+import { useIsAuthenticated, useUser } from '~/hooks/User';
+import { useAnalytics, usePersistedState } from '~/hooks/Utils';
 
 const NewStudentBox = () => {
   const { event } = useAnalytics();
@@ -27,15 +27,14 @@ const NewStudentBox = () => {
   const [header, text] = useMemo(() => {
     if (isLoading && isAuthenticated) {
       return ['', ''];
-    } else if (user) {
+    }
+    if (user) {
       if (user.studyyear.group?.name === `${getYear(new Date())}`) {
         return [HEADER.NEW_STUDENT, TEXT.NEW_STUDENT];
-      } else {
-        return [HEADER.OLD_STUDENT, TEXT.OLD_STUDENT];
       }
-    } else {
-      return [HEADER.NEW_STUDENT, TEXT.NO_AUTH];
+      return [HEADER.OLD_STUDENT, TEXT.OLD_STUDENT];
     }
+      return [HEADER.NEW_STUDENT, TEXT.NO_AUTH];
   }, [user, isAuthenticated]);
 
   if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {

@@ -1,10 +1,10 @@
+import { useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { toast } from 'sonner';
 import { authClientWithRedirect } from '~/api/auth';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { useCreateBadge } from '~/hooks/Badge';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { toast } from 'sonner';
 
 import type { Route } from './+types';
 
@@ -17,7 +17,7 @@ export default function BadgesGet() {
   const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
 
-  const submit = () => {
+  const submit = useCallback(() => {
     const formatedId = flag.replace(/flag{/gi, '').replace(/}/gi, '');
     createUserBadge.mutate(formatedId, {
       onSuccess: () => {
@@ -28,13 +28,13 @@ export default function BadgesGet() {
         toast.error(e.detail || 'Noe gikk galt');
       },
     });
-  };
+  }, [createUserBadge, flag]);
 
   useEffect(() => {
     if (badgeId) {
       submit();
     }
-  }, [badgeId]);
+  }, [badgeId, submit]);
 
   return (
     <div className='mt-4 flex items-center space-x-4'>

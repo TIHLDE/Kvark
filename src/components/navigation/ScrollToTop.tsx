@@ -10,7 +10,7 @@ const ScrollToTop = () => {
       setLastPath(pathname);
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, lastPath]);
 
   return null;
 };

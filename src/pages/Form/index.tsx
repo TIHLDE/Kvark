@@ -1,4 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { parseISO } from 'date-fns';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate, useParams } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import { authClientWithRedirect } from '~/api/auth';
 import FormView from '~/components/forms/FormView';
 import Page from '~/components/navigation/Page';
@@ -11,14 +18,7 @@ import { useAnalytics } from '~/hooks/Utils';
 import Http404 from '~/pages/Http404';
 import type { SelectFieldSubmission, Submission, TextFieldSubmission } from '~/types';
 import { EventFormType, FormResourceType } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import type { Route } from './+types';
 
@@ -54,7 +54,7 @@ export default function FormPage() {
       <>
         {form?.resource_type === FormResourceType.EVENT_FORM && (
           <>
-            {`Arrangøren av `}
+            {'Arrangøren av '}
             <Link to={`${URLS.events}${form.event.id}/`}>{`"${form.event.title}"`}</Link>
             {`, som ble holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${
               form.event.location

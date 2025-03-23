@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
 import { cn } from '~/lib/utils';
-import { useEffect, useState } from 'react';
 
 export type AspectRatioImgProps = {
   alt: string;

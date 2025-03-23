@@ -1,11 +1,18 @@
+import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
+import { nb } from 'date-fns/locale';
+import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { toast } from 'sonner';
+import URLS from '~/URLS';
 import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
 import FormUserAnswers from '~/components/forms/FormUserAnswers';
 import DetailContent from '~/components/miscellaneous/DetailContent';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import QRButton from '~/components/miscellaneous/QRButton';
-import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from '~/components/miscellaneous/ShareButton';
 import UpdatedAgo from '~/components/miscellaneous/UpdatedAgo';
+import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
 import { Alert, AlertDescription } from '~/components/ui/alert';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -32,14 +39,7 @@ import EventPriorityPools from '~/pages/EventDetails/components/EventPriorityPoo
 import EventPublicRegistrationsList from '~/pages/EventDetails/components/EventPublicRegistrationsList';
 import { EventsSubscription } from '~/pages/Profile/components/ProfileEvents';
 import type { Event, Registration } from '~/types';
-import URLS from '~/URLS';
 import { formatDate, getICSFromEvent, getStrikesDelayedRegistrationHours } from '~/utils';
-import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHours } from 'date-fns';
-import { nb } from 'date-fns/locale';
-import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import { toast } from 'sonner';
 
 export type EventRendererProps = {
   data: Event;
@@ -360,7 +360,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               title='Kontaktperson:'
             />
           )}
-          {data.paid_information && <DetailContent info={data.paid_information.price + ' kr'} title='Pris:' />}
+          {data.paid_information && <DetailContent info={`${data.paid_information.price} kr`} title='Pris:' />}
         </CardContent>
       </Card>
       {data.sign_up && (

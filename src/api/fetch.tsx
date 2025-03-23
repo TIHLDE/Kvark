@@ -8,8 +8,7 @@ type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type FetchProps = {
   method: RequestMethodType;
   url: string;
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
-  data?: Record<string, unknown | any>;
+  data?: object;
   withAuth?: boolean;
   file?: File | File[] | Blob;
 };
@@ -32,14 +31,13 @@ export const IFetch = <T,>({ method, url, data = {}, withAuth = true, file }: Fe
         return response.json().then((responseData: RequestResponse) => {
           throw responseData;
         });
-      } else {
-        throw { detail: response.statusText } as RequestResponse;
       }
+      throw { detail: response.statusText } as RequestResponse;
     }
     return response.json().then((responseData: T) => responseData);
   });
 };
-const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, files?: File | File[] | Blob) => {
+const request = (method: RequestMethodType, url: string, headers: Headers, data: object, files?: File | File[] | Blob) => {
   const getBody = () => {
     if (files) {
       const data = new FormData();
@@ -49,9 +47,8 @@ const request = (method: RequestMethodType, url: string, headers: Headers, data:
         data.append('file', files);
       }
       return data;
-    } else {
-      return method !== 'GET' ? JSON.stringify(data) : undefined;
     }
+    return method !== 'GET' ? JSON.stringify(data) : undefined;
   };
   const requestUrl = method === 'GET' ? url + argsToParams(data) : url;
   return new Request(requestUrl, {

@@ -1,3 +1,5 @@
+import { Scale } from 'lucide-react';
+import { useParams } from 'react-router';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Expandable from '~/components/ui/expandable';
@@ -5,8 +7,6 @@ import { useGroup, useGroupLaws } from '~/hooks/Group';
 import { useUser } from '~/hooks/User';
 import AddLawDialog from '~/pages/Groups/laws/AddLawDialog';
 import LawItem from '~/pages/Groups/laws/LawItem';
-import { Scale } from 'lucide-react';
-import { useParams } from 'react-router';
 
 const GroupLaws = () => {
   const { slug } = useParams<'slug'>();

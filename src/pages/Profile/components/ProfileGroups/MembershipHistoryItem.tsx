@@ -1,12 +1,12 @@
+import { parseISO } from 'date-fns';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
 import { Card, CardContent } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { MembershipHistory } from '~/types';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Link } from 'react-router';
 
 export type MembershipItemProps = {
   membershipHistory: MembershipHistory;

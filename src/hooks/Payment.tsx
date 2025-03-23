@@ -1,6 +1,6 @@
+import { type UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import type { Order, RequestResponse } from '~/types';
-import { useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 export const ORDER_QUERY_KEYS = 'payment';
 

@@ -1,11 +1,11 @@
+import { LogIn, Plus, User } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { Button } from '~/components/ui/button';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
 import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
-import { LogIn, Plus, User } from 'lucide-react';
-import { Link } from 'react-router';
 
 const Wave = () => {
   const { event } = useAnalytics();
@@ -99,7 +99,8 @@ function WaveSvg({ className, type }: WaveSvgProps) {
         </g>
       </svg>
     );
-  } else if (type === 'mid') {
+  }
+  if (type === 'mid') {
     return (
       <svg
         className={className}
@@ -115,7 +116,7 @@ function WaveSvg({ className, type }: WaveSvgProps) {
         </g>
       </svg>
     );
-  } else {
+  }
     return (
       <svg
         className={className}
@@ -131,5 +132,4 @@ function WaveSvg({ className, type }: WaveSvgProps) {
         </g>
       </svg>
     );
-  }
 }

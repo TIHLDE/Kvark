@@ -1,5 +1,5 @@
-import type { FileObject } from '~/components/inputs/Upload';
 import { toast } from 'sonner';
+import type { FileObject } from '~/components/inputs/Upload';
 
 import API from './api';
 
@@ -18,17 +18,15 @@ export function uploadFileWithToaster(file: File, options: UploadWithSonnerOptio
         res({ success: true, url });
         if (typeof options.success === 'function') {
           return options.success(url);
-        } else {
-          return options.success ?? `Fil lastet opp`;
         }
+        return options.success ?? 'Fil lastet opp';
       },
       error: (error) => {
         res({ success: false });
         if (typeof options.error === 'function') {
           return options.error(error);
-        } else {
-          return options.error ?? `Kunne ikke laste opp fil`;
         }
+        return options.error ?? 'Kunne ikke laste opp fil';
       },
     });
   });

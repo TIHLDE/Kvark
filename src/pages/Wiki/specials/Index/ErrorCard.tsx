@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Github, Mail, Slack } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 
 const LINKS = [
   { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: Slack },

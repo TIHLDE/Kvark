@@ -1,11 +1,11 @@
+import { Folder, List, Workflow } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { Button } from '~/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
 import { Tree, type TreeDataItem } from '~/components/ui/tree';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useWikiTree } from '~/hooks/Wiki';
 import type { WikiTree } from '~/types';
-import { Folder, List, Workflow } from 'lucide-react';
-import { useNavigate } from 'react-router';
 
 const TreeView = () => {
   const { data } = useWikiTree();
@@ -34,7 +34,7 @@ const TreeView = () => {
       data={[createNodes(data, '')]}
       folderIcon={Folder}
       itemIcon={Workflow}
-      onSelectChange={(item) => navigate('/wiki-old/' + cleansePath(item?.id || ''))}
+      onSelectChange={(item) => navigate(`/wiki-old/${cleansePath(item?.id || '')}`)}
     />
   );
 };

@@ -1,3 +1,7 @@
+import type { ReactNode } from 'react';
+import { type QueryKey, type UseMutationResult, type UseQueryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate, useRevalidator } from 'react-router';
+import URLS from '~/URLS';
 import API from '~/api/api';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
 import { ACCESS_TOKEN } from '~/constant';
@@ -19,10 +23,6 @@ import type {
   UserPermissions,
 } from '~/types';
 import type { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
-import type { ReactNode } from 'react';
-import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from 'react-query';
-import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -78,7 +78,7 @@ export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
   );
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useUserForms = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
     [USER_FORMS_QUERY_KEY, filters],
@@ -120,7 +120,7 @@ export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestRes
   });
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useUsers = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
     [USERS_QUERY_KEY, filters],

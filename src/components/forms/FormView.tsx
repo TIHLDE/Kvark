@@ -1,8 +1,8 @@
+import type { FieldValues, UseFormReturn } from 'react-hook-form';
 import FieldView from '~/components/forms/FieldView';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import type { Form } from '~/types';
-import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 export type FormViewProps<TFormValues extends FieldValues> = {
   form: Form;

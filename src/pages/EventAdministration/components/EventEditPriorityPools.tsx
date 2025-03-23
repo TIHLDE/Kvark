@@ -1,12 +1,12 @@
+import { Command as CommandPrimitive } from 'cmdk';
+import { Trash, X } from 'lucide-react';
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 import { useGroupsByType } from '~/hooks/Group';
 import type { BaseGroup, GroupList, PriorityPoolMutate } from '~/types';
 import { GroupType } from '~/types/Enums';
-import { Command as CommandPrimitive } from 'cmdk';
-import { Trash, X } from 'lucide-react';
-import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 
 export type EventEditPriorityPoolsProps = {
   priorityPools: Array<PriorityPoolMutate>;

@@ -1,7 +1,7 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
-  "files": { "ignoreUnknown": false, "ignore": ["src/components/ui/", "src/lib/utils.ts"] },
+  "files": { "ignore": ["src/components/ui/", "src/lib/utils.ts"] },
   "formatter": {
     "enabled": true,
     "useEditorconfig": true,
@@ -18,7 +18,21 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "a11y": {
+        "useButtonType": "off",
+        "noSvgWithoutTitle": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "suspicious": {
+        "noConsoleLog": "warn",
+        "noArrayIndexKey": "off"
+      },
+      "style": {
+        "useSelfClosingElements": "off"
+      }
     },
     "ignore": ["./src/components/ui/", "./src/lib/utils.ts"]
   },

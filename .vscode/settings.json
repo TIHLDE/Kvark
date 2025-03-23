@@ -1,10 +1,4 @@
 {
-  "files.exclude": {
-    "**/.git": true,
-    "**/node_modules": true,
-    "**/build": true,
-    "**/coverage": true
-  },
   "files.eol": "\n",
 
   // Disable ESLint and Prettier

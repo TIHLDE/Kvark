@@ -1,3 +1,4 @@
+import { type QueryKey, type UseInfiniteQueryOptions, type UseMutationResult, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import API from '~/api/api';
 import { FORM_QUERY_KEY } from '~/hooks/Form';
@@ -15,13 +16,12 @@ import type {
   RequestResponse,
   User,
 } from '~/types';
-import { type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const EVENT_QUERY_KEYS = {
   all: ['event'] as const,
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   list: (filters?: any) => [...EVENT_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   list_admin: (filters?: any) => [...EVENT_QUERY_KEYS.all, 'admin_list', ...(filters ? [filters] : [])] as const,
   detail: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.all, eventId] as const,
   statistics: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'statistics'] as const,
@@ -29,7 +29,7 @@ export const EVENT_QUERY_KEYS = {
   public_registrations: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'public_registrations'] as const,
   registrations: {
     all: (eventId: Event['id']) => [...EVENT_QUERY_KEYS.detail(eventId), 'registrations'] as const,
-    // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+    // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
     list: (eventId: Event['id'], filters?: any) => [...EVENT_QUERY_KEYS.registrations.all(eventId), 'list', ...(filters ? [filters] : [])] as const,
     detail: (eventId: Event['id'], userId: User['user_id']) => [...EVENT_QUERY_KEYS.registrations.all(eventId), userId] as const,
   },
@@ -38,7 +38,7 @@ export const EVENT_QUERY_KEYS = {
 export const useEventById = (eventId: Event['id']) =>
   useQuery<Event, RequestResponse>(EVENT_QUERY_KEYS.detail(eventId), () => API.getEvent(eventId), { enabled: eventId !== -1 });
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useEvents = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list(filters),
@@ -48,7 +48,7 @@ export const useEvents = (filters?: any) =>
     },
   );
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useEventsWhereIsAdmin = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     EVENT_QUERY_KEYS.list_admin(filters),
@@ -110,7 +110,7 @@ export const useEventStatistics = (eventId: Event['id']) =>
 
 export const useEventRegistrations = (
   eventId: Event['id'],
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   filters?: any,
   options?: UseInfiniteQueryOptions<
     PaginationResponse<Registration>,

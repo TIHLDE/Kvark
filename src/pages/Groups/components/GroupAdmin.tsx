@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import FormBasicSwitch from '~/components/inputs/Switch';
@@ -10,10 +14,6 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useUpdateGroup } from '~/hooks/Group';
 import type { FormGroupValues } from '~/types';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type UpdateGroupModalProps = {
   group: FormGroupValues;

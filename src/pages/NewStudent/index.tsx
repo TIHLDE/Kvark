@@ -1,11 +1,11 @@
+import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
+import { useMemo } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import Page from '~/components/navigation/Page';
 import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
-import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
-import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';
@@ -137,7 +137,7 @@ const NewStudent = () => {
         <h2 className='text-2xl md:text-5xl font-semibold mx-auto text-center pb-8'>
           TIHLDEs avis heter Töddel <br /> - les siste utgave her
         </h2>
-        {toddels && toddels[0] && (
+        {toddels?.[0] && (
           <Link className='max-w-5xl w-full mx-auto' to='/toddel'>
             <img alt={toddels[0].title} className='rounded-3xl max-w-3xl w-full mx-auto' src={toddels[0].image} />
           </Link>

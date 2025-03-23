@@ -31,14 +31,14 @@ export const readFile = (file: File): Promise<string> => {
  * @param {Object} pixelCrop - pixelCrop Object provided by react-easy-crop
  * @param {string} imgType - type of image
  */
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const getCroppedImgAsBlob = async (imageSrc: string, pixelCrop: any, imgType = 'image/png'): Promise<Blob> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    return Promise.reject(new Error(`Could not load canvas`));
+    return Promise.reject(new Error('Could not load canvas'));
   }
 
   const maxSize = Math.max(image.width, image.height);

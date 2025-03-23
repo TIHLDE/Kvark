@@ -1,8 +1,8 @@
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useDeleteEventRegistration } from '~/hooks/Event';
 import type { UserList } from '~/types';
-import { toast } from 'sonner';
 
 type DeleteRegistrationProps = {
   userInfo: UserList;
@@ -15,7 +15,7 @@ const DeleteRegistration = ({ userInfo, eventId }: DeleteRegistrationProps) => {
   const deleteHandler = () => {
     deleteRegistration.mutate(userInfo.user_id, {
       onSuccess: () => {
-        toast.success(`Deltageren ble fjernet`);
+        toast.success('Deltageren ble fjernet');
       },
       onError: (e) => {
         toast.error(e.detail);

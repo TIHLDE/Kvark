@@ -1,9 +1,9 @@
+import type { ReactNode } from 'react';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/components/ui/form';
 import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
 import { cn } from '~/lib/utils';
-import type { ReactNode } from 'react';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type FormBasicSwitchProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;

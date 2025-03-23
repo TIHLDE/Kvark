@@ -1,25 +1,24 @@
+import { ChevronRight, FileText, Loader2, Search } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
-import { useAnalytics, useDebounce } from '~/hooks/Utils';
+import { analyticsEvent, useDebounce } from '~/hooks/Utils';
 import { useWikiSearch } from '~/hooks/Wiki';
 import type { WikiChildren } from '~/types';
-import { ChevronRight, FileText, Loader2, Search } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const WikiSearch = () => {
-  const { event } = useAnalytics();
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
   const filters = useMemo(() => {
-    const filters: Record<string, unknown> = {};
+    const _filters: Record<string, unknown> = {};
     if (debouncedSearch) {
-      filters.search = debouncedSearch;
-      event('search', 'pages', `Search for: ${debouncedSearch}`);
+      _filters.search = debouncedSearch;
+      analyticsEvent('search', 'pages', `Search for: ${debouncedSearch}`);
     }
-    return filters;
+    return _filters;
   }, [debouncedSearch]);
   const { data, hasNextPage, fetchNextPage, isLoading } = useWikiSearch(filters);
   const pages = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);

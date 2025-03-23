@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Copy, Network, Plus, Trash } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import { authClientWithRedirect } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -12,11 +17,6 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useCreateShortLink, useDeleteShortLink, useShortLinks } from '~/hooks/ShortLink';
 import { useAnalytics, useShare } from '~/hooks/Utils';
 import type { ShortLink } from '~/types';
-import { Copy, Network, Plus, Trash } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import type { Route } from './+types';
 
@@ -41,7 +41,7 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
       url: `https://s.tihlde.org/${shortLink.name}`,
     },
     'Linken ble kopiert til utklippstavlen',
-    () => event(`share-shortlink`, 'share', `https://s.tihlde.org/${shortLink.name}`),
+    () => event('share-shortlink', 'share', `https://s.tihlde.org/${shortLink.name}`),
   );
 
   const handleDelete = () => {

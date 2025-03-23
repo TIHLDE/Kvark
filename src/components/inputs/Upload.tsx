@@ -1,4 +1,12 @@
 import { useDropzone } from '@uploadthing/react';
+import { CloudUploadIcon, FilePlus } from 'lucide-react';
+import { ImagePlus, Trash2, Upload, X } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
+import Cropper, { type Area } from 'react-easy-crop';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import API from '~/api/api';
 import { blobToFile, getCroppedImgAsBlob, readFile } from '~/components/inputs/ImageUploadUtils';
 import { Button } from '~/components/ui/button';
@@ -8,14 +16,6 @@ import { Label } from '~/components/ui/label';
 import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
 import { uuidv4 } from '~/utils';
-import { CloudUploadIcon, FilePlus } from 'lucide-react';
-import { ImagePlus, Trash2, Upload, X } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
-import { type ChangeEvent, useEffect, useMemo, useRef } from 'react';
-import Cropper, { type Area } from 'react-easy-crop';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import { FormField } from '../ui/form';
 import { FormInputBase } from './Input';
@@ -28,9 +28,12 @@ type FormImageMultipleUploadProps = {
 
 // File multiple upload
 export const FileMultipleUpload = ({ fileTypes, setFiles, label = 'Velg eller dra filer hit' }: FormImageMultipleUploadProps) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]);
-  }, []);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setFiles((prev) => [...prev, ...Array.from(acceptedFiles)]);
+    },
+    [setFiles],
+  );
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop, accept: fileTypes });
 
@@ -153,7 +156,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
             isLoading
               ? 'cursor-default'
               : 'cursor-pointer' +
-                ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
+                'flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600'
           }
           htmlFor='image-upload-button'
         >
@@ -179,7 +182,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
           </Button>
         </div>
         <div className='p-2 rounded-md border'>
-          <img className='max-h-[200px] rounded-md' loading='lazy' src={url as string} />
+          <img className='max-h-[200px] rounded-md' alt='current' loading='lazy' src={url as string} />
         </div>
       </div>
     );
@@ -267,7 +270,7 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
             isLoading
               ? 'cursor-default'
               : 'cursor-pointer' +
-                ` flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600`
+                ' flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg bg-background md:hover:bg-secondary md:dark:hover:border-gray-600'
           }
           htmlFor='file-upload-button'
         >
@@ -330,16 +333,13 @@ export function useImageUpload({ value }: { value?: FileObject[] }) {
     }
   }, []);
 
-  const handleRemove = useCallback(
-    (id?: string) => {
-      if (id) {
-        setFiles((prev) => prev.filter((f) => f.id !== id));
-      } else {
-        setFiles([]);
-      }
-    },
-    [files, setFiles],
-  );
+  const handleRemove = useCallback((id?: string) => {
+    if (id) {
+      setFiles((prev) => prev.filter((f) => f.id !== id));
+    } else {
+      setFiles([]);
+    }
+  }, []);
 
   return {
     files,
@@ -382,7 +382,7 @@ export function ImageUpload(props: ImageUploadProps) {
 
   useEffect(() => {
     props.onChange?.(files);
-  }, [files]);
+  }, [files, props.onChange]);
 
   const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : (props.accept ?? 'image/*');
 
@@ -427,6 +427,7 @@ export function ImageUpload(props: ImageUploadProps) {
     <div>
       <Input accept={accept} className='hidden' multiple={props.multiple} onChange={handleFileChange} ref={fileInputRef} type='file' />
       {!previewFile ? (
+        // biome-ignore lint: Button with on click this is a file drop field
         <div
           className={cn(
             'flex h-64 cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 transition-colors hover:bg-muted',
@@ -542,7 +543,7 @@ export function FileImage(props: FileImageProps) {
     };
   }, [src]);
 
-  return <img {...imgProps} src={typeof src === 'string' ? src : (previewUrl ?? '')} />;
+  return <img {...imgProps} alt='upload preview' src={typeof src === 'string' ? src : (previewUrl ?? '')} />;
 }
 
 type FileImagePreviewProps = {

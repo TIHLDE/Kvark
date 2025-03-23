@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+import { PencilIcon } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import DetailContent from '~/components/miscellaneous/DetailContent';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
@@ -9,11 +13,7 @@ import { HavePermission } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { JobPost } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate, getJobpostType } from '~/utils';
-import { parseISO } from 'date-fns';
-import { PencilIcon } from 'lucide-react';
-import { Link } from 'react-router';
 
 export type JobPostRendererProps = {
   data: JobPost;
@@ -50,7 +50,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
             <DetailContent info={data.company} title='Bedrift: ' />
             <DetailContent info={data.is_continuously_hiring ? 'Fortløpende opptak' : deadline} title='Søknadsfrist: ' />
             <DetailContent
-              info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
+              info={data.class_start === data.class_end ? `${data.class_start}.` : `${data.class_start}. - ${data.class_end}.`}
               title='Årstrinn: '
             />
             <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />

@@ -1,3 +1,5 @@
+import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { USERS_ENDPOINT } from '~/api/api';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
@@ -6,8 +8,6 @@ import { Button, PaginateButton } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { TIHLDE_API_URL } from '~/constant';
 import { useUser, useUserEvents } from '~/hooks/User';
-import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
 
 export const EventsSubscription = () => {
   const { data: user } = useUser();

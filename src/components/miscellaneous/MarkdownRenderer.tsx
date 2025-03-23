@@ -1,3 +1,7 @@
+import { type ReactNode, createElement, lazy } from 'react';
+import React from 'react';
+import type { Components } from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
@@ -8,10 +12,6 @@ import { useEventById } from '~/hooks/Event';
 import { useJobPostById } from '~/hooks/JobPost';
 import { useNewsById } from '~/hooks/News';
 import type { Event, EventList, JobPost, News } from '~/types';
-import { createElement, lazy, type ReactNode } from 'react';
-import React from 'react';
-import type { Components } from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
 
 const ReactMarkdown = lazy(() => import('react-markdown'));
 
@@ -48,13 +48,15 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
   const value = typeof children === 'string' ? children : String(children);
   if (inline) {
     return <code className='bg-card p-1 rounded-md'>{value}</code>;
-  } else if (language === LanguageTypes.EXPANDLIST) {
+  }
+  if (language === LanguageTypes.EXPANDLIST) {
     return (
       <div className='mb-2'>
         <ReactMarkdown components={components}>{value}</ReactMarkdown>
       </div>
     );
-  } else if (language === LanguageTypes.EXPAND) {
+  }
+  if (language === LanguageTypes.EXPAND) {
     const header = value.split('::')[0] || '';
     const val = value.split('::')[1] || '';
     return (
@@ -62,15 +64,19 @@ export const CodeBlock = ({ inline = false, className: language, children }: Cod
         <ReactMarkdown components={components}>{val}</ReactMarkdown>
       </Expandable>
     );
-  } else if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
+  }
+  if (language === LanguageTypes.EVENT || language === LanguageTypes.JOBPOST || language === LanguageTypes.NEWS) {
     const id = Number(value);
     if (!Number.isInteger(id)) {
       return null;
-    } else if (language === LanguageTypes.EVENT) {
+    }
+    if (language === LanguageTypes.EVENT) {
       return <EventCard id={id} />;
-    } else if (language === LanguageTypes.JOBPOST) {
+    }
+    if (language === LanguageTypes.JOBPOST) {
       return <JobPostCard id={id} />;
-    } else if (language === LanguageTypes.NEWS) {
+    }
+    if (language === LanguageTypes.NEWS) {
       return <NewsCard id={id} />;
     }
   }
@@ -117,7 +123,7 @@ export default function MarkdownRenderer({ value }: MarkdownRendererProps) {
     >
       <ReactMarkdown
         components={components}
-        // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+        // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
         rehypePlugins={[rehypeRaw] as any}
       >
         {value || ''}

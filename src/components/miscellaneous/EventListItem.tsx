@@ -1,3 +1,6 @@
+import { parseISO } from 'date-fns';
+import { Calendar, Shapes } from 'lucide-react';
+import { useMemo } from 'react';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
@@ -5,9 +8,6 @@ import { cn } from '~/lib/utils';
 import type { EventList } from '~/types';
 import { Category, Groups } from '~/types/Enums';
 import { formatDate, urlEncode } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Calendar, Shapes } from 'lucide-react';
-import { useMemo } from 'react';
 
 import NavLink from '../ui/navlink';
 

@@ -1,10 +1,10 @@
+import { Star } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useUpdateMembership } from '~/hooks/Membership';
 import type { Membership, UserList } from '~/types';
 import { MembershipType } from '~/types/Enums';
-import { Star } from 'lucide-react';
-import { toast } from 'sonner';
 
 type PromoteMemberProps = {
   user: UserList;

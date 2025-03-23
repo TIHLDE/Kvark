@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
+import { useParams } from 'react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { useUserBadges } from '~/hooks/User';
 import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
-import { useMemo } from 'react';
-import { useParams } from 'react-router';
 
 const ProfileBadges = () => {
   const { userId } = useParams();

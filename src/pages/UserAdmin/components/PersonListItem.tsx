@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormTextarea from '~/components/inputs/Textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
@@ -12,10 +16,6 @@ import UserDeleteDialog from '~/pages/Profile/components/ProfileSettings/UserDel
 import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSettings';
 import type { UserList } from '~/types';
 import { getUserAffiliation } from '~/utils';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 const formSchema = z.object({
   reason: z.string().optional(),

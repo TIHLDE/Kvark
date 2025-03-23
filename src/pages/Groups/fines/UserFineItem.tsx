@@ -1,3 +1,6 @@
+import { Check, HandCoins } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button, PaginateButton } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -7,9 +10,6 @@ import { useAnalytics } from '~/hooks/Utils';
 import FineItem, { type FineItemProps } from '~/pages/Groups/fines/FineItem';
 import { useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import type { GroupUserFine } from '~/types';
-import { Check, HandCoins } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
@@ -25,7 +25,7 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const fines = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const toggleApproved = () => {
-    event('update-batch', 'fines', `Approved all fines of user`);
+    event('update-batch', 'fines', 'Approved all fines of user');
     updateUserFines.mutate(
       { approved: true },
       {
@@ -40,7 +40,7 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   };
 
   const togglePayed = () => {
-    event('update-batch', 'fines', `Payed all fines of user`);
+    event('update-batch', 'fines', 'Payed all fines of user');
     updateUserFines.mutate(
       { payed: true },
       {

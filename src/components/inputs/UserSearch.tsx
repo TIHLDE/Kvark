@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { Button } from '~/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '~/components/ui/command';
 import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
@@ -8,8 +10,6 @@ import { useUsers } from '~/hooks/User';
 import { useDebounce } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
 import type { Group, UserBase } from '~/types';
-import { useState } from 'react';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import MultiSelect from './MultiSelect';
 
@@ -71,8 +71,7 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                     <CommandList>
                       <CommandEmpty>{isLoading ? 'Søker...' : 'Ingen brukere funnet'}</CommandEmpty>
                       <CommandGroup>
-                        {options &&
-                          options[0].map((option, index) => (
+                        {options?.[0].map((option, index) => (
                             <CommandItem
                               key={index}
                               onSelect={() => {
@@ -119,8 +118,7 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                   <CommandList>
                     <CommandEmpty>{isLoading ? 'Søker...' : 'Ingen brukere funnet'}</CommandEmpty>
                     <CommandGroup>
-                      {options &&
-                        options[0].map((option, index) => (
+                      {options?.[0].map((option, index) => (
                           <CommandItem
                             key={index}
                             onSelect={() => {

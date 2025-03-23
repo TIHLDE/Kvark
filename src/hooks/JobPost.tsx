@@ -1,6 +1,6 @@
+import { type UseMutationResult, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import type { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const JOBPOST_QUERY_KEY = 'jobpost';
 
@@ -8,7 +8,7 @@ export const useJobPostById = (id: number) => {
   return useQuery<JobPost, RequestResponse>([JOBPOST_QUERY_KEY, id], () => API.getJobPost(id), { enabled: id !== -1 });
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useJobPosts = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<JobPost>, RequestResponse>(
     [JOBPOST_QUERY_KEY, filters],

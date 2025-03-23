@@ -1,10 +1,10 @@
+import { type ReactNode, useMemo } from 'react';
+import URLS from '~/URLS';
 import BottomBar from '~/components/navigation/BottomBar';
 import Footer from '~/components/navigation/Footer';
 import Topbar from '~/components/navigation/Topbar';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
 import { useIsAuthenticated } from '~/hooks/User';
-import URLS from '~/URLS';
-import { type ReactNode, useMemo } from 'react';
 
 export type NavigationOptions = {
   noFooter: boolean;

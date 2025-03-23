@@ -1,4 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Info } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -12,12 +18,6 @@ import { useRedirectUrl } from '~/hooks/Misc';
 import { useCreateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { UserCreate } from '~/types';
-import URLS from '~/URLS';
-import { Info } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 const formSchema = z
   .object({
@@ -75,7 +75,7 @@ const SignUp = () => {
     createUser.mutate(userData, {
       onSuccess: () => {
         run();
-        event('signup', 'auth', `Signed up`);
+        event('signup', 'auth', 'Signed up');
         setLogInRedirectURL(undefined);
         navigate(redirectURL || URLS.login);
       },

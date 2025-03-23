@@ -1,6 +1,6 @@
+import { type UseMutationResult, useMutation, useQuery, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import type { RequestResponse, UserBio, UserBioCreate } from '~/types';
-import { useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 import { USER_QUERY_KEY } from './User';
 

@@ -1,12 +1,12 @@
+import { useState } from 'react';
+import { Link } from 'react-router';
+import { toast } from 'sonner';
 import DISCORD from '~/assets/icons/discord.svg';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Switch } from '~/components/ui/switch';
 import { useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from '~/hooks/User';
 import type { User, UserNotificationSetting, UserNotificationSettingChoice } from '~/types';
-import { useState } from 'react';
-import { Link } from 'react-router';
-import { toast } from 'sonner';
 
 type ConnectWithSlackProps = {
   className?: string;

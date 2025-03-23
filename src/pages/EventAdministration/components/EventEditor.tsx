@@ -1,5 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SelectGroup } from '@radix-ui/react-select';
+import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
+import { Info } from 'lucide-react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import BoolExpand from '~/components/inputs/BoolExpand';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
@@ -21,12 +27,6 @@ import EventEditPriorityPools from '~/pages/EventAdministration/components/Event
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
 import type { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from '~/types';
 import { GroupType, MembershipType } from '~/types/Enums';
-import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { Info } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import CloseEvent from './CloseEvent';
 import DeleteEvent from './DeleteEvent';
@@ -215,7 +215,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     return memberships
       .filter((membership) => membership.membership_type === MembershipType.LEADER || [GroupType.BOARD, GroupType.SUBGROUP].includes(membership.group.type))
       .map((membership) => ({ type: 'group', group: membership.group }));
-  }, [memberships, permissions, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
+  }, [memberships, permissions, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event | null => {
     const title = form.getValues('title');
@@ -320,7 +320,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
    * @param start The start-date
    */
   const updateDates = (start?: Date) => {
-    if (start && start instanceof Date && !isNaN(start.valueOf())) {
+    if (start && start instanceof Date && !Number.isNaN(start.valueOf())) {
       const getDate = (daysBefore: number, hour: number) =>
         startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
       form.setValue('start_registration_at', getDate(7, 12));

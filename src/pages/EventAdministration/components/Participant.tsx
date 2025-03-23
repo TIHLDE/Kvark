@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import StrikeCreateDialog from '~/components/miscellaneous/StrikeCreateDialog';
 import StrikeListItem from '~/components/miscellaneous/StrikeListItem';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
@@ -12,10 +16,6 @@ import { useUserStrikes } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import type { Registration } from '~/types';
 import { formatDate, getUserAffiliation } from '~/utils';
-import { parseISO } from 'date-fns';
-import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import DeleteRegistration from './DeleteRegistration';
 import MoveParticipant from './MoveParticipant';

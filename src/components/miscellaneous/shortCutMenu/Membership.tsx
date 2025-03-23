@@ -1,6 +1,6 @@
-import { useUserMemberships } from '~/hooks/User';
 import { useMemo } from 'react';
 import { useParams } from 'react-router';
+import { useUserMemberships } from '~/hooks/User';
 
 import type { ShortCutMenuProps } from '.';
 import LoadingSpinnner from '../LoadingSpinner';

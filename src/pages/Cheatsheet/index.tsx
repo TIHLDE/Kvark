@@ -1,3 +1,7 @@
+import { getDay, getHours } from 'date-fns';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
+import URLS from '~/URLS';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent } from '~/components/ui/card';
@@ -7,11 +11,7 @@ import { useCheatsheet } from '~/hooks/Cheatsheet';
 import { useInterval } from '~/hooks/Utils';
 import Files from '~/pages/Cheatsheet/components/Files';
 import { CheatsheetStudy } from '~/types/Enums';
-import URLS from '~/URLS';
 import { getUserStudyShort } from '~/utils';
-import { getDay, getHours } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import type { Route } from './+types';
 
@@ -77,7 +77,7 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     if (!study || !studyClass || !isURLValid()) {
       navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
     }
-  }, [getStudy, getClass, isURLValid, search]);
+  }, [getStudy, getClass, isURLValid]);
 
   const setStudyChoice = (newStudy: CheatsheetStudy) => {
     setInput('');

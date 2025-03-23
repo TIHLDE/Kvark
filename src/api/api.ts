@@ -7,7 +7,6 @@ import type {
   Category,
   Cheatsheet,
   CompaniesEmail,
-  createFeedbackInput,
   CreateQRCode,
   Event,
   EventFavorite,
@@ -73,6 +72,7 @@ import type {
   WikiPage,
   WikiRequired,
   WikiTree,
+  createFeedbackInput,
 } from '~/types';
 import { CheatsheetStudy, type MembershipType } from '~/types/Enums';
 
@@ -126,10 +126,10 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
 
   // InfoBanner
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getInfoBanners: (filters?: any) => IFetch<PaginationResponse<InfoBanner>>({ method: 'GET', url: BANNER_ENDPOINT, data: filters || {} }),
   getInfoBanner: (bannerId: InfoBanner['id']) => IFetch<InfoBanner>({ method: 'GET', url: `${BANNER_ENDPOINT}/${bannerId}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getVisibleInfoBanners: (filters?: any) => IFetch<Array<InfoBanner>>({ method: 'GET', url: `${BANNER_ENDPOINT}/visible`, data: filters || {} }),
   createInfoBanner: (item: InfoBanner) => IFetch<InfoBanner>({ method: 'POST', url: `${BANNER_ENDPOINT}/`, data: item }),
   updateInfoBanner: (bannerId: InfoBanner['id'], item: Partial<InfoBanner>) =>
@@ -139,16 +139,16 @@ export default {
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   getEventStatistics: (eventId: Event['id']) => IFetch<EventStatistics>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/statistics/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getEvents: (filters?: any) => IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getEventsWhereIsAdmin: (filters?: any) => IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/admin/`, data: filters || {} }),
   createEvent: (item: EventMutate) => IFetch<Event>({ method: 'POST', url: `${EVENTS_ENDPOINT}/`, data: item }),
   updateEvent: (eventId: Event['id'], item: EventMutate) => IFetch<Event>({ method: 'PUT', url: `${EVENTS_ENDPOINT}/${String(eventId)}/`, data: item }),
   deleteEvent: (eventId: Event['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   notifyEventRegistrations: (eventId: Event['id'], title: string, message: string) =>
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getPublicEventRegistrations: (eventId: Event['id'], filters?: any) =>
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
   sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
@@ -164,7 +164,7 @@ export default {
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Registration>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/${EVENT_REGISTRATIONS_ENDPOINT}/${userId}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getEventRegistrations: (eventId: Event['id'], filters?: any) =>
     IFetch<PaginationResponse<Registration>>({
       method: 'GET',
@@ -193,14 +193,14 @@ export default {
   deleteForm: (formId: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${FORMS_ENDPOINT}/${formId}/` }),
 
   // Submissions
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getSubmissions: (formId: string, filters?: any) =>
     IFetch<PaginationResponse<UserSubmission>>({ method: 'GET', url: `${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/`, data: filters || {} }),
   createSubmission: (formId: string, submission: Submission) =>
     IFetch<Submission>({ method: 'POST', url: `${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/`, data: submission }),
 
   // Job posts
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getJobPosts: (filters: any = {}) => IFetch<PaginationResponse<JobPost>>({ method: 'GET', url: `${JOBPOSTS_ENDPOINT}/`, data: filters }),
   getJobPost: (id: number) => IFetch<JobPost>({ method: 'GET', url: `${JOBPOSTS_ENDPOINT}/${String(id)}/` }),
   createJobPost: (item: JobPostRequired) => IFetch<JobPost>({ method: 'POST', url: `${JOBPOSTS_ENDPOINT}/`, data: item }),
@@ -209,7 +209,7 @@ export default {
 
   // News
   getNewsItem: (id: number) => IFetch<News>({ method: 'GET', url: `${NEWS_ENDPOINT}/${String(id)}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getNewsItems: (filters?: any) => IFetch<PaginationResponse<News>>({ method: 'GET', url: `${NEWS_ENDPOINT}/`, data: filters || {} }),
   createNewsItem: (item: NewsRequired) => IFetch<News>({ method: 'POST', url: `${NEWS_ENDPOINT}/`, data: item }),
   putNewsItem: (id: number, item: NewsRequired) => IFetch<News>({ method: 'PUT', url: `${NEWS_ENDPOINT}/${String(id)}/`, data: item }),
@@ -224,13 +224,13 @@ export default {
   // User
   getUserData: (userId?: User['user_id']) => IFetch<User>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/` }),
   getUserPermissions: () => IFetch<UserPermissions>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/permissions/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getUserBadges: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getUserEvents: (userId?: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<EventList>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${EVENTS_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getUserForms: (filters?: any) =>
     IFetch<PaginationResponse<Form>>({ method: 'GET', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${FORMS_ENDPOINT}/`, data: filters || {} }),
   getUserMemberships: (userId?: User['user_id']) =>
@@ -239,7 +239,7 @@ export default {
     IFetch<PaginationResponse<MembershipHistory>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${MEMBERSHIP_HISTORIES_ENDPOINT}/` }),
   getUserStrikes: (userId?: User['user_id']) =>
     IFetch<Array<Strike>>({ method: 'GET', url: `${USERS_ENDPOINT}/${userId || ME_ENDPOINT}/${STRIKES_ENDPOINT}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getUsers: (filters?: any) => IFetch<PaginationResponse<User>>({ method: 'GET', url: `${USERS_ENDPOINT}/`, data: filters || {} }),
   updateUserData: (userName: User['user_id'], item: Partial<User>) => IFetch<User>({ method: 'PUT', url: `${USERS_ENDPOINT}/${userName}/`, data: item }),
   getUserNotificationSettings: () => IFetch<Array<UserNotificationSetting>>({ method: 'GET', url: `${NOTIFICATION_SETTINGS_ENDPOINT}/` }),
@@ -257,33 +257,33 @@ export default {
   feideAuthenticate: (code: string) => IFetch<RequestResponse>({ method: 'POST', url: FEIDE_ENDPOINT, data: { code }, withAuth: false }),
 
   // Notifications
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getNotifications: (filters?: any) => IFetch<PaginationResponse<Notification>>({ method: 'GET', url: `${NOTIFICATIONS_ENDPOINT}/`, data: filters || {} }),
   updateNotification: (id: number, item: { read: boolean }) =>
     IFetch<Notification>({ method: 'PUT', url: `${NOTIFICATIONS_ENDPOINT}/${String(id)}/`, data: item }),
 
   // Short links
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getShortLinks: (filters?: any) => IFetch<Array<ShortLink>>({ method: 'GET', url: `${SHORT_LINKS_ENDPOINT}/`, data: filters || {} }),
   createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `${SHORT_LINKS_ENDPOINT}/`, data: item }),
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
 
   // QR codes
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getQRCodes: (filters?: any) => IFetch<Array<QRCode>>({ method: 'GET', url: `${QR_CODE_ENDPOINT}/`, data: filters || {} }),
   createQRCode: (item: CreateQRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
   deleteQRCode: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${QR_CODE_ENDPOINT}/${String(id)}/` }),
 
   // Gallery
   getGallery: (id: Gallery['id']) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${id}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGalleries: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
   createGallery: (item: GalleryCreate) => IFetch<Gallery>({ method: 'POST', url: `${GALLERY_ENDPOINT}/`, data: item }),
   updateGallery: (id: Gallery['id'], item: Partial<Gallery>) => IFetch<Gallery>({ method: 'PUT', url: `${GALLERY_ENDPOINT}/${id}/`, data: item }),
   deleteGallery: (id: Gallery['id']) => IFetch<RequestResponse>({ method: 'DELETE', url: `${GALLERY_ENDPOINT}/${id}/` }),
 
   // Picture
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGalleryPictures: (galleryId: Gallery['id'], filters?: any) =>
     IFetch<PaginationResponse<Picture>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/`, data: filters || {} }),
   getPicture: (galleryId: Gallery['id'], pictureId: Picture['id']) =>
@@ -298,11 +298,11 @@ export default {
   // Strikes
   createStrike: (item: StrikeCreate) => IFetch<Strike>({ method: 'POST', url: `${STRIKES_ENDPOINT}/`, data: item }),
   deleteStrike: (id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${STRIKES_ENDPOINT}/${id}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getStrikes: (filters?: any) => IFetch<PaginationResponse<StrikeList>>({ method: 'GET', url: `${STRIKES_ENDPOINT}/`, data: filters || {} }),
 
   // Cheatsheet
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getCheatsheets: (study: CheatsheetStudy, grade: number, filters?: any) => {
     const tempStudy = study === CheatsheetStudy.DIGSEC ? 'DIGINC' : study;
     return IFetch<PaginationResponse<Cheatsheet>>({
@@ -320,30 +320,30 @@ export default {
   getCategories: () => IFetch<Array<Category>>({ method: 'GET', url: `${CATEGORIES_ENDPOINT}/` }),
 
   // Company form
-  emailForm: (data: CompaniesEmail) => IFetch<RequestResponse>({ method: 'POST', url: `accept-form/`, data, withAuth: false }),
+  emailForm: (data: CompaniesEmail) => IFetch<RequestResponse>({ method: 'POST', url: 'accept-form/', data, withAuth: false }),
 
   // Badges
   getBadge: (badgeId: Badge['id']) => IFetch<Badge>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getBadges: (filters?: any) => IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${BADGES_ENDPOINT}/`, data: filters || {} }),
   createUserBadge: (data: { flag: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getBadgeLeaderboard: (badgeId: Badge['id'], filters?: any) =>
     IFetch<PaginationResponse<BadgeLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getOverallBadgesLeaderboard: (filters?: any) =>
     IFetch<PaginationResponse<BadgesOverallLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getBadgeCategories: (filters?: any) =>
     IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/`, data: filters || {} }),
   getBadgeCategory: (badgeCategoryId: BadgeCategory['id']) =>
     IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
 
   // Membership
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getMemberships: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<Membership>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIPS_ENDPOINT}/`, data: filters || {} }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getMembershipsHistories: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<MembershipHistory>>({
       method: 'GET',
@@ -362,7 +362,7 @@ export default {
     IFetch<MembershipHistory>({ method: 'PUT', url: `${GROUPS_ENDPOINT}/${groupSlug}/${MEMBERSHIP_HISTORIES_ENDPOINT}/${id}/`, data }),
 
   // Group
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGroups: (filters?: any) => IFetch<GroupList[]>({ method: 'GET', url: `${GROUPS_ENDPOINT}/`, data: filters || {} }),
   getGroup: (slug: Group['slug']) => IFetch<Group>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/` }),
   getGroupStatistics: (slug: Group['slug']) => IFetch<GroupMemberStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${slug}/statistics/` }),
@@ -379,19 +379,19 @@ export default {
     IFetch<RequestResponse>({ method: 'DELETE', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_LAWS_ENDPOINT}/${lawId}/` }),
 
   // Group fines
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGroupFines: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<GroupFine>>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/`, data: filters || {} }),
   getGroupFinesStatistics: (groupSlug: Group['slug']) =>
     IFetch<GroupFineStatistics>({ method: 'GET', url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/statistics/` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGroupUsersFines: (groupSlug: Group['slug'], filters?: any) =>
     IFetch<PaginationResponse<GroupUserFine>>({
       method: 'GET',
       url: `${GROUPS_ENDPOINT}/${groupSlug}/${GROUP_FINES_ENDPOINT}/${USERS_ENDPOINT}/`,
       data: filters || {},
     }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getGroupUserFines: (groupSlug: Group['slug'], userId: User['user_id'], filters?: any) =>
     IFetch<PaginationResponse<GroupFine>>({
       method: 'GET',
@@ -417,7 +417,7 @@ export default {
   // Wiki
   getWikiTree: () => IFetch<WikiTree>({ method: 'GET', url: `${WIKI_ENDPOINT}/tree/` }),
   getWikiPage: (path: string) => IFetch<WikiPage>({ method: 'GET', url: `${WIKI_ENDPOINT}/${path}` }),
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getWikiSearch: (filters: any) => IFetch<PaginationResponse<WikiChildren>>({ method: 'GET', url: `${WIKI_ENDPOINT}/`, data: filters }),
   createWikiPage: (data: WikiRequired) => IFetch<WikiPage>({ method: 'POST', url: `${WIKI_ENDPOINT}/`, data }),
   updateWikiPage: (path: string, data: Partial<WikiPage>) => IFetch<WikiPage>({ method: 'PUT', url: `${WIKI_ENDPOINT}/${path}`, data }),
@@ -433,7 +433,7 @@ export default {
   getUserBio: (id: UserBio['id'] | null) => IFetch<UserBio>({ method: 'GET', url: `${BIO_ENDPOINT}${id}/` }),
 
   // Feedback
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   getFeedbacks: (filters?: any) => IFetch<PaginationResponse<Feedback>>({ method: 'GET', url: `${FEEDBACK_ENDPOINT}`, data: filters || {} }),
   createFeedback: (data: createFeedbackInput) => IFetch<Feedback>({ method: 'POST', url: `${FEEDBACK_ENDPOINT}`, data }),
   deleteFeedback: (id: Feedback['id']) => IFetch<Feedback>({ method: 'DELETE', url: `${FEEDBACK_ENDPOINT}${id}/` }),

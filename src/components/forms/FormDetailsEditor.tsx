@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import { FormDetailSwitch } from '~/components/inputs/Switch';
 import FormTextarea from '~/components/inputs/Textarea';
@@ -12,11 +17,6 @@ import { useCreateForm, useDeleteForm, useUpdateForm } from '~/hooks/Form';
 import type { EventForm, Form, FormCreate, GroupForm, TemplateForm } from '~/types';
 import { FormResourceType } from '~/types/Enums';
 import { removeIdsFromFields } from '~/utils';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type FormDetailsEditorProps = {
   form: Form;

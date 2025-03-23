@@ -1,8 +1,8 @@
-import { Badge } from '~/components/ui/badge';
-import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 import { Command as CommandPrimitive } from 'cmdk';
 import { X } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { Badge } from '~/components/ui/badge';
+import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 
 export type MultiSelectOption = {
   value: string;
@@ -53,7 +53,7 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
 
   useEffect(() => {
     onChange?.(selected);
-  }, [selected]);
+  }, [selected, onChange]);
 
   return (
     <Command className='overflow-visible bg-transparent' onKeyDown={handleKeyDown}>

@@ -1,12 +1,12 @@
+import { ChevronRight, List } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useNews } from '~/hooks/News';
 import type { News } from '~/types';
-import URLS from '~/URLS';
-import { ChevronRight, List } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const NewsList = () => {
   const [open, setOpen] = useState<boolean>(false);

@@ -1,8 +1,8 @@
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import FormMultiCheckbox from '~/components/inputs/MultiCheckbox';
 import FormTextarea from '~/components/inputs/Textarea';
 import type { SelectFormField, TextFormField } from '~/types';
 import { FormFieldType } from '~/types/Enums';
-import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 export type FieldViewProps<TFormValues extends FieldValues> = {
   formField: TextFormField | SelectFormField;

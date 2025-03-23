@@ -1,3 +1,6 @@
+import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
+import { useState } from 'react';
+import { Link, href } from 'react-router';
 import Logo from '~/components/miscellaneous/TihldeLogo';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import type { NavigationItem } from '~/components/navigation/Navigation';
@@ -5,9 +8,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
 import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
-import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
-import { useState } from 'react';
-import { href, Link } from 'react-router';
 
 import NavLink from '../ui/navlink';
 

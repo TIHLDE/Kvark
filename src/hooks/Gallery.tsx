@@ -1,14 +1,16 @@
+import { type UseMutationResult, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import API from '~/api/api';
 import type { Gallery, GalleryCreate, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const GALLERY_QUERY_KEYS = {
   all: ['gallery'] as const,
+  // biome-ignore lint: // TODO: Explain any
   list: (filters?: any) => [...GALLERY_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
   detail: (galleryId: Gallery['id']) => [...GALLERY_QUERY_KEYS.all, galleryId] as const,
   pictures: {
     all: (galleryId: Gallery['id']) => [...GALLERY_QUERY_KEYS.detail(galleryId), 'pictures'] as const,
+    // biome-ignore lint: // TODO: Explain any
     list: (galleryId: Gallery['id'], filters?: any) => [...GALLERY_QUERY_KEYS.pictures.all(galleryId), ...(filters ? [filters] : [])] as const,
     detail: (galleryId: Gallery['id'], pictureId: Picture['id']) => [...GALLERY_QUERY_KEYS.pictures.all(galleryId), pictureId] as const,
   },
@@ -17,6 +19,7 @@ export const GALLERY_QUERY_KEYS = {
 export const useGalleryById = (galleryId: Gallery['id']) =>
   useQuery<Gallery, RequestResponse>(GALLERY_QUERY_KEYS.detail(galleryId), () => API.getGallery(galleryId));
 
+// biome-ignore lint: // TODO: Explain any
 export const useGalleries = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Gallery>, RequestResponse>(
     GALLERY_QUERY_KEYS.list(filters),

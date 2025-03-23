@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Pencil } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
 import { Button } from '~/components/ui/button';
@@ -9,11 +14,6 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { useDeleteGroupLaw, useUpdateGroupLaw } from '~/hooks/Group';
 import type { Group, GroupLaw } from '~/types';
 import { formatLawHeader, parseLawParagraphNumber } from '~/utils';
-import { Pencil } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];

@@ -1,12 +1,12 @@
-import { useEvents } from '~/hooks/Event';
-import { useAnalytics } from '~/hooks/Utils';
-import type { Category, EventList } from '~/types';
-import { Category as CategoryEnum, Groups } from '~/types/Enums';
 import type { VariantProps } from 'class-variance-authority';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useEvents } from '~/hooks/Event';
+import { useAnalytics } from '~/hooks/Utils';
+import type { Category, EventList } from '~/types';
+import { Category as CategoryEnum, Groups } from '~/types/Enums';
 
 import { Card } from '../../../components/ui/card';
 import {

@@ -1,13 +1,13 @@
-import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
-import TopbarNotifications from '~/components/navigation/TopbarNotifications';
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
-import { useOptionalAuth } from '~/hooks/auth';
-import { useTheme } from '~/hooks/Theme';
 // import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
 import { useState } from 'react';
 import Joyride, { ACTIONS, type CallBackProps } from 'react-joyride';
-import { createPath, createSearchParams, href, Link } from 'react-router';
+import { Link, createPath, createSearchParams, href } from 'react-router';
+import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
+import TopbarNotifications from '~/components/navigation/TopbarNotifications';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { useTheme } from '~/hooks/Theme';
+import { useOptionalAuth } from '~/hooks/auth';
 
 import NavLink from '../ui/navlink';
 

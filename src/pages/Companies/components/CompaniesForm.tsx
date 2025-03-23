@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { addMonths } from 'date-fns';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import API from '~/api/api';
 import FormInput from '~/components/inputs/Input';
 import FormMultiCheckbox from '~/components/inputs/MultiCheckbox';
@@ -9,11 +14,6 @@ import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import type { CompaniesEmail } from '~/types';
-import { addMonths } from 'date-fns';
-import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 const formSchema = z.object({
   bedrift: z.string().min(1, { message: 'Feltet er påkrevd' }),

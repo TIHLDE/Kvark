@@ -1,9 +1,10 @@
+import { parseISO } from 'date-fns';
+import { href, useNavigate } from 'react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { News } from '~/types';
 import { formatDate, urlEncode } from '~/utils';
-import { parseISO } from 'date-fns';
-import { href, useNavigate } from 'react-router';
+import { Button } from '../ui/button';
 
 export type NewsListItemProps = {
   news: News;
@@ -13,7 +14,8 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
   const naviate = useNavigate();
 
   return (
-    <div
+    <Button
+      variant={'ghost'}
       className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'
       onClick={() => naviate(href('/nyheter/:id/:urtlTitle?', { id: news.id.toString(), urtlTitle: urlEncode(news.title) }))}
     >
@@ -24,7 +26,7 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
         <p>{news.header}</p>
         <p className='text-muted-foreground'>{formatDate(parseISO(news.created_at), { time: false })}</p>
       </div>
-    </div>
+    </Button>
   );
 };
 

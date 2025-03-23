@@ -1,3 +1,5 @@
+import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { useExportUserData, useForgotPassword } from '~/hooks/User';
@@ -6,8 +8,6 @@ import UserNotificationSettings, { ConnectWithDiscord } from '~/pages/Profile/co
 import UserDeleteDialog from '~/pages/Profile/components/ProfileSettings/UserDeleteDialog';
 import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSettings';
 import type { User } from '~/types';
-import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
-import { toast } from 'sonner';
 
 export type ProfileSettingsProps = {
   user: User;

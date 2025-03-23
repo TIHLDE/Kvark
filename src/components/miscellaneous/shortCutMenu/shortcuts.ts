@@ -1,6 +1,6 @@
+import type { Dispatch, SetStateAction } from 'react';
 import URLS from '~/URLS';
 import { navigateToExternalURL } from '~/utils';
-import type { Dispatch, SetStateAction } from 'react';
 
 const generateHotKeys = (event: KeyboardEvent, setOpen: Dispatch<SetStateAction<boolean>>, isOpen: boolean) => {
   if ((event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey)) {

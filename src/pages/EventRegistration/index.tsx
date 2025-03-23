@@ -1,4 +1,9 @@
 import type { CheckedState } from '@radix-ui/react-checkbox';
+import { ListChecks, QrCode } from 'lucide-react';
+import QrScanner from 'qr-scanner';
+import { createRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { href, redirect, useParams } from 'react-router';
+import { toast } from 'sonner';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -13,11 +18,6 @@ import { useDebounce } from '~/hooks/Utils';
 import Http404 from '~/pages/Http404';
 import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import { ListChecks, QrCode } from 'lucide-react';
-import QrScanner from 'qr-scanner';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { href, redirect, useParams } from 'react-router';
-import { toast } from 'sonner';
 
 import type { Route } from './+types';
 
@@ -37,10 +37,10 @@ const QrScan = ({ onScan }: QrScanProps) => {
   const [scanned, setScanned] = useState<string | undefined>(undefined);
   const val = useDebounce(scanned, 500);
   const [previousScanned, setPreviousScanned] = useState<string | undefined>(undefined);
-  const videoTag = useRef<HTMLVideoElement>();
-  const qrScanner = useRef<QrScanner | null>(null);
+  const videoTag = createRef<HTMLVideoElement>();
+  const qrScanner = useRef<QrScanner>();
 
-  const onDecode = (result: QrScanner.ScanResult) => setScanned(result.data);
+  const onDecode = useCallback((result: QrScanner.ScanResult) => setScanned(result.data), []);
 
   useEffect(() => {
     if (!val || val === previousScanned) {
@@ -48,7 +48,7 @@ const QrScan = ({ onScan }: QrScanProps) => {
     }
     setPreviousScanned(val);
     onScan(val);
-  }, [val, previousScanned]);
+  }, [val, previousScanned, onScan]);
 
   useEffect(() => {
     if (videoTag.current && qrScanner.current === null) {
@@ -61,15 +61,9 @@ const QrScan = ({ onScan }: QrScanProps) => {
     return () => {
       qrScanner.current?.destroy();
     };
-  }, []);
-
-  return (
-    <video
-      className='object-cover aspect-square w-full h-[400px]'
-      // @ts-ignore
-      ref={videoTag}
-    />
-  );
+  }, [videoTag, onDecode]);
+  // biome-ignore lint/a11y/useMediaCaption: This is a QR-scanner therefor we dont have a mediaType
+  return <video className='object-cover aspect-square w-full h-[400px]' ref={videoTag} />;
 };
 
 export type ParticipantCardProps = {

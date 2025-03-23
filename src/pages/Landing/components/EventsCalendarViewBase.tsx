@@ -1,9 +1,8 @@
 'use client';
 
-import { Button } from '~/components/ui/button';
-import { cn } from '~/lib/utils';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps, cva } from 'class-variance-authority';
 import {
+  type Locale,
   addDays,
   addMonths,
   addWeeks,
@@ -16,7 +15,6 @@ import {
   isSameMonth,
   isToday,
   isWithinInterval,
-  type Locale,
   setHours,
   setMonth,
   startOfMonth,
@@ -27,7 +25,9 @@ import {
   subYears,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { createContext, forwardRef, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { type ReactNode, createContext, forwardRef, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { ScrollArea } from '../../../components/ui/scroll-area';

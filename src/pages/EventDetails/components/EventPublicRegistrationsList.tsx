@@ -1,3 +1,7 @@
+import { Users } from 'lucide-react';
+import { Fragment, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button, PaginateButton } from '~/components/ui/button';
@@ -6,10 +10,6 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { usePublicEventRegistrations } from '~/hooks/Event';
 import { useUser } from '~/hooks/User';
 import type { Event } from '~/types';
-import URLS from '~/URLS';
-import { Users } from 'lucide-react';
-import { Fragment, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 export type EventPublicRegistrationsListProps = {
   eventId: Event['id'];

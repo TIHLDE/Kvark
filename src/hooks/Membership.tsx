@@ -1,15 +1,15 @@
+import { type QueryKey, type UseInfiniteQueryOptions, type UseMutationResult, useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
 import type { Group, Membership, MembershipHistory, MembershipHistoryMutate, PaginationResponse, RequestResponse, User } from '~/types';
 import type { MembershipType } from '~/types/Enums';
-import { type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 export const MEMBERSHIP_HISTORY_QUERY_KEY = 'membership-history';
 
 export const useMemberships = (
   groupSlug: Group['slug'],
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<Membership>, RequestResponse, PaginationResponse<Membership>, PaginationResponse<Membership>, QueryKey>,
 ) => {
@@ -23,7 +23,7 @@ export const useMemberships = (
   );
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useMembershipHistories = (groupSlug: Group['slug'], filters?: any) => {
   return useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>(
     [MEMBERSHIP_QUERY_KEY, groupSlug, MEMBERSHIP_HISTORY_QUERY_KEY],

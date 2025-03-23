@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import MarkdownEditor from '~/components/inputs/MarkdownEditor';
-import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
-import ResponsiveDialog from '~/components/ui/responsive-dialog';
-import { useUpdateGroupFineDefense } from '~/hooks/Group';
 import { Shield } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useUpdateGroupFineDefense } from '~/hooks/Group';
 
 type FineDefenseProps = {
   groupSlug: string;

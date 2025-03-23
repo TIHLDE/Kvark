@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -9,8 +11,6 @@ import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
 import { useClearCheckedFines, useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
-import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
 
 const PAYED_STATES = [
   { value: true, label: 'Betalt' },

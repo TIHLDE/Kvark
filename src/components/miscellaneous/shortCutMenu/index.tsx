@@ -1,16 +1,16 @@
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '~/components/ui/dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Separator } from '~/components/ui/separator';
 import { useHavePermission, useIsAuthenticated } from '~/hooks/User';
 import { PermissionApp } from '~/types/Enums';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import ShortCutAdmin from './Admin';
 import ShortCutLogout from './Logout';
 import ShortCutMembership from './Membership';
 import ShortCutNavigation, { ShortCutExternalNavigation } from './Navigation';
-import generateHotKeys from './shortcuts';
 import ShortCutTools from './Tools';
+import generateHotKeys from './shortcuts';
 
 export type ShortCutMenuProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;

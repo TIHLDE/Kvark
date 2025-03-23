@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+import { useNavigate, useParams } from 'react-router';
+import URLS from '~/URLS';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
 import { useNewsById } from '~/hooks/News';
 import Http404 from '~/pages/Http404';
 import NewsRenderer, { NewsRendererLoading } from '~/pages/NewsDetails/components/NewsRenderer';
-import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { useNavigate, useParams } from 'react-router';
 
 const NewsDetails = () => {
   const { id } = useParams();
@@ -35,7 +35,7 @@ const NewsDetails = () => {
           <meta content={data.title} property='og:title' />
           <meta content='website' property='og:type' />
           <meta content={window.location.href} property='og:url' />
-          <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
+          <meta content={data.image || `https://tihlde.org${TIHLDELOGO}`} property='og:image' />
         </Helmet>
       )}
       <div className='pb-4'>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>

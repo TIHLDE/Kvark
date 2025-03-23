@@ -1,8 +1,8 @@
+import { BarChart2, type LucideIcon, Trophy } from 'lucide-react';
+import { Link, Outlet, href } from 'react-router';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useBadgeCategory } from '~/hooks/Badge';
-import { BarChart2, type LucideIcon, Trophy } from 'lucide-react';
-import { href, Link, Outlet } from 'react-router';
 
 import type { Route } from './+types';
 

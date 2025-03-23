@@ -1,9 +1,9 @@
+import { Calendar, List, PartyPopper } from 'lucide-react';
+import { Suspense, lazy } from 'react';
 import Page from '~/components/navigation/Page';
 import { Skeleton } from '~/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import EventsDefaultView from '~/pages/Events/components/EventsDefaultView';
-import { Calendar, List, PartyPopper } from 'lucide-react';
-import { lazy, Suspense } from 'react';
 
 import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 

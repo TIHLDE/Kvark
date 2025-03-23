@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router';
+import URLS from '~/URLS';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import type { NavigationItem } from '~/components/navigation/Navigation';
 import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
@@ -11,9 +14,6 @@ import {
   NavigationMenuTrigger,
 } from '~/components/ui/navigation-menu';
 import { cn } from '~/lib/utils';
-import URLS from '~/URLS';
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
 
 const TopBarItem = (props: NavigationItem) => {
   const location = useLocation();
@@ -67,7 +67,7 @@ const Topbar = ({ items }: TopbarProps) => {
     }
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [setIsOnTop]);
+  }, []);
 
   return (
     <>

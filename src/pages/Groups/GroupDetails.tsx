@@ -1,3 +1,5 @@
+import { CalendarRange, CircleDollarSign, CircleHelp, Info, type LucideIcon, Scale } from 'lucide-react';
+import { Link, Outlet, href } from 'react-router';
 import { getGroup } from '~/api/api.cached';
 import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
@@ -7,8 +9,6 @@ import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
 import type { FormGroupValues } from '~/types';
-import { CalendarRange, CircleDollarSign, CircleHelp, Info, type LucideIcon, Scale } from 'lucide-react';
-import { href, Link, Outlet } from 'react-router';
 
 import type { Route } from './+types/GroupDetails';
 import GroupAdmin from './components/GroupAdmin';

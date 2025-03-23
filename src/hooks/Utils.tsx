@@ -1,7 +1,7 @@
 import va from '@vercel/analytics';
-import { getCookie, setCookie } from '~/api/cookie';
 import { type EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { getCookie, setCookie } from '~/api/cookie';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();

@@ -1,3 +1,5 @@
+import { Link, href } from 'react-router';
+import URLS from '~/URLS';
 import DISCORD from '~/assets/icons/discord.svg';
 import FACEBOOK from '~/assets/icons/facebook.svg';
 import INSTAGRAM from '~/assets/icons/instagram.svg';
@@ -9,8 +11,6 @@ import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
 import NITO from '~/assets/img/nito.png';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
-import { href, Link } from 'react-router';
 
 const Footer = () => {
   const { event } = useAnalytics();

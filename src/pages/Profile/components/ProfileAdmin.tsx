@@ -1,9 +1,9 @@
+import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, type LucideIcon, Newspaper, Plus, Users } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Card, CardContent } from '~/components/ui/card';
 import { HavePermission } from '~/hooks/User';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
-import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, type LucideIcon, Newspaper, Plus, Users } from 'lucide-react';
-import { Link } from 'react-router';
 
 const Admin = () => {
   type CardProps = {

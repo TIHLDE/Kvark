@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import { Button } from '~/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
@@ -9,10 +13,6 @@ import { useCreateStrike } from '~/hooks/Strike';
 import type { Event, User } from '~/types';
 import { StrikeReason } from '~/types/Enums';
 import { getStrikeReasonAsText } from '~/utils';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type StrikeCreateDialogProps = {
   userId: User['user_id'];

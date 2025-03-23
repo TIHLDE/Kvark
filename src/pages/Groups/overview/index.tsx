@@ -1,3 +1,4 @@
+import type React from 'react';
 import API from '~/api/api';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -5,7 +6,6 @@ import { useIsAuthenticated } from '~/hooks/User';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
 import type { GroupList } from '~/types';
 import { GroupType } from '~/types/Enums';
-import type React from 'react';
 
 import type { Route } from './+types/index';
 

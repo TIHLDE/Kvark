@@ -1,13 +1,13 @@
+import { ArrowRight, LoaderCircle, ShieldAlert } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router';
+import URLS from '~/URLS';
 import API from '~/api/api';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { FEIDE_AUTH_STATE } from '~/constant';
 import type { User } from '~/types';
-import URLS from '~/URLS';
-import { ArrowRight, LoaderCircle, ShieldAlert } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
 
 const SignUpFeide = () => {
   const location = useLocation();

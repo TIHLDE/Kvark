@@ -1,3 +1,4 @@
+import { type UseMutationResult, useMutation, useQuery, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import { EVENT_QUERY_KEYS } from '~/hooks/Event';
 import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
@@ -15,7 +16,6 @@ import type {
   UserSubmission,
 } from '~/types';
 import { FormFieldType, FormResourceType } from '~/types/Enums';
-import { useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';

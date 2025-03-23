@@ -1,14 +1,14 @@
+import { parseISO } from 'date-fns';
+import { ChevronRight, List } from 'lucide-react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useEvents } from '~/hooks/Event';
 import type { EventList as Event } from '~/types';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { ChevronRight, List } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const EventList = () => {
   const [open, setOpen] = useState<boolean>(false);

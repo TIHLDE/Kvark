@@ -1,10 +1,10 @@
+import { type UseMutationResult, useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import type { InfoBanner, PaginationResponse, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const BANNER_QUERY_KEY = 'banners';
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useInfoBanners = (filters?: any) => {
   return useInfiniteQuery<PaginationResponse<InfoBanner>, RequestResponse>(
     [BANNER_QUERY_KEY, filters],
@@ -19,7 +19,7 @@ export const useInfoBanner = (bannerId: InfoBanner['id']) => {
   return useQuery<InfoBanner, RequestResponse>([BANNER_QUERY_KEY, bannerId], () => API.getInfoBanner(bannerId), { enabled: bannerId !== '' });
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const useVisibleInfoBanners = (filters?: any) => {
   return useQuery<Array<InfoBanner>>([BANNER_QUERY_KEY, filters], () => API.getVisibleInfoBanners(), {});
 };

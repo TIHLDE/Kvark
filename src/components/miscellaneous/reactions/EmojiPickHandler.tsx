@@ -1,12 +1,12 @@
+import EmojiPicker, { type EmojiClickData, Theme } from 'emoji-picker-react';
+import { SmilePlusIcon } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useCreateReaction, useUpdateReaction } from '~/hooks/EmojiReaction';
 import { useTheme } from '~/hooks/Theme';
 import { useUser } from '~/hooks/User';
-import EmojiPicker, { type EmojiClickData, Theme } from 'emoji-picker-react';
-import { SmilePlusIcon } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 import type { ReactionHandlerProps } from './ReactionHandler';
 

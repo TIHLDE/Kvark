@@ -1,3 +1,7 @@
+import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
+import { useCallback, useEffect } from 'react';
+import { href, redirect, useNavigate } from 'react-router';
+import URLS from '~/URLS';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -8,11 +12,7 @@ import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import EventEditor from '~/pages/EventAdministration/components/EventEditor';
 import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
-import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
-import { useEffect } from 'react';
-import { href, redirect, useNavigate } from 'react-router';
 
 import type { Route } from './+types';
 import EventFormAdmin from './components/EventFormAdmin';
@@ -35,13 +35,16 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
   const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
-  const goToEvent = (newEvent: number | null) => {
-    if (newEvent) {
-      navigate(`${URLS.eventAdmin}${newEvent}/`);
-    } else {
-      navigate(URLS.eventAdmin);
-    }
-  };
+  const goToEvent = useCallback(
+    (newEvent: number | null) => {
+      if (newEvent) {
+        navigate(`${URLS.eventAdmin}${newEvent}/`);
+      } else {
+        navigate(URLS.eventAdmin);
+      }
+    },
+    [navigate],
+  );
 
   /**
    * Go to "New Event" if there is an error loading current event or the user don't have write-access to the event
@@ -50,7 +53,7 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
     if ((event && !event.permissions.write) || isError) {
       goToEvent(null);
     }
-  }, [isError, event]);
+  }, [isError, event, goToEvent]);
 
   const RegisterButton = ({ id }: { id: string }) => (
     <Button asChild className='px-2 md:px-4' variant='outline'>

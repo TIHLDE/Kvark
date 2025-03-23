@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { PaginateButton } from '~/components/ui/button';
@@ -8,9 +11,6 @@ import { useIsAuthenticated } from '~/hooks/User';
 import AddGroupMember from '~/pages/Groups/about/AddGroupMember';
 import MembershipListItem from '~/pages/Groups/about/MembershipListItem';
 import type { Group } from '~/types';
-import URLS from '~/URLS';
-import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 export type MembersCardProps = {
   groupSlug: Group['slug'];

@@ -1,11 +1,11 @@
+import { useMemo } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { EventList, JobPost, News } from '~/types';
-import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
-import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 export type StoryItem = {
   link: string;
@@ -19,11 +19,11 @@ export type StoryProps = {
 };
 
 const Story = ({ items }: StoryProps) => {
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   const instanceOfEvent = (object: any): object is EventList => 'start_date' in object;
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   const instanceOfNews = (object: any): object is News => 'header' in object;
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   const instanceOfJobPost = (object: any): object is JobPost => 'company' in object;
 
   const storyItems = useMemo(() => {

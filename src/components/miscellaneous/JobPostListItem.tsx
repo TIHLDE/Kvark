@@ -1,9 +1,9 @@
+import { parseISO } from 'date-fns';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { JobPost } from '~/types';
 import { formatDate, getJobpostType, urlEncode } from '~/utils';
-import { parseISO } from 'date-fns';
 import { CalendarClock, MapPin } from 'lucide-react';
 
 import NavLink from '../ui/navlink';

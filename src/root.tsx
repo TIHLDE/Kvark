@@ -1,7 +1,7 @@
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import { useEffect } from 'react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, isRouteErrorResponse, useLoaderData, useRevalidator } from 'react-router';
 
 import './assets/css/index.css';
 import type { Info, Route } from './+types/root';
@@ -147,7 +147,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 if (typeof window === 'object') {
   inject();
-  // biome-ignore lint: Allow Console logs
+  // biome-ignore lint: Allow this in browser
   console.log(
     `%c
               ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
@@ -158,14 +158,14 @@ if (typeof window === 'object') {
               ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
     'font-size: 1rem; color: #ff9400;',
   );
-  // biome-ignore lint: Allow Console logs
+  // biome-ignore lint: Allow this in browser
   console.log(
     `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
       SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
     }`,
     'font-weight: bold; font-size: 1rem;color: #ff9400;',
   );
-  // biome-ignore lint: Allow Console logs
+  // biome-ignore lint: Allow this in browser
   console.log(
     'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
     'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
@@ -176,6 +176,6 @@ if (typeof window === 'object') {
     API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
   };
-  // biome-ignore lint/suspicious/noExplicitAny: < TODO: Explain the disable of lint rule >
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   (window as any).badge = rickroll;
 }

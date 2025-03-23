@@ -2,6 +2,7 @@
 
 import API from '~/api/api';
 import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
+import { useState, useEffect } from 'react';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
 import { Badge } from '~/components/ui/badge';
@@ -15,7 +16,7 @@ import { analyticsEvent, useDebounce } from '~/hooks/Utils';
 import { deepEqual } from '~/utils';
 import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
 import { createLoader, createSerializer, type inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
-import { useEffect, useState } from 'react';
+import {} from 'react';
 import { useFetcher } from 'react-router';
 
 import type { Route } from './+types';

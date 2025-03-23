@@ -11,7 +11,8 @@ const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
   const { data: form, isLoading } = useFormById(submission.form);
   if (isLoading) {
     return <h1 className='text-center'>Laster statistikken</h1>;
-  } else if (!form) {
+  }
+  if (!form) {
     return <h1 className='text-center'>Kunne ikke finne spørsmålene</h1>;
   }
 
@@ -19,11 +20,11 @@ const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
     const answer = submission.answers.find((ans) => ans.field.id === field.id);
     if (answer === undefined) {
       return '';
-    } else if (field.type === FormFieldType.TEXT_ANSWER) {
-      return (answer as TextFieldSubmission).answer_text;
-    } else {
-      return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
     }
+    if (field.type === FormFieldType.TEXT_ANSWER) {
+      return (answer as TextFieldSubmission).answer_text;
+    }
+      return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
   };
 
   return (

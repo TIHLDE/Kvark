@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
 import { PaginateButton } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useGalleryPictures } from '~/hooks/Gallery';
 import PictureDialog from '~/pages/GalleryDetails/components/PictureDialog';
 import type { Gallery } from '~/types';
-import { useMemo } from 'react';
 
 export const GalleryRendererLoading = () => {
   return (

@@ -1,3 +1,8 @@
+import update from 'immutability-helper';
+import { useCallback, useEffect, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { toast } from 'sonner';
 import FieldEditor from '~/components/forms/FieldEditor';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -7,11 +12,6 @@ import { Separator } from '~/components/ui/separator';
 import { useFormSubmissions, useUpdateForm } from '~/hooks/Form';
 import type { Form, SelectFormField, TextFormField } from '~/types';
 import { FormFieldType } from '~/types/Enums';
-import update from 'immutability-helper';
-import { useCallback, useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { toast } from 'sonner';
 
 export type FormFieldsEditorProps = {
   form: Form;
@@ -136,7 +136,8 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
             <PopoverContent className='space-y-2'>
               <h1>Legg til spørsmål</h1>
               <Separator />
-              <p
+              <Button
+                variant='ghost'
                 className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.TEXT_ANSWER);
@@ -144,8 +145,9 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 }}
               >
                 Tekstspørsmål
-              </p>
-              <p
+              </Button>
+              <Button
+                variant='ghost'
                 className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.SINGLE_SELECT);
@@ -153,8 +155,9 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 }}
               >
                 Flervalgsspørsmål
-              </p>
-              <p
+              </Button>
+              <Button
+                variant='ghost'
                 className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.MULTIPLE_SELECT);
@@ -162,7 +165,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 }}
               >
                 Avkrysningsspørsmål
-              </p>
+              </Button>
             </PopoverContent>
           </Popover>
           <Button className='w-full' disabled={disabled} onClick={save}>

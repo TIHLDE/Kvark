@@ -1,5 +1,5 @@
-import type { GroupFine } from '~/types';
 import { atom, useAtom } from 'jotai';
+import type { GroupFine } from '~/types';
 
 const finesFilterAtom = atom<{ approved?: boolean; payed?: boolean }>({ payed: false });
 const checkedFinesAtom = atom<GroupFine['id'][]>([]);

@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Link, data, href, redirect, useSubmit } from 'react-router';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import API from '~/api/api';
 import { setCookie } from '~/api/cookie';
 import Page from '~/components/navigation/Page';
@@ -8,10 +12,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '~/components/ui/input';
 import { ACCESS_TOKEN } from '~/constant';
 import { analyticsEvent } from '~/hooks/Utils';
-import URLS from '~/URLS';
-import { useForm } from 'react-hook-form';
-import { data, href, Link, redirect, useSubmit } from 'react-router';
-import { z } from 'zod';
 
 import { queryClient } from '../MainLayout';
 import type { Route } from './+types';

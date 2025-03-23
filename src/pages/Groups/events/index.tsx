@@ -1,11 +1,11 @@
+import { useMemo } from 'react';
+import { Link, useParams } from 'react-router';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { useEvents } from '~/hooks/Event';
 import { useGroup } from '~/hooks/Group';
 import { useUserPermissions } from '~/hooks/User';
-import { useMemo } from 'react';
-import { Link, useParams } from 'react-router';
 
 const GroupEvents = () => {
   const { slug } = useParams<'slug'>();
