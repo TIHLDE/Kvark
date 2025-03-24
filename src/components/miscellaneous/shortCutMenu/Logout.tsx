@@ -4,14 +4,18 @@ import { ACCESS_TOKEN } from '~/constant';
 
 import { Button } from '~/components/ui/button';
 import type { ShortCutMenuProps } from '.';
+import { useRevalidator } from 'react-router';
 
 const ShortCutLogout = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
+  const { revalidate } = useRevalidator();
   return (
     <Button
       variant='ghost'
-      className='flex items-center text-sm p-2 rounded-md hover:bg-secondary cursor-pointer'
+      autoFocus={false}
+      className='flex justify-start w-full items-center text-sm p-2 rounded-md hover:bg-secondary cursor-pointer'
       onClick={() => {
         removeCookie(ACCESS_TOKEN);
+        revalidate();
         // Submit to rerun the actions
         setOpen(false);
       }}

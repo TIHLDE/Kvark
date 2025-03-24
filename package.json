@@ -78,7 +78,7 @@
     "check": "react-router typegen && tsc",
     "build": "react-router build",
     "lint": "biome lint",
-    "pre-commit": "biome lint --staged",
+    "pre-commit": "biome lint --staged --no-errors-on-unmatched",
     "format": "biome format",
     "prepare": "husky"
   },
