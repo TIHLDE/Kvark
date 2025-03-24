@@ -24,7 +24,7 @@ export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 
   const [theme, setTheme] = useState<Theme>(() => defaultTheme);
   useEffect(() => {
     setTheme(localStorage.getItem(storageKey) as Theme);
-  }, [setTheme]);
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;

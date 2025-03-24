@@ -52,8 +52,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
 
   const registrations = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
-  // What the actuall fuck is this
-  // biome-ignore lint: This is cursed fixed it
+  // What is this. what a wack way to do this, but of
   useEffect(() => {
     refetch();
   }, [searchParams]);

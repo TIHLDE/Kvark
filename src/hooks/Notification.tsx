@@ -25,7 +25,7 @@ export const useNotifications = (
       queryClient.setQueryData([NOTIFICATION_QUERY_KEY], () => newQueryData);
       setNewQueryData(null);
     }
-  }, [enabled, newQueryData]);
+  }, [enabled, newQueryData, queryClient]);
 
   return useInfiniteQuery<PaginationResponse<Notification>, RequestResponse>(
     [NOTIFICATION_QUERY_KEY],

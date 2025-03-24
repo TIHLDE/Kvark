@@ -34,7 +34,7 @@ const NewStudentBox = () => {
       }
       return [HEADER.OLD_STUDENT, TEXT.OLD_STUDENT];
     }
-      return [HEADER.NEW_STUDENT, TEXT.NO_AUTH];
+    return [HEADER.NEW_STUDENT, TEXT.NO_AUTH];
   }, [user, isAuthenticated]);
 
   if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {

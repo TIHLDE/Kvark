@@ -18,7 +18,7 @@ const NewsListView = () => {
       </div>
     );
   }
-    return <h1 className='text-center '>Fant ingen nyheter</h1>;
+  return <h1 className='text-center '>Fant ingen nyheter</h1>;
 };
 
 export default NewsListView;

@@ -20,36 +20,36 @@ const ProfileForms = () => {
   if (!forms.length) {
     return <NotFoundIndicator header='Fant ingen spørreskjemaer' subtitle='Du har ingen spørreskjemaer du må svare på' />;
   }
-    return (
+  return (
+    <div className='space-y-2'>
+      <h1 className='text-center py-2'>Du må svare på følgende spørreskjemaer før du kan melde deg på arrangementer igjen</h1>
       <div className='space-y-2'>
-        <h1 className='text-center py-2'>Du må svare på følgende spørreskjemaer før du kan melde deg på arrangementer igjen</h1>
-        <div className='space-y-2'>
-          {forms?.map((form, index) => (
-            <Link
-              className='w-full flex items-center justify-between p-4 rounded-md border bg-card text-black dark:text-white'
-              key={index}
-              to={`${URLS.form}${form.id}/`}
-            >
-              <div className='space-y-2'>
-                <h1>
-                  {form.resource_type === FormResourceType.EVENT_FORM
-                    ? `${form.event.title} - ${form.type === EventFormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'}`
-                    : form.title}
-                </h1>
-                <p className='text-sm text-muted-foreground'>
-                  {form.resource_type === FormResourceType.EVENT_FORM &&
-                    `Holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${form.event.location}`}
-                </p>
-              </div>
+        {forms?.map((form, index) => (
+          <Link
+            className='w-full flex items-center justify-between p-4 rounded-md border bg-card text-black dark:text-white'
+            key={index}
+            to={`${URLS.form}${form.id}/`}
+          >
+            <div className='space-y-2'>
+              <h1>
+                {form.resource_type === FormResourceType.EVENT_FORM
+                  ? `${form.event.title} - ${form.type === EventFormType.EVALUATION ? 'Evaluering' : 'Spørreskjema'}`
+                  : form.title}
+              </h1>
+              <p className='text-sm text-muted-foreground'>
+                {form.resource_type === FormResourceType.EVENT_FORM &&
+                  `Holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${form.event.location}`}
+              </p>
+            </div>
 
-              <ArrowRight className='w-5 h-5' />
-            </Link>
-          ))}
-        </div>
-
-        {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+            <ArrowRight className='w-5 h-5' />
+          </Link>
+        ))}
       </div>
-    );
+
+      {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
+    </div>
+  );
 };
 
 export default ProfileForms;

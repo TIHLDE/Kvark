@@ -23,7 +23,6 @@ export const urlEncode = (text = '') => slugify(text, { lower: true, strict: tru
  */
 export const isExternalURL = (url = '') => url.indexOf(':') > -1 || url.indexOf('//') > -1;
 
-
 /**
  * Find how many hours a users start of registration to an event is delayed because of their strikes.
  * @param numberOfStrikes The number of strikes the user have
@@ -246,7 +245,7 @@ export const getTimeSince = (date: Date) => {
   if (days < 7) {
     return `${days} dager siden`;
   }
-    return formatDate(date);
+  return formatDate(date);
 };
 
 /**
@@ -373,9 +372,9 @@ export const parseLawParagraphNumber = (input: string): number => {
   if (parts.length === 1) {
     return Number.parseFloat(input);
   }
-    const integerPart = parts[0];
-    const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
-    return Number.parseFloat(`${integerPart}.${decimalPart}`);
+  const integerPart = parts[0];
+  const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
+  return Number.parseFloat(`${integerPart}.${decimalPart}`);
 };
 
 /**
@@ -544,5 +543,6 @@ export function deepEqual(a: unknown, b: unknown): boolean {
   }
 
   // Handle NaN (the only value not equal to itself)
+  // biome-ignore lint/suspicious/noSelfCompare: This is for NaN comparison
   return a !== a && b !== b;
 }

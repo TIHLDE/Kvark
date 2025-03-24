@@ -26,8 +26,13 @@
       "complexity": {
         "noForEach": "off"
       },
+      "correctness": {
+        // Disable this in the future
+        "useExhaustiveDependencies": "off"
+      },
       "suspicious": {
         "noConsoleLog": "warn",
+        // Disable this in the future
         "noArrayIndexKey": "off"
       },
       "style": {

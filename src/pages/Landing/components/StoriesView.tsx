@@ -21,7 +21,7 @@ const StoriesView = () => {
   if (isNewsLoading || isJobPostsLoading || isEventsLoading) {
     return <StoryLoading />;
   }
-    return <Story items={items} />;
+  return <Story items={items} />;
 };
 
 export default StoriesView;

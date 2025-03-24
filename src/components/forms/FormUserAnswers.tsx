@@ -24,7 +24,7 @@ const FormUserAnswers = ({ submission }: FormUserAnswersProps) => {
     if (field.type === FormFieldType.TEXT_ANSWER) {
       return (answer as TextFieldSubmission).answer_text;
     }
-      return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
+    return (answer as SelectFieldSubmission).selected_options.map((opt) => field.options.find((o) => o.id === opt.id)?.title || '').join(', ');
   };
 
   return (

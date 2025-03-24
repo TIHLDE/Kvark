@@ -1,8 +1,8 @@
+import { parseAsString, useQueryState } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { Input } from '~/components/ui/input';
 import { useDebounce } from '~/hooks/Utils';
-import { useQueryState, parseAsString } from 'nuqs';
 
 const EventParticipantSearch = () => {
   const [searchInput, setSearchInput] = useQueryState(

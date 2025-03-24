@@ -28,7 +28,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
     if (cheatsheet.type === CheatsheetType.LINK) {
       return <Link />;
     }
-      return <ExternalLink />;
+    return <ExternalLink />;
   };
 
   return (

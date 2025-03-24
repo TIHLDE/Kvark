@@ -72,17 +72,17 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                       <CommandEmpty>{isLoading ? 'Søker...' : 'Ingen brukere funnet'}</CommandEmpty>
                       <CommandGroup>
                         {options?.[0].map((option, index) => (
-                            <CommandItem
-                              key={index}
-                              onSelect={() => {
-                                field.onChange(option);
-                                setSelectedUser(option);
-                                setOpen(false);
-                              }}
-                            >
-                              {`${option.first_name} ${option.last_name}`}
-                            </CommandItem>
-                          ))}
+                          <CommandItem
+                            key={index}
+                            onSelect={() => {
+                              field.onChange(option);
+                              setSelectedUser(option);
+                              setOpen(false);
+                            }}
+                          >
+                            {`${option.first_name} ${option.last_name}`}
+                          </CommandItem>
+                        ))}
                       </CommandGroup>
                     </CommandList>
                   </Command>
@@ -119,17 +119,17 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                     <CommandEmpty>{isLoading ? 'Søker...' : 'Ingen brukere funnet'}</CommandEmpty>
                     <CommandGroup>
                       {options?.[0].map((option, index) => (
-                          <CommandItem
-                            key={index}
-                            onSelect={() => {
-                              field.onChange(option);
-                              setSelectedUser(option);
-                              setOpen(false);
-                            }}
-                          >
-                            {`${option.first_name} ${option.last_name}`}
-                          </CommandItem>
-                        ))}
+                        <CommandItem
+                          key={index}
+                          onSelect={() => {
+                            field.onChange(option);
+                            setSelectedUser(option);
+                            setOpen(false);
+                          }}
+                        >
+                          {`${option.first_name} ${option.last_name}`}
+                        </CommandItem>
+                      ))}
                     </CommandGroup>
                   </CommandList>
                 </Command>

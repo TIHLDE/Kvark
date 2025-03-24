@@ -2,8 +2,8 @@ import { LogOut } from 'lucide-react';
 import { removeCookie } from '~/api/cookie';
 import { ACCESS_TOKEN } from '~/constant';
 
-import type { ShortCutMenuProps } from '.';
 import { Button } from '~/components/ui/button';
+import type { ShortCutMenuProps } from '.';
 
 const ShortCutLogout = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
   return (
