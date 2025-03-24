@@ -11,10 +11,12 @@ const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calend
 
 const Events = () => {
   return (
-    <Page className='space-y-8 max-w-7xl mx-auto'>
+    <Page className='space-y-8'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Arrangementer</h1>
+        <p className='text-muted-foreground mt-2'>Finn arrangementer for studenter</p>
       </div>
+
       <Tabs defaultValue='list'>
         <TabsList>
           <TabsTrigger value='list'>

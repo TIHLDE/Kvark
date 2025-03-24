@@ -1,20 +1,24 @@
+'use client';
+
 import API from '~/api/api';
 import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
+import { Badge } from '~/components/ui/badge';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
+import { Separator } from '~/components/ui/separator';
 import { analyticsEvent, useDebounce } from '~/hooks/Utils';
 import { deepEqual } from '~/utils';
 import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { createLoader, createSerializer, inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
+import { createLoader, createSerializer, type inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { useFetcher } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 const urlParamFilters = {
   search: parseAsString.withDefault(''),
@@ -39,30 +43,27 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
   const [allJobs, setAllJobs] = useState(initialJobs.results);
   const [hasNext, setHasNext] = useState(Boolean(initialJobs.next));
   const [lastFilters, setLastFilters] = useState(loaderData.filters);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetcher = useFetcher<typeof loaderData>();
 
-  // Set up URL query parameters
   const [queryFilters, setQueryFilters] = useQueryStates(urlParamFilters);
 
   const debouncedSearch = useDebounce(queryFilters.search, 500);
 
   useEffect(() => {
-    // Use debounced search to avoid sending too many requests
     const params: inferParserType<typeof urlParamFilters> = {
       classes: queryFilters.classes,
       job_type: queryFilters.job_type,
       search: debouncedSearch,
     };
 
-    // No changes then don't fetch
     if (deepEqual(lastFilters, params)) {
       return;
     }
 
     analyticsEvent('search', 'jobposts', JSON.stringify(params));
 
-    // Reset page to 1
     const searchParams = new URLSearchParams(urlParamsSerializer(params));
     searchParams.set('page', '1');
 
@@ -70,9 +71,12 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
   }, [debouncedSearch, queryFilters.classes, queryFilters.job_type, lastFilters]);
 
   useEffect(() => {
+    setIsLoading(fetcher.state !== 'idle');
+
     if (fetcher.state !== 'idle') {
       return;
     }
+
     const data = fetcher.data;
     if (!data) {
       return;
@@ -92,7 +96,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
     const searchParams = new URLSearchParams(urlParamsSerializer(params ?? queryFilters));
     searchParams.set('page', '1');
 
-    fetcher.load(`?${urlParamsSerializer(queryFilters)}`);
+    fetcher.load(`?${searchParams.toString()}`);
   }
 
   function fetchNextPage() {
@@ -110,46 +114,132 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
     });
   }
 
-  const [isOpen, setIsOpen] = useState<boolean>(window.innerWidth > 1000);
+  const [isOpen, setIsOpen] = useState<boolean>(typeof window !== 'undefined' && window.innerWidth > 1000);
+
+  const hasActiveFilters = queryFilters.search || queryFilters.classes.length > 0 || queryFilters.job_type;
+
+  const jobTypes = [
+    ['SUMMER_JOB', 'Sommerjobb'],
+    ['PART_TIME', 'Deltid'],
+    ['FULL_TIME', 'Fulltid'],
+    ['OTHER', 'Annet'],
+  ];
+
+  const getJobTypeLabel = (value: string) => {
+    const jobType = jobTypes.find(([type]) => type === value);
+    return jobType ? jobType[1] : '';
+  };
 
   return (
-    <Page className='space-y-8 container'>
+    <Page className='space-y-8'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Stillingsannonser</h1>
+        <p className='text-muted-foreground mt-2'>Finn relevante jobber for studenter</p>
       </div>
-      <div className='grid lg:grid-cols-[1fr,3fr] gap-4 items-start'>
-        <div className='border rounded-md bg-card p-4'>
+
+      <div className='grid xl:grid-cols-[400px,1fr] gap-6 items-start'>
+        <div className='border rounded-lg bg-card shadow-sm'>
           <Collapsible className='group' onOpenChange={setIsOpen} open={isOpen}>
-            <div className={'flex flex-row justify-between'}>
-              <div className={'flex flex-row gap-2'}>
-                <div className='flex items-center space-x-4'>
-                  <span className='font-medium truncate max-w-md'>Filter</span>
-                </div>
-                <div className={'cursor-pointer hover:bg-secondary rounded-md p-2 h-10 w-10'} onClick={resetFilters}>
-                  <FilterX size={25} />
-                </div>
+            <div className='flex justify-between items-center p-4 border-b'>
+              <div className='flex items-center gap-2'>
+                <h3 className='font-medium text-lg'>Filter</h3>
+                {hasActiveFilters && (
+                  <Badge className='ml-2' variant='secondary'>
+                    {queryFilters.classes.length + (queryFilters.job_type ? 1 : 0) + (queryFilters.search ? 1 : 0)}
+                  </Badge>
+                )}
               </div>
-              <CollapsibleTrigger className='w-10 flex items-center justify-center py-2'>
-                <div className='flex items-center space-x-4 group-data-[state=open]:rotate-90 transition-transform'>
-                  {<ChevronRightIcon className='w-4 h-4' />}
-                </div>
-              </CollapsibleTrigger>
+              <div className='flex items-center gap-2'>
+                {hasActiveFilters && (
+                  <Button aria-label='Nullstill filter' className='h-8 px-2' onClick={resetFilters} size='sm' variant='ghost'>
+                    <FilterX className='mr-1' size={18} />
+                    <span className='text-sm'>Nullstill</span>
+                  </Button>
+                )}
+                <CollapsibleTrigger className='xl:hidden flex items-center justify-center h-8 w-8 rounded-md hover:bg-secondary'>
+                  <ChevronRightIcon className='w-5 h-5 group-data-[state=open]:rotate-90 transition-transform' />
+                </CollapsibleTrigger>
+              </div>
             </div>
-            <CollapsibleContent>
-              <SearchForm isSearching={fetcher.state !== 'idle'} {...{ queryFilters, setQueryFilters, search: fetchNewPage }} />
+            <CollapsibleContent className='lg:block'>
+              <SearchForm isSearching={isLoading} queryFilters={queryFilters} search={fetchNewPage} setQueryFilters={setQueryFilters} />
             </CollapsibleContent>
           </Collapsible>
         </div>
-        <div>
-          <div className='space-y-4'>
-            <div className='grid lg:grid-cols-1 gap-4'>
-              {allJobs.map((jobPost) => (
-                <JobPostListItem jobPost={jobPost} key={jobPost.id} />
+
+        <div className='space-y-4'>
+          {/* Active filters display */}
+          {hasActiveFilters && (
+            <div className='flex flex-wrap gap-2 mb-4'>
+              {queryFilters.search && (
+                <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
+                  <span>Søk: {queryFilters.search}</span>
+                  <button
+                    aria-label='Fjern søkefilter'
+                    className='ml-1 hover:bg-secondary rounded-full p-1'
+                    onClick={() => setQueryFilters({ ...queryFilters, search: '' })}>
+                    <FilterX size={14} />
+                  </button>
+                </Badge>
+              )}
+
+              {queryFilters.job_type && (
+                <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
+                  <span>Type: {getJobTypeLabel(queryFilters.job_type)}</span>
+                  <button
+                    aria-label='Fjern jobbtype-filter'
+                    className='ml-1 hover:bg-secondary rounded-full p-1'
+                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}>
+                    <FilterX size={14} />
+                  </button>
+                </Badge>
+              )}
+
+              {queryFilters.classes.map((classValue) => (
+                <Badge className='flex items-center gap-1 px-3 py-1' key={classValue} variant='outline'>
+                  <span>Klasse: {classValue}. klasse</span>
+                  <button
+                    aria-label={`Fjern klasse ${classValue} filter`}
+                    className='ml-1 hover:bg-secondary rounded-full p-1'
+                    onClick={() =>
+                      setQueryFilters({
+                        ...queryFilters,
+                        classes: queryFilters.classes.filter((c) => c !== classValue),
+                      })
+                    }>
+                    <FilterX size={14} />
+                  </button>
+                </Badge>
               ))}
-              {fetcher.state === 'loading' && <JobPostListItemLoading />}
-              {/* {isEmpty && allJobs.length === 0 && <NotFoundIndicator header='Fant ingen annonser' />} */}
             </div>
-            {hasNext && <PaginateButton className='w-full' isLoading={fetcher.state !== 'idle'} nextPage={fetchNextPage} />}
+          )}
+
+          {/* Results count */}
+          <div className='flex justify-between items-center mb-4'>
+            <h2 className='text-lg font-medium'>
+              {initialJobs.count} {initialJobs.count === 1 ? 'stilling' : 'stillinger'} funnet
+            </h2>
+          </div>
+
+          {/* Job listings */}
+          <div className='space-y-4'>
+            {allJobs.length > 0 ? (
+              allJobs.map((jobPost) => <JobPostListItem jobPost={jobPost} key={jobPost.id} />)
+            ) : !isLoading ? (
+              <div className='text-center py-12 bg-muted/30 rounded-lg'>
+                <h3 className='text-xl font-medium mb-2'>Ingen stillinger funnet</h3>
+                <p className='text-muted-foreground'>Prøv å justere filtrene dine for å se flere resultater</p>
+              </div>
+            ) : null}
+
+            {isLoading && (
+              <div className='space-y-4'>
+                <JobPostListItemLoading />
+                <JobPostListItemLoading />
+              </div>
+            )}
+
+            {hasNext && <PaginateButton className='w-full mt-6' isLoading={isLoading} nextPage={fetchNextPage} />}
           </div>
         </div>
       </div>
@@ -181,38 +271,54 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
   ];
 
   return (
-    <div className={'flex flex-row gap-2 justify-between'}>
-      <div className={'space-y-4 py-2 pl-1 w-full'}>
-        <Label>Søk</Label>
-        <div className='flex flex-row gap-3 w-full'>
-          <Input className='w-full' onChange={(v) => setQueryFilters({ ...queryFilters, search: v.target.value })} value={queryFilters.search} />
-          <Button className='p-3 h-9 w-9 ' onClick={() => search()}>
-            {isSearching ? <LoaderCircle className={'animate-spin'} /> : <Search size={25} />}
+    <div className='p-4 space-y-6'>
+      {/* Search input */}
+      <div className='space-y-2'>
+        <Label className='text-sm font-medium' htmlFor='search-input'>
+          Søk etter stillinger
+        </Label>
+        <div className='flex gap-2'>
+          <Input
+            className='flex-1'
+            id='search-input'
+            onChange={(e) => setQueryFilters({ ...queryFilters, search: e.target.value })}
+            placeholder='Søk etter tittel, firma...'
+            value={queryFilters.search}
+          />
+          <Button aria-label='Søk' disabled={isSearching} onClick={() => search()} size='icon'>
+            {isSearching ? <LoaderCircle className='h-4 w-4 animate-spin' /> : <Search className='h-4 w-4' />}
           </Button>
         </div>
-        <div className='grid gap-2 grid-cols-1 min-[350px]:grid-cols-2 lg:grid-cols-1'>
-          <FormMultiCheckboxComponent
-            items={grade}
-            label={'Klassetrinn'}
-            onChange={(classes) => setQueryFilters({ ...queryFilters, classes })}
-            value={queryFilters.classes}
-          />
+      </div>
 
-          <div className='space-y-3'>
-            <Label>Jobbtype</Label>
-            <RadioGroup
-              className='flex flex-col space-y-1'
-              onValueChange={(job_type) => setQueryFilters({ ...queryFilters, job_type })}
-              value={queryFilters.job_type}>
-              {jobTypes.map(([value, label]) => (
-                <div className='flex items-center space-x-3 space-y-0' key={value}>
-                  <RadioGroupItem value={value} />
-                  <Label className='font-normal'>{label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          </div>
-        </div>
+      <Separator />
+
+      {/* Class/grade filter */}
+      <div className='space-y-3'>
+        <Label className='text-sm font-medium'>Klassetrinn</Label>
+        <FormMultiCheckboxComponent
+          items={grade}
+          label={''}
+          onChange={(classes) => setQueryFilters({ ...queryFilters, classes })}
+          value={queryFilters.classes}
+        />
+      </div>
+
+      <Separator />
+
+      {/* Job type filter */}
+      <div className='space-y-3'>
+        <Label className='text-sm font-medium'>Jobbtype</Label>
+        <RadioGroup className='space-y-2' onValueChange={(job_type) => setQueryFilters({ ...queryFilters, job_type })} value={queryFilters.job_type}>
+          {jobTypes.map(([value, label]) => (
+            <div className='flex items-center space-x-2' key={value}>
+              <RadioGroupItem id={`job-type-${value}`} value={value} />
+              <Label className='font-normal text-sm cursor-pointer' htmlFor={`job-type-${value}`}>
+                {label}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
     </div>
   );
