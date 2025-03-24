@@ -65,7 +65,7 @@
     "rehype-raw": "^7.0.0",
     "slugify": "^1.6.6",
     "sonner": "^2.0.1",
-    "tailwind-merge": "^2.5.2",
+    "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "universal-cookie": "^8.0.1",
     "use-resize-observer": "^9.1.0",
