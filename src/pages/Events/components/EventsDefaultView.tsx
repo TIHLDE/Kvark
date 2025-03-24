@@ -15,7 +15,7 @@ import { useCategories } from '~/hooks/Categories';
 import { useEvents } from '~/hooks/Event';
 import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
-import { useAnalytics, useDebounce } from '~/hooks/Utils';
+import { useAnalytics } from '~/hooks/Utils';
 import { argsToParams } from '~/utils';
 import { FilterX, Search, SlidersHorizontal } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
