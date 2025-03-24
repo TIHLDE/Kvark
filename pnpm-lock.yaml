@@ -79,10 +79,10 @@ importers:
         version: 1.1.8(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-router/node':
         specifier: ^7.2.0
-        version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+        version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       '@uploadthing/react':
         specifier: ^7.3.0
-        version: 7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))))
+        version: 7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))))
       '@vercel/analytics':
         specifier: 1.5.0
         version: 1.5.0(react@18.3.1)
@@ -187,7 +187,7 @@ importers:
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)))
       universal-cookie:
         specifier: ^8.0.1
         version: 8.0.1
@@ -203,10 +203,10 @@ importers:
     devDependencies:
       '@react-router/dev':
         specifier: ^7.2.0
-        version: 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
+        version: 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
       '@react-router/serve':
         specifier: ^7.2.0
-        version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+        version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       '@types/canvas-confetti':
         specifier: ^1.6.4
         version: 1.9.0
@@ -227,16 +227,16 @@ importers:
         version: 2.1.7
       '@typescript-eslint/eslint-plugin':
         specifier: ^7.18.0
-        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1)(typescript@5.7.3)
+        version: 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)
       '@typescript-eslint/parser':
         specifier: ^7.18.0
-        version: 7.18.0(eslint@8.57.1)(typescript@5.7.3)
+        version: 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       '@vercel/node':
         specifier: ^5.1.7
         version: 5.1.7(rollup@4.37.0)
       '@vercel/react-router':
         specifier: ^1.1.0
-        version: 1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.5.2)
@@ -269,16 +269,16 @@ importers:
         version: 2.8.8
       tailwindcss:
         specifier: ^3.4.10
-        version: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))
+        version: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
       typescript:
-        specifier: ^5.7.3
-        version: 5.7.3
+        specifier: ^5.8.2
+        version: 5.8.2
       vite:
         specifier: ^6.2.3
         version: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))
+        version: 5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))
 
 packages:
 
@@ -4337,8 +4337,8 @@ packages:
     engines: {node: '>=4.2.0'}
     hasBin: true
 
-  typescript@5.7.3:
-    resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
+  typescript@5.8.2:
+    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -5853,7 +5853,7 @@ snapshots:
 
   '@react-dnd/shallowequal@4.0.2': {}
 
-  '@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)':
+  '@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/generator': 7.26.9
@@ -5864,7 +5864,7 @@ snapshots:
       '@babel/traverse': 7.26.9
       '@babel/types': 7.26.9
       '@npmcli/package-json': 4.0.1
-      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       arg: 5.0.2
       babel-dead-code-elimination: 1.0.9
       chokidar: 4.0.3
@@ -5883,12 +5883,12 @@ snapshots:
       react-router: 7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       semver: 7.7.1
       set-cookie-parser: 2.7.1
-      valibot: 0.41.0(typescript@5.7.3)
+      valibot: 0.41.0(typescript@5.8.2)
       vite: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
       vite-node: 3.0.0-beta.2(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
     optionalDependencies:
-      '@react-router/serve': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
-      typescript: 5.7.3
+      '@react-router/serve': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
+      typescript: 5.8.2
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -5905,15 +5905,15 @@ snapshots:
       - tsx
       - yaml
 
-  '@react-router/express@7.2.0(express@4.21.2)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)':
+  '@react-router/express@7.2.0(express@4.21.2)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)':
     dependencies:
-      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       express: 4.21.2
       react-router: 7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
-  '@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)':
+  '@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)':
     dependencies:
       '@mjackson/node-fetch-server': 0.2.0
       react-router: 7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -5921,12 +5921,12 @@ snapshots:
       stream-slice: 0.1.2
       undici: 6.21.1
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
-  '@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)':
+  '@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)':
     dependencies:
-      '@react-router/express': 7.2.0(express@4.21.2)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
-      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+      '@react-router/express': 7.2.0(express@4.21.2)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
+      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       compression: 1.8.0
       express: 4.21.2
       get-port: 5.1.1
@@ -6086,34 +6086,34 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.3))(eslint@8.57.1)(typescript@5.7.3)':
+  '@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2))(eslint@8.57.1)(typescript@5.8.2)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.7.3)
+      '@typescript-eslint/parser': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       '@typescript-eslint/scope-manager': 7.18.0
-      '@typescript-eslint/type-utils': 7.18.0(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.7.3)
+      '@typescript-eslint/type-utils': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
+      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       '@typescript-eslint/visitor-keys': 7.18.0
       eslint: 8.57.1
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare: 1.4.0
-      ts-api-utils: 1.4.3(typescript@5.7.3)
+      ts-api-utils: 1.4.3(typescript@5.8.2)
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.3)':
+  '@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.8.2)':
     dependencies:
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.7.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.8.2)
       '@typescript-eslint/visitor-keys': 7.18.0
       debug: 4.4.0
       eslint: 8.57.1
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
 
@@ -6122,21 +6122,21 @@ snapshots:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
 
-  '@typescript-eslint/type-utils@7.18.0(eslint@8.57.1)(typescript@5.7.3)':
+  '@typescript-eslint/type-utils@7.18.0(eslint@8.57.1)(typescript@5.8.2)':
     dependencies:
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.7.3)
-      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.7.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.8.2)
+      '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.8.2)
       debug: 4.4.0
       eslint: 8.57.1
-      ts-api-utils: 1.4.3(typescript@5.7.3)
+      ts-api-utils: 1.4.3(typescript@5.8.2)
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
 
   '@typescript-eslint/types@7.18.0': {}
 
-  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.7.3)':
+  '@typescript-eslint/typescript-estree@7.18.0(typescript@5.8.2)':
     dependencies:
       '@typescript-eslint/types': 7.18.0
       '@typescript-eslint/visitor-keys': 7.18.0
@@ -6145,18 +6145,18 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.7.1
-      ts-api-utils: 1.4.3(typescript@5.7.3)
+      ts-api-utils: 1.4.3(typescript@5.8.2)
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@7.18.0(eslint@8.57.1)(typescript@5.7.3)':
+  '@typescript-eslint/utils@7.18.0(eslint@8.57.1)(typescript@5.8.2)':
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@8.57.1)
       '@typescript-eslint/scope-manager': 7.18.0
       '@typescript-eslint/types': 7.18.0
-      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.7.3)
+      '@typescript-eslint/typescript-estree': 7.18.0(typescript@5.8.2)
       eslint: 8.57.1
     transitivePeerDependencies:
       - supports-color
@@ -6173,12 +6173,12 @@ snapshots:
 
   '@uploadthing/mime-types@0.3.4': {}
 
-  '@uploadthing/react@7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))))':
+  '@uploadthing/react@7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))))':
     dependencies:
       '@uploadthing/shared': 7.1.7
       file-selector: 0.6.0
       react: 18.3.1
-      uploadthing: 7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3)))
+      uploadthing: 7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)))
 
   '@uploadthing/shared@7.1.7':
     dependencies:
@@ -6243,10 +6243,10 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/react-router@1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@vercel/react-router@1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@react-router/dev': 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
-      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.7.3)
+      '@react-router/dev': 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
+      '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       '@vercel/static-config': 3.0.0
       isbot: 5.1.22
       react: 18.3.1
@@ -8329,13 +8329,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.2
 
-  postcss-load-config@4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3)):
+  postcss-load-config@4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
       postcss: 8.5.2
-      ts-node: 10.9.1(@types/node@22.13.4)(typescript@5.7.3)
+      ts-node: 10.9.1(@types/node@22.13.4)(typescript@5.8.2)
 
   postcss-nested@6.2.0(postcss@8.5.2):
     dependencies:
@@ -9054,11 +9054,11 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))
+      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
 
-  tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3)):
+  tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -9077,7 +9077,7 @@ snapshots:
       postcss: 8.5.2
       postcss-import: 15.1.0(postcss@8.5.2)
       postcss-js: 4.0.1(postcss@8.5.2)
-      postcss-load-config: 4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))
+      postcss-load-config: 4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
       postcss-nested: 6.2.0(postcss@8.5.2)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -9135,9 +9135,9 @@ snapshots:
 
   trough@2.2.0: {}
 
-  ts-api-utils@1.4.3(typescript@5.7.3):
+  ts-api-utils@1.4.3(typescript@5.8.2):
     dependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   ts-interface-checker@0.1.13: {}
 
@@ -9164,7 +9164,7 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3):
+  ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -9178,16 +9178,16 @@ snapshots:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.7.3
+      typescript: 5.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optional: true
 
   ts-toolbelt@6.15.5: {}
 
-  tsconfck@3.1.5(typescript@5.7.3):
+  tsconfck@3.1.5(typescript@5.8.2):
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   tslib@2.8.1: {}
 
@@ -9241,7 +9241,7 @@ snapshots:
 
   typescript@4.9.5: {}
 
-  typescript@5.7.3: {}
+  typescript@5.8.2: {}
 
   unbox-primitive@1.1.0:
     dependencies:
@@ -9310,7 +9310,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))):
+  uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))):
     dependencies:
       '@effect/platform': 0.72.0(effect@3.12.0)
       '@standard-schema/spec': 1.0.0-beta.4
@@ -9319,7 +9319,7 @@ snapshots:
       effect: 3.12.0
     optionalDependencies:
       express: 4.21.2
-      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.7.3))
+      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
 
   uri-js@4.4.1:
     dependencies:
@@ -9358,9 +9358,9 @@ snapshots:
 
   v8-compile-cache-lib@3.0.1: {}
 
-  valibot@0.41.0(typescript@5.7.3):
+  valibot@0.41.0(typescript@5.8.2):
     optionalDependencies:
-      typescript: 5.7.3
+      typescript: 5.8.2
 
   validate-npm-package-license@3.0.4:
     dependencies:
@@ -9416,11 +9416,11 @@ snapshots:
       - tsx
       - yaml
 
-  vite-tsconfig-paths@5.1.4(typescript@5.7.3)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)):
+  vite-tsconfig-paths@5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
-      tsconfck: 3.1.5(typescript@5.7.3)
+      tsconfck: 3.1.5(typescript@5.8.2)
     optionalDependencies:
       vite: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
