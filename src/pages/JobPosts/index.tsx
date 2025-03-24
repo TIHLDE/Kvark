@@ -131,7 +131,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <Page className='space-y-8'>
+    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Stillingsannonser</h1>
         <p className='text-muted-foreground mt-2'>Finn relevante jobber for studenter</p>
