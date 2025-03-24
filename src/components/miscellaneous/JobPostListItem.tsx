@@ -1,5 +1,5 @@
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
-import { Separator } from '~/components/ui/separator';
+import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { JobPost } from '~/types';
 import { formatDate, getJobpostType, urlEncode } from '~/utils';
@@ -12,78 +12,81 @@ export type JobPostListItemProps = {
   jobPost: JobPost;
 };
 
-const JobPostListItem = ({ jobPost }: JobPostListItemProps) => (
-  <NavLink
-    className='border rounded-md bg-card space-y-4 text-black dark:text-white'
-    params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
-    to='/stillingsannonser/:id/:urlTitle?'>
-    <div className={'flex flex-col sm:flex-row'}>
-      <div className={'w-full'}>
-        <AspectRatioImg
-          alt={jobPost.image_alt || jobPost.title}
-          className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none w-full h-full !object-cover'
-          ratio={'16:7'}
-          src={jobPost.image}
-        />
-      </div>
+const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
+  const deadline = jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false });
 
-      <div className={'flex flex-col w-full justify-between py-2'}>
-        <div className='flex flex-row'>
-          <div className='px-4 py-2 flex-wrap w-full items-start gap-2 flex flex-col'>
-            <h1 className='truncate text-wrap text-ml md:text-xl font-bold'>{jobPost.title}</h1>
-            <div className={'flex gap-2'}>
-              <div className={'px-4 bg-primary text-white text-sm dark:text-black rounded-full'}>{getJobpostType(jobPost.job_type)}</div>
-              <div className={'px-4 bg-primary text-white text-sm dark:text-black rounded-full'}>{jobPost.company}</div>
-              <div className={'px-4 bg-primary text-white text-sm dark:text-black rounded-full'}>
-                {`${jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}.` : `${jobPost.class_start}. - ${jobPost.class_end}. klasse`}`}
+  const classRange = jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}. klasse` : `${jobPost.class_start}. - ${jobPost.class_end}. klasse`;
+
+  return (
+    <NavLink className='block bg-muted' params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }} to='/stillingsannonser/:id/:urlTitle?'>
+      <div className='group rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 bg-muted/30'>
+        {/* Responsive layout - vertical on mobile, horizontal on sm and up */}
+        <div className='flex flex-col sm:flex-row h-full'>
+          {/* Card Image */}
+          <div className='w-full sm:w-3/6'>
+            <AspectRatioImg alt={jobPost.image_alt || jobPost.title} className='w-full !object-cover' ratio={'16:7'} src={jobPost.image} />
+          </div>
+
+          {/* Card Content */}
+          <div className='flex-1 p-4 flex flex-col justify-between'>
+            {/* Title and Badges */}
+            <div className='space-y-3'>
+              <h2 className='text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors'>{jobPost.title}</h2>
+
+              <div className='flex flex-wrap gap-2'>
+                <Badge className='bg-primary test-primary-foreground font-medium px-3 py-1 rounded-full w-fit'>{getJobpostType(jobPost.job_type)}</Badge>
+                <Badge className='bg-primary test-primary-foreground font-medium px-3 py-1 rounded-full w-fit'>{jobPost.company}</Badge>
+                <Badge className='bg-primary test-primary-foreground font-medium px-3 py-1 rounded-full w-fit'>{classRange}</Badge>
               </div>
             </div>
-            <Separator className={'bg-secondary h-[2px]'} />
-          </div>
-        </div>
 
-        <div className={'flex flex-col gap-2 px-4 py-2'}>
-          <div className={'flex flex-row gap-2 item-center'}>
-            <MapPin className={'xl:size-7'} />
-            <h1 className='text-sm'>{jobPost.location}</h1>
-          </div>
-          <div className={'flex flex-row gap-2 items-center'}>
-            <CalendarClock className={'xl:size-7'} />
-            <h1 className='text-sm'>{jobPost.is_continuously_hiring ? 'Fortløpende' : formatDate(parseISO(jobPost.deadline), { time: false })}</h1>
+            {/* Location and Deadline */}
+            <div className='mt-4 gap-2 md:space-y-2 space-x-2  flex md:flex-col md:space-x-0 '>
+              <div className='flex items-center gap-2 text-sm'>
+                <MapPin className='h-5 w-5 text-muted-foreground' />
+                <span>{jobPost.location}</span>
+              </div>
+              <div className='flex items-center gap-2 text-sm'>
+                <CalendarClock className='h-5 w-5 text-muted-foreground' />
+                <span>{deadline}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </NavLink>
-);
+    </NavLink>
+  );
+};
 
 export default JobPostListItem;
 
 export const JobPostListItemLoading = () => (
-  <div className='grid lg:grid-cols-1 gap-4'>
-    {Array.from(Array(6).keys()).map((index) => (
-      <div className={'flex flex-col sm:flex-row bg-card border rounded-md'} key={index}>
-        <Skeleton className='!rounded-b-none sm:!rounded-l-md sm:!rounded-r-none h-[225px] sm:h-[180px] w-full sm:w-[700px] xl:w-[700px]' />
-        <div className={'flex flex-col w-full justify-between py-2'}>
-          <div className='flex flex-row'>
-            <div className='px-4 py-2 flex-wrap w-full items-start gap-2 flex flex-col'>
-              <Skeleton className='h-6 w-3/4' />
-              <div className={'flex gap-2'}>
-                <Skeleton className='h-5 w-20 rounded-full' />
-                <Skeleton className='h-5 w-20 rounded-full' />
-                <Skeleton className='h-5 w-20 rounded-full' />
-              </div>
-              <Separator className={'bg-secondary h-[3px]'} />
+  <div className='space-y-4'>
+    {Array.from({ length: 3 }).map((_, index) => (
+      <div className='rounded-lg overflow-hidden shadow-sm flex flex-col sm:flex-row h-full bg-muted/30' key={index}>
+        {/* Skeleton Image */}
+        <div className='w-full sm:w-2/5'>
+          <Skeleton className='w-full h-[120px]' />
+        </div>
+
+        {/* Skeleton Content */}
+        <div className='flex-1 p-4 flex flex-col justify-between'>
+          <div className='space-y-3'>
+            {/* Title */}
+            <Skeleton className='h-7 w-3/4' />
+
+            {/* Badges */}
+            <div className='flex flex-wrap gap-2'>
+              <Skeleton className='h-6 w-20 rounded-full' />
+              <Skeleton className='h-6 w-24 rounded-full' />
+              <Skeleton className='h-6 w-28 rounded-full' />
             </div>
           </div>
 
-          <div className={'flex flex-col gap-5 px-4 py-2 mt-1'}>
-            <div className={'flex flex-row gap-2 item-center'}>
-              <Skeleton className='h-4 w-28 rounded-full' />
-            </div>
-            <div className={'flex flex-row gap-2 items-center'}>
-              <Skeleton className='h-4 w-28 rounded-full' />
-            </div>
+          {/* Location and Deadline */}
+          <div className='mt-4 space-y-2'>
+            <Skeleton className='h-5 w-32' />
+            <Skeleton className='h-5 w-36' />
           </div>
         </div>
       </div>

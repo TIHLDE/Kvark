@@ -10,7 +10,7 @@ const News = () => {
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Page className='space-y-8'>
+    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Nyheter</h1>
       </div>
