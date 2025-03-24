@@ -71,15 +71,6 @@ export async function clientLoader() {
 }
 
 export default function App() {
-  const loaderData = useLoaderData<RootLoaderData>();
-  const revalidator = useRevalidator();
-  // TODO: This is ugly fix this once react-router fixes their loaderData bug
-  useEffect(() => {
-    if (!loaderData?.fetched) {
-      revalidator.revalidate();
-    }
-  }, [loaderData, revalidator]);
-
   return <Outlet />;
 }
 
