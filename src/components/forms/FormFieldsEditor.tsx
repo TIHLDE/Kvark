@@ -133,12 +133,12 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
                 Nytt spørsmål
               </Button>
             </PopoverTrigger>
-            <PopoverContent className='space-y-2'>
+            <PopoverContent className='space-y-2 flex flex-col'>
               <h1>Legg til spørsmål</h1>
               <Separator />
               <Button
                 variant='ghost'
-                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                className='px-2 py-1 justify-start rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.TEXT_ANSWER);
                   setAddButtonOpen(false);
@@ -148,7 +148,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
               </Button>
               <Button
                 variant='ghost'
-                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                className='px-2 py-1 justify-start rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.SINGLE_SELECT);
                   setAddButtonOpen(false);
@@ -158,7 +158,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
               </Button>
               <Button
                 variant='ghost'
-                className='px-2 py-1 rounded-md cursor-pointer hover:bg-border transition-all duration-150'
+                className='px-2 py-1 justify-start rounded-md cursor-pointer hover:bg-border transition-all duration-150'
                 onClick={() => {
                   addField(FormFieldType.MULTIPLE_SELECT);
                   setAddButtonOpen(false);

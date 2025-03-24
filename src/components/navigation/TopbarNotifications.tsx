@@ -45,11 +45,7 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
             ) : (
               <p>
                 {showDescription ? notification.description : `${notification.description.slice(0, 100)}...`}
-                <Button
-                  variant='ghost'
-                  className='text-primary hover:underline cursor-pointer ml-1 text-xs'
-                  onClick={() => setShowDescription((prev) => !prev)}
-                >
+                <Button variant='link' className='text-primary hover:underline cursor-pointer ml-1 text-xs' onClick={() => setShowDescription((prev) => !prev)}>
                   {showDescription ? 'Skjul' : 'Vis mer'}
                 </Button>
               </p>
