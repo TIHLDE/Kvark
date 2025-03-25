@@ -45,7 +45,6 @@
     "isbot": "^5.1.25",
     "jotai": "^2.12.2",
     "lucide-react": "^0.483.0",
-    "next-themes": "^0.4.4",
     "nuqs": "^2.4.1",
     "qr-scanner": "^1.4.2",
     "qrcode.react": "^4.2.0",
