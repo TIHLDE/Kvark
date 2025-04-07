@@ -1,16 +1,63 @@
-import { GroupList } from 'types';
+import API from '~/api/api';
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { useIsAuthenticated } from '~/hooks/User';
+import GroupItem from '~/pages/Groups/overview/GroupItem';
+import type { GroupList } from '~/types';
+import { GroupType } from '~/types/Enums';
+import React from 'react';
 
-import { useGroupsByType } from 'hooks/Group';
-import { useIsAuthenticated } from 'hooks/User';
+import type { Route } from './+types/index';
 
-import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
+async function getGroupsOverview() {
+  const groups = await API.getGroups({ overview: true });
 
-import { CardContent, CardHeader, CardTitle } from 'components/ui/card';
+  const BOARD_GROUPS = groups.filter((group) => group.type === GroupType.BOARD) ?? [];
+  const SUB_GROUPS = groups.filter((group) => group.type === GroupType.SUBGROUP) ?? [];
+  const COMMITTEES = groups.filter((group) => group.type === GroupType.COMMITTEE) ?? [];
+  const INTERESTGROUPS = groups.filter((group) => group.type === GroupType.INTERESTGROUP) ?? [];
+  // const STUDYGROUPS = groups.filter((group) => group.type === GroupType.STUDY) ?? [];
+  // const STUDYYEARGROUPS = groups.filter((group) => group.type === GroupType.STUDYYEAR) ?? [];
+  const OTHER_GROUPS =
+    groups.filter((group) => [GroupType.BOARD, GroupType.SUBGROUP, GroupType.COMMITTEE, GroupType.INTERESTGROUP].every((t) => group.type !== t)) ?? [];
 
-const GroupsOverview = () => {
+  return {
+    BOARD_GROUPS,
+    SUB_GROUPS,
+    COMMITTEES,
+    INTERESTGROUPS,
+    OTHER_GROUPS,
+  };
+}
+
+let OverviewCache: { expire: Date; data: Awaited<ReturnType<typeof getGroupsOverview>> } | undefined;
+
+export async function clientLoader() {
+  if (OverviewCache && OverviewCache.expire > new Date()) {
+    return Promise.resolve(OverviewCache.data);
+  }
+
+  const groups = await getGroupsOverview();
+  OverviewCache = { expire: new Date(Date.now() + 60 * 1000 * 60), data: groups };
+
+  return groups;
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  return <h1 className='text-center text-muted-foreground mt-4'>{(error as { detail: string }).detail}</h1>;
+}
+
+export default function GripsOverview({ loaderData }: Route.ComponentProps) {
   const isAuthenticated = useIsAuthenticated();
-  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType({ overview: true });
+  return (
+    <LocalLayout>
+      <Overview groups={loaderData} isAuthenticated={isAuthenticated} />
+    </LocalLayout>
+  );
+}
 
+function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; groups: Awaited<ReturnType<typeof getGroupsOverview>> }) {
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS } = groups;
   type CollectionProps = {
     groups: Array<GroupList>;
     title: string;
@@ -26,29 +73,26 @@ const GroupsOverview = () => {
       </div>
     </div>
   );
-
   return (
     <>
-      <CardHeader>
-        <CardTitle>Gruppeoversikt</CardTitle>
-      </CardHeader>
-      <CardContent className='space-y-4'>
-        {isLoading && (
-          <div className='grid md:grid-cols-2 gap-4'>
-            {Array.from({ length: 12 }).map((_, index) => (
-              <GroupItemLoading key={index} />
-            ))}
-          </div>
-        )}
-        {error && <h1 className='text-center text-muted-foreground mt-4'>{error.detail}</h1>}
-        {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
-        {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
-        {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
-        {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
-        {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
-      </CardContent>
+      {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
+      {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
+      {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
+      {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
+      {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
     </>
   );
-};
+}
 
-export default GroupsOverview;
+function LocalLayout({ children }: React.PropsWithChildren) {
+  return (
+    <Page className='max-w-6xl mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Gruppeoversikt</CardTitle>
+        </CardHeader>
+        <CardContent className='space-y-4'>{children}</CardContent>
+      </Card>
+    </Page>
+  );
+}

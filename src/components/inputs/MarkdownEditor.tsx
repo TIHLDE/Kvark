@@ -1,13 +1,12 @@
-import { cn } from 'lib/utils';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Button } from '~/components/ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
+import { Label } from '~/components/ui/label';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Textarea } from '~/components/ui/textarea';
+import { cn } from '~/lib/utils';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Button } from 'components/ui/button';
-import { FormControl, FormField, FormItem, FormMessage } from 'components/ui/form';
-import { Label } from 'components/ui/label';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
-import { Textarea } from 'components/ui/textarea';
 
 const guide = `
   ___

@@ -1,15 +1,13 @@
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { Separator } from '~/components/ui/separator';
+import type { MembershipHistory } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, getMembershipType, getUserAffiliation } from '~/utils';
 import { parseISO } from 'date-fns';
 import { User } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getMembershipType, getUserAffiliation } from 'utils';
-
-import { MembershipHistory } from 'types';
-
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
-import { Separator } from 'components/ui/separator';
+import { Link } from 'react-router';
 
 import DeleteMembershipHistory from './DeleteMembershipHistory';
 import UpdateMembershipHistory from './UpdateMembershipHistory';

@@ -1,20 +1,18 @@
+import FieldEditor from '~/components/forms/FieldEditor';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { Separator } from '~/components/ui/separator';
+import { useFormSubmissions, useUpdateForm } from '~/hooks/Form';
+import type { Form, SelectFormField, TextFormField } from '~/types';
+import { FormFieldType } from '~/types/Enums';
 import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'sonner';
 
-import { Form, SelectFormField, TextFormField } from 'types';
-import { FormFieldType } from 'types/Enums';
-
-import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
-
-import FieldEditor from 'components/forms/FieldEditor';
-import { Button } from 'components/ui/button';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import { Separator } from 'components/ui/separator';
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;

@@ -1,6 +1,5 @@
-import { useBadgesOverallLeaderboard } from 'hooks/Badge';
-
-import BadgesLeaderboard from 'pages/Badges/BadgesLeaderboard';
+import { useBadgesOverallLeaderboard } from '~/hooks/Badge';
+import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
 
 export const BadgesOverallLeaderboard = () => <BadgesLeaderboard useHook={useBadgesOverallLeaderboard} />;
 

@@ -1,13 +1,11 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { EventList, JobPost, News } from '~/types';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { urlEncode } from 'utils';
-
-import { EventList, JobPost, News } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type StoryItem = {
   link: string;

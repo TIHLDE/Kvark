@@ -1,17 +1,13 @@
+import VIPPS from '~/assets/img/vipps.svg';
+import LoadingSpinnner from '~/components/miscellaneous/LoadingSpinner';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { useCreatePaymentOrder } from '~/hooks/Payment';
+import type { Event, Order } from '~/types';
 import { differenceInMilliseconds, formatDistanceStrict, minutesToMilliseconds } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-
-import { Event, Order } from 'types';
-
-import { useCreatePaymentOrder } from 'hooks/Payment';
-
-import LoadingSpinnner from 'components/miscellaneous/LoadingSpinner';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-
-import VIPPS from 'assets/img/vipps.svg';
 
 const getTimeDifference = (time: Date) => {
   const now = new Date();

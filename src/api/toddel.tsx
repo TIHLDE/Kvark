@@ -1,6 +1,5 @@
-import { PaginationResponse, RequestResponse, Toddel, ToddelMutate } from 'types';
-
-import { IFetch } from 'api/fetch';
+import { IFetch } from '~/api/fetch';
+import type { PaginationResponse, RequestResponse, Toddel, ToddelMutate } from '~/types';
 
 export const TODDEL_ENDPOINT = 'toddel';
 

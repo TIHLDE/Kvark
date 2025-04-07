@@ -1,11 +1,8 @@
+import API from '~/api/api';
+import { USER_STRIKES_QUERY_KEY } from '~/hooks/User';
+import type { PaginationResponse, RequestResponse, Strike, StrikeCreate, StrikeList } from '~/types';
 import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'sonner';
-
-import { PaginationResponse, RequestResponse, Strike, StrikeCreate, StrikeList } from 'types';
-
-import API from 'api/api';
-
-import { USER_STRIKES_QUERY_KEY } from 'hooks/User';
 
 export const ALL_STRIKES_QUERY_KEY = 'strikes';
 

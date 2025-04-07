@@ -1,15 +1,13 @@
-import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI } from 'constant';
+import FEIDE_ICON from '~/assets/icons/feide.svg';
+import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import Expandable from '~/components/ui/expandable';
+import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI } from '~/constant';
+import URLS from '~/URLS';
 import { Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import Expandable from 'components/ui/expandable';
-
-import FEIDE_ICON from 'assets/icons/feide.svg';
+import { Link } from 'react-router';
 
 const SignUpOptions = () => {
   const createFeideSession = () => {

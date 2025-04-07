@@ -1,4 +1,4 @@
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
+import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
 
 /**
  * Url to backend

@@ -1,11 +1,8 @@
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQueryClient } from 'react-query';
-
-import { Group, Membership, MembershipHistory, MembershipHistoryMutate, PaginationResponse, RequestResponse, User } from 'types';
-import { MembershipType } from 'types/Enums';
-
-import API from 'api/api';
-
-import { GROUPS_QUERY_KEYS } from 'hooks/Group';
+import API from '~/api/api';
+import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
+import type { Group, Membership, MembershipHistory, MembershipHistoryMutate, PaginationResponse, RequestResponse, User } from '~/types';
+import { MembershipType } from '~/types/Enums';
+import { type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 export const MEMBERSHIP_QUERY_KEY = 'membership';
 export const MEMBERSHIP_HISTORY_QUERY_KEY = 'membership-history';

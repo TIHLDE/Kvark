@@ -1,8 +1,10 @@
-import { BACKEND_URL, FRONTEND_URL } from 'pages/Wiki/specials/Index';
-import ChangelogCard from 'pages/Wiki/specials/Index/ChangelogCard';
+import InfoCard from '~/components/layout/InfoCard';
+import Page from '~/components/navigation/Page';
 
-import InfoCard from 'components/layout/InfoCard';
-import Page from 'components/navigation/Page';
+import ChangelogCard from './components/ChangelogCard';
+
+export const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
+export const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';
 
 const Changelog = () => {
   return (

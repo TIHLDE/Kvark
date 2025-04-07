@@ -1,4 +1,4 @@
-import { ContentType } from 'types/ContentType';
+import { ContentType } from '~/types/ContentType';
 
 import { EmojiPickerHandler } from './EmojiPickHandler';
 import { EmojiShowAll } from './EmojiShowAll';

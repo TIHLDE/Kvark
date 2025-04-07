@@ -1,20 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import FormTextarea from '~/components/inputs/Textarea';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateGallery } from '~/hooks/Gallery';
 import { Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
-
-import { useCreateGallery } from 'hooks/Gallery';
-
-import FormInput from 'components/inputs/Input';
-import FormTextarea from 'components/inputs/Textarea';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 const formSchema = z.object({
   title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
@@ -42,10 +39,11 @@ const CreateGallery = () => {
       ...values,
       slug: '_',
     };
+
     createGallery.mutate(data, {
       onSuccess: (data) => {
         toast.success('Galleriet ble lagt til');
-        navigate(`${URLS.gallery}${data.id}/`);
+        navigate(`/galleri/${data.id}`);
       },
       onError: (e) => {
         toast.error(e.detail);

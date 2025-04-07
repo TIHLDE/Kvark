@@ -1,7 +1,7 @@
-import { UserSubmission } from 'types/Form';
-import { BaseGroup, Group } from 'types/Group';
-import { Permissions } from 'types/Misc';
-import { User, UserList } from 'types/User';
+import { UserSubmission } from '~/types/Form';
+import { BaseGroup, Group } from '~/types/Group';
+import { Permissions } from '~/types/Misc';
+import { User, UserList } from '~/types/User';
 
 import { Reaction } from './News';
 

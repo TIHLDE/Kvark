@@ -1,18 +1,16 @@
+import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { PaginateButton } from '~/components/ui/button';
+import { useNews } from '~/hooks/News';
 import { useMemo } from 'react';
-
-import { useNews } from 'hooks/News';
-
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { PaginateButton } from 'components/ui/button';
 
 const News = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
-    <Page className='space-y-8'>
+    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Nyheter</h1>
       </div>

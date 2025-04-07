@@ -1,13 +1,9 @@
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useHavePermission } from '~/hooks/User';
+import PictureEditorDialog from '~/pages/GalleryDetails/components/PictureEditor';
+import type { Picture } from '~/types';
+import { PermissionApp } from '~/types/Enums';
 import { useState } from 'react';
-
-import { Picture } from 'types';
-import { PermissionApp } from 'types/Enums';
-
-import { useHavePermission } from 'hooks/User';
-
-import PictureEditorDialog from 'pages/GalleryDetails/components/PictureEditor';
-
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type PictureDialogProps = {
   picture: Picture;

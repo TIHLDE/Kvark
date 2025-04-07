@@ -1,5 +1,5 @@
-import { cn } from 'lib/utils';
-import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
+import { cn } from '~/lib/utils';
+import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
 
 export type TihldeLogoProps = {
   size: 'small' | 'large';

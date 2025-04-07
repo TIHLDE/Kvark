@@ -1,14 +1,12 @@
-import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from 'constant';
+import { Button } from '~/components/ui/button';
+import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
+import { useIsAuthenticated, useUser } from '~/hooks/User';
+import { useAnalytics, usePersistedState } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { getYear } from 'date-fns';
 import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useIsAuthenticated, useUser } from 'hooks/User';
-import { useAnalytics, usePersistedState } from 'hooks/Utils';
-
-import { Button } from 'components/ui/button';
+import { Link } from 'react-router';
 
 const NewStudentBox = () => {
   const { event } = useAnalytics();

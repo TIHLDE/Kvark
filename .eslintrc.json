@@ -53,7 +53,7 @@
     "keyword-spacing": "error",
     "linebreak-style": "off",
     "max-len": [
-      "error",
+      "warn",
       {
         "tabWidth": 2,
         "code": 1000,

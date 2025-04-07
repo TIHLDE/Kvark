@@ -1,10 +1,10 @@
-import { Badge, BadgeCategory, Group } from 'types';
+import type { Badge, BadgeCategory, Group } from '~/types';
 
-const WIKI = '/wiki/';
+const WIKI = 'https://wiki.tihlde.org/';
 export const WIKI_URLS = {
-  ABOUT_INDEX: 'tihlde/undergrupper/index/',
-  CONTACT_US: 'kontakt-oss/',
-  EVENT_RULES: 'annet/arrangementsregler/',
+  ABOUT_INDEX: 'https://wiki.tihlde.org/instruks-index',
+  CONTACT_US: 'https://wiki.tihlde.org/kontakt',
+  EVENT_RULES: 'https://wiki.tihlde.org/arrangementer',
 };
 
 const URLS = {
@@ -24,10 +24,10 @@ const URLS = {
   feedback: '/tilbakemelding/',
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
-  contactInfo: `${WIKI}${WIKI_URLS.CONTACT_US}`,
+  contactInfo: `${WIKI_URLS.CONTACT_US}`,
   events: '/arrangementer/',
   eventRegister: 'registrering/',
-  eventRules: `${WIKI}${WIKI_URLS.EVENT_RULES}`,
+  eventRules: `${WIKI_URLS.EVENT_RULES}`,
   forgotPassword: '/glemt-passord/',
   form: '/sporreskjema/',
   groups: {
@@ -42,14 +42,14 @@ const URLS = {
     laws_relative: 'lovverk/',
     laws: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.laws_relative}`,
   },
-  jobposts: '/karriere/',
+  jobposts: '/stillingsannonser/',
   landing: '/',
   login: '/logg-inn/',
   newStudent: '/ny-student/',
   news: '/nyheter/',
   toddel: '/toddel/',
   wiki: WIKI,
-  aboutIndex: `${WIKI}${WIKI_URLS.ABOUT_INDEX}`,
+  aboutIndex: `${WIKI_URLS.ABOUT_INDEX}`,
   profile: '/profil/',
   signup: '/ny-bruker/',
   signupForm: '/ny-bruker/skjema/',
@@ -61,7 +61,7 @@ const URLS = {
   newGroupAdmin: '/admin/ny-gruppe/',
   strikeAdmin: '/admin/prikker/',
   eventAdmin: '/admin/arrangementer/',
-  jobpostsAdmin: '/admin/karriere/',
+  jobpostsAdmin: '/admin/stillingsannonser/',
   newsAdmin: '/admin/nyheter/',
   bannerAdmin: '/admin/bannere/',
   jubilee: 'https://jubileum.tihlde.org/',
@@ -72,6 +72,6 @@ const URLS = {
   pythonsLadies: 'https://pythons-damer.tihlde.org/',
   changelog: '/endringslogg',
   admissions: '/opptak/',
-};
+} as const;
 
 export default URLS;

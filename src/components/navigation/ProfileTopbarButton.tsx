@@ -1,36 +1,39 @@
+import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
+import TopbarNotifications from '~/components/navigation/TopbarNotifications';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { useOptionalAuth } from '~/hooks/auth';
+import { useTheme } from '~/hooks/Theme';
+// import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
+import { useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps } from 'react-joyride';
-import { Link } from 'react-router-dom';
-import Cookies from 'universal-cookie';
-import URLS from 'URLS';
+import { createPath, createSearchParams, href, Link } from 'react-router';
 
-import { useSetRedirectUrl } from 'hooks/Misc';
-import { useTheme } from 'hooks/Theme';
-import { useUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
+import NavLink from '../ui/navlink';
 
-import ThemeSettings from 'components/miscellaneous/ThemeSettings';
-import TopbarNotifications from 'components/navigation/TopbarNotifications';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
+const TUTORIAL_STORAGE_KEY = 'has-seen-bug-report-tutorial';
 
 const ProfileTopbarButton = () => {
-  const { event } = useAnalytics();
-  const { data: user } = useUser();
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const auth = useOptionalAuth();
+
+  const isAuthenticated = Boolean(auth);
   const theme = useTheme();
-  const cookies = new Cookies();
-  const showBugReportTutorial = !cookies.get('has-seen-bug-report') && cookies.get('TIHLDE-AccessToken');
-  const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
+  const [showBugReportTutorial, setShowBugReportTutorial] = useState<boolean>(localStorage.getItem(TUTORIAL_STORAGE_KEY) !== 'true');
+
+  // TODO: Add analytics back
+  // const { event } = useAnalytics();
+  // const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     if (data.action === ACTIONS.CLOSE) {
-      cookies.set('has-seen-bug-report', 'true');
+      localStorage.setItem(TUTORIAL_STORAGE_KEY, 'true');
+      setShowBugReportTutorial(false);
     }
   };
 
   return (
     <div className='flex items-center space-x-4'>
-      {showBugReportTutorial && (
+      {isAuthenticated && showBugReportTutorial && (
         <Joyride
           callback={handleJoyrideCallback}
           disableScrolling={true}
@@ -74,32 +77,33 @@ const ProfileTopbarButton = () => {
         />
       )}
 
-      {Boolean(user) && (
+      {Boolean(auth) && (
         <>
           <TopbarNotifications />
-          <Link className='bug-button' to={URLS.feedback}>
+          <Link className='bug-button' to={href('/tilbakemelding')}>
             <Bug className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[2px]' />
           </Link>
         </>
       )}
       <ThemeSettings />
-      {user ? (
-        <Link onClick={URLS.profile === location.pathname ? () => location.reload() : () => analytics('profile')} to={URLS.profile}>
+      {auth?.user ? (
+        <NavLink to='/profil/:userId?'>
           <Avatar>
-            <AvatarImage alt={user.first_name} src={user.image} />
+            <AvatarImage alt={auth.user.firstName} src={auth.user.image ?? ''} />
             <AvatarFallback>
-              {user.first_name[0]}
-              {user.last_name[0]}
+              {auth.user.firstName}
+              {auth.user.lastName}
             </AvatarFallback>
           </Avatar>
-        </Link>
+        </NavLink>
       ) : (
         <Link
-          onClick={() => {
-            setLogInRedirectURL(window.location.pathname);
-            analytics('log-in');
-          }}
-          to={URLS.login}>
+          to={createPath({
+            pathname: href('/logg-inn'),
+            search: createSearchParams({
+              redirectTo: location.pathname,
+            }).toString(),
+          })}>
           <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
         </Link>
       )}

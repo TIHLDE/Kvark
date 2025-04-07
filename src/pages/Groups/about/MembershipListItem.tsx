@@ -1,15 +1,13 @@
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { Separator } from '~/components/ui/separator';
+import type { Membership, UserList } from '~/types';
+import URLS from '~/URLS';
+import { formatDate, getUserAffiliation } from '~/utils';
 import { parseISO } from 'date-fns';
 import { User } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, getUserAffiliation } from 'utils';
-
-import { Membership, UserList } from 'types';
-
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
-import { Separator } from 'components/ui/separator';
+import { Link } from 'react-router';
 
 import PromoteMember from './PromoteMember';
 import RemoveMember from './RemoveMember';
@@ -36,9 +34,11 @@ const MembershipListItem = ({ membership, isAdmin }: MembershipListItemProps) =>
       title={`${user.first_name} ${user.last_name}`}>
       <div className='space-y-4'>
         <div className='text-sm'>
-          <p>
-            <strong>Allergier:</strong> {user.allergy ? user.allergy : 'Har ingen allergier'}
-          </p>
+          {isAdmin && (
+            <p>
+              <strong>Allergier:</strong> {user.allergy ? user.allergy : 'Har ingen allergier'}
+            </p>
+          )}
           <p>
             <strong>E-post:</strong> {user.email}
           </p>

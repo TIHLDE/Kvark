@@ -1,15 +1,15 @@
+import Logo from '~/components/miscellaneous/TihldeLogo';
+import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
+import { NavigationItem } from '~/components/navigation/Navigation';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
+import { useIsAuthenticated } from '~/hooks/User';
+import { cn } from '~/lib/utils';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
+import { href, Link } from 'react-router';
 
-import { useIsAuthenticated } from 'hooks/User';
-
-import Logo from 'components/miscellaneous/TihldeLogo';
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { NavigationItem } from 'components/navigation/Navigation';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 'components/ui/drawer';
+import NavLink from '../ui/navlink';
 
 type Item = {
   icon: JSX.Element;
@@ -19,9 +19,10 @@ type Item = {
 
 export type BottomBarProps = {
   items: Array<NavigationItem>;
+  className?: string;
 };
 
-const BottomBar = ({ items }: BottomBarProps) => {
+const BottomBar = ({ items, className }: BottomBarProps) => {
   const isAuthenticated = useIsAuthenticated();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
@@ -29,27 +30,31 @@ const BottomBar = ({ items }: BottomBarProps) => {
     {
       icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
-      to: URLS.landing,
+      to: href('/'),
     },
     {
       icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
-      to: URLS.events,
+      to: href('/arrangementer'),
     },
     {
       icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Nyheter',
-      to: URLS.news,
+      to: href('/nyheter'),
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
-      text: 'Karriere',
-      to: URLS.jobposts,
+      text: 'Stillinger',
+      to: href('/stillingsannonser'),
     },
   ];
 
   return (
-    <div className='fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <div
+      className={cn(
+        'fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        className,
+      )}>
       <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
           <Link className='text-center' key={index} to={action.to}>
@@ -100,15 +105,15 @@ const BottomBar = ({ items }: BottomBarProps) => {
               </div>
 
               {isAuthenticated && (
-                <Link onClick={() => setMenuOpen(false)} to={URLS.profile}>
+                <NavLink onClick={() => setMenuOpen(false)} to='/profil/:userId?'>
                   Min profil
-                </Link>
+                </NavLink>
               )}
 
               {!isAuthenticated && (
-                <Link onClick={() => setMenuOpen(false)} to={URLS.login}>
+                <NavLink onClick={() => setMenuOpen(false)} to='/logg-inn'>
                   Logg inn
-                </Link>
+                </NavLink>
               )}
             </Accordion>
           </DrawerContent>

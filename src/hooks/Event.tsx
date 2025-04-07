@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueryKey, useInfiniteQuery, UseInfiniteQueryOptions, useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
-
-import {
+import API from '~/api/api';
+import { FORM_QUERY_KEY } from '~/hooks/Form';
+import { NOTIFICATION_QUERY_KEY } from '~/hooks/Notification';
+import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from '~/hooks/User';
+import type {
   Event,
   EventFavorite,
   EventList,
@@ -12,13 +14,8 @@ import {
   Registration,
   RequestResponse,
   User,
-} from 'types';
-
-import API from 'api/api';
-
-import { FORM_QUERY_KEY } from 'hooks/Form';
-import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
-import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
+} from '~/types';
+import { type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const EVENT_QUERY_KEYS = {
   all: ['event'] as const,

@@ -1,9 +1,8 @@
+import type { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from '~/types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from '~/types/Enums';
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import slugify from 'slugify';
-
-import { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from 'types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from 'types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -230,7 +229,7 @@ export const formatDate = (
 ) => {
   const isDifferentYear = date.getFullYear() !== new Date().getFullYear();
   const formatDateString = `${fullDayOfWeek ? 'EEEE' : 'E'} do ${fullMonth ? 'MMMM' : 'MMM'}${isDifferentYear ? ' yyyy' : ''}`;
-  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nbLocale });
+  const formatted = format(date, `${formatDateString}${time ? ' p' : ''}`, { locale: nb });
   return capitalizeFirstLetter ? `${formatted.charAt(0).toUpperCase()}${formatted.slice(1)}` : formatted;
 };
 
@@ -328,6 +327,7 @@ export const argsToParams = (data: Record<string, any>) => {
     if (Array.isArray(data[key])) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       for (const value in data[key] as any) {
+        // @ts-expect-error the value key is any. i dont feel like fixing this
         args += `&${key}=${data[key][value]}`;
       }
     } else if (!(data[key] === undefined || (typeof data[key] === 'string' && data[key].trim().length === 0))) {
@@ -386,3 +386,172 @@ export const parseLawParagraphNumber = (input: string): number => {
     return parseFloat(`${integerPart}.${decimalPart}`);
   }
 };
+
+/**
+ * Generates a Universally Unique Identifier (UUID)
+ * @returns A random UUIDv4
+ */
+export function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    .split('')
+    .reduce((c, i) => c + (i === 'x' ? Math.floor(Math.random() * 0xf).toString(16) : i === 'y' ? Math.floor(Math.random() * 4 + 8).toString(16) : i), '');
+}
+
+const envHasBigInt64Array = typeof BigInt64Array !== 'undefined';
+/**
+ * Performs a deep equality comparison between two values
+ */
+export function deepEqual(a: unknown, b: unknown): boolean {
+  // Direct equality check (handles primitives and references)
+  if (a === b) {
+    return true;
+  }
+
+  // Check if both values are objects (and not null)
+  if (a && b && typeof a === 'object' && typeof b === 'object') {
+    // Different constructors means different types
+    if (a.constructor !== b.constructor) {
+      return false;
+    }
+
+    // Handle Arrays
+    if (Array.isArray(a) && Array.isArray(b)) {
+      const length = a.length;
+      if (length !== b.length) {
+        return false;
+      }
+      for (let i = length; i-- !== 0; ) {
+        if (!deepEqual(a[i], b[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Handle Maps
+    if (a instanceof Map && b instanceof Map) {
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      // Check that all keys in 'a' exist in 'b'
+      for (const [key] of a) {
+        if (!b.has(key)) {
+          return false;
+        }
+      }
+
+      // Check that all values are deeply equal
+      for (const [key, value] of a) {
+        if (!deepEqual(value, b.get(key))) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Handle Sets
+    if (a instanceof Set && b instanceof Set) {
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      for (const item of a) {
+        if (!b.has(item)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Handle TypedArrays (ArrayBuffer views)
+    if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
+      // Handle BigInt64Array and BigUint64Array separately
+      if (envHasBigInt64Array && ((a instanceof BigInt64Array && b instanceof BigInt64Array) || (a instanceof BigUint64Array && b instanceof BigUint64Array))) {
+        const length = a.length;
+        if (length !== b.length) {
+          return false;
+        }
+        for (let i = length; i-- !== 0; ) {
+          if (a[i] !== b[i]) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      // Handle other TypedArrays
+      if (a.byteLength !== b.byteLength) {
+        return false;
+      }
+
+      const aArray = a as unknown as ArrayLike<number>;
+      const bArray = b as unknown as ArrayLike<number>;
+
+      const length = aArray.length;
+      for (let i = length; i-- !== 0; ) {
+        if (aArray[i] !== bArray[i]) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Handle RegExp objects
+    if (a instanceof RegExp && b instanceof RegExp) {
+      return a.source === b.source && a.flags === b.flags;
+    }
+
+    // Handle objects with custom valueOf methods
+    if (a.valueOf !== Object.prototype.valueOf) {
+      return a.valueOf() === b.valueOf();
+    }
+
+    // Handle objects with custom toString methods
+    if (a.toString !== Object.prototype.toString) {
+      return a.toString() === b.toString();
+    }
+
+    // Handle regular objects by comparing all properties
+    const keys = Object.keys(a);
+    const length = keys.length;
+
+    // Check if objects have the same number of keys
+    if (length !== Object.keys(b).length) {
+      return false;
+    }
+
+    // Check if all keys in 'a' exist in 'b'
+    for (let i = length; i-- !== 0; ) {
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) {
+        return false;
+      }
+    }
+
+    // Type assertion for indexable objects
+    const aObj = a as Record<string, unknown>;
+    const bObj = b as Record<string, unknown>;
+
+    // Check if all properties are deeply equal
+    for (let i = length; i-- !== 0; ) {
+      const key = keys[i];
+
+      // React-specific handling: avoid traversing React elements' _owner
+      if (key === '_owner' && '$$typeof' in aObj) {
+        continue;
+      }
+
+      if (!deepEqual(aObj[key], bObj[key])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // Handle NaN (the only value not equal to itself)
+  return a !== a && b !== b;
+}

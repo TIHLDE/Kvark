@@ -1,4 +1,4 @@
-import { UserBase } from 'types';
+import type { UserBase } from '~/types';
 
 export type Badge = {
   id: string;
