@@ -14,13 +14,14 @@
 
 ## Versjon 2025.07.02
 
-- 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden
-- 🦟 **Mobilmeny Komponent** Fikset en bug med rendering av drawer komponent
-- 🦟 **Kalender** Tidligre arrangementer forsvinner ikke fra kalenderen
-- 🦟 **Autentiserings "State"** Fikset noen problemer relatert til innlogging og oppdatering av navigasjonsbaren.
-- ⚡ **Gammel Wiki** Vi har en ny wiki på https://wiki.tihlde.org, men man kan åpne den gammle på https://tihlde.org/wiki-old
-- ⚡ **Oppdatert Rammeverk** Vi har gjort oppdateringer på de fleste pakker og rammeverket vi bruker til nettsiden.
-- ✨ **Karriere(Stillinger) og Arrangement sider** Vi har oppdatert utseende på karriere og arrangement sidene med flere filtre.
+- 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden  
+- 🦟 **Mobilmeny-komponenten** Fikset en bug med rendering av drawer-komponenten  
+- 🦟 **Kalender** Tidligere arrangementer forsvinner ikke fra kalenderen  
+- 🦟 **Autentisering "State"** Fikset noen problemer relatert til innlogging og oppdateringer i navigasjonsmenyen  
+- ⚡ **Gammel Wiki** Vi har en ny wiki på https://wiki.tihlde.org, men man kan åpne den gamle på https://tihlde.org/wiki-old  
+- ⚡ **Oppdatert Rammeverk** Vi har gjort oppdateringer på de fleste pakker og rammeverket vi bruker til nettsiden  
+- ✨ **Karriere- (stillinger) og arrangementsidene** Vi har oppdatert utseendet med flere filtre  
+
 
 ## Versjon 2025.24.02
 
