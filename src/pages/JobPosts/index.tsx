@@ -137,7 +137,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
         <p className='text-muted-foreground mt-2'>Finn relevante jobber for studenter</p>
       </div>
 
-      <div className='grid xl:grid-cols-[400px,1fr] gap-6 items-start'>
+      <div className='grid lg:grid-cols-[400px,1fr] gap-6 items-start'>
         <div className='border rounded-lg bg-card shadow-sm'>
           <Collapsible className='group' onOpenChange={setIsOpen} open={isOpen}>
             <div className='flex justify-between items-center p-4 border-b'>

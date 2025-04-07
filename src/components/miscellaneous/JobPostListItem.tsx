@@ -18,12 +18,15 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
   const classRange = jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}. klasse` : `${jobPost.class_start}. - ${jobPost.class_end}. klasse`;
 
   return (
-    <NavLink className='block bg-muted' params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }} to='/stillingsannonser/:id/:urlTitle?'>
+    <NavLink
+      className='block bg-muted rounded-lg'
+      params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
+      to='/stillingsannonser/:id/:urlTitle?'>
       <div className='group rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 bg-muted/30'>
         {/* Responsive layout - vertical on mobile, horizontal on sm and up */}
-        <div className='flex flex-col sm:flex-row h-full'>
+        <div className='flex flex-col xl:flex-row h-full'>
           {/* Card Image */}
-          <div className='w-full sm:w-3/6'>
+          <div className='w-full xl:w-3/6'>
             <AspectRatioImg alt={jobPost.image_alt || jobPost.title} className='w-full !object-cover' ratio={'16:7'} src={jobPost.image} />
           </div>
 
