@@ -1,4 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { formatDistance, parseISO } from 'date-fns';
+import { nb } from 'date-fns/locale';
+import { Info, Pencil, Trash } from 'lucide-react';
+import { useCallback, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
@@ -11,13 +18,6 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoBanner } from '~/hooks/InfoBanner';
 import type { InfoBanner } from '~/types';
 import { formatDate } from '~/utils';
-import { formatDistance, parseISO } from 'date-fns';
-import { nb } from 'date-fns/locale';
-import { Info, Pencil, Trash } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 type InfoBannerFormProps = {
   bannerId?: string;
@@ -69,7 +69,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
         form.setValue('visible_until', tomorrow);
       }
     },
-    [form.reset],
+    [form.reset, form.setValue],
   );
 
   useEffect(() => {
@@ -118,7 +118,8 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     <ResponsiveDialog
       description={bannerId ? 'Her kan du redigere et banner' : 'Her kan du opprette et nytt banner'}
       title={bannerId ? 'Rediger banner' : 'Nytt banner'}
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <ScrollArea className='h-[60vh]'>
         <Form {...form}>
           <form className='space-y-4 px-2 py-6' onSubmit={form.handleSubmit(onSubmit)}>

@@ -1,18 +1,18 @@
+import { useMemo } from 'react';
+import { Link, useParams } from 'react-router';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { useEvents } from '~/hooks/Event';
 import { useGroup } from '~/hooks/Group';
 import { useUserPermissions } from '~/hooks/User';
-import { useMemo } from 'react';
-import { Link, useParams } from 'react-router';
 
 const GroupEvents = () => {
   const { slug } = useParams<'slug'>();
   const { data: permissions } = useUserPermissions();
   const { data: group } = useGroup(slug || '-');
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ organizer: slug });
-  const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const events = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div>

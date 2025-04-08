@@ -43,7 +43,8 @@ const UserStrikeListItem = ({ user }: UserListItemProps) => {
       description={getUserAffiliation(user)}
       extra={TotalStrikes}
       icon={UserAvatar}
-      title={`${user.first_name} ${user.last_name}`}>
+      title={`${user.first_name} ${user.last_name}`}
+    >
       <StrikeList user={user} />
     </Expandable>
   );

@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import { FormSelect } from '~/components/inputs/Select';
@@ -13,11 +18,6 @@ import { useCreateGroupFine, useGroupLaws } from '~/hooks/Group';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import type { Group, GroupFineCreate } from '~/types';
 import { formatLawHeader } from '~/utils';
-import { Plus } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type AddFineDialogProps = {
   groupSlug: Group['slug'];
@@ -70,7 +70,7 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
       ...values,
       description,
       image: values.image || null,
-      amount: parseInt(values.amount),
+      amount: Number.parseInt(values.amount),
     };
 
     createFine.mutate(data, {

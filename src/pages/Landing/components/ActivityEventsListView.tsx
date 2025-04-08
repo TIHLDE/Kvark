@@ -1,7 +1,7 @@
+import { useCallback, useState } from 'react';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import { useEvents } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
-import { useCallback, useState } from 'react';
 
 const NO_OF_EVENTS_TO_SHOW = 6;
 const NO_OF_EVENTS_TO_SHOW_MD_DOWN = 4;
@@ -27,9 +27,11 @@ const ActivityEventsListView = () => {
         <EventListItemLoading length={3} />
       </div>
     );
-  } else if (!data?.pages[0]?.results.length) {
+  }
+  if (!data?.pages[0]?.results.length) {
     return <h1 className='text-center'>Ingen kommende arrangementer</h1>;
-  } else if (!isDesktop) {
+  }
+  if (!isDesktop) {
     return (
       <div className='space-y-2'>
         {data?.pages[0]?.results.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (

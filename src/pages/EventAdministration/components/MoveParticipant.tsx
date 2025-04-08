@@ -1,7 +1,7 @@
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useUpdateEventRegistration } from '~/hooks/Event';
-import { toast } from 'sonner';
 
 type MoveParticipantProps = {
   eventId: number;

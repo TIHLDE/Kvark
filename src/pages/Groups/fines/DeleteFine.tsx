@@ -1,8 +1,8 @@
+import { Trash } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useDeleteGroupFine } from '~/hooks/Group';
-import { Trash } from 'lucide-react';
-import { toast } from 'sonner';
 
 type DeleteFineProps = {
   groupSlug: string;

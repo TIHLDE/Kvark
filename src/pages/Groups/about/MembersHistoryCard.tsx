@@ -1,10 +1,10 @@
+import { useMemo } from 'react';
 import { PaginateButton } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useGroup } from '~/hooks/Group';
 import { useMembershipHistories } from '~/hooks/Membership';
 import MembershipHistoryListItem from '~/pages/Groups/about/MembershipHistoryListItem';
 import type { Group } from '~/types';
-import { useMemo } from 'react';
 
 export type MembersHistoryCardProps = {
   groupSlug: Group['slug'];
@@ -12,7 +12,7 @@ export type MembersHistoryCardProps = {
 
 const MembersHistoryCard = ({ groupSlug }: MembersHistoryCardProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMembershipHistories(groupSlug);
-  const prevMemberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const prevMemberships = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
   const { data: group } = useGroup(groupSlug);
   const hasWriteAcccess = Boolean(group?.permissions.write);
 

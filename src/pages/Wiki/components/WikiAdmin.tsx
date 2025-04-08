@@ -1,5 +1,5 @@
 import { HavePermission } from '~/hooks/User';
-import { WikiPage } from '~/types';
+import type { WikiPage } from '~/types';
 import { PermissionApp } from '~/types/Enums';
 
 import CreateWikiPage from './CreateWikiPage';

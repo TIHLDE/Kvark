@@ -1,5 +1,5 @@
-import type { RootLoaderData } from '~/root';
 import { useRouteLoaderData } from 'react-router';
+import type { RootLoaderData } from '~/root';
 
 export function useOptionalAuth() {
   const { auth } = useRouteLoaderData<RootLoaderData>('root') ?? {};

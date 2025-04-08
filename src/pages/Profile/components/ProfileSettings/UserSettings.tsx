@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import { FormSelect } from '~/components/inputs/Select';
 import { FormDetailSwitch } from '~/components/inputs/Switch';
@@ -9,10 +13,6 @@ import { Form } from '~/components/ui/form';
 import { useUpdateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { User } from '~/types';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type UserSettingsProps = {
   user: User;
@@ -46,7 +46,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
       return;
     }
     updateUser.mutate(
-      { userId: user.user_id, user: { ...user, ...values, gender: parseInt(values.gender) } },
+      { userId: user.user_id, user: { ...user, ...values, gender: Number.parseInt(values.gender) } },
       {
         onSuccess: () => {
           toast.success('Bruker oppdatert');

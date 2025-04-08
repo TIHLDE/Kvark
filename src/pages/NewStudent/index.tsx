@@ -1,16 +1,16 @@
+import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
+import { useMemo } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import Page from '~/components/navigation/Page';
 import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
-import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
-import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';
 import { useToddels } from '../../hooks/Toddel';
-import { GroupList } from '../../types/Group';
+import type { GroupList } from '../../types/Group';
 import GroupItem from '../Groups/overview/GroupItem';
 
 const NewStudent = () => {
@@ -21,7 +21,7 @@ const NewStudent = () => {
   const isTablet = useMediaQuery(MEDIUM_SCREEN);
 
   const { data: toddelsData } = useToddels();
-  const toddels = useMemo(() => (toddelsData ? toddelsData.pages.map((page) => page.results).flat() : []), [toddelsData]);
+  const toddels = useMemo(() => (toddelsData ? toddelsData.pages.flatMap((page) => page.results) : []), [toddelsData]);
 
   const fadderukaSignupAnalytics = () => event('signup-fadderuka', 'new-student', 'Clicked on link to signup for fadderuka');
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS } = useGroupsByType({ overview: true });
@@ -137,7 +137,7 @@ const NewStudent = () => {
         <h2 className='text-2xl md:text-5xl font-semibold mx-auto text-center pb-8'>
           TIHLDEs avis heter Töddel <br /> - les siste utgave her
         </h2>
-        {toddels && toddels[0] && (
+        {toddels?.[0] && (
           <Link className='max-w-5xl w-full mx-auto' to='/toddel'>
             <img alt={toddels[0].title} className='rounded-3xl max-w-3xl w-full mx-auto' src={toddels[0].image} />
           </Link>
@@ -154,7 +154,8 @@ const NewStudent = () => {
               href={contact.url}
               key={index}
               rel='noreferrer'
-              target='_blank'>
+              target='_blank'
+            >
               {<contact.icon className='h-12 w-12 lg:h-32 lg:w-32 mb-4' />}
               <p className='dark:text-slate-300 text-slate-700 text-sm lg:text-base'>{contact.text}</p>
             </a>

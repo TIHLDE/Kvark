@@ -1,5 +1,8 @@
-'use client';
-
+import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
+import { createLoader, createSerializer, type inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
+import { useEffect, useState } from 'react';
+import {} from 'react';
+import { useFetcher } from 'react-router';
 import API from '~/api/api';
 import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
@@ -13,10 +16,6 @@ import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Separator } from '~/components/ui/separator';
 import { analyticsEvent, useDebounce } from '~/hooks/Utils';
 import { deepEqual } from '~/utils';
-import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { createLoader, createSerializer, type inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
-import { useEffect, useState } from 'react';
-import { useFetcher } from 'react-router';
 
 import type { Route } from './+types';
 
@@ -177,7 +176,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                   <button
                     aria-label='Fjern søkefilter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() => setQueryFilters({ ...queryFilters, search: '' })}>
+                    onClick={() => setQueryFilters({ ...queryFilters, search: '' })}
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>
@@ -189,7 +189,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                   <button
                     aria-label='Fjern jobbtype-filter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}>
+                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>
@@ -206,7 +207,8 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
                         ...queryFilters,
                         classes: queryFilters.classes.filter((c) => c !== classValue),
                       })
-                    }>
+                    }
+                  >
                     <FilterX size={14} />
                   </button>
                 </Badge>

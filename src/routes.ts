@@ -1,4 +1,4 @@
-import { index, layout, prefix, route, type RouteConfig } from '@react-router/dev/routes';
+import { type RouteConfig, index, layout, prefix, route } from '@react-router/dev/routes';
 
 // TODO: Go through all routes and check if they work
 export default [

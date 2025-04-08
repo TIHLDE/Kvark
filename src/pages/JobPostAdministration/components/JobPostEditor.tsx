@@ -1,4 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { parseISO } from 'date-fns';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import { FormImageUpload } from '~/components/inputs/Upload';
@@ -14,11 +19,6 @@ import JobPostRenderer from '~/pages/JobPostDetails/components/JobPostRenderer';
 import type { JobPost } from '~/types';
 import { JobPostType } from '~/types/Enums';
 import { getJobpostType } from '~/utils';
-import { parseISO } from 'date-fns';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import DeleteJobPost from './DeleteJobPost';
 import JobPostFormSkeleton from './JobPostFormSkeleton';
@@ -47,7 +47,7 @@ const formSchema = z
     class_end: z.string(),
     deadline: z.date(),
   })
-  .refine((data) => parseInt(data.class_start) <= parseInt(data.class_end), {
+  .refine((data) => Number.parseInt(data.class_start) <= Number.parseInt(data.class_end), {
     message: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
     path: ['class_start'],
   });
@@ -133,8 +133,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       expired: false,
       updated_at: new Date().toJSON(),
       deadline: form.getValues().deadline.toJSON(),
-      class_start: parseInt(form.getValues('class_start')),
-      class_end: parseInt(form.getValues('class_end')),
+      class_start: Number.parseInt(form.getValues('class_start')),
+      class_end: Number.parseInt(form.getValues('class_end')),
       link: form.getValues('link') || '',
       email: form.getValues('email') || '',
     };
@@ -155,7 +155,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (jobpostId) {
       updateJobPost.mutate(
-        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
+        { ...values, deadline: values.deadline.toJSON(), class_start: Number.parseInt(values.class_start), class_end: Number.parseInt(values.class_end) },
         {
           onSuccess: () => {
             toast.success('Annonsen ble oppdatert');
@@ -167,7 +167,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
       );
     } else {
       createJobPost.mutate(
-        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
+        { ...values, deadline: values.deadline.toJSON(), class_start: Number.parseInt(values.class_start), class_end: Number.parseInt(values.class_end) },
         {
           onSuccess: (newJobPost) => {
             toast.success('Annonsen ble opprettet');

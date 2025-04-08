@@ -1,8 +1,8 @@
+import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
 import { useCreateReaction, useDeleteReaction, useUpdateReaction } from '~/hooks/EmojiReaction';
 import { useUser } from '~/hooks/User';
 import type { Emoji, Event, News } from '~/types';
-import { toast } from 'sonner';
 
 export type EmojiItemProps = {
   data: News | Event;

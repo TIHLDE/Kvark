@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useContext, useEffect, useState } from 'react';
+import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
 
 export type Theme = 'dark' | 'light' | 'system';
 
@@ -24,7 +24,7 @@ export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 
   const [theme, setTheme] = useState<Theme>(() => defaultTheme);
   useEffect(() => {
     setTheme(localStorage.getItem(storageKey) as Theme);
-  }, [setTheme]);
+  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;

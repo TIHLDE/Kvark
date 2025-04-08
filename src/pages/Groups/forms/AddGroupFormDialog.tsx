@@ -1,4 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Plus } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import FormInput from '~/components/inputs/Input';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
@@ -6,12 +12,6 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useCreateForm } from '~/hooks/Form';
 import type { Group, GroupFormCreate } from '~/types';
 import { FormResourceType } from '~/types/Enums';
-import URLS from '~/URLS';
-import { Plus } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 export type AddGroupFormDialogProps = {
   groupSlug: Group['slug'];
@@ -41,7 +41,7 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
     };
     createGroupForm.mutate(newForm, {
       onSuccess: (form) => {
-        toast.success(`Skjemaet ble opprettet`);
+        toast.success('Skjemaet ble opprettet');
         navigate(`${URLS.form}admin/${form.id}`);
       },
       onError: (e) => {
@@ -62,7 +62,8 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
       className='max-w-2xl'
       description='Alle TIHLDE-medlemmer vil kunne svare på skjemaet, flere ganger om de ønsker. Du kan legge til spørsmål etter at du har opprettet skjemaet. Spørsmålene kan endres helt til noen har svart på skjemaet.'
       title='Nytt spørreskjema'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
           <FormInput form={form} label='Tittel' name='title' required />

@@ -1,6 +1,6 @@
+import { type UseMutationResult, useMutation, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import type { Reaction, ReactionMutate, RequestResponse } from '~/types';
-import { useMutation, type UseMutationResult, useQueryClient } from 'react-query';
 
 import { EVENT_QUERY_KEYS } from './Event';
 

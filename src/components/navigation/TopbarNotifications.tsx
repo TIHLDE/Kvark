@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
@@ -10,10 +14,6 @@ import { useNotifications } from '~/hooks/Notification';
 import { useUser } from '~/hooks/User';
 import type { Notification } from '~/types';
 import { getTimeSince } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 type NotificationItemProps = {
   notification: Notification;
@@ -45,9 +45,9 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
             ) : (
               <p>
                 {showDescription ? notification.description : `${notification.description.slice(0, 100)}...`}
-                <span className='text-primary hover:underline cursor-pointer ml-1 text-xs' onClick={() => setShowDescription((prev) => !prev)}>
+                <Button variant='link' className='text-primary hover:underline cursor-pointer ml-1 text-xs' onClick={() => setShowDescription((prev) => !prev)}>
                   {showDescription ? 'Skjul' : 'Vis mer'}
-                </span>
+                </Button>
               </p>
             )}
           </div>
@@ -80,7 +80,7 @@ const NotificationsTopbar = () => {
   const { data: user } = useUser();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
-  const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const notifications = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   if (!isDesktop) {

@@ -1,0 +1,19 @@
+{
+  "files.eol": "\n",
+
+  // Disable ESLint and Prettier
+  "eslint.enable": false,
+  "prettier.enable": false,
+
+  // Enable biome formatter and linter
+  "biome.enabled": true,
+
+  "[json][jsonc][css][javascript][javascriptreact][typescript][typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.formatOnSave": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  }
+}

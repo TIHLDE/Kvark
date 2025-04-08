@@ -1,12 +1,12 @@
+import { Command as CommandPrimitive } from 'cmdk';
+import { Trash, X } from 'lucide-react';
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 import { useGroupsByType } from '~/hooks/Group';
 import type { BaseGroup, GroupList, PriorityPoolMutate } from '~/types';
 import { GroupType } from '~/types/Enums';
-import { Command as CommandPrimitive } from 'cmdk';
-import { Trash, X } from 'lucide-react';
-import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 
 export type EventEditPriorityPoolsProps = {
   priorityPools: Array<PriorityPoolMutate>;
@@ -154,7 +154,8 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
                   e.preventDefault();
                   e.stopPropagation();
                 }}
-                type='button'>
+                type='button'
+              >
                 <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
               </button>
             </Badge>
@@ -193,7 +194,8 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
                         onSelect={() => {
                           setInputValue('');
                           addGroupToPriorityPool(option.group, poolIndex);
-                        }}>
+                        }}
+                      >
                         {getGroupName(option.group.slug)}
                       </CommandItem>
                     )}

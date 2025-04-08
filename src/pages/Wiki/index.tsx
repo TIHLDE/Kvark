@@ -1,5 +1,5 @@
-import Page from '~/components/navigation/Page';
 import { replace } from 'react-router';
+import Page from '~/components/navigation/Page';
 
 export function clientLoader() {
   return replace('https://wiki.tihlde.org/');

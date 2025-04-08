@@ -1,3 +1,7 @@
+import { parseISO } from 'date-fns';
+import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import StrikeCreateDialog from '~/components/miscellaneous/StrikeCreateDialog';
 import StrikeListItem from '~/components/miscellaneous/StrikeListItem';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
@@ -12,10 +16,6 @@ import { useUserStrikes } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import type { Registration } from '~/types';
 import { formatDate, getUserAffiliation } from '~/utils';
-import { parseISO } from 'date-fns';
-import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import DeleteRegistration from './DeleteRegistration';
 import MoveParticipant from './MoveParticipant';
@@ -89,7 +89,8 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             'whitespace-normal py-8 w-full rounded-t-md rounded-b-none bg-white dark:bg-inherit dark:hover:bg-secondary border-none flex justify-between items-center rounded-sm',
             expanded && 'rounded-b-none',
           )}
-          variant='outline'>
+          variant='outline'
+        >
           <div className='flex items-center space-x-4'>
             <UserAvatar />
             <div className='text-start break-words'>
@@ -152,7 +153,8 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
             {!registration.is_on_wait && (
               <label
                 className='w-full md:w-auto flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary shrink-0'
-                htmlFor={registration.user_info.user_id}>
+                htmlFor={registration.user_info.user_id}
+              >
                 <Checkbox checked={checkedState} id={registration.user_info.user_id} onCheckedChange={(checked) => handleAttendedCheck(Boolean(checked))} />
                 <div className='space-y-1 leading-none'>
                   <Label>Ankommet? </Label>

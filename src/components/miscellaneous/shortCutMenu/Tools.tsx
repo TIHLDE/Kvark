@@ -1,4 +1,4 @@
-import { ShortCutMenuProps } from '.';
+import type { ShortCutMenuProps } from '.';
 import ShortCutLink from './Item';
 import ShortCutSectionWrapper from './SectionWrapper';
 

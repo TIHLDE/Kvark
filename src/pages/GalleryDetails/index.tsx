@@ -1,13 +1,13 @@
+import { useEffect } from 'react';
+import Helmet from 'react-helmet';
+import { useNavigate, useParams } from 'react-router';
+import URLS from '~/URLS';
 import Page from '~/components/navigation/Page';
 import { useGalleryById } from '~/hooks/Gallery';
 import { HavePermission } from '~/hooks/User';
 import GalleryRenderer, { GalleryRendererLoading } from '~/pages/GalleryDetails/components/GalleryRenderer';
 import Http404 from '~/pages/Http404';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
-import { useEffect } from 'react';
-import Helmet from 'react-helmet';
-import { useNavigate, useParams } from 'react-router';
 
 import GalleryEditorDialog from './components/GalleryEditor';
 
@@ -48,7 +48,6 @@ const GalleryDetails = () => {
 
       {data ? (
         <>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-ignore */}
           <Helmet>
             <meta content={data.title} property='og:title' />

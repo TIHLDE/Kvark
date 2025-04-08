@@ -1,13 +1,13 @@
+import { parseISO } from 'date-fns';
+import { User } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
 import type { MembershipHistory } from '~/types';
-import URLS from '~/URLS';
 import { formatDate, getMembershipType, getUserAffiliation } from '~/utils';
-import { parseISO } from 'date-fns';
-import { User } from 'lucide-react';
-import { Link } from 'react-router';
 
 import DeleteMembershipHistory from './DeleteMembershipHistory';
 import UpdateMembershipHistory from './UpdateMembershipHistory';
@@ -34,7 +34,8 @@ const MembershipHistoryListItem = ({ membership, isAdmin }: MembershipHistoryLis
         fullMonth: true,
       })} - ${getMembershipType(membership.membership_type)}`}
       icon={<UserAvatar />}
-      title={`${user.first_name} ${user.last_name}`}>
+      title={`${user.first_name} ${user.last_name}`}
+    >
       <div className='space-y-4'>
         <div className='text-sm'>
           <p>

@@ -1,3 +1,5 @@
+import { ExternalLink, File, Link, ShieldCheck } from 'lucide-react';
+import { Fragment } from 'react';
 import GitHub from '~/assets/icons/github.svg';
 import { PaginateButton } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
@@ -5,8 +7,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/comp
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import type { Cheatsheet } from '~/types';
 import { CheatsheetType } from '~/types/Enums';
-import { ExternalLink, File, Link, ShieldCheck } from 'lucide-react';
-import { Fragment } from 'react';
 
 export type FilesProps = {
   files: Array<Cheatsheet>;
@@ -21,13 +21,14 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
   const Icon = ({ cheatsheet }: { cheatsheet: Cheatsheet }) => {
     if (cheatsheet.type === CheatsheetType.FILE) {
       return <File />;
-    } else if (cheatsheet.type === CheatsheetType.GITHUB) {
-      return <img src={GitHub} />;
-    } else if (cheatsheet.type === CheatsheetType.LINK) {
-      return <Link />;
-    } else {
-      return <ExternalLink />;
     }
+    if (cheatsheet.type === CheatsheetType.GITHUB) {
+      return <img src={GitHub} alt='GitHub Icon' />;
+    }
+    if (cheatsheet.type === CheatsheetType.LINK) {
+      return <Link />;
+    }
+    return <ExternalLink />;
   };
 
   return (
@@ -50,7 +51,8 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                 className='flex items-center justify-between px-3 py-2 rounded-md hover:bg-muted text-black dark:text-white'
                 href={file.url}
                 rel='noopener noreferrer'
-                target='_blank'>
+                target='_blank'
+              >
                 <div className='flex items-center space-x-2 justify-start w-full'>
                   <Icon cheatsheet={file} />
                   <p>{file.title}</p>

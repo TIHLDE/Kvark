@@ -1,3 +1,5 @@
+import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { USERS_ENDPOINT } from '~/api/api';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
@@ -6,8 +8,6 @@ import { Button, PaginateButton } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { TIHLDE_API_URL } from '~/constant';
 import { useUser, useUserEvents } from '~/hooks/User';
-import { CalendarPlusIcon, InfoIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
 
 export const EventsSubscription = () => {
   const { data: user } = useUser();
@@ -21,7 +21,8 @@ export const EventsSubscription = () => {
             className='underline text-blue-500 dark:text-indigo-300'
             href='https://calendar.google.com/calendar/u/0/r/settings/addbyurl'
             rel='noopener noreferrer'
-            target='_blank'>
+            target='_blank'
+          >
             Google Calendar
           </a>
           ,{' '}
@@ -29,7 +30,8 @@ export const EventsSubscription = () => {
             className='underline text-blue-500 dark:text-indigo-300'
             href='https://support.apple.com/no-no/guide/calendar/icl1022/mac'
             rel='noopener noreferrer'
-            target='_blank'>
+            target='_blank'
+          >
             Apple Calendar (fremgangsmåte)
           </a>
           ,{' '}
@@ -37,7 +39,8 @@ export const EventsSubscription = () => {
             className='underline text-blue-500 dark:text-indigo-300'
             href='https://support.microsoft.com/nb-no/office/cff1429c-5af6-41ec-a5b4-74f2c278e98c'
             rel='noopener noreferrer'
-            target='_blank'>
+            target='_blank'
+          >
             Microsoft Outlook (fremgangsmåte)
           </a>{' '}
           eller en annen kalender for å begynne å abonnere på arrangement-kalenderen din. Hvis nye påmeldinger til arrangementer ikke kommer inn i kalenderen
@@ -62,7 +65,7 @@ export const EventsSubscription = () => {
 const ProfileEvents = () => {
   const [tab, setTab] = useState<'present' | 'expired'>('present');
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserEvents(undefined, tab !== 'present');
-  const events = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const events = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='space-y-2'>
@@ -73,14 +76,16 @@ const ProfileEvents = () => {
           className={`w-full md:text-md ${tab === 'present' ? 'bg-white dark:bg-secondary' : ''}`}
           onClick={() => setTab('present')}
           size='default'
-          variant='outline'>
+          variant='outline'
+        >
           Kommende arrangementer
         </Button>
         <Button
           className={`w-full md:text-md ${tab === 'expired' ? 'bg-white dark:bg-secondary' : ''}`}
           onClick={() => setTab('expired')}
           size='default'
-          variant='outline'>
+          variant='outline'
+        >
           Tidligere arrangementer
         </Button>
       </div>

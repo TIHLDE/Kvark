@@ -1,14 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SingleUserSearch } from '~/components/inputs/UserSearch';
-import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
-import ResponsiveDialog from '~/components/ui/responsive-dialog';
-import { useCreateMembership } from '~/hooks/Membership';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateMembership } from '~/hooks/Membership';
 
 export type AddMemberModalProps = {
   groupSlug: string;
@@ -61,7 +61,8 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       onOpenChange={setIsOpen}
       open={isOpen}
       title='Legg til medlem'
-      trigger={OpenButton}>
+      trigger={OpenButton}
+    >
       <Form {...form}>
         <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <SingleUserSearch form={form} label='Søk etter bruker' name='user' />

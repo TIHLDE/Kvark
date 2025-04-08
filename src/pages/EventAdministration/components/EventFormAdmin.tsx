@@ -1,3 +1,6 @@
+import { BookCopy } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import FormAdmin from '~/components/forms/FormAdmin';
 import FormFieldsEditor from '~/components/forms/FormFieldsEditor';
 import { FormViewTemplate } from '~/components/forms/FormView';
@@ -10,9 +13,6 @@ import { useCreateForm, useDeleteForm, useFormById, useFormTemplates } from '~/h
 import type { EventFormCreate, Form, FormCreate } from '~/types';
 import { EventFormType, FormResourceType } from '~/types/Enums';
 import { removeIdsFromFields } from '~/utils';
-import { BookCopy } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 
 export type EventFormAdminProps = {
   eventId: number;
@@ -171,7 +171,8 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         <Expandable
           description='Velg en mal for å bruke som utgangspunkt når du oppretter ett skjema.'
           icon={<BookCopy className='w-5 h-5' />}
-          title='Bruk en mal'>
+          title='Bruk en mal'
+        >
           <FormTemplatesList formType={formType} />
         </Expandable>
       </>

@@ -1,7 +1,7 @@
-import { EventFormType, FormFieldType, FormResourceType } from '~/types/Enums';
-import { EventList } from '~/types/Event';
-import { BaseGroup } from '~/types/Group';
-import { UserBase } from '~/types/User';
+import type { EventFormType, FormFieldType, FormResourceType } from '~/types/Enums';
+import type { EventList } from '~/types/Event';
+import type { BaseGroup } from '~/types/Group';
+import type { UserBase } from '~/types/User';
 
 // -----------------------------------------------------------
 // Interfaces used for the creating of forms and viewing forms

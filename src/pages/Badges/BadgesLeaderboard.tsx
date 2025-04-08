@@ -1,4 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import type { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
+import { Link } from 'react-router';
+import { z } from 'zod';
+import URLS from '~/URLS';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { PaginateButton } from '~/components/ui/button';
@@ -6,15 +12,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
 import type { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
-import URLS from '~/URLS';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import type { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
-import { Link } from 'react-router';
-import { z } from 'zod';
 
 export type BadgesLeaderboard = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
   filters?: any;
   options?: UseInfiniteQueryOptions<
     PaginationResponse<BadgesOverallLeaderboard>,
@@ -56,7 +56,7 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
   );
 
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useHook({ ...formFilters, ...filters }, { ...options });
-  const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const leaderboardEntries = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='space-y-4 py-4'>
@@ -123,7 +123,8 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
               <Link
                 className='flex items-center justify-between space-x-4 p-2 border hover:bg-muted rounded-lg w-full text-black dark:text-white'
                 key={index}
-                to={`${URLS.profile}${entry.user.user_id}/`}>
+                to={`${URLS.profile}${entry.user.user_id}/`}
+              >
                 <div className='flex items-center space-x-2'>
                   <Avatar>
                     <AvatarImage alt={entry.user.first_name} src={entry.user.image} />

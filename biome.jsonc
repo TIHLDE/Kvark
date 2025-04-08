@@ -1,0 +1,55 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "ignore": ["src/components/ui/", "src/lib/utils.ts"] },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 160,
+    "lineEnding": "lf",
+    "attributePosition": "auto",
+    "bracketSpacing": true,
+    "ignore": ["./src/components/ui/", "./src/lib/utils.ts"]
+  },
+  "organizeImports": { "enabled": true },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useButtonType": "off",
+        "noSvgWithoutTitle": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        // Disable this in the future
+        "useExhaustiveDependencies": "off"
+      },
+      "suspicious": {
+        "noConsoleLog": "warn",
+        // Disable this in the future
+        "noArrayIndexKey": "off"
+      },
+      "style": {
+        "useSelfClosingElements": "off"
+      }
+    },
+    "ignore": ["./src/components/ui/", "./src/lib/utils.ts"]
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteStyle": "single"
+    }
+  },
+  "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
+}

@@ -1,3 +1,7 @@
+import { getDay, getHours } from 'date-fns';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
+import URLS from '~/URLS';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent } from '~/components/ui/card';
@@ -7,13 +11,9 @@ import { useCheatsheet } from '~/hooks/Cheatsheet';
 import { useInterval } from '~/hooks/Utils';
 import Files from '~/pages/Cheatsheet/components/Files';
 import { CheatsheetStudy } from '~/types/Enums';
-import URLS from '~/URLS';
 import { getUserStudyShort } from '~/utils';
-import { getDay, getHours } from 'date-fns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 
 export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
@@ -55,7 +55,7 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
   }, [classId]);
 
   const { data, hasNextPage, fetchNextPage, isLoading } = useCheatsheet(getStudy() || CheatsheetStudy.DATAING, getClass() || 1, { search: search });
-  const files = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const files = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const isURLValid = useCallback(() => {
     const study = getStudy();
@@ -77,7 +77,7 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     if (!study || !studyClass || !isURLValid()) {
       navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
     }
-  }, [getStudy, getClass, isURLValid, search]);
+  }, [getStudy, getClass, isURLValid]);
 
   const setStudyChoice = (newStudy: CheatsheetStudy) => {
     setInput('');
@@ -123,8 +123,8 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     return direction === 0 && liveCheatingAmount < max
       ? liveCheatingAmount + 1
       : direction === 1 && liveCheatingAmount > 0
-      ? liveCheatingAmount - 1
-      : liveCheatingAmount;
+        ? liveCheatingAmount - 1
+        : liveCheatingAmount;
   }, [liveCheatingAmount]);
 
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);

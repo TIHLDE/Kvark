@@ -10,9 +10,11 @@ const FormStatistics = ({ formId }: EventFormEditorProps) => {
   const { data, isLoading } = useFormStatisticsById(formId || '-');
   if (isLoading) {
     return <h1 className='text-center'>Laster statistikken</h1>;
-  } else if (!data) {
+  }
+  if (!data) {
     return <h1 className='text-center'>Du må opprette et skjema for å se statistikken for det</h1>;
-  } else if (!data.statistics.length) {
+  }
+  if (!data.statistics.length) {
     return <h1 className='text-center'>Dette skjemaet har ingen flervalgsspørsmål</h1>;
   }
 

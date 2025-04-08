@@ -1,4 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import { FormSelect } from '~/components/inputs/Select';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
@@ -7,9 +10,6 @@ import { Form } from '~/components/ui/form';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
 import { useUsers } from '~/hooks/User';
 import { useDebounce } from '~/hooks/Utils';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 import PersonListItem, { PersonListItemLoading } from './PersonListItem';
 
@@ -52,7 +52,7 @@ const UserFilter = ({ is_TIHLDE_member }: UserFilterProps) => {
     studyyear: filters.studyyear === 'all' ? undefined : filters.studyyear,
     search: filters.search === '' ? undefined : filters.search,
   });
-  const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const users = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const membersAmount = useMemo(
     () => `${data?.pages[0]?.count || '0'} medlemmer

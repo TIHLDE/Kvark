@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
 import { PaginateButton } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useGalleryPictures } from '~/hooks/Gallery';
 import PictureDialog from '~/pages/GalleryDetails/components/PictureDialog';
 import type { Gallery } from '~/types';
-import { useMemo } from 'react';
 
 export const GalleryRendererLoading = () => {
   return (
@@ -21,7 +21,7 @@ export type GalleryRendererProps = {
 
 const GalleryRenderer = ({ id }: GalleryRendererProps) => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useGalleryPictures(id);
-  const pictures = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const pictures = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-4'>

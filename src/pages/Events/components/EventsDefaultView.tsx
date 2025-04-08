@@ -1,5 +1,8 @@
-'use client';
-
+import { Search, FilterX, SlidersHorizontal } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { z } from 'zod';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Badge } from '~/components/ui/badge';
@@ -17,11 +20,6 @@ import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { argsToParams } from '~/utils';
-import { FilterX, Search, SlidersHorizontal } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
-import { z } from 'zod';
 
 type Filters = {
   search?: string;
@@ -253,7 +251,8 @@ const EventsDefaultView = () => {
                   </Badge>
                 )}
               </div>
-            }>
+            }
+          >
             <div className='pt-4'>
               <SearchForm />
             </div>
@@ -274,7 +273,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('search', '');
                     search({ ...filters, search: '' });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -289,7 +289,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('category', '');
                     search({ ...filters, category: '' });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -304,7 +305,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('expired', false);
                     search({ ...filters, expired: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -319,7 +321,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('open_for_sign_up', false);
                     search({ ...filters, open_for_sign_up: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>
@@ -334,7 +337,8 @@ const EventsDefaultView = () => {
                   onClick={() => {
                     form.setValue('user_favorite', false);
                     search({ ...filters, user_favorite: false });
-                  }}>
+                  }}
+                >
                   <FilterX size={14} />
                 </button>
               </Badge>

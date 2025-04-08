@@ -1,4 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import FormInput from '~/components/inputs/Input';
 import { FormSelect } from '~/components/inputs/Select';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
@@ -9,9 +12,6 @@ import { useUsers } from '~/hooks/User';
 import { useDebounce } from '~/hooks/Utils';
 import UserStrikeListItem from '~/pages/StrikeAdmin/components/UserStrikeListItem';
 import { PersonListItemLoading } from '~/pages/UserAdmin/components/PersonListItem';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 const formSchema = z.object({
   study: z.string().optional(),
@@ -39,7 +39,7 @@ const UserStrikeList = () => {
   );
   const filters = useDebounce(formFilters, 500);
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useUsers({ has_active_strikes: true, ...filters });
-  const users = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const users = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='space-y-4'>

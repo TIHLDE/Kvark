@@ -1,4 +1,4 @@
-import { GroupType, MembershipType } from '~/types/Enums';
+import type { GroupType, MembershipType } from '~/types/Enums';
 import type { Permissions } from '~/types/Misc';
 import type { User, UserBase, UserList } from '~/types/User';
 

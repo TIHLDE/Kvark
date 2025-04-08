@@ -1,4 +1,8 @@
-import { CheckedState } from '@radix-ui/react-checkbox';
+import type { CheckedState } from '@radix-ui/react-checkbox';
+import { ListChecks, QrCode } from 'lucide-react';
+import { createRef, useEffect, useMemo, useState } from 'react';
+import { href, redirect, useParams } from 'react-router';
+import { toast } from 'sonner';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -13,13 +17,9 @@ import { useDebounce } from '~/hooks/Utils';
 import Http404 from '~/pages/Http404';
 import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import { ListChecks, QrCode } from 'lucide-react';
-import QrScanner from 'qr-scanner';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { href, redirect, useParams } from 'react-router';
-import { toast } from 'sonner';
 
-import { Route } from './+types';
+import type { Route } from './+types';
+import { useScanner } from './hooks';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);
@@ -35,42 +35,28 @@ type QrScanProps = {
 
 const QrScan = ({ onScan }: QrScanProps) => {
   const [scanned, setScanned] = useState<string | undefined>(undefined);
-  const val = useDebounce(scanned, 500);
-  const [previousScanned, setPreviousScanned] = useState<string | undefined>(undefined);
-  const videoTag = useRef<HTMLVideoElement>();
-  const qrScanner = useRef<QrScanner | null>(null);
 
-  const onDecode = (result: QrScanner.ScanResult) => setScanned(result.data);
+  const videoRef = createRef<HTMLVideoElement>();
 
   useEffect(() => {
-    if (!val || val === previousScanned) {
+    if (!scanned) {
       return;
     }
-    setPreviousScanned(val);
-    onScan(val);
-  }, [val, previousScanned]);
+    onScan(scanned);
+  }, [scanned]);
 
-  useEffect(() => {
-    if (videoTag.current && qrScanner.current === null) {
-      qrScanner.current = new QrScanner(videoTag.current, onDecode, {
-        highlightScanRegion: true,
-        highlightCodeOutline: true,
-      });
-      qrScanner.current.start();
-    }
-    return () => {
-      qrScanner.current?.destroy();
-    };
-  }, []);
+  useScanner(videoRef, {
+    onResult(result) {
+      setScanned(result.data);
+    },
+    onError() {
+      setScanned(undefined);
+    },
+    maxScansPerSecond: 3,
+  });
 
-  return (
-    <video
-      className='object-cover aspect-square w-full h-[400px]'
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ref={videoTag}
-    />
-  );
+  // biome-ignore lint/a11y/useMediaCaption: This is a QR-scanner therefor we dont have a mediaType
+  return <video className='object-cover aspect-square w-full h-[400px]' ref={videoRef} />;
 };
 
 export type ParticipantCardProps = {
@@ -94,7 +80,8 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
         <div className='grid leading-none'>
           <label
             className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'
-            htmlFor={user.user_info.user_id}>
+            htmlFor={user.user_info.user_id}
+          >
             Ankommet
           </label>
         </div>
@@ -110,7 +97,7 @@ const EventRegistration = () => {
   const debouncedSearch = useDebounce(search, 500);
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading } = useEventRegistrations(Number(id), { is_on_wait: false, search: debouncedSearch });
   const updateRegistration = useUpdateEventRegistration(Number(id));
-  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const registrations = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const updateAttendedStatus = async (userId: string, attendedStatus: boolean) =>
     updateRegistration.mutateAsync(

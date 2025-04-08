@@ -1,9 +1,9 @@
+import { Mail, User } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { GroupList } from '~/types';
-import URLS from '~/URLS';
-import { Mail, User } from 'lucide-react';
-import { Link } from 'react-router';
 
 export type GroupItemProps = {
   group: GroupList;

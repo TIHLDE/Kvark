@@ -1,13 +1,13 @@
+import { parseISO } from 'date-fns';
+import { User } from 'lucide-react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
 import type { Membership, UserList } from '~/types';
-import URLS from '~/URLS';
 import { formatDate, getUserAffiliation } from '~/utils';
-import { parseISO } from 'date-fns';
-import { User } from 'lucide-react';
-import { Link } from 'react-router';
 
 import PromoteMember from './PromoteMember';
 import RemoveMember from './RemoveMember';
@@ -31,7 +31,8 @@ const MembershipListItem = ({ membership, isAdmin }: MembershipListItemProps) =>
     <Expandable
       description={`${formatDate(parseISO(membership.created_at), { time: false, fullMonth: true })} -> nå`}
       icon={<UserAvatar />}
-      title={`${user.first_name} ${user.last_name}`}>
+      title={`${user.first_name} ${user.last_name}`}
+    >
       <div className='space-y-4'>
         <div className='text-sm'>
           {isAdmin && (

@@ -1,28 +1,32 @@
+import {
+  type QueryKey,
+  type UseInfiniteQueryOptions,
+  type UseMutationResult,
+  type UseQueryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import API from '~/api/api';
 import { USER_BADGES_QUERY_KEY } from '~/hooks/User';
 import type { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
-import {
-  type QueryKey,
-  useInfiniteQuery,
-  type UseInfiniteQueryOptions,
-  useMutation,
-  type UseMutationResult,
-  useQuery,
-  useQueryClient,
-  type UseQueryOptions,
-} from 'react-query';
 
 export const BADGES_QUERY_KEYS = {
   self: ['badges'] as const,
+  // biome-ignore lint: // TODO: Explain any
   list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'list', filters] as const,
   categories: {
+    // biome-ignore lint: // TODO: Explain any
     list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'categories', filters] as const,
     detail: (badgeCategoryId: BadgeCategory['id']) => [...BADGES_QUERY_KEYS.categories.list(), badgeCategoryId] as const,
   },
+  // biome-ignore lint: // TODO: Explain any
   overallLeaderboard: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'overall_leaderboard', filters] as const,
   badge: {
     detail: (badgeId: Badge['id']) => [...BADGES_QUERY_KEYS.self, badgeId] as const,
+    // biome-ignore lint: // TODO: Explain any
     leaderboard: (badgeId: Badge['id'], filters?: any) => [...BADGES_QUERY_KEYS.badge.detail(badgeId), 'leaderboard', filters] as const,
   },
 };
@@ -31,6 +35,7 @@ export const useBadge = (badgeId: Badge['id'], options?: UseQueryOptions<Badge, 
   useQuery<Badge, RequestResponse>(BADGES_QUERY_KEYS.badge.detail(badgeId), () => API.getBadge(badgeId), options);
 
 export const useBadges = (
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<Badge>, RequestResponse, PaginationResponse<Badge>, PaginationResponse<Badge>, QueryKey>,
 ) =>
@@ -53,6 +58,7 @@ export const useCreateBadge = (): UseMutationResult<RequestResponse, RequestResp
 };
 
 export const useBadgeCategories = (
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<
     PaginationResponse<BadgeCategory>,
@@ -73,6 +79,7 @@ export const useBadgeCategories = (
 
 export const useBadgeLeaderboard = (
   badgeId: Badge['id'],
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<
     PaginationResponse<BadgeLeaderboard>,
@@ -92,6 +99,7 @@ export const useBadgeLeaderboard = (
   );
 
 export const useBadgesOverallLeaderboard = (
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<
     PaginationResponse<BadgesOverallLeaderboard>,

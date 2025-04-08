@@ -4,7 +4,7 @@ import { useGroupsByType } from '~/hooks/Group';
 import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import type { GroupList } from '~/types';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import GroupAdmission, { GroupAdmissionLoading } from './components/GroupAdmission';
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {

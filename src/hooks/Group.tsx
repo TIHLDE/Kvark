@@ -1,3 +1,14 @@
+import { useMemo } from 'react';
+import {
+  type QueryKey,
+  type UseInfiniteQueryOptions,
+  type UseMutationResult,
+  type UseQueryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import API from '~/api/api';
 import type {
@@ -21,20 +32,10 @@ import type {
   User,
 } from '~/types';
 import { GroupType } from '~/types/Enums';
-import { useMemo } from 'react';
-import {
-  type QueryKey,
-  useInfiniteQuery,
-  type UseInfiniteQueryOptions,
-  useMutation,
-  type UseMutationResult,
-  useQuery,
-  useQueryClient,
-  type UseQueryOptions,
-} from 'react-query';
 
 export const GROUPS_QUERY_KEYS = {
   all: ['groups'] as const,
+  // biome-ignore lint: // TODO: Explain any
   list: (filters?: any) => [...GROUPS_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
   detail: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.all, slug] as const,
   laws: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'laws'] as const,
@@ -42,8 +43,11 @@ export const GROUPS_QUERY_KEYS = {
   fines: {
     all: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.detail(slug), 'fines'] as const,
     statistics: (slug: Group['slug']) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'statistics'] as const,
+    // biome-ignore lint: // TODO: Explain any
     list: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), ...(filters ? [filters] : [])] as const,
+    // biome-ignore lint: // TODO: Explain any
     usersFines: (slug: Group['slug'], filters?: any) => [...GROUPS_QUERY_KEYS.fines.all(slug), 'user-fines', ...(filters ? [filters] : [])] as const,
+    // biome-ignore lint: // TODO: Explain any
     userFines: (slug: Group['slug'], userId: User['user_id'], filters?: any) =>
       [...GROUPS_QUERY_KEYS.fines.usersFines(slug), userId, ...(filters ? [filters] : [])] as const,
   },
@@ -66,10 +70,14 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
   });
 };
 
+// biome-ignore lint: // TODO: Explain any
 export const useGroups = (filters?: any) => useQuery<GroupList[], RequestResponse>(GROUPS_QUERY_KEYS.list(filters), () => API.getGroups({ ...filters }));
+// biome-ignore lint: // TODO: Explain any
 export const useStudyGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDY });
+// biome-ignore lint: // TODO: Explain any
 export const useStudyyearGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDYYEAR });
 
+// biome-ignore lint: // TODO: Explain any
 export const useGroupsByType = (filters?: any) => {
   const { data: groups, ...response } = useGroups(filters);
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
@@ -83,7 +91,7 @@ export const useGroupsByType = (filters?: any) => {
       groups?.filter(
         (group) => ![...BOARD_GROUPS, ...SUB_GROUPS, ...COMMITTEES, ...INTERESTGROUPS, ...STUDYGROUPS, ...STUDYYEARGROUPS].some((g) => group.slug === g.slug),
       ) || [],
-    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES, STUDYGROUPS, STUDYYEARGROUPS],
+    [groups, BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, STUDYGROUPS, STUDYYEARGROUPS],
   );
   return { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, STUDYGROUPS, STUDYYEARGROUPS, OTHER_GROUPS, data: groups, ...response };
 };
@@ -117,6 +125,7 @@ export const useDeleteGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id'
 
 export const useGroupFines = (
   groupSlug: Group['slug'],
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<GroupFine>, RequestResponse, PaginationResponse<GroupFine>, PaginationResponse<GroupFine>, QueryKey>,
 ) =>
@@ -135,6 +144,7 @@ export const useGroupFinesStatistics = (slug: Group['slug'], options?: UseQueryO
 export const useGroupUserFines = (
   groupSlug: Group['slug'],
   userId: User['user_id'],
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<PaginationResponse<GroupFine>, RequestResponse, PaginationResponse<GroupFine>, PaginationResponse<GroupFine>, QueryKey>,
 ) =>
@@ -149,6 +159,7 @@ export const useGroupUserFines = (
 
 export const useGroupUsersFines = (
   groupSlug: Group['slug'],
+  // biome-ignore lint: // TODO: Explain any
   filters?: any,
   options?: UseInfiniteQueryOptions<
     PaginationResponse<GroupUserFine>,

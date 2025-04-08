@@ -1,9 +1,9 @@
+import { Fragment, useMemo } from 'react';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import StrikeListItem from '~/components/miscellaneous/StrikeListItem';
 import { PaginateButton } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useStrikes } from '~/hooks/Strike';
-import { Fragment, useMemo } from 'react';
 
 const AllStrikesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useStrikes();

@@ -1,14 +1,14 @@
+import { useMemo } from 'react';
+import { useParams } from 'react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { useUserBadges } from '~/hooks/User';
 import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
-import { useMemo } from 'react';
-import { useParams } from 'react-router';
 
 const ProfileBadges = () => {
   const { userId } = useParams();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useUserBadges(userId);
-  const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
+  const badges = useMemo(() => (data !== undefined ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div>

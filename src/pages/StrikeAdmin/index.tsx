@@ -1,12 +1,12 @@
+import { DotSquare, Users } from 'lucide-react';
+import { href, redirect } from 'react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { PermissionApp } from '~/types/Enums';
-import { DotSquare, Users } from 'lucide-react';
-import { href, redirect } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import AllStrikesList from './components/AllStrikeList';
 import UserStrikeList from './components/UserStrikeList';
 

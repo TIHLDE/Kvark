@@ -1,3 +1,5 @@
+import { parseISO } from 'date-fns';
+import { Trash } from 'lucide-react';
 import EventListItem from '~/components/miscellaneous/EventListItem';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -6,8 +8,6 @@ import { useDeleteStrike } from '~/hooks/Strike';
 import { useUserPermissions } from '~/hooks/User';
 import type { Strike, UserBase } from '~/types';
 import { formatDate } from '~/utils';
-import { parseISO } from 'date-fns';
-import { Trash } from 'lucide-react';
 
 export type StrikeProps = {
   strike: Strike;
@@ -26,7 +26,8 @@ const StrikeListItem = ({ strike, user, displayUserInfo = false }: StrikeProps) 
       className='dark:bg-card'
       description={`Utløper ${formatDate(parseISO(strike.expires_at))}`}
       icon={<h1 className='text-xl font-semibold'>{strike.strike_size}</h1>}
-      title={primaryText}>
+      title={primaryText}
+    >
       <div className='space-y-2'>
         <div className='text-sm'>
           {permissions?.permissions.strike.read && Boolean(strike.creator) && (

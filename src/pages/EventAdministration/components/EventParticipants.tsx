@@ -1,4 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Copy, Info } from 'lucide-react';
+import { useEffect, useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSearchParams } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -11,12 +17,6 @@ import EventMessageSender from '~/pages/EventAdministration/components/EventMess
 import EventStatistics from '~/pages/EventAdministration/components/EventStatistics';
 import Participant from '~/pages/EventAdministration/components/Participant';
 import type { Event } from '~/types';
-import { Copy, Info } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router';
-import { toast } from 'sonner';
-import { z } from 'zod';
 
 import EventParticipantSearch from './EventParticipantSearch';
 import EventUserRegistrator from './EventUserRegistrator';
@@ -50,8 +50,9 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     defaultValues: { names: false, emails: false },
   });
 
-  const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const registrations = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
+  // What is this. what a wack way to do this, but of
   useEffect(() => {
     refetch();
   }, [searchParams]);
@@ -149,7 +150,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                         <FormItem className='w-full'>
                           <label
                             className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='names'>
+                            htmlFor='names'
+                          >
                             <FormControl>
                               <Checkbox checked={field.value} id='names' onCheckedChange={field.onChange} />
                             </FormControl>
@@ -169,7 +171,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                         <FormItem className='w-full'>
                           <label
                             className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='emails'>
+                            htmlFor='emails'
+                          >
                             <FormControl>
                               <Checkbox checked={field.value} id='emails' onCheckedChange={field.onChange} />
                             </FormControl>
@@ -212,7 +215,7 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
   }
 
   //TODO: Implement searching by first name and last name
-  const needsSorting = data && data.priority_pools && data.priority_pools.length > 0;
+  const needsSorting = data?.priority_pools && data.priority_pools.length > 0;
 
   return (
     <Card>

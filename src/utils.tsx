@@ -1,8 +1,8 @@
-import type { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from '~/types';
-import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from '~/types/Enums';
 import { format, getYear, isAfter, isBefore, parseISO, subMinutes } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import slugify from 'slugify';
+import type { Event, GroupLaw, SelectFormField, SelectFormFieldOption, TextFormField, UserBase } from '~/types';
+import { FormFieldType, JobPostType, MembershipType, StrikeReason, Study, UserClass, UserStudy } from '~/types/Enums';
 
 export const isAfterDateOfYear = (month: number, date: number) => isAfter(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
 export const isBeforeDateOfYear = (month: number, date: number) => isBefore(new Date(), new Date(getYear(new Date()), month, date, 0, 0, 0));
@@ -24,25 +24,14 @@ export const urlEncode = (text = '') => slugify(text, { lower: true, strict: tru
 export const isExternalURL = (url = '') => url.indexOf(':') > -1 || url.indexOf('//') > -1;
 
 /**
- * Short down string if longer than limit
- * @param string String to shorten
- * @param maxStringLength Max length of returned string
- */
-export const shortDownString = (string: string, maxStringLength: number) => {
-  if (string.length > maxStringLength) {
-    string = string.slice(0, maxStringLength) + '...';
-  }
-  return string;
-};
-
-/**
  * Find how many hours a users start of registration to an event is delayed because of their strikes.
  * @param numberOfStrikes The number of strikes the user have
  */
 export const getStrikesDelayedRegistrationHours = (numberOfStrikes: number) => {
   if (numberOfStrikes === 0) {
     return 0;
-  } else if (numberOfStrikes === 1) {
+  }
+  if (numberOfStrikes === 1) {
     return 3;
   }
   return 12;
@@ -246,15 +235,17 @@ export const getTimeSince = (date: Date) => {
   const days = Number((ms / (1000 * 60 * 60 * 24)).toFixed(0));
   if (sec < 60) {
     return `${sec} sekunder siden`;
-  } else if (min < 60) {
-    return `${min} minutter siden`;
-  } else if (hrs < 24) {
-    return `${hrs} timer siden`;
-  } else if (days < 7) {
-    return `${days} dager siden`;
-  } else {
-    return formatDate(date);
   }
+  if (min < 60) {
+    return `${min} minutter siden`;
+  }
+  if (hrs < 24) {
+    return `${hrs} timer siden`;
+  }
+  if (days < 7) {
+    return `${days} dager siden`;
+  }
+  return formatDate(date);
 };
 
 /**
@@ -320,12 +311,12 @@ export const getICSFromEvent = (event: Event): string => {
  * @param data A JSON-object
  * @returns String with format: `?key1=value1&key2=value2`
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
 export const argsToParams = (data: Record<string, any>) => {
   let args = '?';
   for (const key in data) {
     if (Array.isArray(data[key])) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: // TODO: Explain the disable of lint rule
       for (const value in data[key] as any) {
         // @ts-expect-error the value key is any. i dont feel like fixing this
         args += `&${key}=${data[key][value]}`;
@@ -345,11 +336,11 @@ export const argsToParams = (data: Record<string, any>) => {
 export const removeIdsFromFields = (fields: Array<TextFormField | SelectFormField>) => {
   const newFields: Array<TextFormField | SelectFormField> = [];
   fields.forEach((field) => {
-    const { id, ...restField } = field; // eslint-disable-line
+    const { id, ...restField } = field;
     const newOptions: Array<SelectFormFieldOption> = [];
     if (field.type !== FormFieldType.TEXT_ANSWER) {
       field.options.forEach((option) => {
-        const { id, ...restOption } = option; // eslint-disable-line
+        const { id, ...restOption } = option;
         newOptions.push(restOption as SelectFormFieldOption);
       });
     }
@@ -379,12 +370,11 @@ export const navigateToExternalURL = (url: string) => window.open(url, '_blank')
 export const parseLawParagraphNumber = (input: string): number => {
   const parts = input.split('.');
   if (parts.length === 1) {
-    return parseFloat(input);
-  } else {
-    const integerPart = parts[0];
-    const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
-    return parseFloat(`${integerPart}.${decimalPart}`);
+    return Number.parseFloat(input);
   }
+  const integerPart = parts[0];
+  const decimalPart = parts[1].padStart(2, '0').slice(0, 2);
+  return Number.parseFloat(`${integerPart}.${decimalPart}`);
 };
 
 /**
@@ -553,5 +543,6 @@ export function deepEqual(a: unknown, b: unknown): boolean {
   }
 
   // Handle NaN (the only value not equal to itself)
+  // biome-ignore lint/suspicious/noSelfCompare: This is for NaN comparison
   return a !== a && b !== b;
 }

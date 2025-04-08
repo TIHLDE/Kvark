@@ -1,15 +1,15 @@
+import { Check, HandCoins } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button, PaginateButton } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useBatchUpdateUserGroupFines, useGroupUserFines } from '~/hooks/Group';
 import { useAnalytics } from '~/hooks/Utils';
-import FineItem, { FineItemProps } from '~/pages/Groups/fines/FineItem';
+import FineItem, { type FineItemProps } from '~/pages/Groups/fines/FineItem';
 import { useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import type { GroupUserFine } from '~/types';
-import { Check, HandCoins } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
@@ -22,10 +22,10 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);
 
   const { data, hasNextPage, isFetching, fetchNextPage } = useGroupUserFines(groupSlug, userFine.user.user_id, finesFilter, { enabled: expanded });
-  const fines = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const fines = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   const toggleApproved = () => {
-    event('update-batch', 'fines', `Approved all fines of user`);
+    event('update-batch', 'fines', 'Approved all fines of user');
     updateUserFines.mutate(
       { approved: true },
       {
@@ -40,7 +40,7 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
   };
 
   const togglePayed = () => {
-    event('update-batch', 'fines', `Payed all fines of user`);
+    event('update-batch', 'fines', 'Payed all fines of user');
     updateUserFines.mutate(
       { payed: true },
       {
@@ -83,7 +83,8 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
       icon={UserAvatar}
       onOpenChange={setExpanded}
       open={expanded}
-      title={`${userFine.user.first_name} ${userFine.user.last_name}`}>
+      title={`${userFine.user.first_name} ${userFine.user.last_name}`}
+    >
       {isAdmin && !fines.length && <h1 className='text-center'>Ingen bøter</h1>}
       {isAdmin && fines.length > 0 && (
         <div className='flex items-center space-x-4 pb-4'>

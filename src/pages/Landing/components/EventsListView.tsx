@@ -20,7 +20,8 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
         <EventListItemLoading length={3} />
       </div>
     );
-  } else if (isLoading) {
+  }
+  if (isLoading) {
     return (
       <div className='grid grid-cols-2 gap-2'>
         <div className='space-y-2'>
@@ -31,9 +32,11 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
         </div>
       </div>
     );
-  } else if (!events.length) {
+  }
+  if (!events.length) {
     return <h1 className='text-center'>Ingen kommende arrangementer</h1>;
-  } else if (!isDesktop) {
+  }
+  if (!isDesktop) {
     return (
       <div className='space-y-2'>
         {events.slice(0, NO_OF_EVENTS_TO_SHOW_MD_DOWN).map((event) => (

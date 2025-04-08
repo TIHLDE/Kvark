@@ -1,3 +1,18 @@
+import {
+  BadgeIcon,
+  CalendarDaysIcon,
+  FileQuestionIcon,
+  Github,
+  GripIcon,
+  Linkedin,
+  LogOutIcon,
+  type LucideIcon,
+  SettingsIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { redirect, useParams } from 'react-router';
 import { authClient, createLoginRedirectUrl } from '~/api/auth';
 import { QRButton } from '~/components/miscellaneous/QRButton';
 import Page from '~/components/navigation/Page';
@@ -19,23 +34,8 @@ import ProfileSettings from '~/pages/Profile/components/ProfileSettings';
 import ProfileStrikes from '~/pages/Profile/components/ProfileStrikes';
 import { PermissionApp } from '~/types/Enums';
 import { getUserAffiliation } from '~/utils';
-import {
-  BadgeIcon,
-  CalendarDaysIcon,
-  FileQuestionIcon,
-  Github,
-  GripIcon,
-  Linkedin,
-  LogOutIcon,
-  LucideIcon,
-  SettingsIcon,
-  ShieldCheckIcon,
-  UsersIcon,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { redirect, useParams } from 'react-router';
 
-import { Route } from './+types';
+import type { Route } from './+types';
 import EditBioButton from './components/BioEditor/EditBioButton';
 
 export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
@@ -91,7 +91,8 @@ const Profile = () => {
     <Button
       className={cn('flex justify-start text-md border-none rounded-none', tab === label && 'bg-accent')}
       onClick={onClick ? onClick : () => setTab(label)}
-      variant={tab === label ? 'outline' : 'ghost'}>
+      variant={tab === label ? 'outline' : 'ghost'}
+    >
       <Icon className='mr-2 stroke-[1.5px] shrink-0' /> <p className='truncate ...'>{label}</p>
     </Button>
   );
@@ -114,7 +115,7 @@ const Profile = () => {
                 </AvatarFallback>
               </Avatar>
             )}
-            {user && user.first_name ? (
+            {user?.first_name ? (
               <div className='px-2 space-y-1 break-words'>
                 <h1 className='text-2xl md:text-5xl font-semibold'>{`${user.first_name} ${user.last_name}`}</h1>
                 <h1>

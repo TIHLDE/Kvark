@@ -1,10 +1,10 @@
+import { redirect } from 'react-router';
 import API from '~/api/api';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
-import { redirect } from 'react-router';
 
-import { Route } from './+types/index';
+import type { Route } from './+types/index';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const eventId = Number(params.id);
@@ -25,7 +25,7 @@ export function meta({ data }: Route.MetaArgs) {
     { property: 'og:title', content: data.event.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data.event.image || 'https://tihlde.org' + TIHLDELOGO },
+    { property: 'og:image', content: data.event.image || `https://tihlde.org${TIHLDELOGO}` },
   ];
 }
 

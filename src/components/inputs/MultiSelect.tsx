@@ -1,8 +1,8 @@
-import { Badge } from '~/components/ui/badge';
-import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 import { Command as CommandPrimitive } from 'cmdk';
 import { X } from 'lucide-react';
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { Badge } from '~/components/ui/badge';
+import { Command, CommandGroup, CommandItem, CommandList } from '~/components/ui/command';
 
 export type MultiSelectOption = {
   value: string;
@@ -53,8 +53,7 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
 
   useEffect(() => {
     onChange?.(selected);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selected]);
+  }, [selected, onChange]);
 
   return (
     <Command className='overflow-visible bg-transparent' onKeyDown={handleKeyDown}>
@@ -75,7 +74,8 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
                   onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                  }}>
+                  }}
+                >
                   <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                 </button>
               </Badge>
@@ -113,7 +113,8 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
                       onSelect={() => {
                         setInputValue('');
                         setSelected((prev) => [...prev, option]);
-                      }}>
+                      }}
+                    >
                       {option.label}
                     </CommandItem>
                   );

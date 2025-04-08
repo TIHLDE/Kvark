@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -5,13 +6,12 @@ import { useToddels } from '~/hooks/Toddel';
 import { HavePermission } from '~/hooks/User';
 import ToddelListItem, { ToddelListItemLoading } from '~/pages/Toddel/components/ToddelListItem';
 import { PermissionApp } from '~/types/Enums';
-import { useMemo } from 'react';
 
 import CreateToddelDialog from './components/CreateToddelDialog';
 
 const ToddelPage = () => {
   const { data, error, isLoading, isFetching, hasNextPage, fetchNextPage } = useToddels();
-  const toddels = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const toddels = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <Page className='space-y-8'>

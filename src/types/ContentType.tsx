@@ -1,4 +1,4 @@
-import { Event } from './Event';
-import { News } from './News';
+import type { Event } from './Event';
+import type { News } from './News';
 
 export type ContentType = Event | News;

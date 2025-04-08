@@ -48,11 +48,9 @@ const Tree = forwardRef<
 
     const ids: string[] = []
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId: string) {
       if (items instanceof Array) {
-        // eslint-disable-next-line @typescript-eslint/prefer-for-of
         for (let i = 0; i < items.length; i++) {
           ids.push(items[i]!.id);
           if (walkTreeItems(items[i]!, targetId) && !expandAll) {

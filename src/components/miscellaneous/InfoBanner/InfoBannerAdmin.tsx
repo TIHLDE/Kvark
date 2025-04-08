@@ -1,4 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { href, redirect } from 'react-router';
+import { z } from 'zod';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -8,12 +12,8 @@ import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
 import { useInfoBanners } from '~/hooks/InfoBanner';
 import { PermissionApp } from '~/types/Enums';
-import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { href, redirect } from 'react-router';
-import { z } from 'zod';
 
-import { Route } from './+types/InfoBannerAdmin';
+import type { Route } from './+types/InfoBannerAdmin';
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
 
 type Filters = {
@@ -45,7 +45,7 @@ function InfoBannerAdmin() {
     setFilters({ is_visible: values.is_visible, is_expired: values.is_expired });
   };
   const { data: bannerData, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
-  const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
+  const banners = useMemo(() => (bannerData ? bannerData.pages.flatMap((page) => page.results) : []), [bannerData]);
 
   return (
     <div className='space-y-4'>

@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
+import { type InfiniteData, type QueryKey, type UseInfiniteQueryOptions, useInfiniteQuery, useQueryClient } from 'react-query';
 import API from '~/api/api';
 import { USER_QUERY_KEY } from '~/hooks/User';
 import type { Notification, PaginationResponse, RequestResponse } from '~/types';
-import { useEffect, useState } from 'react';
-import { type InfiniteData, type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useQueryClient } from 'react-query';
 
 export const NOTIFICATION_QUERY_KEY = 'notification';
 
@@ -25,7 +25,7 @@ export const useNotifications = (
       queryClient.setQueryData([NOTIFICATION_QUERY_KEY], () => newQueryData);
       setNewQueryData(null);
     }
-  }, [enabled, newQueryData]);
+  }, [enabled, newQueryData, queryClient]);
 
   return useInfiniteQuery<PaginationResponse<Notification>, RequestResponse>(
     [NOTIFICATION_QUERY_KEY],
@@ -35,10 +35,7 @@ export const useNotifications = (
       getNextPageParam: (lastPage) => lastPage.next,
       onSuccess: async (data) => {
         // Get not read notifications
-        const notifications = data.pages
-          .map((page) => page.results)
-          .flat()
-          .filter((not) => !not.read);
+        const notifications = data.pages.flatMap((page) => page.results).filter((not) => !not.read);
         // If some not read notifications exists, mark them as read
         if (notifications.length) {
           await Promise.allSettled(notifications.map((notification) => API.updateNotification(notification.id, { read: true })));

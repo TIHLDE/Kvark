@@ -1,14 +1,14 @@
+import { Info } from 'lucide-react';
+import { useMemo } from 'react';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { PaginateButton } from '~/components/ui/button';
 import { useBadges } from '~/hooks/Badge';
 import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
-import { Info } from 'lucide-react';
-import { useMemo } from 'react';
 
 export const BadgesList = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges();
-  const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const badges = useMemo(() => (data ? data.pages.flatMap((page) => page.results) : []), [data]);
 
   return (
     <div className='mt-4 space-y-4'>

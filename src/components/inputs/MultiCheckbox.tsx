@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { Checkbox } from '~/components/ui/checkbox';
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { cn } from '~/lib/utils';
-import { useEffect } from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 import { Label } from '../ui/label';
 
@@ -38,17 +38,15 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
   useEffect(() => {
     const value = form.getValues(name);
     if (!value || (Array.isArray(value) && !value.length)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, []);
     }
 
     if (defaultValue && (!value || (Array.isArray(value) && !value.length))) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       form.setValue(name, [defaultValue]);
     }
-  }, [form.getValues(name)]);
+  }, [form.setValue, form.getValues, defaultValue, name]);
 
   return (
     <FormField
@@ -73,8 +71,6 @@ const FormMultiCheckbox = <TFormValues extends FieldValues>({
                   <FormItem className='flex flex-row items-start space-x-3 space-y-0'>
                     <FormControl>
                       <Checkbox
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
                         checked={field.value?.includes(typeof item === 'object' ? item.value : item)}
                         disabled={disabled}
                         onCheckedChange={(checked) => {

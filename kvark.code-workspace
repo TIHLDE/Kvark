@@ -11,11 +11,22 @@
       "**/build": true,
       "**/coverage": true
     },
-    "editor.formatOnSave": true,
-    "eslint.validate": ["html", "javascript", "javascriptreact", "typescript", "typescriptreact"],
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+    // Disable ESLint and Prettier
+    "eslint.enable": false,
+    "prettier.enable": false,
+
+    // Enable biome formatter and linter
+    "biome.enabled": true,
+
+    "[json][jsonc][css][javascript][javascriptreact][typescript][typescriptreact]": {
+      "editor.defaultFormatter": "biomejs.biome",
+      "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.biome": "explicit"
+    }
   },
   "extensions": {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    "recommendations": ["biomejs.biome"]
   }
 }

@@ -1,3 +1,7 @@
+import { ArrowRight, LoaderCircle, Lock } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import URLS from '~/URLS';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -5,10 +9,6 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { useGroupForms } from '~/hooks/Group';
 import { cn } from '~/lib/utils';
 import type { GroupForm, GroupList } from '~/types';
-import URLS from '~/URLS';
-import { ArrowRight, LoaderCircle, Lock } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 type GroupAdmissionProps = {
   group: GroupList;
@@ -39,7 +39,8 @@ const GroupAdmission = ({ group, disabled }: GroupAdmissionProps) => {
       <Button asChild variant='outline'>
         <Link
           className='whitespace-normal py-8 w-full bg-white dark:bg-inherit dark:hover:bg-secondary flex justify-between items-center rounded-sm'
-          to={URLS.groups.details(group.slug)}>
+          to={URLS.groups.details(group.slug)}
+        >
           <div className='flex items-center space-x-2 md:space-x-4 w-full overflow-hidden'>
             <Logo />
             <div className='text-start break-words'>
