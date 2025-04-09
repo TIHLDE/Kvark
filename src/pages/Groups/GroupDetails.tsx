@@ -4,7 +4,7 @@ import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
 import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
-import { ScrollArea } from '~/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { cn } from '~/lib/utils';
 import { FormGroupValues } from '~/types';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
@@ -52,7 +52,6 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
   const tabs = [
     { label: 'Om', to: `/grupper/${group.slug}`, icon: Info },
     { label: 'Arrangementer', to: `/grupper/${group.slug}/arrangementer`, icon: CalendarRange },
-    // TODO: Toggle hidden when auth is done
     { label: 'Bøter', to: `/grupper/${group.slug}/boter`, icon: CircleDollarSign, hidden: !showFinesAndLaws },
     { label: 'Lovverk', to: `/grupper/${group.slug}/lovverk`, icon: Scale, hidden: !showFinesAndLaws },
     { label: 'Spørreskjemaer', to: `/grupper/${group.slug}/sporreskjemaer`, icon: CircleHelp, hidden: !showForms },
@@ -79,6 +78,7 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
         <CardContent>
           <ScrollArea className='w-full whitespace-nowrap p-0'>
             <div className='flex w-max space-x-4'>{tabs.map((tab) => !tab.hidden && <TabLink key={tab.label} {...tab} Icon={tab.icon} />)}</div>
+            <ScrollBar orientation='horizontal' />
           </ScrollArea>
           <Outlet />
         </CardContent>
