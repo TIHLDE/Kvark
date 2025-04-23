@@ -1,19 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import API from '~/api/api';
-import { setCookie } from '~/api/cookie';
 import Page from '~/components/navigation/Page';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { ACCESS_TOKEN } from '~/constant';
+import { useLogin } from '~/hooks/User';
 import { analyticsEvent } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { data, href, Link, redirect, useSubmit } from 'react-router';
+import { href, Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 
-import { queryClient } from '../MainLayout';
 import { Route } from './+types';
 
 const formSchema = z.object({
@@ -21,34 +18,18 @@ const formSchema = z.object({
   password: z.string().min(1, { message: 'Passorde er påkrevd' }),
 });
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const formData = await request.formData();
-  const username = formData.get('username');
-  const password = formData.get('password');
-
-  const { data: safeData, success, error } = formSchema.safeParse({ username, password });
-
-  if (!success) {
-    return data({ errors: error }, { status: 400 });
-  }
-
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const redirectUrl = new URL(request.url).searchParams.get('redirectTo') ?? href('/');
-
-  try {
-    const { token } = await API.authenticate(safeData.username, safeData.password);
-    analyticsEvent('login', 'auth', 'Logged inn');
-    setCookie(ACCESS_TOKEN, token);
-    queryClient.invalidateQueries('user');
-    queryClient.refetchQueries('user');
-    return redirect(redirectUrl);
-  } catch {
-    return data({ errors: {} });
-  }
+  return {
+    redirectUrl,
+  };
 }
 
-export default function LoginPage() {
+export default function LoginPage({ loaderData }: Route.ComponentProps) {
   // const { event } = useAnalytics();
-  const submit = useSubmit();
+  const navigate = useNavigate();
+
+  const login = useLogin();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,7 +40,16 @@ export default function LoginPage() {
   });
 
   const onLogin = async (values: z.infer<typeof formSchema>) => {
-    await submit(values, { method: 'POST' });
+    login.mutate(values, {
+      onSuccess: () => {
+        analyticsEvent('login', 'auth', 'Logged inn');
+
+        navigate(loaderData.redirectUrl);
+      },
+      onError: (e) => {
+        form.setError('username', { message: e.detail || 'Noe gikk galt' });
+      },
+    });
   };
 
   return (
