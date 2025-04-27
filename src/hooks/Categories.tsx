@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { Category, RequestResponse } from '~/types';
-import { useQuery } from 'react-query';
 
 export const CATEGORIES_QUERY_KEY = 'categories';
 

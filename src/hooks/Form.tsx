@@ -1,3 +1,4 @@
+import { useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import { EVENT_QUERY_KEYS } from '~/hooks/Event';
 import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
@@ -15,7 +16,6 @@ import type {
   UserSubmission,
 } from '~/types';
 import { FormFieldType, FormResourceType } from '~/types/Enums';
-import { useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const FORM_QUERY_KEY = 'form';
 export const SUBMISSIONS_QUERY_KEY = 'submission';
@@ -30,7 +30,8 @@ export const useFormTemplates = () => useQuery<Array<Form>, RequestResponse>([FO
 
 export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCreate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newForm) => API.createForm(newForm), {
+  return useMutation({
+    mutationFn: (newForm) => API.createForm(newForm),
     onSuccess: (data) => {
       if (data.resource_type === FormResourceType.FORM) {
         queryClient.invalidateQueries([FORM_QUERY_KEY]);
@@ -48,7 +49,8 @@ export const useCreateForm = (): UseMutationResult<Form, RequestResponse, FormCr
 
 export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestResponse, FormUpdate, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedForm: FormUpdate) => API.updateForm(formId, updatedForm), {
+  return useMutation({
+    mutationFn: (updatedForm: FormUpdate) => API.updateForm(formId, updatedForm),
     onSuccess: (data) => {
       if (data.resource_type === FormResourceType.EVENT_FORM) {
         queryClient.invalidateQueries(EVENT_QUERY_KEYS.detail(data.event.id));
@@ -65,7 +67,8 @@ export const useUpdateForm = (formId: string): UseMutationResult<Form, RequestRe
 
 export const useDeleteForm = (formId: string): UseMutationResult<RequestResponse, RequestResponse, undefined, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteForm(formId), {
+  return useMutation({
+    mutationFn: () => API.deleteForm(formId),
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {
@@ -92,7 +95,8 @@ export const useFormSubmissions = (formId: string, page: number) =>
 
 export const useCreateSubmission = (formId: string): UseMutationResult<Submission, RequestResponse, Submission, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((submission) => API.createSubmission(formId, submission), {
+  return useMutation({
+    mutationFn: (submission) => API.createSubmission(formId, submission),
     onSuccess: () => {
       const data = queryClient.getQueryData<Form>([FORM_QUERY_KEY, formId]);
       if (data?.resource_type === FormResourceType.EVENT_FORM) {

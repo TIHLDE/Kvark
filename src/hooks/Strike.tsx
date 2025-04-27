@@ -1,7 +1,7 @@
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import { USER_STRIKES_QUERY_KEY } from '~/hooks/User';
 import type { PaginationResponse, RequestResponse, Strike, StrikeCreate, StrikeList } from '~/types';
-import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'sonner';
 
 export const ALL_STRIKES_QUERY_KEY = 'strikes';
@@ -22,7 +22,8 @@ export const useCreateStrike = () => {
 
 export const useDeleteStrike = (userId: string) => {
   const queryClient = useQueryClient();
-  return useMutation<RequestResponse, RequestResponse, string, unknown>((id) => API.deleteStrike(id), {
+  return useMutation<RequestResponse, RequestResponse, string, unknown>({
+    mutationFn: (id) => API.deleteStrike(id),
     onSuccess: () => {
       queryClient.invalidateQueries([ALL_STRIKES_QUERY_KEY]);
       queryClient.invalidateQueries([USER_STRIKES_QUERY_KEY, userId]);

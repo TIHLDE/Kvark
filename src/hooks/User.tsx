@@ -1,3 +1,4 @@
+import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from '@tanstack/react-query';
 import API from '~/api/api';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
 import { ACCESS_TOKEN } from '~/constant';
@@ -21,7 +22,6 @@ import type {
 import type { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import type { ReactNode } from 'react';
-import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from 'react-query';
 import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
@@ -106,7 +106,8 @@ export const useUserNotificationSettingChoices = () =>
 
 export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<UserNotificationSetting>, RequestResponse, UserNotificationSetting, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((data) => API.updateUserNotificationSettings(data), {
+  return useMutation({
+    mutationFn: (data) => API.updateUserNotificationSettings(data),
     onSuccess: (data) => {
       queryClient.setQueryData([USER_NOTIFICATION_SETTINGS_QUERY_KEY], data);
     },
@@ -115,7 +116,8 @@ export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<Use
 
 export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((slackCode) => API.slackConnect(slackCode), {
+  return useMutation({
+    mutationFn: (slackCode) => API.slackConnect(slackCode),
     onSuccess: () => queryClient.invalidateQueries([USER_QUERY_KEY]),
   });
 };
@@ -132,7 +134,8 @@ export const useUsers = (filters?: any) =>
 
 export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestResponse, { username: string; password: string }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ username, password }) => API.authenticate(username, password), {
+  return useMutation({
+    mutationFn: ({ username, password }) => API.authenticate(username, password),
     onSuccess: (data) => {
       setCookie(ACCESS_TOKEN, data.token);
       queryClient.removeQueries();
@@ -141,7 +144,10 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
   });
 };
 
-export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
+export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> =>
+  useMutation({
+    mutationFn: (email) => API.forgotPassword(email),
+  });
 
 export const useLogout = () => {
   const { revalidate } = useRevalidator();
@@ -158,11 +164,15 @@ export const useLogout = () => {
 
 export const useIsAuthenticated = () => typeof getCookie(ACCESS_TOKEN) !== 'undefined';
 
-export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => useMutation((user) => API.createUser(user));
+export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> =>
+  useMutation({
+    mutationFn: (user) => API.createUser(user),
+  });
 
 export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
+  return useMutation({
+    mutationFn: ({ userId, user }) => API.updateUserData(userId, user),
     onSuccess: (data) => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
       const user = queryClient.getQueryData<User | undefined>([USER_QUERY_KEY]);
@@ -173,14 +183,20 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
-export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> =>
+  useMutation({
+    mutationFn: () => API.exportUserData(),
+  });
 
 export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
-  useMutation((userId) => API.deleteUser(userId));
+  useMutation({
+    mutationFn: (userId) => API.deleteUser(userId),
+  });
 
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((userId) => API.activateUser(userId), {
+  return useMutation({
+    mutationFn: (userId) => API.activateUser(userId),
     onSuccess: () => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },
@@ -189,7 +205,8 @@ export const useActivateUser = (): UseMutationResult<RequestResponse, RequestRes
 
 export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResponse, { userId: string; reason: string }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ userId, reason }) => API.declineUser(userId, reason), {
+  return useMutation({
+    mutationFn: ({ userId, reason }) => API.declineUser(userId, reason),
     onSuccess: () => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },

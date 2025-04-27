@@ -1,6 +1,6 @@
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const JOBPOST_QUERY_KEY = 'jobpost';
 
@@ -21,9 +21,10 @@ export const useJobPosts = (filters?: any) => {
 
 export const useCreateJobPost = (): UseMutationResult<JobPost, RequestResponse, JobPostRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newJobPost: JobPostRequired) => API.createJobPost(newJobPost), {
+  return useMutation({
+    mutationFn: (newJobPost: JobPostRequired) => API.createJobPost(newJobPost),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
       queryClient.setQueryData([JOBPOST_QUERY_KEY, data.id], data);
     },
   });
@@ -31,9 +32,10 @@ export const useCreateJobPost = (): UseMutationResult<JobPost, RequestResponse, 
 
 export const useUpdateJobPost = (id: number): UseMutationResult<JobPost, RequestResponse, JobPostRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedJobPost: JobPostRequired) => API.putJobPost(id, updatedJobPost), {
+  return useMutation({
+    mutationFn: (updatedJobPost: JobPostRequired) => API.putJobPost(id, updatedJobPost),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
       queryClient.setQueryData([JOBPOST_QUERY_KEY, id], data);
     },
   });
@@ -41,9 +43,10 @@ export const useUpdateJobPost = (id: number): UseMutationResult<JobPost, Request
 
 export const useDeleteJobPost = (id: number): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteJobPost(id), {
+  return useMutation({
+    mutationFn: () => API.deleteJobPost(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(JOBPOST_QUERY_KEY);
+      queryClient.invalidateQueries([JOBPOST_QUERY_KEY]);
     },
   });
 };
