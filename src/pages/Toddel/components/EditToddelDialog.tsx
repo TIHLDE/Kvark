@@ -142,8 +142,8 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
             />
             <FormImageUpload form={form} label='Velg bilde *' name='image' />
             <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
-            <Button className='w-full' disabled={updateToddel.isLoading} type='submit'>
-              {updateToddel.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updateToddel.isPending} type='submit'>
+              {updateToddel.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>

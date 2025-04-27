@@ -71,7 +71,7 @@ export default function FormPage() {
     defaultValues: { answers: [] },
   });
 
-  const submitDisabled = isLoading || createSubmission.isLoading || !form;
+  const submitDisabled = isLoading || createSubmission.isPending || !form;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const data: Submission = {
@@ -144,7 +144,7 @@ export default function FormPage() {
                   <form className='space-y-4' onSubmit={submitForm.handleSubmit(onSubmit)}>
                     {form && <FormView disabled={submitDisabled} form={form} submitForm={submitForm} />}
                     <Button className='w-full' disabled={submitDisabled} type='submit'>
-                      {createSubmission.isLoading ? 'Sender inn...' : 'Send inn'}
+                      {createSubmission.isPending ? 'Sender inn...' : 'Send inn'}
                     </Button>
                   </form>
                 </Form>

@@ -71,7 +71,7 @@ const CreateGallery = () => {
 
             <FormInput form={form} label='Bildetekst' name='image_alt' />
 
-            <Button className='w-full' disabled={createGallery.isLoading} type='submit'>
+            <Button className='w-full' disabled={createGallery.isPending} type='submit'>
               Opprett galleri
             </Button>
           </form>

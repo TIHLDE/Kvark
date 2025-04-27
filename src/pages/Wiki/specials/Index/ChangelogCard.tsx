@@ -26,7 +26,10 @@ const getReleaseTitle = (changelog: string) => paragraphToArray(changelog)[0].su
 const getReleaseBody = (changelog: string) => paragraphToArray(changelog).slice(1).join('\n');
 
 const ChangelogCard = ({ title, changelogURL, className }: ChangelogCardProps) => {
-  const { data = [] } = useQuery(['changelog', changelogURL], () => getReleaseAsStringArray(changelogURL));
+  const { data = [] } = useQuery({
+    queryKey: ['changelog', changelogURL],
+    queryFn: () => getReleaseAsStringArray(changelogURL),
+  });
   return (
     <Card className={className}>
       <CardHeader>

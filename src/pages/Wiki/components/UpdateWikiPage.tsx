@@ -130,15 +130,15 @@ const UpdateWikiPage = ({ page }: UpdateWikiPageProps) => {
 
             <WikiPageTree selectedNode={treeNode} setSelectedNode={setTreeNode} />
 
-            <Button className='w-full' disabled={updatePage.isLoading} type='submit'>
-              {updatePage.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updatePage.isPending} type='submit'>
+              {updatePage.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>
 
         <div className='border-t py-2 px-2'>
-          <Button className='w-full' disabled={deletePage.isLoading} onClick={onDelete} variant='destructive'>
-            {deletePage.isLoading ? 'Sletter...' : 'Slett'}
+          <Button className='w-full' disabled={deletePage.isPending} onClick={onDelete} variant='destructive'>
+            {deletePage.isPending ? 'Sletter...' : 'Slett'}
           </Button>
         </div>
       </ScrollArea>

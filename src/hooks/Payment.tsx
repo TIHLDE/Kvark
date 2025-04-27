@@ -9,7 +9,9 @@ export const useCreatePaymentOrder = (): UseMutationResult<Partial<Order>, Reque
   return useMutation({
     mutationFn: (item) => API.createPaymentOrder(item),
     onSuccess: () => {
-      queryClient.invalidateQueries([ORDER_QUERY_KEYS]);
+      queryClient.invalidateQueries({
+        queryKey: [ORDER_QUERY_KEYS],
+      });
     },
   });
 };

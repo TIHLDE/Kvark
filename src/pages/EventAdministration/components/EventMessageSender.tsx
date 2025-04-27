@@ -35,7 +35,7 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (notify.isLoading) {
+    if (notify.isPending) {
       return;
     }
     notify.mutate(
@@ -106,8 +106,8 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
             )}
           />
 
-          <Button className='w-full' disabled={notify.isLoading} type='submit'>
-            {notify.isLoading ? 'Sender melding...' : 'Send melding'}
+          <Button className='w-full' disabled={notify.isPending} type='submit'>
+            {notify.isPending ? 'Sender melding...' : 'Send melding'}
           </Button>
         </form>
       </Form>

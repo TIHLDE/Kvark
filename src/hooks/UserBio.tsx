@@ -11,7 +11,9 @@ export const useCreateUserBio = (): UseMutationResult<UserBio, RequestResponse, 
   return useMutation({
     mutationFn: (newUserBio: UserBioCreate) => API.createUserBio(newUserBio),
     onSuccess: () => {
-      queryClient.invalidateQueries([USER_QUERY_KEY]);
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEY],
+      });
     },
   });
 };
@@ -21,7 +23,9 @@ export const useUpdateUserBio = (userBioId: UserBio['id']): UseMutationResult<Pa
   return useMutation({
     mutationFn: (updatedUserBio: Partial<UserBio>) => API.updateUserBio(userBioId, updatedUserBio),
     onSuccess: () => {
-      queryClient.invalidateQueries([USER_QUERY_KEY]);
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEY],
+      });
     },
   });
 };
@@ -30,8 +34,15 @@ export const useDeleteUserBio = (userBioId: UserBio['id']): UseMutationResult<Us
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => API.deleteUserBio(userBioId),
-    onSuccess: () => queryClient.invalidateQueries([USER_QUERY_KEY]),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEY],
+      }),
   });
 };
 
-export const useUserBio = (userBioId: UserBio['id'] | null) => useQuery<UserBio, RequestResponse>([USER_BIO_QUERY_KEY], () => API.getUserBio(userBioId));
+export const useUserBio = (userBioId: UserBio['id'] | null) =>
+  useQuery({
+    queryKey: [USER_BIO_QUERY_KEY],
+    queryFn: () => API.getUserBio(userBioId),
+  });

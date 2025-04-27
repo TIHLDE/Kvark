@@ -277,8 +277,8 @@ const SignUp = () => {
                 </AlertDescription>
               </Alert>
 
-              <Button className='w-full' disabled={createUser.isLoading} size='lg' type='submit'>
-                {createUser.isLoading ? 'Oppretter bruker...' : 'Opprett bruker'}
+              <Button className='w-full' disabled={createUser.isPending} size='lg' type='submit'>
+                {createUser.isPending ? 'Oppretter bruker...' : 'Opprett bruker'}
               </Button>
             </form>
           </Form>

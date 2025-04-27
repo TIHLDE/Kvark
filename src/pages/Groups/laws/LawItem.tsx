@@ -123,8 +123,8 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
                   type='number'
                 />
 
-                <Button className='w-full' disabled={updateLaw.isLoading} type='submit'>
-                  {updateLaw.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+                <Button className='w-full' disabled={updateLaw.isPending} type='submit'>
+                  {updateLaw.isPending ? 'Oppdaterer...' : 'Oppdater'}
                 </Button>
 
                 <ResponsiveAlertDialog

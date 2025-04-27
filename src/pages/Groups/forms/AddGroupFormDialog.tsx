@@ -68,7 +68,7 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
           <FormInput form={form} label='Tittel' name='title' required />
 
           <Button className='w-full' type='submit'>
-            {createGroupForm.isLoading ? 'Oppretter skjema...' : 'Opprett spørreskjema'}
+            {createGroupForm.isPending ? 'Oppretter skjema...' : 'Opprett spørreskjema'}
           </Button>
         </form>
       </Form>

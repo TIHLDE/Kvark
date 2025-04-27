@@ -114,8 +114,8 @@ const QRCodes = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={createQRCode.isLoading} type='submit'>
-                {createQRCode.isLoading ? 'Oppretter...' : 'Opprett'}
+              <Button className='w-full' disabled={createQRCode.isPending} type='submit'>
+                {createQRCode.isPending ? 'Oppretter...' : 'Opprett'}
               </Button>
             </form>
           </Form>

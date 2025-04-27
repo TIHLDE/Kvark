@@ -11,8 +11,10 @@ export const useCreateReaction = (): UseMutationResult<Reaction, RequestResponse
   return useMutation({
     mutationFn: (newReaction: ReactionMutate) => API.createReaction(newReaction),
     onSuccess: () => {
-      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
-      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
+      queryClient.invalidateQueries({
+        queryKey: [NEWS_QUERY_KEY],
+      });
+      queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all });
     },
   });
 };
@@ -22,8 +24,10 @@ export const useDeleteReaction = (): UseMutationResult<RequestResponse, RequestR
   return useMutation({
     mutationFn: (reactionId: Reaction['reaction_id']) => API.deleteReaction(reactionId),
     onSuccess: () => {
-      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
-      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
+      queryClient.invalidateQueries({
+        queryKey: [NEWS_QUERY_KEY],
+      });
+      queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all });
     },
   });
 };
@@ -33,8 +37,10 @@ export const useUpdateReaction = (): UseMutationResult<Reaction, RequestResponse
   return useMutation({
     mutationFn: (updatedReaction: Reaction) => API.updateReaction(updatedReaction.reaction_id, updatedReaction),
     onSuccess: () => {
-      queryClient.invalidateQueries([NEWS_QUERY_KEY]);
-      queryClient.invalidateQueries(EVENT_QUERY_KEYS.all);
+      queryClient.invalidateQueries({
+        queryKey: [NEWS_QUERY_KEY],
+      });
+      queryClient.invalidateQueries({ queryKey: EVENT_QUERY_KEYS.all });
     },
   });
 };
