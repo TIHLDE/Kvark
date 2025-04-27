@@ -49,6 +49,7 @@ import type {
   NewsRequired,
   Notification,
   Order,
+  OrderList,
   PaginationResponse,
   Picture,
   PublicRegistration,
@@ -176,6 +177,8 @@ export default {
 
   // Payments
   createPaymentOrder: (item: Partial<Order>) => IFetch<Order>({ method: 'POST', url: `${PAYMENT_ENDPOINT}/`, data: item }),
+  getPaymentOrders: (filters?: any) => IFetch<PaginationResponse<OrderList>>({ method: 'GET', url: `${PAYMENT_ENDPOINT}/`, data: filters || {} }),
+
   // Event registrations admin
   createRegistrationAdmin: (eventId: Event['id'], userId: User['user_id']) =>
     IFetch<Registration>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${eventId}/${EVENT_REGISTRATIONS_ENDPOINT}/add/`, data: { user: userId } }),
