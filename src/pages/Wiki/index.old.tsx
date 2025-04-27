@@ -36,7 +36,6 @@ const Wiki = () => {
 
         <WikiSearch />
       </div>
-
       <Breadcrumb>
         <BreadcrumbList>
           {levels.slice(0, levels.length - 1).map((level, index) => (
@@ -54,7 +53,6 @@ const Wiki = () => {
           <BreadcrumbItem>{data?.title.toLowerCase()}</BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-
       <div className='grid gap-6 lg:grid-cols-[.4fr_1fr] items-start mt-2'>
         <div className='space-y-2'>
           <WikiNavigator />

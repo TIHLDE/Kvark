@@ -1,8 +1,8 @@
+import { type InfiniteData, type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import { USER_QUERY_KEY } from '~/hooks/User';
 import type { Notification, PaginationResponse, RequestResponse } from '~/types';
 import { useEffect, useState } from 'react';
-import { type InfiniteData, type QueryKey, useInfiniteQuery, type UseInfiniteQueryOptions, useQueryClient } from 'react-query';
 
 export const NOTIFICATION_QUERY_KEY = 'notification';
 

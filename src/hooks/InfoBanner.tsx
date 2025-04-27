@@ -1,6 +1,6 @@
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { InfoBanner, PaginationResponse, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const BANNER_QUERY_KEY = 'banners';
 
@@ -26,18 +26,20 @@ export const useVisibleInfoBanners = (filters?: any) => {
 
 export const useDeleteInfoBanner = (bannerId: InfoBanner['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteInfoBanner(bannerId), {
+  return useMutation({
+    mutationFn: () => API.deleteInfoBanner(bannerId),
     onSuccess: () => {
-      queryClient.invalidateQueries(BANNER_QUERY_KEY);
+      queryClient.invalidateQueries([BANNER_QUERY_KEY]);
     },
   });
 };
 
 export const useUpdateInfoBanner = (bannerId: InfoBanner['id']): UseMutationResult<InfoBanner, RequestResponse, InfoBanner, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedInfoBanner: InfoBanner) => API.updateInfoBanner(bannerId, updatedInfoBanner), {
+  return useMutation({
+    mutationFn: (updatedInfoBanner: InfoBanner) => API.updateInfoBanner(bannerId, updatedInfoBanner),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(BANNER_QUERY_KEY);
+      queryClient.invalidateQueries([BANNER_QUERY_KEY]);
       queryClient.setQueryData([BANNER_QUERY_KEY, bannerId], data);
     },
   });
@@ -45,9 +47,10 @@ export const useUpdateInfoBanner = (bannerId: InfoBanner['id']): UseMutationResu
 
 export const useCreateInfoBanner = (): UseMutationResult<InfoBanner, RequestResponse, InfoBanner, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newInfoBanner: InfoBanner) => API.createInfoBanner(newInfoBanner), {
+  return useMutation({
+    mutationFn: (newInfoBanner: InfoBanner) => API.createInfoBanner(newInfoBanner),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(BANNER_QUERY_KEY);
+      queryClient.invalidateQueries([BANNER_QUERY_KEY]);
       queryClient.setQueryData([BANNER_QUERY_KEY, data.id], data);
     },
   });

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from '@tanstack/react-query';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { PaginateButton } from '~/components/ui/button';
@@ -9,7 +10,6 @@ import type { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } fr
 import URLS from '~/URLS';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import type { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
 import { Link } from 'react-router';
 import { z } from 'zod';
 

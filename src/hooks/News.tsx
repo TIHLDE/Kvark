@@ -1,6 +1,6 @@
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { News, NewsRequired, PaginationResponse, RequestResponse } from '~/types';
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const EXPORT_QUERY_KEY = 'news';
 
@@ -16,9 +16,10 @@ export const useNews = () => {
 
 export const useCreateNews = (): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((newNewsItem: NewsRequired) => API.createNewsItem(newNewsItem), {
+  return useMutation({
+    mutationFn: (newNewsItem: NewsRequired) => API.createNewsItem(newNewsItem),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
+      queryClient.invalidateQueries([EXPORT_QUERY_KEY]);
       queryClient.setQueryData([EXPORT_QUERY_KEY, data.id], data);
     },
   });
@@ -26,9 +27,10 @@ export const useCreateNews = (): UseMutationResult<News, RequestResponse, NewsRe
 
 export const useUpdateNews = (id: number): UseMutationResult<News, RequestResponse, NewsRequired, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((updatedNewsItem: NewsRequired) => API.putNewsItem(id, updatedNewsItem), {
+  return useMutation({
+    mutationFn: (updatedNewsItem: NewsRequired) => API.putNewsItem(id, updatedNewsItem),
     onSuccess: (data) => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
+      queryClient.invalidateQueries([EXPORT_QUERY_KEY]);
       queryClient.setQueryData([EXPORT_QUERY_KEY, id], data);
     },
   });
@@ -36,9 +38,10 @@ export const useUpdateNews = (id: number): UseMutationResult<News, RequestRespon
 
 export const useDeleteNews = (id: number): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(() => API.deleteNewsItem(id), {
+  return useMutation({
+    mutationFn: () => API.deleteNewsItem(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(EXPORT_QUERY_KEY);
+      queryClient.invalidateQueries([EXPORT_QUERY_KEY]);
     },
   });
 };

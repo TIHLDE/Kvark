@@ -1,7 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import API from '~/api/api';
-import { USER_BADGES_QUERY_KEY } from '~/hooks/User';
-import type { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
 import {
   type QueryKey,
   useInfiniteQuery,
@@ -11,21 +8,24 @@ import {
   useQuery,
   useQueryClient,
   type UseQueryOptions,
-} from 'react-query';
+} from '@tanstack/react-query';
+import API from '~/api/api';
+import { USER_BADGES_QUERY_KEY } from '~/hooks/User';
+import type { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
 
 export const BADGES_QUERY_KEYS = {
-  self: ['badges'] as const,
-  list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'list', filters] as const,
+  self: ['badges'],
+  list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'list', filters],
   categories: {
-    list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'categories', filters] as const,
-    detail: (badgeCategoryId: BadgeCategory['id']) => [...BADGES_QUERY_KEYS.categories.list(), badgeCategoryId] as const,
+    list: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'categories', filters],
+    detail: (badgeCategoryId: BadgeCategory['id']) => [...BADGES_QUERY_KEYS.categories.list(), badgeCategoryId],
   },
-  overallLeaderboard: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'overall_leaderboard', filters] as const,
+  overallLeaderboard: (filters?: any) => [...BADGES_QUERY_KEYS.self, 'overall_leaderboard', filters],
   badge: {
-    detail: (badgeId: Badge['id']) => [...BADGES_QUERY_KEYS.self, badgeId] as const,
-    leaderboard: (badgeId: Badge['id'], filters?: any) => [...BADGES_QUERY_KEYS.badge.detail(badgeId), 'leaderboard', filters] as const,
+    detail: (badgeId: Badge['id']) => [...BADGES_QUERY_KEYS.self, badgeId],
+    leaderboard: (badgeId: Badge['id'], filters?: any) => [...BADGES_QUERY_KEYS.badge.detail(badgeId), 'leaderboard', filters],
   },
-};
+} as const;
 
 export const useBadge = (badgeId: Badge['id'], options?: UseQueryOptions<Badge, RequestResponse, Badge, QueryKey>) =>
   useQuery<Badge, RequestResponse>(BADGES_QUERY_KEYS.badge.detail(badgeId), () => API.getBadge(badgeId), options);
@@ -45,7 +45,8 @@ export const useBadges = (
 
 export const useCreateBadge = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((flag) => API.createUserBadge({ flag }), {
+  return useMutation({
+    mutationFn: (flag) => API.createUserBadge({ flag }),
     onSuccess: () => {
       queryClient.invalidateQueries([USER_BADGES_QUERY_KEY]);
     },

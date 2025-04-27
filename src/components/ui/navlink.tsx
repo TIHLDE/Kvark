@@ -7,9 +7,9 @@ export type LinkParamsType<TPath extends LinkPathType> = Parameters<typeof href<
 export default function NavLink<TPath extends LinkPathType>(props: { to: TPath, params?: LinkParamsType<TPath> } & Omit<React.ComponentProps<typeof Link>, 'to'>) {
     const { to, params, ...rest } = props;
     return (
-    // @ts-expect-error can't react-router cant convert the type, but we know it's correct
-    <Link to={href(props.to, props.params)} {...rest}>
-        {props.children}
-    </Link>
+        // @ts-expect-error can't react-router cant convert the type, but we know it's correct
+        <Link to={href(props.to, props.params)} {...rest}>
+            {props.children}
+        </Link>
     );
 }
