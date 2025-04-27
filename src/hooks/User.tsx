@@ -1,7 +1,9 @@
 import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from '@tanstack/react-query';
 import API from '~/api/api';
+import { AuthObject } from '~/api/auth';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
 import { ACCESS_TOKEN } from '~/constant';
+import { getQueryClient } from '~/queryClient';
 import type {
   Badge,
   EventList,
@@ -39,7 +41,19 @@ export const useUser = (userId?: User['user_id'], options: { enabled?: boolean }
   const logOut = useLogout();
   const query = useQuery({
     queryKey: [USER_QUERY_KEY, userId],
-    queryFn: () => (isAuthenticated ? API.getUserData(userId) : undefined),
+    queryFn: () => API.getUserData(userId),
+    initialData: () => {
+      if (userId == null) {
+        // Get the auth user object from the query client if no userId is provided.
+        const auth = getQueryClient().getQueryData<AuthObject | null>(['auth']);
+        if (auth == null) {
+          return undefined;
+        }
+        return auth.tihldeUser;
+      }
+      return undefined;
+    },
+    enabled: Boolean(isAuthenticated),
     ...options,
   });
 
@@ -57,7 +71,8 @@ export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | u
   const isAuthenticated = useIsAuthenticated();
   return useQuery({
     queryKey: [USER_PERMISSIONS_QUERY_KEY],
-    queryFn: () => (isAuthenticated ? API.getUserPermissions() : undefined),
+    queryFn: () => API.getUserPermissions(),
+    enabled: isAuthenticated,
     ...options,
   });
 };
@@ -178,7 +193,6 @@ export const useLogout = () => {
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
-    // Submit to the root action to refetch the loader
     revalidate();
     navigate(URLS.landing);
   };

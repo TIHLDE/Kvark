@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryOptions, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
 import API from '~/api/api';
 import type {
   Group,
@@ -42,11 +42,21 @@ export const GROUPS_QUERY_KEYS = {
   },
 } as const;
 
-export const useGroup = (slug: Group['slug']) =>
-  useQuery({
+export function getGroupQueryOptions(slug: Group['slug']) {
+  return queryOptions({
     queryKey: GROUPS_QUERY_KEYS.detail(slug),
     queryFn: () => API.getGroup(slug),
   });
+}
+
+export function getGroupsQueryOptions(filters?: any) {
+  return queryOptions({
+    queryKey: GROUPS_QUERY_KEYS.list(filters),
+    queryFn: () => API.getGroups({ ...filters }),
+  });
+}
+
+export const useGroup = (slug: Group['slug']) => useQuery(getGroupQueryOptions(slug));
 
 export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, GroupMutate, unknown> => {
   const queryClient = useQueryClient();
@@ -55,16 +65,12 @@ export const useUpdateGroup = (): UseMutationResult<Group, RequestResponse, Grou
     mutationFn: (group) => API.updateGroup(group.slug, group),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: GROUPS_QUERY_KEYS.all });
-      queryClient.setQueryData(GROUPS_QUERY_KEYS.detail(data.slug), data);
+      queryClient.setQueryData(getGroupQueryOptions(data.slug).queryKey, data);
     },
   });
 };
 
-export const useGroups = (filters?: any) =>
-  useQuery({
-    queryKey: GROUPS_QUERY_KEYS.list(filters),
-    queryFn: () => API.getGroups({ ...filters }),
-  });
+export const useGroups = (filters?: any) => useQuery(getGroupsQueryOptions(filters));
 export const useStudyGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDY });
 export const useStudyyearGroups = (filters?: any) => useGroups({ ...filters, type: GroupType.STUDYYEAR });
 

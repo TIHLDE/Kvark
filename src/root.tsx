@@ -1,7 +1,6 @@
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
-import { useEffect } from 'react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
 import './assets/css/index.css';
 import type { Info, Route } from './+types/root';
@@ -56,30 +55,10 @@ export const meta: Route.MetaFunction = () => [
 export type RootLoaderData = Info['loaderData'];
 
 export async function clientLoader() {
-  try {
-    const auth = await authClient();
-    return {
-      fetched: true,
-      auth,
-    };
-  } catch {
-    return {
-      fetched: true,
-      auth: undefined,
-    };
-  }
+  await authClient();
 }
 
 export default function App() {
-  const loaderData = useLoaderData<RootLoaderData>();
-  const revalidator = useRevalidator();
-  // TODO: This is ugly fix this once react-router fixes their loaderData bug
-  useEffect(() => {
-    if (!loaderData?.fetched) {
-      revalidator.revalidate();
-    }
-  }, [loaderData, revalidator]);
-
   return <Outlet />;
 }
 
@@ -145,7 +124,17 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   );
 }
 
-if (typeof window === 'object') {
+(() => {
+  if (typeof window !== 'object') {
+    return;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  if ((window as any).__INDEX_ASCII_ART__) {
+    return;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window as any).__INDEX_ASCII_ART__ = true;
+
   inject();
   // eslint-disable-next-line no-console
   console.log(
@@ -178,4 +167,4 @@ if (typeof window === 'object') {
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).badge = rickroll;
-}
+})();
