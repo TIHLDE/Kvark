@@ -1,30 +1,16 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ShortCutMenu from '~/components/miscellaneous/shortCutMenu';
 import Navigation from '~/components/navigation/Navigation';
 import { Toaster } from '~/components/ui/sonner';
 import { ThemeProvider } from '~/hooks/Theme';
+import { ReactQueryProvider } from '~/queryClient';
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
 import { Outlet } from 'react-router';
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // Don't refetch data before 5 min has passed
-      refetchOnWindowFocus: false,
-      gcTime: 1000 * 60 * 60 * 24, // 24 hours
-    },
-  },
-});
 
 const Providers = ({ children }: React.PropsWithChildren) => {
   return (
     <NuqsAdapter>
       <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-        <QueryClientProvider client={queryClient}>
-          {children}
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </ThemeProvider>
     </NuqsAdapter>
   );

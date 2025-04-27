@@ -14,7 +14,7 @@ import NavLink from '../ui/navlink';
 const TUTORIAL_STORAGE_KEY = 'has-seen-bug-report-tutorial';
 
 const ProfileTopbarButton = () => {
-  const auth = useOptionalAuth();
+  const { auth } = useOptionalAuth();
 
   const isAuthenticated = Boolean(auth);
   const theme = useTheme();
