@@ -58,8 +58,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const isUpdating = useMemo(
-    () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
-    [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
+    () => createJobPost.isPending || updateJobPost.isPending || deleteJobPost.isPending,
+    [createJobPost.isPending, updateJobPost.isPending, deleteJobPost.isPending],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

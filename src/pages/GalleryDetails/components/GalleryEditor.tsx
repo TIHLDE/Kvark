@@ -89,7 +89,7 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
 
             <FormInput form={form} label='Bildetekst' name='image_alt' />
 
-            <Button className='w-full' disabled={editGallery.isLoading} type='submit'>
+            <Button className='w-full' disabled={editGallery.isPending} type='submit'>
               Oppdater galleri
             </Button>
 

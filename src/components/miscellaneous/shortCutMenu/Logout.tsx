@@ -1,15 +1,15 @@
-import { removeCookie } from '~/api/cookie';
-import { ACCESS_TOKEN } from '~/constant';
+import { useLogout } from '~/hooks/User';
 import { LogOut } from 'lucide-react';
 
 import { ShortCutMenuProps } from '.';
 
 const ShortCutLogout = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
+  const logout = useLogout();
   return (
     <div
       className='flex items-center text-sm p-2 rounded-md hover:bg-secondary cursor-pointer'
       onClick={() => {
-        removeCookie(ACCESS_TOKEN);
+        logout();
         // Submit to rerun the actions
         setOpen(false);
       }}>

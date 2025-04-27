@@ -1,12 +1,13 @@
+import { queryOptions } from '@tanstack/react-query';
 import { ACCESS_TOKEN } from '~/constant';
-import { Permissions, User } from '~/types';
+import { getQueryClient } from '~/queryClient';
+import { Permissions, RequestResponse, User } from '~/types';
 import { MembershipType, PermissionApp } from '~/types/Enums';
 import { createPath, createSearchParams, href, redirect } from 'react-router';
 import { z } from 'zod';
 
 import API from './api';
-import { cache, cachified } from './cache';
-import { getCookie } from './cookie';
+import { getCookie, setCookie } from './cookie';
 
 export const AuthObjectSchema = z.object({
   user: z.object({
@@ -37,6 +38,45 @@ export const AuthObjectSchema = z.object({
 
 export type AuthObject = z.infer<typeof AuthObjectSchema>;
 
+export const authQueryOptions = queryOptions({
+  queryKey: ['auth'],
+  staleTime: 1000 * 60 * 2, // 2 minutes we want to check this frequently
+  async queryFn() {
+    const token = getCookie(ACCESS_TOKEN);
+
+    if (!token) {
+      return null; // Not allowed to set undefiened in the cache
+    }
+
+    try {
+      getQueryClient().cancelQueries({ queryKey: ['user', null] });
+      const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
+
+      // TODO: Check if we need to handle pagination here
+      // Pagination on the backend returns 25 objects. I dont we have to worry about that here
+      const memberships = (await API.getUserMemberships(user.user_id)).results;
+      const authUser = {
+        id: user.user_id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        image: user.image,
+        groups: memberships.map((m) => ({
+          id: m.group.slug,
+          name: m.group.name,
+          isLeader: m.membership_type === MembershipType.LEADER,
+        })),
+        //TODO: Check if more fields are needed
+      };
+      getQueryClient().setQueryData(['user', null], user);
+      return AuthObjectSchema.parse({ user: authUser, permissions: permission.permissions, tihldeUser: user });
+    } catch (e) {
+      // If we get an error, we want to invalidate the cache
+      return null;
+    }
+  },
+});
+
 /**
  * Gets tha authenticated user and their permissions
  * @returns auth object with user and permissions
@@ -46,55 +86,48 @@ export async function authClient() {
   if (!token) {
     return undefined;
   }
-
+  // Try to fetch the auth object
   try {
-    const authObject = await cachified({
-      key: `auth:${token}`,
-      ttl: 5 * 60 * 1000, // 5 minutes
-      getFreshValue: async (context) => {
-        try {
-          const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
-          // TODO: Check if we need to handle pagination here
-          // Pagination on the backend returns 25 objects. I dont we have to worry about that here
-          const memberships = (await API.getUserMemberships(user.user_id)).results;
-
-          const authUser = {
-            id: user.user_id,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            email: user.email,
-            image: user.image,
-            groups: memberships.map((m) => ({
-              id: m.group.slug,
-              name: m.group.name,
-              isLeader: m.membership_type === MembershipType.LEADER,
-            })),
-            //TODO: Check if more fields are needed
-          };
-          return { user: authUser, permissions: permission.permissions, tihldeUser: user };
-        } catch (e) {
-          context.metadata.ttl = 0;
-          return undefined;
-        }
-      },
-      checkValue: AuthObjectSchema.optional(),
-    });
-
+    const authObject = await getQueryClient().ensureQueryData(authQueryOptions);
+    if (!authObject) {
+      // Invalidate the cache if we get an error
+      invalidateAuth();
+      return undefined;
+    }
     return authObject;
   } catch (e) {
+    // If we get an error, we want to invalidate the cache
+    invalidateAuth();
     return undefined;
   }
 }
 
 /**
- * Invalidates the auth used by authClient for the specified token
- * @param token The token to invalidate
+ * Authenticates the user with the given username and password, and fetches the auth object
+ * @param username the username of the user
+ * @param password the password of the user
+ * @throws {RequestResponse} if the authentication fails or the auth object is not fetched correctly
  */
-export function invalidateAuth(token: string) {
-  const cached = cache.get(`auth:${token}`);
-  if (cached) {
-    cached.metadata.ttl = 0;
+export async function loginUser(username: string, password: string) {
+  const { token } = await API.authenticate(username, password);
+  if (!token) {
+    throw { detail: 'Noe er galt' } satisfies RequestResponse;
   }
+
+  setCookie(ACCESS_TOKEN, token);
+  getQueryClient().removeQueries();
+  const auth = await authClient();
+  if (!auth) {
+    throw { detail: 'Kunne ikke finne brukerinformasjonen din' } satisfies RequestResponse;
+  }
+  return auth;
+}
+
+/**
+ * Invalidates the auth used by authClient for the specified token
+ */
+export function invalidateAuth() {
+  getQueryClient().invalidateQueries(authQueryOptions);
 }
 
 /**

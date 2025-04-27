@@ -142,8 +142,8 @@ const CreateToddelDialog = () => {
 
             <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
 
-            <Button className='w-full' disabled={createToddel.isLoading} type='submit'>
-              {createToddel.isLoading ? 'Oppretter...' : 'Opprett'}
+            <Button className='w-full' disabled={createToddel.isPending} type='submit'>
+              {createToddel.isPending ? 'Oppretter...' : 'Opprett'}
             </Button>
           </form>
         </Form>

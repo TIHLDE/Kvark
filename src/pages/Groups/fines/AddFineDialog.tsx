@@ -135,8 +135,8 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
 
               <FormImageUpload form={form} label='Bildebevis (Valgfritt)' name='image' />
 
-              <Button className='w-full' disabled={createFine.isLoading} type='submit'>
-                {createFine.isLoading ? 'Oppretter bot...' : 'Opprett bot'}
+              <Button className='w-full' disabled={createFine.isPending} type='submit'>
+                {createFine.isPending ? 'Oppretter bot...' : 'Opprett bot'}
               </Button>
             </form>
           </Form>

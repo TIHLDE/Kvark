@@ -127,8 +127,8 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
         />
 
         <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>
-          <Button className='w-full' disabled={updateForm.isLoading} type='submit'>
-            {updateForm.isLoading ? 'Lagrer...' : 'Lagre'}
+          <Button className='w-full' disabled={updateForm.isPending} type='submit'>
+            {updateForm.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
 
           <DeleteFormButton form={groupForm} navigate />
@@ -179,7 +179,7 @@ const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
             <Input onChange={(e) => setFormtemplateName(e.target.value)} value={formtemplateName} />
           </div>
           <Button className='w-full' onClick={saveAsTemplate}>
-            {createForm.isLoading ? 'Lagrer...' : 'Lagre'}
+            {createForm.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
         </div>
       </ResponsiveDialog>

@@ -1,9 +1,10 @@
-import { getGroup } from '~/api/api.cached';
 import { authClient, userHasWritePermission } from '~/api/auth';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
+import { getGroupQueryOptions } from '~/hooks/Group';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
+import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 
 import GroupStatistics from '../components/GroupStatistics';
@@ -11,7 +12,7 @@ import type { Route } from './+types/index';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const auth = await authClient();
-  const group = await getGroup(params.slug);
+  const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
   return {
     group,
     isAuthenticated: Boolean(auth),
