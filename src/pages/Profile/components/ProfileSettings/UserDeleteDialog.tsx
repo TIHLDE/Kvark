@@ -64,7 +64,7 @@ export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
           <FormInput form={form} label='Brukernavn' name='userId' required />
 
           <Button className='w-full' type='submit'>
-            {deleteUser.isLoading ? 'Sletter...' : 'Slett'}
+            {deleteUser.isPending ? 'Sletter...' : 'Slett'}
           </Button>
         </form>
       </Form>

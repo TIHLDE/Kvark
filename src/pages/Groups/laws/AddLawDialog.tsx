@@ -97,8 +97,8 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
               type='number'
             />
 
-            <Button className='w-full' disabled={createLaw.isLoading} type='submit'>
-              {createLaw.isLoading ? 'Oppretter...' : 'Opprett'}
+            <Button className='w-full' disabled={createLaw.isPending} type='submit'>
+              {createLaw.isPending ? 'Oppretter...' : 'Opprett'}
             </Button>
           </form>
         </Form>

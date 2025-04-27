@@ -13,20 +13,19 @@ export const FEEDBACK_QUERY_KEYS = {
 } as const;
 
 export const useFeedbacks = (filters?: Filters) =>
-  useInfiniteQuery<PaginationResponse<Feedback>, RequestResponse>(
-    FEEDBACK_QUERY_KEYS.list(filters),
-    ({ pageParam = 1 }) => API.getFeedbacks({ ...filters, page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+  useInfiniteQuery<PaginationResponse<Feedback>, RequestResponse>({
+    queryKey: FEEDBACK_QUERY_KEYS.list(filters),
+    queryFn: ({ pageParam }) => API.getFeedbacks({ ...filters, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
 export const useCreateFeedback = (): UseMutationResult<createFeedbackInput, RequestResponse, createFeedbackInput, unknown> => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => API.createFeedback(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(FEEDBACK_QUERY_KEYS.all);
+      queryClient.invalidateQueries({ queryKey: FEEDBACK_QUERY_KEYS.all });
     },
   });
 };
@@ -36,7 +35,7 @@ export const useDeleteFeedback = (): UseMutationResult<Feedback, RequestResponse
   return useMutation({
     mutationFn: (feedbackId: Feedback['id']) => API.deleteFeedback(feedbackId),
     onSuccess: () => {
-      queryClient.invalidateQueries(FEEDBACK_QUERY_KEYS.all);
+      queryClient.invalidateQueries({ queryKey: FEEDBACK_QUERY_KEYS.all });
     },
   });
 };

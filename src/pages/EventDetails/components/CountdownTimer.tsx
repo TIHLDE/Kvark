@@ -84,8 +84,8 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
   return (
     <Card>
       <CardContent className='py-8 text-center space-y-4'>
-        <Button className='hover:bg-inherit' disabled={createPaymentOrder.isLoading} onClick={() => create({ event: event_id })} variant='ghost'>
-          {createPaymentOrder.isLoading ? <LoadingSpinnner /> : <img alt='Betal med vipps' src={VIPPS} />}
+        <Button className='hover:bg-inherit' disabled={createPaymentOrder.isPending} onClick={() => create({ event: event_id })} variant='ghost'>
+          {createPaymentOrder.isPending ? <LoadingSpinnner /> : <img alt='Betal med vipps' src={VIPPS} />}
         </Button>
         <h1>Betal innen {timeLeft} for å beholde plassen på arrangementet.</h1>
       </CardContent>

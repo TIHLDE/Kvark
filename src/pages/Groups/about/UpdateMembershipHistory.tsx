@@ -99,7 +99,7 @@ const UpdateMembershipHistory = ({ membership }: UpdateMembershipHistoryProps) =
             required
           />
 
-          <Button className='w-full'>{updateMembershipHistory.isLoading ? 'Oppdaterer...' : 'Oppdater'}</Button>
+          <Button className='w-full'>{updateMembershipHistory.isPending ? 'Oppdaterer...' : 'Oppdater'}</Button>
         </form>
       </Form>
     </ResponsiveDialog>

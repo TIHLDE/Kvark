@@ -66,8 +66,8 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
         <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <SingleUserSearch form={form} label='Søk etter bruker' name='user' />
 
-          <Button className='w-full' disabled={createMembership.isLoading}>
-            {createMembership.isLoading ? 'Legger til...' : 'Legg til medlem'}
+          <Button className='w-full' disabled={createMembership.isPending}>
+            {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}
           </Button>
         </form>
       </Form>
