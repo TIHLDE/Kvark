@@ -1,3 +1,5 @@
+import { Reaction } from './News';
+
 export type createFeedbackInput = {
   feedback_type: 'Idea' | 'Bug';
   title: string;
@@ -12,6 +14,7 @@ export type Feedback = {
   status: string;
   author: FeedbackAuthor;
   description: string;
+  reactions: Reaction[];
   upvotes?: number;
   downvotes?: number;
 };

@@ -7,8 +7,8 @@ import * as z from 'zod';
 
 import type { Feedback } from 'types/Feedback';
 
-import { useCreateReaction } from 'hooks/EmojiReaction';
-import { useCreateFeedback, useDeleteFeedback, useFeedbacks, useFeedbackVotes } from 'hooks/Feedback';
+import { useCreateReaction, useDeleteReaction } from 'hooks/EmojiReaction';
+import { useCreateFeedback, useDeleteFeedback, useFeedback } from 'hooks/Feedback';
 import { useUser, useUserMemberships } from 'hooks/User';
 
 import { Button, PaginateButton } from 'components/ui/button';
@@ -66,8 +66,6 @@ const bugFormSchema = z.object({
 export default function Feedback() {
   const [openIdea, setOpenIdea] = useState(false);
   const [openBug, setOpenBug] = useState(false);
-  const [thumbsUpCount, setThumbsUp] = useState(0);
-  const [thumbsDownCount, setThumbsDown] = useState(0);
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);
     const feedback_type = params.get('feedback_type') || undefined;
@@ -75,19 +73,19 @@ export default function Feedback() {
     return { feedback_type, search };
   }, []);
 
-  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const [filters] = useState<Filters>(getInitialFilters());
 
   const { data: user } = useUser();
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
 
-  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbackVotes(filters);
+  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching, refetch: refetchFeedbacks } = useFeedback(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
 
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
-
   const { mutate: createReaction } = useCreateReaction();
+  const { mutate: deleteReaction } = useDeleteReaction();
 
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
@@ -159,13 +157,51 @@ export default function Feedback() {
   };
 
   const handleThumbsUp = (item: Feedback) => {
-    createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' });
-    item.upvotes = item.upvotes ? item.upvotes + 1 : 1;
+    for (const reaction of item.reactions) {
+      // If already upvoted, do nothing
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
+        return;
+      }
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
+        deleteReaction(reaction.reaction_id);
+        break;
+      }
+    }
+
+    // fixme: delte the timout once the backend can handle the fast deletion and creation of reactions
+    setTimeout(() => {
+      createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' });
+      refetchFeedbacks().then((r) => {
+        if (r.isSuccess) {
+          toast.success('Du har stemt tommel opp på tilbakemeldingen');
+        } else {
+          toast.error('Noe gikk galt, prøv igjen senere');
+        }
+      });
+    }, 150);
   };
 
   const handleThumbsDown = (item: Feedback) => {
-    createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
-    item.downvotes = item.downvotes ? item.downvotes + 1 : 1;
+    for (const reaction of item.reactions) {
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
+        return;
+      }
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
+        deleteReaction(reaction.reaction_id);
+        break;
+      }
+    }
+
+    setTimeout(() => {
+      createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
+      refetchFeedbacks().then((r) => {
+        if (r.isSuccess) {
+          toast.success('Du har stemt tommel ned på tilbakemeldingen');
+        } else {
+          toast.error('Noe gikk galt, prøv igjen senere');
+        }
+      });
+    }, 150);
   };
 
   return (
@@ -320,13 +356,17 @@ export default function Feedback() {
                   <div className='flex flex-row items-center space-x-8'>
                     <div className='flex space-x-4'>
                       <div className='flex items-center space-x-2'>
-                        <button className='flex items-center space-x-2' onClick={() => handleThumbsUp(item)} type='button'>
+                        <button className='flex items-center space-x-2' disabled={createFeedback.isLoading} onClick={() => handleThumbsUp(item)} type='button'>
                           👍
                         </button>
                         <span>{item.upvotes}</span>
                       </div>
                       <div className='flex items-center space-x-2'>
-                        <button className='flex items-center space-x-2' onClick={() => handleThumbsDown(item)} type='button'>
+                        <button
+                          className='flex items-center space-x-2'
+                          disabled={createFeedback.isLoading}
+                          onClick={() => handleThumbsDown(item)}
+                          type='button'>
                           👎
                         </button>
                         <span>{item.downvotes}</span>

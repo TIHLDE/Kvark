@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, UseMutationResult, useQueryClient } from 'react-query';
 
 import { createFeedbackInput, Feedback, PaginationResponse, RequestResponse } from 'types';
 
@@ -9,10 +9,10 @@ export const FEEDBACK_QUERY_KEYS = {
   list: (filters?: any) => [...FEEDBACK_QUERY_KEYS.all, 'list', ...(filters ? [filters] : [])] as const,
 };
 
-export const useFeedbacks = (filters?: any) =>
+export const useFeedback = (filter?: any) =>
   useInfiniteQuery<PaginationResponse<Feedback>, RequestResponse>(
-    FEEDBACK_QUERY_KEYS.list(filters),
-    ({ pageParam = 1 }) => API.getFeedbacks({ ...filters, page: pageParam }),
+    FEEDBACK_QUERY_KEYS.list(filter),
+    ({ pageParam = 1 }) => API.getFeedbacks({ ...filter, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -35,12 +35,3 @@ export const useDeleteFeedback = (): UseMutationResult<Feedback, RequestResponse
     },
   });
 };
-
-export const useFeedbackVotes = (filter?: any) =>
-  useInfiniteQuery<PaginationResponse<Feedback>, RequestResponse>(
-    FEEDBACK_QUERY_KEYS.list(filter),
-    ({ pageParam = 1 }) => API.getFeedbacks({ ...filter, page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
