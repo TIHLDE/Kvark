@@ -1,5 +1,7 @@
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 import { useEffect } from 'react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
 
@@ -105,10 +107,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Analytics />
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <PostHogProvider
+          apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
+          options={{
+            api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
+          }}>
+          <Analytics />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </PostHogProvider>
       </body>
     </html>
   );
@@ -147,6 +155,20 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 if (typeof window === 'object') {
   inject();
+
+  // Initialize PostHog
+  if (import.meta.env.VITE_POSTHOG_API_KEY) {
+    posthog.init(import.meta.env.VITE_POSTHOG_API_KEY, {
+      api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
+      loaded: (posthog) => {
+        if (import.meta.env.DEV) {
+          // Disable capturing in development
+          posthog.opt_out_capturing();
+        }
+      },
+    });
+  }
+
   // eslint-disable-next-line no-console
   console.log(
     `%c
