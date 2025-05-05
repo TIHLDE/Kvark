@@ -1,9 +1,9 @@
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
-import { useEffect } from 'react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
+import { useEffect } from 'react';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRevalidator } from 'react-router';
 
 import './assets/css/index.css';
 import type { Info, Route } from './+types/root';
@@ -108,12 +108,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <PostHogProvider
-        
           apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
           options={{
             api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-          }}
-        >
+          }}>
           <Analytics />
           {children}
           <ScrollRestoration />
@@ -157,7 +155,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
 if (typeof window === 'object') {
   inject();
-   
+
   // Initialize PostHog
   if (import.meta.env.VITE_POSTHOG_API_KEY) {
     posthog.init(import.meta.env.VITE_POSTHOG_API_KEY, {
@@ -170,7 +168,7 @@ if (typeof window === 'object') {
       },
     });
   }
-   
+
   // eslint-disable-next-line no-console
   console.log(
     `%c
