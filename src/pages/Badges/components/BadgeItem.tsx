@@ -1,12 +1,10 @@
+import { Avatar, AvatarImage } from '~/components/ui/avatar';
+import { Card, CardContent } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { Badge } from '~/types';
+import URLS from '~/URLS';
 import { ChevronRightIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { Badge } from 'types';
-
-import { Avatar, AvatarImage } from 'components/ui/avatar';
-import { Card, CardContent } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
+import { Link } from 'react-router';
 
 export type BadgeItemProps = {
   badge: Badge;

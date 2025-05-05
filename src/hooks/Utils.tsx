@@ -1,8 +1,7 @@
 import va from '@vercel/analytics';
-import { EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { getCookie, setCookie } from '~/api/cookie';
+import { type EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
-
-import { getCookie, setCookie } from 'api/cookie';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
   const savedCallback = useRef<EffectCallback>();
@@ -57,34 +56,26 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
       return () => clearTimeout(timeoutId);
     }
   }, [hasShared]);
-
-  /**
-   * Copies text to the clipboard
-   * @param text Text which should be copied to clipboard
-   * @param noSnackbar If the snackbar not should be shown even if snackbar text is given
-   */
-  const copyToClipboard = async (text: string, noSnackbar = false) => {
-    const { default: copyToClipboard } = await import('copy-to-clipboard');
-    const hasCopied = copyToClipboard(text);
-    setShared(hasCopied);
+  async function clip(link: string, noSnackbar = false) {
+    await navigator.clipboard.writeText(link);
     if (fallbackSnackbar && !noSnackbar) {
       toast.success(fallbackSnackbar);
     }
-  };
+  }
 
   /**
    * Triggers the Share functionality of your device if available.
    * Falls back to copying the content to the clipboard if not supported
    */
   const share = () => {
-    const fallbackCopyText = shareData.url || shareData.text || shareData.title || '';
+    const fallbackCopyText = shareData.url ?? shareData.text ?? shareData.title ?? '';
     if (navigator.share) {
       navigator
         .share(shareData)
         .then(() => setShared(true))
-        .catch(() => copyToClipboard(fallbackCopyText, true));
+        .catch(() => clip(fallbackCopyText, true));
     } else {
-      copyToClipboard(fallbackCopyText);
+      clip(fallbackCopyText);
     }
     if (onShare) {
       onShare();
@@ -108,7 +99,7 @@ export const usePersistedState = <T extends unknown>(key: string, defaultValue: 
         return JSON.parse(getCookie(COOKIE_KEY) as string) as unknown as T;
       }
       return defaultValue;
-    } catch (e) {
+    } catch {
       return defaultValue;
     }
   });
@@ -127,11 +118,13 @@ export const useAnalytics = () => {
    * @param action - The type of interaction, eg 'play'
    * @param label - Useful for categorizing events, eg 'Ny-student'
    */
-  const event = useCallback((action: string, category: string, label: string) => {
-    va.track(category, { action, label });
-  }, []);
+  const event = useCallback(analyticsEvent, []);
 
   return useMemo(() => {
     return { event };
   }, [event]);
 };
+
+export function analyticsEvent(action: string, category: string, label: string) {
+  va.track(category, { action, label });
+}

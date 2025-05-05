@@ -1,14 +1,10 @@
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import BottomBar from '~/components/navigation/BottomBar';
+import Footer from '~/components/navigation/Footer';
+import Topbar from '~/components/navigation/Topbar';
+import { SHOW_NEW_STUDENT_INFO } from '~/constant';
+import { useIsAuthenticated } from '~/hooks/User';
+import URLS from '~/URLS';
 import { ReactNode, useMemo } from 'react';
-import { Helmet } from 'react-helmet';
-import URLS from 'URLS';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-
-import BottomBar from 'components/navigation/BottomBar';
-import Footer from 'components/navigation/Footer';
-import Topbar from 'components/navigation/Topbar';
 
 export type NavigationOptions = {
   noFooter: boolean;
@@ -46,7 +42,6 @@ export type NavigationItem =
 
 const NavigationContent = ({ children }: NavigationProps) => {
   const isAuthenticated = useIsAuthenticated();
-  const isMediumScreen = useMediaQuery(MEDIUM_SCREEN);
 
   const items = useMemo<Array<NavigationItem>>(
     () => [
@@ -63,7 +58,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       ...(SHOW_NEW_STUDENT_INFO ? [{ text: 'Ny student', to: URLS.newStudent, type: 'link' } as NavigationItem] : []),
       { text: 'Arrangementer', to: URLS.events, type: 'link' },
       { text: 'Nyheter', to: URLS.news, type: 'link' },
-      { text: 'Karriere', to: URLS.jobposts, type: 'link' },
+      { text: 'Stillinger', to: URLS.jobposts, type: 'link' },
       isAuthenticated
         ? {
             items: [
@@ -86,15 +81,10 @@ const NavigationContent = ({ children }: NavigationProps) => {
 
   return (
     <>
-      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-      {/* @ts-ignore */}
-      <Helmet>
-        <title>TIHLDE</title>
-      </Helmet>
       <Topbar items={items} />
       <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
       <Footer />
-      {!isMediumScreen && <BottomBar items={items} />}
+      <BottomBar className='md:hidden' items={items} />
     </>
   );
 };

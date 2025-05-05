@@ -1,11 +1,8 @@
+import { Button } from '~/components/ui/button';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { useDeleteEventRegistration } from '~/hooks/Event';
+import type { UserList } from '~/types';
 import { toast } from 'sonner';
-
-import { UserList } from 'types';
-
-import { useDeleteEventRegistration } from 'hooks/Event';
-
-import { Button } from 'components/ui/button';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 type DeleteRegistrationProps = {
   userInfo: UserList;

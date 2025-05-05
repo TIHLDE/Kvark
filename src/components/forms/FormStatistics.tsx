@@ -1,8 +1,6 @@
-import { FormFieldType } from 'types/Enums';
-
-import { useFormStatisticsById } from 'hooks/Form';
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from 'components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
+import { useFormStatisticsById } from '~/hooks/Form';
+import { FormFieldType } from '~/types/Enums';
 
 export type EventFormEditorProps = {
   formId: string | null;

@@ -1,24 +1,37 @@
+import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import NavLink from '~/components/ui/navlink';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useEventById } from '~/hooks/Event';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import EventEditor from '~/pages/EventAdministration/components/EventEditor';
+import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
+import { href, redirect, useNavigate } from 'react-router';
 
-import { useEventById } from 'hooks/Event';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import EventEditor from 'pages/EventAdministration/components/EventEditor';
-import EventParticipants from 'pages/EventAdministration/components/EventParticipants';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
-
+import { Route } from './+types';
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
-const EventAdministration = () => {
+export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
+  const auth = await authClientWithRedirect(request);
+
+  if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+    return redirect(href('/'));
+  }
+  return {
+    eventId: params.eventId,
+  };
+}
+
+export default function EventAdministration({ loaderData }: Route.ComponentProps) {
+  const { eventId } = loaderData;
   const navigate = useNavigate();
-  const { eventId } = useParams();
   const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
@@ -39,12 +52,12 @@ const EventAdministration = () => {
     }
   }, [isError, event]);
 
-  const RegisterButton = () => (
+  const RegisterButton = ({ id }: { id: string }) => (
     <Button asChild className='px-2 md:px-4' variant='outline'>
-      <Link to={`${URLS.events}${eventId}/${URLS.eventRegister}`}>
+      <NavLink params={{ id }} to='/arrangementer/registrering/:id'>
         <ListChecks className='w-5 h-5 mr-2 stroke-[1.5px]' />
         Registrering
-      </Link>
+      </NavLink>
     </Button>
   );
 
@@ -59,18 +72,23 @@ const EventAdministration = () => {
           {eventId && (
             <>
               <Button asChild size='icon' variant='outline'>
-                <Link to={URLS.eventAdmin}>
+                <NavLink to='/admin/arrangementer/:eventId?'>
                   <Plus className='w-5 h-5 stroke-[1.5px]' />
-                </Link>
+                </NavLink>
               </Button>
 
-              {!isDesktop && <RegisterButton />}
+              {!isDesktop && <RegisterButton id={eventId} />}
 
               <Button asChild className='p-0' variant='link'>
-                <Link to={`${URLS.events}${eventId}/`}>
+                <NavLink
+                  params={{
+                    id: eventId,
+                    urlTitle: event?.title ? urlEncode(event.title) : undefined,
+                  }}
+                  to='/arrangementer/:id/:urlTitle?'>
                   Se arrangement
                   <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
-                </Link>
+                </NavLink>
               </Button>
             </>
           )}
@@ -97,7 +115,7 @@ const EventAdministration = () => {
                 </TabsTrigger>
               </TabsList>
 
-              {isDesktop && <RegisterButton />}
+              {isDesktop && <RegisterButton id={eventId} />}
             </div>
             <TabsContent value='edit'>
               <EventEditor eventId={Number(eventId)} goToEvent={goToEvent} />
@@ -113,6 +131,4 @@ const EventAdministration = () => {
       </div>
     </Page>
   );
-};
-
-export default EventAdministration;
+}

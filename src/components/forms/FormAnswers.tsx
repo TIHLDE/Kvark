@@ -1,19 +1,15 @@
-import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
+import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from '~/api/api';
+import { getCookie } from '~/api/cookie';
+import MultiSelect, { MultiSelectOption } from '~/components/inputs/MultiSelect';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
+import { Button } from '~/components/ui/button';
+import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
+import { useFormById, useFormSubmissions } from '~/hooks/Form';
+import type { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from '~/types';
+import { FormFieldType, FormResourceType } from '~/types/Enums';
+import { urlEncode } from '~/utils';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { urlEncode } from 'utils';
-
-import { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
-import { FormFieldType, FormResourceType } from 'types/Enums';
-
-import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
-import { getCookie } from 'api/cookie';
-
-import { useFormById, useFormSubmissions } from 'hooks/Form';
-
-import MultiSelect, { MultiSelectOption } from 'components/inputs/MultiSelect';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from 'components/ui/accordion';
-import { Button } from 'components/ui/button';
 
 export type FormAnswersProps = {
   formId: string | null;
@@ -23,7 +19,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
   const { data, isLoading, error } = useFormSubmissions(formId || '-', selectedPage + 1);
-  const [_selectedFields, setSelectedFields] = useState<string[]>(['Alle']);
+  const [, setSelectedFields] = useState<string[]>(['Alle']);
 
   const handleSelectFields = (values: MultiSelectOption[]) => {
     if (values.length === 0) {
@@ -134,15 +130,23 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
             Neste
           </Button>
           <Button onClick={downloadCSV} variant='outline'>
-          Last ned som CSV
-        </Button>
+            Last ned som CSV
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-function FormAnswer({ userSubmission, form, getTableCellText }: { userSubmission: UserSubmission; form: Form; getTableCellText: (f: any, s: any) => string }) {
+function FormAnswer({
+  userSubmission,
+  form,
+  getTableCellText,
+}: {
+  userSubmission: UserSubmission;
+  form: Form;
+  getTableCellText: (f: TextFormField | SelectFormField, s: UserSubmission) => string;
+}) {
   return (
     <Accordion className='' collapsible type='single'>
       <AccordionItem className='border-0' value='item-1'>

@@ -1,11 +1,10 @@
-import { useFormById } from 'hooks/Form';
-
-import FormAnswers from 'components/forms/FormAnswers';
-import FormDetailsEditor from 'components/forms/FormDetailsEditor';
-import FormFieldsEditor from 'components/forms/FormFieldsEditor';
-import FormStatistics from 'components/forms/FormStatistics';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
+import FormAnswers from '~/components/forms/FormAnswers';
+import FormDetailsEditor from '~/components/forms/FormDetailsEditor';
+import FormFieldsEditor from '~/components/forms/FormFieldsEditor';
+import FormStatistics from '~/components/forms/FormStatistics';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { useFormById } from '~/hooks/Form';
 
 export type FormAdminProps = {
   formId: string;

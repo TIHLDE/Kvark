@@ -1,6 +1,6 @@
 import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "lib/utils"
+import { cn } from "~/lib/utils"
 import { forwardRef } from "react"
 
 const Drawer = ({
@@ -8,6 +8,7 @@ const Drawer = ({
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Root>) => (
   <DrawerPrimitive.Root
+    repositionInputs={false}
     shouldScaleBackground={shouldScaleBackground}
     {...props}
   />

@@ -1,12 +1,9 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import type { News } from '~/types';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
-
-import { News } from 'types';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import { href, useNavigate } from 'react-router';
 
 export type NewsListItemProps = {
   news: News;
@@ -16,7 +13,9 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
   const naviate = useNavigate();
 
   return (
-    <div className='rounded-md p-2 border bg-card space-y-4 cursor-pointer' onClick={() => naviate(`${URLS.news}${news.id}/${urlEncode(news.title)}/`)}>
+    <div
+      className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'
+      onClick={() => naviate(href('/nyheter/:id/:urtlTitle?', { id: news.id.toString(), urtlTitle: urlEncode(news.title) }))}>
       <AspectRatioImg alt={news.image_alt || news.title} src={news.image} />
 
       <div>

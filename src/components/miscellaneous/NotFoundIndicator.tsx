@@ -1,6 +1,5 @@
-import { cn } from 'lib/utils';
-
-import NotFoundIcon from 'assets/icons/empty.svg';
+import NotFoundIcon from '~/assets/icons/empty.svg';
+import { cn } from '~/lib/utils';
 
 export type NotFoundIndicatorProps = {
   header: string;

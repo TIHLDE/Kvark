@@ -1,8 +1,6 @@
+import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
+import { useNews } from '~/hooks/News';
 import { useMemo } from 'react';
-
-import { useNews } from 'hooks/News';
-
-import NewsListItem, { NewsListItemLoading } from 'components/miscellaneous/NewsListItem';
 
 const NO_OF_NEWS_TO_SHOW = 2;
 

@@ -1,8 +1,6 @@
-import { useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient } from 'react-query';
-
-import { InfoBanner, PaginationResponse, RequestResponse } from 'types';
-
-import API from 'api/api';
+import API from '~/api/api';
+import type { InfoBanner, PaginationResponse, RequestResponse } from '~/types';
+import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from 'react-query';
 
 export const BANNER_QUERY_KEY = 'banners';
 

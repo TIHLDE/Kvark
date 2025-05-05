@@ -1,8 +1,7 @@
+import { Button } from '~/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
 import { FunctionComponent, useState } from 'react';
-
-import { Button } from 'components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 'components/ui/dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type RendererPreviewProps<Type> = {
   /** Function to be runned to get the data which can be passed to the renderer-component */

@@ -1,4 +1,4 @@
-import { CheatsheetStudy, CheatsheetType, WarningType } from 'types/Enums';
+import { CheatsheetStudy, CheatsheetType, WarningType } from '~/types/Enums';
 
 export type InfoBanner = {
   id: string;

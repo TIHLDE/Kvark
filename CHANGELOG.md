@@ -12,7 +12,37 @@
 
 ## Neste versjon
 
+## Versjon 2025.07.02
+
+- 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden  
+- 🦟 **Mobilmeny-komponenten** Fikset en bug med rendering av drawer-komponenten  
+- 🦟 **Kalender** Tidligere arrangementer forsvinner ikke fra kalenderen  
+- 🦟 **Autentisering "State"** Fikset noen problemer relatert til innlogging og oppdateringer i navigasjonsmenyen  
+- ⚡ **Gammel Wiki** Vi har en ny wiki på https://wiki.tihlde.org, men man kan åpne den gamle på https://tihlde.org/wiki-old  
+- ⚡ **Oppdatert Rammeverk** Vi har gjort oppdateringer på de fleste pakker og rammeverket vi bruker til nettsiden  
+- ✨ **Karriere- (stillinger) og arrangementsidene** Vi har oppdatert utseendet med flere filtre  
+
+
+## Versjon 2025.24.02
+
+- ✨ **Kjøp og Salg** La til en knapp til TIHLDEs kjøp og salg facebook-gruppe for betalte arrangementer.
+
+- ✨ **Profilbilder** Brukere kan nå oppdatere profilbildet sitt på nettsiden.
+
+- 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
+
+- 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.
+
+- 🎨 **Designendringer**. Scrollbaren på arrangementkalenderen er fikset.
+
+## Versjon 2025.13.02
+
+- 🎨 **Designendringer**. Kalenderen på arrangementer er oppdatert
+- 🎨 **Designendringer**. Forbedret layout for deltakerdetaljer i arrangementsadministrasjonen
+- ⚡ **Ytelse** Optimaliserte ytelsen ved å fjerne unødvendige oppdateringer av navigasjonsbaren.
+
 ## Versjon 2025.15.01
+
 - ⚡ **Kopier link**. Man kan nå kopiere forkortede linker.
 - ⚡ **Allergier for påmeldte medlemmer**. Admins kan nå se allergier for påmeldte medlemmer på arrangementer.
 - 🦟 **Markdown**. Markdown renderer fungerer nå som normalt.
@@ -21,13 +51,22 @@
 - 🦟 **Bøter**. Oppdater antall bøter ved endring av lovbrudd.
 
 ## Versjon 2024.04.11
-- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
 - ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
 
 ## Versjon 2024.04.11
-- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
+
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
+- 🎨 **Designendringer**. Escapet beskrivelse i galleri
+- 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
+- ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.
+
+## Versjon 2024.04.11
+
+- 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse.
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 - 🎨 **Desingendring**. Sentrerte og flyttet "Last in mer" knappen under bildene i galleri.
 - ⚡ **Event**. Arrangementadministrasjonen vil kunne filtrere deltakere etter år, studie, allergier, betalingsstatus (kun betalte arrangementer) og oppmøte.

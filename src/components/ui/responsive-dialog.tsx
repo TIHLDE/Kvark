@@ -1,8 +1,8 @@
-import useMediaQuery, { MEDIUM_SCREEN } from "hooks/MediaQuery"
+import useMediaQuery, { MEDIUM_SCREEN } from "~/hooks/MediaQuery"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "./drawer";
-import { cn } from "lib/utils";
+import { cn } from "~/lib/utils";
 
 
 type ResponsiveDialogProps = {

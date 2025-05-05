@@ -1,6 +1,6 @@
 import { Period, TimePickerType, getArrowByType, getDateByType, setDateByType } from "./utils";
 import { Input } from "../input";
-import { cn } from "lib/utils";
+import { cn } from "~/lib/utils";
 import { forwardRef, useEffect, useMemo, useState } from "react";
 
 

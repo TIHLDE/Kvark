@@ -1,22 +1,17 @@
+import { Button } from '~/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
+import { Tree, TreeDataItem } from '~/components/ui/tree';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useWikiTree } from '~/hooks/Wiki';
+import { WikiTree } from '~/types';
 import { Folder, List, Workflow } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-
-import { WikiTree } from 'types';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useWikiTree } from 'hooks/Wiki';
-
-import { Button } from 'components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from 'components/ui/drawer';
-import { Tree, TreeDataItem } from 'components/ui/tree';
+import { useNavigate } from 'react-router';
 
 const TreeView = () => {
   const { data } = useWikiTree();
   const navigate = useNavigate();
-
   const createNodes = (node: WikiTree, parentPath: string): TreeDataItem => {
     const id = `${parentPath}${node.slug}${node.slug === '' ? '' : '/'}`;
-
     return {
       id,
       title: node.title,
@@ -33,14 +28,13 @@ const TreeView = () => {
   if (!data) {
     return null;
   }
-
   return (
     <Tree
       className='h-[300px]'
       data={[createNodes(data, '')]}
       folderIcon={Folder}
       itemIcon={Workflow}
-      onSelectChange={(item) => navigate(cleansePath(item?.id || ''))}
+      onSelectChange={(item) => navigate('/wiki-old/' + cleansePath(item?.id || ''))}
     />
   );
 };

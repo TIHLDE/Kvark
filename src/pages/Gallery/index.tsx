@@ -1,18 +1,15 @@
+import GalleryListItem, { GalleryListItemLoading } from '~/components/miscellaneous/GalleryListItem';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { PaginateButton } from '~/components/ui/button';
+import { useGalleries } from '~/hooks/Gallery';
+import { HavePermission } from '~/hooks/User';
+import { PermissionApp } from '~/types/Enums';
 import { useMemo } from 'react';
-
-import { PermissionApp } from 'types/Enums';
-
-import { useGalleries } from 'hooks/Gallery';
-import { HavePermission } from 'hooks/User';
-
-import GalleryListItem, { GalleryListItemLoading } from 'components/miscellaneous/GalleryListItem';
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { PaginateButton } from 'components/ui/button';
 
 import CreateGallery from './components/CreateGallery';
 
-const Galleries = () => {
+export default function Galleries() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
   const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -41,6 +38,4 @@ const Galleries = () => {
       </div>
     </Page>
   );
-};
-
-export default Galleries;
+}

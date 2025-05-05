@@ -1,13 +1,10 @@
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useIsAuthenticated } from 'hooks/User';
-
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-
-import http404img from 'assets/img/http404.gif';
-import http404ropeImg from 'assets/img/http404rope.gif';
+import http404img from '~/assets/img/http404.gif';
+import http404ropeImg from '~/assets/img/http404rope.gif';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { useIsAuthenticated } from '~/hooks/User';
+import URLS from '~/URLS';
+import { Link } from 'react-router';
 
 export type Http404Props = {
   title?: string;

@@ -1,16 +1,12 @@
+import GitHub from '~/assets/icons/github.svg';
+import { PaginateButton } from '~/components/ui/button';
+import { Separator } from '~/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import type { Cheatsheet } from '~/types';
+import { CheatsheetType } from '~/types/Enums';
 import { ExternalLink, File, Link, ShieldCheck } from 'lucide-react';
 import { Fragment } from 'react';
-
-import { Cheatsheet } from 'types';
-import { CheatsheetType } from 'types/Enums';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import { PaginateButton } from 'components/ui/button';
-import { Separator } from 'components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from 'components/ui/tooltip';
-
-import GitHub from 'assets/icons/github.svg?react';
 
 export type FilesProps = {
   files: Array<Cheatsheet>;
@@ -26,7 +22,7 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
     if (cheatsheet.type === CheatsheetType.FILE) {
       return <File />;
     } else if (cheatsheet.type === CheatsheetType.GITHUB) {
-      return <GitHub />;
+      return <img src={GitHub} />;
     } else if (cheatsheet.type === CheatsheetType.LINK) {
       return <Link />;
     } else {
