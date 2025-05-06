@@ -82,7 +82,7 @@ importers:
         version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       '@uploadthing/react':
         specifier: ^7.3.0
-        version: 7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))))
+        version: 7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))))
       '@vercel/analytics':
         specifier: 1.5.0
         version: 1.5.0(react@18.3.1)
@@ -148,7 +148,7 @@ importers:
         version: 8.10.1(date-fns@4.1.0)(react@18.3.1)
       react-dnd:
         specifier: ^16.0.1
-        version: 16.0.1(@types/node@22.13.4)(@types/react@18.3.18)(react@18.3.1)
+        version: 16.0.1(@types/node@22.15.14)(@types/react@18.3.18)(react@18.3.1)
       react-dnd-html5-backend:
         specifier: ^16.0.1
         version: 16.0.1
@@ -190,7 +190,7 @@ importers:
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2)))
       universal-cookie:
         specifier: ^8.0.1
         version: 8.0.1
@@ -206,7 +206,7 @@ importers:
     devDependencies:
       '@react-router/dev':
         specifier: ^7.2.0
-        version: 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
+        version: 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.15.14)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
       '@react-router/serve':
         specifier: ^7.2.0
         version: 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
@@ -214,8 +214,8 @@ importers:
         specifier: ^1.6.4
         version: 1.9.0
       '@types/node':
-        specifier: ^22.13.4
-        version: 22.13.4
+        specifier: ^22.15.14
+        version: 22.15.14
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.18
@@ -239,7 +239,7 @@ importers:
         version: 5.1.7(rollup@4.37.0)
       '@vercel/react-router':
         specifier: ^1.1.0
-        version: 1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.15.14)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.5.2)
@@ -272,16 +272,16 @@ importers:
         version: 2.8.8
       tailwindcss:
         specifier: ^3.4.10
-        version: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
+        version: 3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
       vite:
         specifier: ^6.2.3
-        version: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
+        version: 6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))
+        version: 5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))
 
 packages:
 
@@ -295,6 +295,10 @@ packages:
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/code-frame@7.27.1':
+    resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
     engines: {node: '>=6.9.0'}
 
   '@babel/compat-data@7.26.5':
@@ -367,6 +371,10 @@ packages:
     resolution: {integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==}
     engines: {node: '>=6.9.0'}
 
+  '@babel/helper-validator-identifier@7.27.1':
+    resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
+    engines: {node: '>=6.9.0'}
+
   '@babel/helper-validator-option@7.25.9':
     resolution: {integrity: sha512-e/zv1co8pp55dNdEcCynfj9X7nyUKUXoUEwfXqaZt0omVOmDe9oOTdKStH4GmAw6zxMFs50ZayuMfHDKlO7Tfw==}
     engines: {node: '>=6.9.0'}
@@ -425,8 +433,8 @@ packages:
     resolution: {integrity: sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/runtime@7.27.0':
-    resolution: {integrity: sha512-VtPOkrdPHZsKc/clNqyi9WUA8TINkZ4cGk63UUE3u4pmB2k+ZMQRDuIOagv8UVd6j7k0T3+RRIb7beKTebNbcw==}
+  '@babel/runtime@7.27.1':
+    resolution: {integrity: sha512-1x3D2xEk2fRo3PAhwQwu5UubzgiVWSXTBfWpVd2Mx2AzRqJuDJCsgaDVZ7HB5iGzDW1Hl1sWN2mFyKjmR9uAog==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.9':
@@ -1631,8 +1639,8 @@ packages:
   '@types/node@16.18.11':
     resolution: {integrity: sha512-3oJbGBUWuS6ahSnEq1eN2XrCyf4YsWI8OyCvo7c64zQJNplk3mO84t53o8lfTk+2ji59g5ycfc6qQ3fdHliHuA==}
 
-  '@types/node@22.13.4':
-    resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
+  '@types/node@22.15.14':
+    resolution: {integrity: sha512-BL1eyu/XWsFGTtDWOYULQEs4KR0qdtYfCxYAUYRoB7JP7h9ETYLgQTww6kH8Sj2C0pFGgrpM0XKv6/kbIzYJ1g==}
 
   '@types/offscreencanvas@2019.7.3':
     resolution: {integrity: sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==}
@@ -4347,8 +4355,8 @@ packages:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
     engines: {node: '>= 0.4'}
 
-  undici-types@6.20.0:
-    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   undici@5.28.4:
     resolution: {integrity: sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==}
@@ -4648,6 +4656,13 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
+  '@babel/code-frame@7.27.1':
+    dependencies:
+      '@babel/helper-validator-identifier': 7.27.1
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+    optional: true
+
   '@babel/compat-data@7.26.5': {}
 
   '@babel/core@7.26.9':
@@ -4760,6 +4775,9 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.25.9': {}
 
+  '@babel/helper-validator-identifier@7.27.1':
+    optional: true
+
   '@babel/helper-validator-option@7.25.9': {}
 
   '@babel/helpers@7.26.9':
@@ -4824,9 +4842,7 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@babel/runtime@7.27.0':
-    dependencies:
-      regenerator-runtime: 0.14.1
+  '@babel/runtime@7.27.1':
     optional: true
 
   '@babel/template@7.25.9':
@@ -5836,7 +5852,7 @@ snapshots:
 
   '@react-dnd/shallowequal@4.0.2': {}
 
-  '@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)':
+  '@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.15.14)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/generator': 7.26.9
@@ -5867,8 +5883,8 @@ snapshots:
       semver: 7.7.1
       set-cookie-parser: 2.7.1
       valibot: 0.41.0(typescript@5.8.2)
-      vite: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
-      vite-node: 3.0.0-beta.2(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)
+      vite-node: 3.0.0-beta.2(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)
     optionalDependencies:
       '@react-router/serve': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       typescript: 5.8.2
@@ -6037,9 +6053,9 @@ snapshots:
 
   '@types/node@16.18.11': {}
 
-  '@types/node@22.13.4':
+  '@types/node@22.15.14':
     dependencies:
-      undici-types: 6.20.0
+      undici-types: 6.21.0
 
   '@types/offscreencanvas@2019.7.3': {}
 
@@ -6156,12 +6172,12 @@ snapshots:
 
   '@uploadthing/mime-types@0.3.4': {}
 
-  '@uploadthing/react@7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))))':
+  '@uploadthing/react@7.3.0(react@18.3.1)(uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))))':
     dependencies:
       '@uploadthing/shared': 7.1.7
       file-selector: 0.6.0
       react: 18.3.1
-      uploadthing: 7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)))
+      uploadthing: 7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2)))
 
   '@uploadthing/shared@7.1.7':
     dependencies:
@@ -6226,9 +6242,9 @@ snapshots:
       - rollup
       - supports-color
 
-  '@vercel/react-router@1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@vercel/react-router@1.1.0(@react-router/dev@7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.15.14)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0))(@react-router/node@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(isbot@5.1.22)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@react-router/dev': 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.13.4)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
+      '@react-router/dev': 7.2.0(@react-router/serve@7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2))(@types/node@22.15.14)(babel-plugin-macros@3.1.0)(jiti@1.21.7)(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0))(yaml@2.7.0)
       '@react-router/node': 7.2.0(react-router@7.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.8.2)
       '@vercel/static-config': 3.0.0
       isbot: 5.1.22
@@ -6396,7 +6412,7 @@ snapshots:
 
   babel-plugin-macros@3.1.0:
     dependencies:
-      '@babel/runtime': 7.27.0
+      '@babel/runtime': 7.27.1
       cosmiconfig: 7.1.0
       resolve: 1.22.10
     optional: true
@@ -8243,7 +8259,7 @@ snapshots:
 
   parse-json@5.2.0:
     dependencies:
-      '@babel/code-frame': 7.26.2
+      '@babel/code-frame': 7.27.1
       error-ex: 1.3.2
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
@@ -8316,13 +8332,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.2
 
-  postcss-load-config@4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)):
+  postcss-load-config@4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.7.0
     optionalDependencies:
       postcss: 8.5.2
-      ts-node: 10.9.1(@types/node@22.13.4)(typescript@5.8.2)
+      ts-node: 10.9.1(@types/node@22.15.14)(typescript@5.8.2)
 
   postcss-nested@6.2.0(postcss@8.5.2):
     dependencies:
@@ -8500,7 +8516,7 @@ snapshots:
     dependencies:
       dnd-core: 16.0.1
 
-  react-dnd@16.0.1(@types/node@22.13.4)(@types/react@18.3.18)(react@18.3.1):
+  react-dnd@16.0.1(@types/node@22.15.14)(@types/react@18.3.18)(react@18.3.1):
     dependencies:
       '@react-dnd/invariant': 4.0.2
       '@react-dnd/shallowequal': 4.0.2
@@ -8509,7 +8525,7 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       react: 18.3.1
     optionalDependencies:
-      '@types/node': 22.13.4
+      '@types/node': 22.15.14
       '@types/react': 18.3.18
 
   react-dom@18.3.1(react@18.3.1):
@@ -9050,11 +9066,11 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
+      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))
 
-  tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2)):
+  tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -9073,7 +9089,7 @@ snapshots:
       postcss: 8.5.2
       postcss-import: 15.1.0(postcss@8.5.2)
       postcss-js: 4.0.1(postcss@8.5.2)
-      postcss-load-config: 4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
+      postcss-load-config: 4.0.2(postcss@8.5.2)(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))
       postcss-nested: 6.2.0(postcss@8.5.2)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -9160,14 +9176,14 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2):
+  ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 22.13.4
+      '@types/node': 22.15.14
       acorn: 8.14.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -9246,7 +9262,7 @@ snapshots:
       has-symbols: 1.1.0
       which-boxed-primitive: 1.1.1
 
-  undici-types@6.20.0: {}
+  undici-types@6.21.0: {}
 
   undici@5.28.4:
     dependencies:
@@ -9306,7 +9322,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))):
+  uploadthing@7.5.2(express@4.21.2)(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))):
     dependencies:
       '@effect/platform': 0.72.0(effect@3.12.0)
       '@standard-schema/spec': 1.0.0-beta.4
@@ -9315,7 +9331,7 @@ snapshots:
       effect: 3.12.0
     optionalDependencies:
       express: 4.21.2
-      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.13.4)(typescript@5.8.2))
+      tailwindcss: 3.4.17(ts-node@10.9.1(@types/node@22.15.14)(typescript@5.8.2))
 
   uri-js@4.4.1:
     dependencies:
@@ -9387,13 +9403,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite-node@3.0.0-beta.2(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0):
+  vite-node@3.0.0-beta.2(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -9408,24 +9424,24 @@ snapshots:
       - tsx
       - yaml
 
-  vite-tsconfig-paths@5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)):
+  vite-tsconfig-paths@5.1.4(typescript@5.8.2)(vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.5(typescript@5.8.2)
     optionalDependencies:
-      vite: 6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0)
+      vite: 6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@6.2.3(@types/node@22.13.4)(jiti@1.21.7)(yaml@2.7.0):
+  vite@6.2.3(@types/node@22.15.14)(jiti@1.21.7)(yaml@2.7.0):
     dependencies:
       esbuild: 0.25.1
       postcss: 8.5.3
       rollup: 4.37.0
     optionalDependencies:
-      '@types/node': 22.13.4
+      '@types/node': 22.15.14
       fsevents: 2.3.3
       jiti: 1.21.7
       yaml: 2.7.0
