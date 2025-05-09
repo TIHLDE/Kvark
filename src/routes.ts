@@ -35,6 +35,7 @@ export default [
         route('sporreskjemaer', './pages/Groups/forms/index.tsx'),
       ]),
     ]),
+    route('interessegrupper', './pages/InterestGroups/index.tsx'),
 
     ...prefix('badges', [
       layout('./pages/Badges/index.tsx', [

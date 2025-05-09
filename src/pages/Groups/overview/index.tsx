@@ -1,11 +1,14 @@
 import API from '~/api/api';
 import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useIsAuthenticated } from '~/hooks/User';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
 import type { GroupList } from '~/types';
 import { GroupType } from '~/types/Enums';
+import URLS from '~/URLS';
 import React from 'react';
+import { Link } from 'react-router';
 
 import type { Route } from './+types/index';
 
@@ -15,9 +18,6 @@ async function getGroupsOverview() {
   const BOARD_GROUPS = groups.filter((group) => group.type === GroupType.BOARD) ?? [];
   const SUB_GROUPS = groups.filter((group) => group.type === GroupType.SUBGROUP) ?? [];
   const COMMITTEES = groups.filter((group) => group.type === GroupType.COMMITTEE) ?? [];
-  const INTERESTGROUPS = groups.filter((group) => group.type === GroupType.INTERESTGROUP) ?? [];
-  // const STUDYGROUPS = groups.filter((group) => group.type === GroupType.STUDY) ?? [];
-  // const STUDYYEARGROUPS = groups.filter((group) => group.type === GroupType.STUDYYEAR) ?? [];
   const OTHER_GROUPS =
     groups.filter((group) => [GroupType.BOARD, GroupType.SUBGROUP, GroupType.COMMITTEE, GroupType.INTERESTGROUP].every((t) => group.type !== t)) ?? [];
 
@@ -25,7 +25,6 @@ async function getGroupsOverview() {
     BOARD_GROUPS,
     SUB_GROUPS,
     COMMITTEES,
-    INTERESTGROUPS,
     OTHER_GROUPS,
   };
 }
@@ -57,7 +56,7 @@ export default function GripsOverview({ loaderData }: Route.ComponentProps) {
 }
 
 function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; groups: Awaited<ReturnType<typeof getGroupsOverview>> }) {
-  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS } = groups;
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, OTHER_GROUPS } = groups;
   type CollectionProps = {
     groups: Array<GroupList>;
     title: string;
@@ -78,7 +77,6 @@ function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; group
       {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
       {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
       {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
-      {Boolean(INTERESTGROUPS.length) && <Collection groups={INTERESTGROUPS} title='Interessegrupper' />}
       {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
     </>
   );
@@ -88,8 +86,11 @@ function LocalLayout({ children }: React.PropsWithChildren) {
   return (
     <Page className='max-w-6xl mx-auto'>
       <Card>
-        <CardHeader>
+        <CardHeader className='flex flex-row items-center justify-between'>
           <CardTitle>Gruppeoversikt</CardTitle>
+          <Button asChild>
+            <Link to={URLS.groups.interest}>Interessegrupper</Link>
+          </Button>
         </CardHeader>
         <CardContent className='space-y-4'>{children}</CardContent>
       </Card>
