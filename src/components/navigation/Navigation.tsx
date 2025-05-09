@@ -50,6 +50,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
           { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', to: URLS.wiki },
           { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', to: URLS.toddel },
           { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', to: URLS.groups.index },
+          { title: 'Interessegrupper', text: 'Se alle interessegrupper', to: URLS.groups.interest },
           { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', to: URLS.fondet, external: true },
         ],
         text: 'Generelt',

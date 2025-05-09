@@ -32,6 +32,7 @@ const URLS = {
   form: '/sporreskjema/',
   groups: {
     index: '/grupper/',
+    interest: '/interessegrupper/',
     details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
     events_relative: 'arrangementer/',
     events: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.events_relative}`,
