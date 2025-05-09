@@ -86,7 +86,7 @@ function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; group
 
 function LocalLayout({ children }: React.PropsWithChildren) {
   return (
-    <Page className='max-w-6xl mx-auto'>
+    <Page className='max-w-8xl mx-auto'>
       <Card>
         <CardHeader>
           <CardTitle>Gruppeoversikt</CardTitle>

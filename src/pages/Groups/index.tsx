@@ -3,7 +3,7 @@ import { Card } from '~/components/ui/card';
 import { Outlet } from 'react-router';
 
 const Groups = () => (
-  <Page className='max-w-6xl mx-auto'>
+  <Page className='max-w-8xl mx-auto'>
     <Card>
       <Outlet />
     </Card>

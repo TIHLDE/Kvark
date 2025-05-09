@@ -59,7 +59,7 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
   };
 
   const OpenButton = (
-    <Button className='w-full'>
+    <Button className='w-full lg:w-auto'>
       <Plus className='w-5 h-5 mr-2' />
       Ny lovparagraf
     </Button>

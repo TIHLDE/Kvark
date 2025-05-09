@@ -9,7 +9,6 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { useDeleteGroupLaw, useUpdateGroupLaw } from '~/hooks/Group';
 import type { Group, GroupLaw } from '~/types';
 import { formatLawHeader, parseLawParagraphNumber } from '~/utils';
-import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -72,15 +71,68 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
   };
 
   const OpenButton = (
-    <Button size='icon' variant='ghost'>
-      <Pencil className='w-5 h-5' />
+    <Button size='sm' variant='link'>
+      Rediger
     </Button>
   );
 
   return (
     <div className='w-full flex justify-between items-center'>
       <div>
-        <h1 className={`${law.paragraph % 1 === 0 ? 'text-xl font-bold' : ''}`}>{formatLawHeader(law)}</h1>
+        <div className='flex items-center space-x-2'>
+          <h1 className={`${law.paragraph % 1 === 0 ? 'text-xl font-bold' : ''}`}>{formatLawHeader(law)}</h1>
+          {isAdmin && (
+            <ResponsiveDialog
+              description='Endre en lovparagraf for gruppen'
+              onOpenChange={setEditOpen}
+              open={editOpen}
+              title='Endre lovparagraf'
+              trigger={OpenButton}>
+              <ScrollArea className='h-[60vh]'>
+                <Form {...form}>
+                  <form className='space-y-6 pb-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormInput
+                      description='Heltall for overskrift. Maks 2 siffer på hver side av komma'
+                      form={form}
+                      label='Paragraf'
+                      name='paragraph'
+                      required
+                      type='number'
+                    />
+
+                    <FormInput description='For eks.: Forsentkomming' form={form} label='Tittel' name='title' required />
+
+                    <FormTextarea description='La stå tom for å ikke kunne velges ved botgivning' form={form} label='Beskrivelse' name='description' />
+
+                    <FormInput
+                      description='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
+                      form={form}
+                      label='Veiledende antall bøter'
+                      name='amount'
+                      required
+                      type='number'
+                    />
+
+                    <Button className='w-full' disabled={updateLaw.isLoading} type='submit'>
+                      {updateLaw.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+                    </Button>
+
+                    <ResponsiveAlertDialog
+                      action={handleDeleteLaw}
+                      description='Er du sikker på at du vil slette denne lovparagrafen?'
+                      title='Slett lovparagrafen?'
+                      trigger={
+                        <Button className='w-full' variant='destructive'>
+                          Slett lovparagraf
+                        </Button>
+                      }
+                    />
+                  </form>
+                </Form>
+              </ScrollArea>
+            </ResponsiveDialog>
+          )}
+        </div>
 
         {Boolean(law.description) && (
           <h1 className='break-words text-sm text-muted-foreground'>
@@ -90,58 +142,6 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
           </h1>
         )}
       </div>
-
-      {isAdmin && (
-        <ResponsiveDialog
-          description='Endre en lovparagraf for gruppen'
-          onOpenChange={setEditOpen}
-          open={editOpen}
-          title='Endre lovparagraf'
-          trigger={OpenButton}>
-          <ScrollArea className='h-[60vh]'>
-            <Form {...form}>
-              <form className='space-y-6 pb-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
-                <FormInput
-                  description='Heltall for overskrift. Maks 2 siffer på hver side av komma'
-                  form={form}
-                  label='Paragraf'
-                  name='paragraph'
-                  required
-                  type='number'
-                />
-
-                <FormInput description='For eks.: Forsentkomming' form={form} label='Tittel' name='title' required />
-
-                <FormTextarea description='La stå tom for å ikke kunne velges ved botgivning' form={form} label='Beskrivelse' name='description' />
-
-                <FormInput
-                  description='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
-                  form={form}
-                  label='Veiledende antall bøter'
-                  name='amount'
-                  required
-                  type='number'
-                />
-
-                <Button className='w-full' disabled={updateLaw.isLoading} type='submit'>
-                  {updateLaw.isLoading ? 'Oppdaterer...' : 'Oppdater'}
-                </Button>
-
-                <ResponsiveAlertDialog
-                  action={handleDeleteLaw}
-                  description='Er du sikker på at du vil slette denne lovparagrafen?'
-                  title='Slett lovparagrafen?'
-                  trigger={
-                    <Button className='w-full' variant='destructive'>
-                      Slett lovparagraf
-                    </Button>
-                  }
-                />
-              </form>
-            </Form>
-          </ScrollArea>
-        </ResponsiveDialog>
-      )}
     </div>
   );
 };

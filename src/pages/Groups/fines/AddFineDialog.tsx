@@ -90,7 +90,7 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
   const selectableLawExists = Boolean(laws?.filter((law) => Boolean(law.description)).length);
 
   const OpenButton = (
-    <Button className='fixed bottom-20 lg:bottom-4 right-4' size={isDesktop ? 'sm' : 'icon'}>
+    <Button className='fixed bottom-20 lg:bottom-4 right-4 z-50' size={isDesktop ? 'sm' : 'icon'}>
       <Plus className='lg:mr-1 h-4 w-4' />
       {isDesktop && 'Ny bot'}
     </Button>

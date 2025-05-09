@@ -58,7 +58,7 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
   ];
 
   return (
-    <Page className='max-w-6xl mx-auto'>
+    <Page className='max-w-8xl mx-auto'>
       <Card>
         <CardHeader>
           {isMemberOfGroup && isFinesActive && <AddFineDialog groupSlug={group.slug} />}
@@ -76,7 +76,7 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <ScrollArea className='w-full whitespace-nowrap p-0'>
+          <ScrollArea className='w-full whitespace-nowrap p-0 pb-4'>
             <div className='flex w-max space-x-4'>{tabs.map((tab) => !tab.hidden && <TabLink key={tab.label} {...tab} Icon={tab.icon} />)}</div>
             <ScrollBar orientation='horizontal' />
           </ScrollArea>
