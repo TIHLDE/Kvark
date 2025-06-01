@@ -10,7 +10,7 @@ import { RequestResponse } from '~/types';
 import URLS from '~/URLS';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { href, Link, redirect, useSubmit } from 'react-router';
+import { Link, redirect, useSubmit } from 'react-router';
 import { z } from 'zod';
 
 import { Route } from './+types';
@@ -21,7 +21,7 @@ const formSchema = z.object({
 });
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
-  const redirectUrl = new URL(request.url).searchParams.get('redirectTo') ?? href('/');
+  const redirectUrl = new URL(request.url)?.searchParams?.get('redirectTo') ?? '/';
   const result = formSchema.safeParse(await request.json());
   if (!result.success) {
     return {

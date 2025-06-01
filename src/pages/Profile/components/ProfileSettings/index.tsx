@@ -70,7 +70,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         description='Få tilsendt alle data vi har lagret i tilknytning til din bruker'
         icon={<CloudDownloadIcon className='stroke-[1.5px]' />}
         title='Eksporter brukerdata'>
-        <Button className='w-full' disabled={forgotPassword.isPending} onClick={runExportUserdata} size='lg' variant='outline'>
+        <Button className='w-full' disabled={exportUserData.isPending} onClick={runExportUserdata} size='lg' variant='outline'>
           Eksporter brukerdata
         </Button>
       </Expandable>
