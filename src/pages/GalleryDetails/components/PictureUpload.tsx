@@ -18,7 +18,7 @@ const PictureUpload = ({ id }: PictureUploadProps) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const submit = () => {
-    if (upload.isLoading || !files) {
+    if (upload.isPending || !files) {
       return;
     }
     upload.mutate(
@@ -64,8 +64,8 @@ const PictureUpload = ({ id }: PictureUploadProps) => {
 
           <PictureView />
 
-          <Button className='w-full' disabled={files.length < 1 || upload.isLoading} onClick={submit}>
-            {upload.isLoading ? 'Laster opp...' : 'Last opp bilder'}
+          <Button className='w-full' disabled={files.length < 1 || upload.isPending} onClick={submit}>
+            {upload.isPending ? 'Laster opp...' : 'Last opp bilder'}
           </Button>
         </div>
       </ScrollArea>

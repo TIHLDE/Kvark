@@ -65,8 +65,8 @@ const ForgotPassword = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={forgotPassword.isLoading} size='lg' type='submit'>
-                {forgotPassword.isLoading ? 'Henter nytt passord...' : 'Få nytt passord'}
+              <Button className='w-full' disabled={forgotPassword.isPending} size='lg' type='submit'>
+                {forgotPassword.isPending ? 'Henter nytt passord...' : 'Få nytt passord'}
               </Button>
             </form>
           </Form>

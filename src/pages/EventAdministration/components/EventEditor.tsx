@@ -104,8 +104,8 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
   const isUpdating = useMemo(
-    () => createEvent.isLoading || updateEvent.isLoading || deleteEvent.isLoading,
-    [createEvent.isLoading, updateEvent.isLoading, deleteEvent.isLoading],
+    () => createEvent.isPending || updateEvent.isPending || deleteEvent.isPending,
+    [createEvent.isPending, updateEvent.isPending, deleteEvent.isPending],
   );
 
   const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);

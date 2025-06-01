@@ -60,8 +60,8 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
         <form className='space-y-4' onSubmit={form.handleSubmit(decline)}>
           <FormTextarea form={form} label='Begrunnelse (valgfri)' name='reason' />
 
-          <Button className='w-full' disabled={declineUser.isLoading} type='submit'>
-            {declineUser.isLoading ? 'Avslår...' : 'Avslå bruker'}
+          <Button className='w-full' disabled={declineUser.isPending} type='submit'>
+            {declineUser.isPending ? 'Avslår...' : 'Avslå bruker'}
           </Button>
         </form>
       </Form>

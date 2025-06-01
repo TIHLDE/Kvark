@@ -42,7 +42,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (updateUser.isLoading) {
+    if (updateUser.isPending) {
       return;
     }
     updateUser.mutate(
@@ -119,7 +119,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
         />
 
         <Button className='w-full' type='submit'>
-          {updateUser.isLoading ? 'Lagrer...' : 'Lagre'}
+          {updateUser.isPending ? 'Lagrer...' : 'Lagre'}
         </Button>
       </form>
     </Form>

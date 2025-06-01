@@ -81,11 +81,11 @@ const PictureEditorDialog = ({ galleryId, pictureId, onClose }: PictureEditorDia
           <FormInput form={form} label='Bildetekst' name='image_alt' />
 
           <Button className='w-full' type='submit'>
-            {editPicture.isLoading ? 'Oppdaterer bilde...' : 'Oppdater bilde'}
+            {editPicture.isPending ? 'Oppdaterer bilde...' : 'Oppdater bilde'}
           </Button>
 
           <Button className='w-full' onClick={remove} type='button' variant='destructive'>
-            {deletePicture.isLoading ? 'Sletter bilde...' : 'Slett bilde'}
+            {deletePicture.isPending ? 'Sletter bilde...' : 'Slett bilde'}
           </Button>
         </form>
       </Form>

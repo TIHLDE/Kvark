@@ -143,8 +143,8 @@ const StrikeCreateDialog = ({ userId, eventId }: StrikeCreateDialogProps) => {
             </>
           )}
 
-          <Button className='w-full' disabled={createStrike.isLoading} type='submit'>
-            {createStrike.isLoading ? 'Oppretter prikk...' : 'Opprett prikk'}
+          <Button className='w-full' disabled={createStrike.isPending} type='submit'>
+            {createStrike.isPending ? 'Oppretter prikk...' : 'Opprett prikk'}
           </Button>
         </form>
       </Form>

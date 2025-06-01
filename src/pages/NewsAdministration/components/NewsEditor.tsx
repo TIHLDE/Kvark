@@ -40,8 +40,8 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
   const isUpdating = useMemo(
-    () => createNews.isLoading || updateNews.isLoading || deleteNews.isLoading,
-    [createNews.isLoading, updateNews.isLoading, deleteNews.isLoading],
+    () => createNews.isPending || updateNews.isPending || deleteNews.isPending,
+    [createNews.isPending, updateNews.isPending, deleteNews.isPending],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({

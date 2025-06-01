@@ -1,9 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import API from '~/api/api';
 import { getCookie, setCookie } from '~/api/cookie';
 import { WARNINGS_READ } from '~/constant';
-import type { RequestResponse, Warning } from '~/types';
 import { useCallback, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
 
 export const WARNINGS_QUERY_KEY = 'warnings';
 
@@ -13,7 +12,10 @@ const getReadWarnings = () => {
 };
 
 export const useWarnings = () => {
-  const { data, ...result } = useQuery<Array<Warning>, RequestResponse>([WARNINGS_QUERY_KEY], () => API.getWarnings());
+  const { data, ...result } = useQuery({
+    queryKey: [WARNINGS_QUERY_KEY],
+    queryFn: () => API.getWarnings(),
+  });
   const [readWarnings, setReadWarnings] = useState(getReadWarnings());
   const warnings = useMemo(() => (data ? data.filter((warning) => !readWarnings.includes(warning.id)) : data), [data, readWarnings]);
 

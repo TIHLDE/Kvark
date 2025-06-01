@@ -1,11 +1,12 @@
-import { getGroup } from '~/api/api.cached';
 import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
 import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { getGroupQueryOptions } from '~/hooks/Group';
 import { cn } from '~/lib/utils';
+import { getQueryClient } from '~/queryClient';
 import { FormGroupValues } from '~/types';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
 import { href, Link, Outlet } from 'react-router';
@@ -16,7 +17,7 @@ import AddFineDialog from './fines/AddFineDialog';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const auth = await authClient();
-  const group = await getGroup(params.slug);
+  const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
 
   return {
     group,

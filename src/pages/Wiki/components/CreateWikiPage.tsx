@@ -108,8 +108,8 @@ const CreateWikiPage = ({ page }: CreateWikiPageProps) => {
               )}
             />
 
-            <Button className='w-full' disabled={createPage.isLoading} type='submit'>
-              {createPage.isLoading ? 'Oppretter...' : 'Opprett'}
+            <Button className='w-full' disabled={createPage.isPending} type='submit'>
+              {createPage.isPending ? 'Oppretter...' : 'Opprett'}
             </Button>
           </form>
         </Form>

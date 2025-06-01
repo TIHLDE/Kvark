@@ -77,7 +77,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   }, [banner, setValues]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (updateBanner.isLoading || createBanner.isLoading) {
+    if (updateBanner.isPending || createBanner.isPending) {
       return;
     }
 
@@ -138,8 +138,8 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
 
             <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
 
-            <Button className='w-full' disabled={createBanner.isLoading || updateBanner.isLoading}>
-              {createBanner.isLoading || updateBanner.isLoading ? 'Lagrer...' : 'Lagre'}
+            <Button className='w-full' disabled={createBanner.isPending || updateBanner.isPending}>
+              {createBanner.isPending || updateBanner.isPending ? 'Lagrer...' : 'Lagre'}
             </Button>
           </form>
         </Form>

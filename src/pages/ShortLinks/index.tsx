@@ -183,8 +183,8 @@ const ShortLinks = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={createShortLink.isLoading} type='submit'>
-                {createShortLink.isLoading ? 'Oppretter...' : 'Opprett'}
+              <Button className='w-full' disabled={createShortLink.isPending} type='submit'>
+                {createShortLink.isPending ? 'Oppretter...' : 'Opprett'}
               </Button>
             </form>
           </Form>

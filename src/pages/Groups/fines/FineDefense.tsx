@@ -61,7 +61,7 @@ const FineDefense = ({ groupSlug, fineId, defense }: FineDefenseProps) => {
           <MarkdownEditor form={form} label='Forsvar' name='defense' required />
 
           <Button className='w-full' type='submit'>
-            {updateFineDefense.isLoading ? 'Lagrer...' : 'Lagre'}
+            {updateFineDefense.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
         </form>
       </Form>

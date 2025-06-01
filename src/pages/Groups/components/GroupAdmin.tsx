@@ -91,8 +91,8 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
               </>
             )}
 
-            <Button className='w-full' disabled={updateGroup.isLoading} type='submit'>
-              {updateGroup.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updateGroup.isPending} type='submit'>
+              {updateGroup.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>

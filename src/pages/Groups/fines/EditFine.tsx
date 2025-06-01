@@ -64,8 +64,8 @@ const EditFine = ({ groupSlug, fine }: EditFineProps) => {
 
           <FormInput disabled={fine.approved || fine.payed} form={form} label='Beløp' name='amount' required type='number' />
 
-          <Button className='w-full' disabled={editFine.isLoading} type='submit'>
-            {editFine.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+          <Button className='w-full' disabled={editFine.isPending} type='submit'>
+            {editFine.isPending ? 'Oppdaterer...' : 'Oppdater'}
           </Button>
         </form>
       </Form>

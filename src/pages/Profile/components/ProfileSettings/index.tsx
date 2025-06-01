@@ -54,7 +54,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         description='Motta en link i din epost til side der du kan endre passord'
         icon={<KeyRoundIcon className='stroke-[1.5px]' />}
         title='Endre passord'>
-        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={resetPassword} size='lg' variant='outline'>
+        <Button className='w-full' disabled={forgotPassword.isPending} onClick={resetPassword} size='lg' variant='outline'>
           Endre Passord
         </Button>
       </Expandable>
@@ -70,7 +70,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         description='Få tilsendt alle data vi har lagret i tilknytning til din bruker'
         icon={<CloudDownloadIcon className='stroke-[1.5px]' />}
         title='Eksporter brukerdata'>
-        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={runExportUserdata} size='lg' variant='outline'>
+        <Button className='w-full' disabled={exportUserData.isPending} onClick={runExportUserdata} size='lg' variant='outline'>
           Eksporter brukerdata
         </Button>
       </Expandable>

@@ -78,7 +78,7 @@ const NotificationItemLoading = () => (
 const NotificationsTopbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications(showNotifications);
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);

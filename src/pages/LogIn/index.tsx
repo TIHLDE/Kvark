@@ -1,14 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { loginUser } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { useLogin } from '~/hooks/User';
 import { analyticsEvent } from '~/hooks/Utils';
+import { RequestResponse } from '~/types';
 import URLS from '~/URLS';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { href, Link, useNavigate } from 'react-router';
+import { Link, redirect, useSubmit } from 'react-router';
 import { z } from 'zod';
 
 import { Route } from './+types';
@@ -18,18 +20,33 @@ const formSchema = z.object({
   password: z.string().min(1, { message: 'Passorde er påkrevd' }),
 });
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const redirectUrl = new URL(request.url).searchParams.get('redirectTo') ?? href('/');
-  return {
-    redirectUrl,
-  };
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const redirectUrl = new URL(request.url)?.searchParams?.get('redirectTo') ?? '/';
+  const result = formSchema.safeParse(await request.json());
+  if (!result.success) {
+    return {
+      success: false,
+      errors: result.error.flatten().fieldErrors,
+    } as const;
+  }
+
+  const { username, password } = result.data;
+  try {
+    await loginUser(username, password);
+    analyticsEvent('login', 'auth', 'Logged inn');
+    return redirect(redirectUrl);
+  } catch (e) {
+    return {
+      success: false,
+      errors: {
+        username: (e as RequestResponse).detail ?? 'Noe gikk galt',
+      },
+    } as const;
+  }
 }
 
-export default function LoginPage({ loaderData }: Route.ComponentProps) {
-  // const { event } = useAnalytics();
-  const navigate = useNavigate();
-
-  const login = useLogin();
+export default function LoginPage({ actionData }: Route.ComponentProps) {
+  const submit = useSubmit();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,18 +56,13 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
     },
   });
 
-  const onLogin = async (values: z.infer<typeof formSchema>) => {
-    login.mutate(values, {
-      onSuccess: () => {
-        analyticsEvent('login', 'auth', 'Logged inn');
-
-        navigate(loaderData.redirectUrl);
-      },
-      onError: (e) => {
-        form.setError('username', { message: e.detail || 'Noe gikk galt' });
-      },
-    });
-  };
+  useEffect(() => {
+    if (actionData?.success === false) {
+      for (const [key, value] of Object.entries(actionData.errors)) {
+        form.setError(key as keyof z.infer<typeof formSchema>, { message: value });
+      }
+    }
+  }, [actionData]);
 
   return (
     <Page>
@@ -61,7 +73,7 @@ export default function LoginPage({ loaderData }: Route.ComponentProps) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className='space-y-6' onSubmit={form.handleSubmit(onLogin)}>
+            <form className='space-y-6' onSubmit={form.handleSubmit((v) => submit(v, { method: 'POST', encType: 'application/json' }))}>
               <FormField
                 control={form.control}
                 name='username'
