@@ -98,7 +98,7 @@ export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
 export const useUserForms = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Form>, RequestResponse>({
     queryKey: [USER_FORMS_QUERY_KEY, filters],
-    queryFn: ({ pageParam }) => API.getUserForms({ ...filters, page: pageParam }),
+    queryFn: ({ pageParam }) => API.getUserForms({ ...(filters ?? {}), page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });
@@ -260,7 +260,7 @@ export const useHavePermission = (
   options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>,
 ) => {
   const { data, isLoading } = useUserPermissions(options);
-  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write || data?.permissions[app].write_all)), isLoading };
+  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions?.[app]?.write || data?.permissions?.[app]?.write_all)), isLoading };
 };
 
 export type HavePermissionProps = {

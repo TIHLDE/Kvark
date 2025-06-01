@@ -40,9 +40,9 @@ export const useDeleteUserBio = (userBioId: UserBio['id']): UseMutationResult<Us
       }),
   });
 };
-
 export const useUserBio = (userBioId: UserBio['id'] | null) =>
   useQuery({
-    queryKey: [USER_BIO_QUERY_KEY],
-    queryFn: () => API.getUserBio(userBioId),
+    queryKey: [USER_BIO_QUERY_KEY, userBioId],
+    queryFn: () => API.getUserBio(userBioId!),
+    enabled: userBioId !== null,
   });

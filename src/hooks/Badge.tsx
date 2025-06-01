@@ -27,7 +27,7 @@ export const useBadge = (badgeId: Badge['id']) =>
 export const useBadges = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>({
     queryKey: BADGES_QUERY_KEYS.list(filters),
-    queryFn: ({ pageParam }) => API.getBadges({ ...filters, page: pageParam }),
+    queryFn: ({ pageParam }) => API.getBadges({ ...(filters ?? {}), page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });
