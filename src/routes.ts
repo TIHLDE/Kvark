@@ -71,7 +71,7 @@ export default [
 
     ...prefix('nyheter', [
       index('./pages/News/index.tsx'),
-      route(':id/:urtlTitle?', './pages/NewsDetails/index.tsx'),
+      route(':id/:urlTitle?', './pages/NewsDetails/index.tsx'),
       //
     ]),
 

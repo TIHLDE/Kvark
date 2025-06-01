@@ -5,7 +5,7 @@ import { PostHogProvider } from 'posthog-js/react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
 import './assets/css/index.css';
-import type { Info, Route } from './+types/root';
+import type { Route } from './+types/root';
 import API from './api/api';
 import { authClient } from './api/auth';
 import { SHOW_NEW_STUDENT_INFO } from './constant';
@@ -54,7 +54,7 @@ export const meta: Route.MetaFunction = () => [
   { property: 'twitter:image', content: metaData.image },
 ];
 
-export type RootLoaderData = Info['loaderData'];
+export type RootLoaderData = Route.ComponentProps['loaderData'];
 
 export async function clientLoader() {
   await authClient();

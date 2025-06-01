@@ -15,7 +15,7 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
   return (
     <div
       className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'
-      onClick={() => naviate(href('/nyheter/:id/:urtlTitle?', { id: news.id.toString(), urtlTitle: urlEncode(news.title) }))}>
+      onClick={() => naviate(href('/nyheter/:id/:urlTitle', { id: news.id.toString(), urlTitle: urlEncode(news.title) }))}>
       <AspectRatioImg alt={news.image_alt || news.title} src={news.image} />
 
       <div>
