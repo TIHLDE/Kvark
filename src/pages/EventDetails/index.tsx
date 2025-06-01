@@ -22,10 +22,10 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 
 export function meta({ data }: Route.MetaArgs) {
   return [
-    { property: 'og:title', content: data.event.title },
+    { property: 'og:title', content: data?.event?.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data.event.image || 'https://tihlde.org' + TIHLDELOGO },
+    { property: 'og:image', content: data?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
   ];
 }
 

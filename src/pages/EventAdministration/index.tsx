@@ -69,10 +69,10 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
         <div className='flex items-center space-x-2'>
           <EventList />
 
-          {eventId && (
+          {eventId && event && (
             <>
               <Button asChild size='icon' variant='outline'>
-                <NavLink to='/admin/arrangementer/:eventId?'>
+                <NavLink to='/admin/arrangementer'>
                   <Plus className='w-5 h-5 stroke-[1.5px]' />
                 </NavLink>
               </Button>
@@ -80,12 +80,7 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
               {!isDesktop && <RegisterButton id={eventId} />}
 
               <Button asChild className='p-0' variant='link'>
-                <NavLink
-                  params={{
-                    id: eventId,
-                    urlTitle: event?.title ? urlEncode(event.title) : undefined,
-                  }}
-                  to='/arrangementer/:id/:urlTitle?'>
+                <NavLink params={{ id: eventId, urlTitle: urlEncode(event.title) }} to='/arrangementer/:id/:urlTitle'>
                   Se arrangement
                   <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
                 </NavLink>

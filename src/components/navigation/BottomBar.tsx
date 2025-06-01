@@ -105,7 +105,7 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
               </div>
 
               {isAuthenticated && (
-                <NavLink onClick={() => setMenuOpen(false)} to='/profil/:userId?'>
+                <NavLink onClick={() => setMenuOpen(false)} to='/profil'>
                   Min profil
                 </NavLink>
               )}
