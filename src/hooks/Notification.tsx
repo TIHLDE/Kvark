@@ -25,13 +25,18 @@ export const useNotifications = (modalOpen: boolean) => {
       return;
     }
 
+    const currentData = query.data;
     const unread = query.data.pages.flatMap((page) => page.results).filter(({ read }) => !read);
     if (unread.length) {
-      Promise.allSettled(unread.map(({ id }) => API.updateNotification(id, { read: true }))).then(() => {
+      // TODO: This should be a single API call to mark multiplle notifications as read
+      // TODO: Need backend chaneges
+      Promise.allSettled(unread.map(({ id }) => API.updateNotification(id, { read: true }))).then((results) => {
+        const successfullyUpdatedIds = new Set(results.map((result, index) => (result.status === 'fulfilled' ? unread[index].id : null)).filter(Boolean));
+
         // Once all notifications are marked as read update the query data
-        const newQueryData = query.data.pages.map((page) => ({
+        const newQueryData = currentData.pages.map((page) => ({
           ...page,
-          results: page.results.map((v) => ({ ...v, read: true })),
+          results: page.results.map((v) => (successfullyUpdatedIds.has(v.id) ? { ...v, read: true } : v)),
         }));
         queryClient.setQueryData([NOTIFICATION_QUERY_KEY], newQueryData);
       });
