@@ -1,4 +1,4 @@
-import js from '@eslint/js';
+import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import pluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -9,7 +9,7 @@ export default tseslint.config({
   files: ['**/*.{js,ts,jsx,tsx}'],
   ignores: ['**/dist/**', '**/node_modules/**', '**/src/components/ui/**/*', '**/src/lib/utils.ts'],
   extends: [
-    js.configs.recommended,
+    eslint.configs.recommended,
     tseslint.configs.recommended,
     pluginReact.configs.flat.recommended,
     eslintConfigPrettier,
@@ -18,6 +18,9 @@ export default tseslint.config({
   ],
   languageOptions: {
     globals: globals.browser,
+    parserOptions: {
+      tsconfigRootDir: import.meta.dirname,
+    },
   },
   settings: {
     react: {
@@ -48,5 +51,14 @@ export default tseslint.config({
     'no-unneeded-ternary': 'error',
     'no-useless-computed-key': 'off',
     'no-useless-return': 'error',
+
+    // From @tanstack/config Should be enabled in the future
+
+    /** Enforce import type { T } */
+    // '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+    /** Warn about variable with identical names in the outer scope */
+    // 'no-shadow': 'warn',
+    /** Checks if the the explicit type is identical to the inferred type */
+    // '@typescript-eslint/no-unnecessary-type-assertion': 'error',
   },
 });
