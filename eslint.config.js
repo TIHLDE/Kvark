@@ -25,31 +25,16 @@ export default tseslint.config({
     },
   },
   rules: {
+    // TypeScript rules
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unnecessary-type-constraint': 'off',
-    'arrow-spacing': 'error',
-    'block-spacing': ['error', 'never'],
-    'brace-style': ['error', '1tbs'],
-    'comma-spacing': 'error',
-    'comma-style': ['error', 'last'],
-    // curly: ['error', 'all'],
+    // React Rules
+    'react/prop-types': 'off', // Remove this in the future
+    'react-hooks/rules-of-hooks': 'error',
+    // Built-in Rules
     eqeqeq: ['error', 'always', { null: 'ignore' }],
-    'func-call-spacing': 'error',
     'guard-for-in': 'off',
-    // 'jsx-a11y/accessible-emoji': 'off',
-    'keyword-spacing': 'error',
-    'linebreak-style': 'off',
-    'max-len': [
-      'warn',
-      {
-        tabWidth: 2,
-        code: 1000,
-        comments: 160,
-        ignoreComments: false,
-        ignoreTrailingComments: false,
-      },
-    ],
     'no-console': 'warn',
     'no-empty-function': [
       'error',
@@ -60,37 +45,8 @@ export default tseslint.config({
     'no-implicit-coercion': 'error',
     'no-invalid-this': 'off',
     'no-lonely-if': 'error',
-    'no-multi-spaces': 'error',
-    'no-multiple-empty-lines': [
-      'error',
-      {
-        max: 1,
-      },
-    ],
     'no-unneeded-ternary': 'error',
     'no-useless-computed-key': 'off',
     'no-useless-return': 'error',
-    'no-whitespace-before-property': 'error',
-    'quote-props': 'off',
-    'react/react-in-jsx-scope': 'off',
-    // 'react/jsx-sort-props': [
-    //   'error',
-    //   {
-    //     noSortAlphabetically: false,
-    //     ignoreCase: true,
-    //   },
-    // ],
-    'react-hooks/rules-of-hooks': 'error',
-    'react/prop-types': 'off',
-    'require-jsdoc': 'off',
-    'space-before-blocks': 'error',
-    'space-before-function-paren': [
-      'error',
-      {
-        anonymous: 'always',
-        asyncArrow: 'always',
-        named: 'never',
-      },
-    ],
   },
 });
