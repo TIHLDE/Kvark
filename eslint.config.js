@@ -25,15 +25,6 @@ export default tseslint.config({
     },
   },
   rules: {
-    // 'import-helpers/order-imports': [
-    //   'warn',
-    //   {
-    //     groups: [['absolute', 'module'], '/^types/', '/^api/', '/^hooks/', '/^pages/', '/^components/', '/^assets/', ['sibling', 'parent', 'index']],
-    //     newlinesBetween: 'always',
-    //     alphabetize: { order: 'asc', ignoreCase: true },
-    //   },
-    // ],
-    'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unnecessary-type-constraint': 'off',
@@ -43,7 +34,6 @@ export default tseslint.config({
     'comma-spacing': 'error',
     'comma-style': ['error', 'last'],
     // curly: ['error', 'all'],
-    'eol-last': 'error',
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'func-call-spacing': 'error',
     'guard-for-in': 'off',

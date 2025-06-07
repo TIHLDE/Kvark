@@ -1,7 +1,6 @@
 {
-  "plugins": [
-    "@ianvs/prettier-plugin-sort-imports"
-  ],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": ["<BUILTIN_MODULES>", "<THIRD_PARTY_MODULES>", "", "^[.]"],
   "importOrderParserPlugins": ["typescript", "jsx"],
   "importOrderTypeScriptVersion": "5.8.3",
   "importOrderCaseSensitive": false,
