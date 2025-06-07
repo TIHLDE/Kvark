@@ -11,9 +11,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^4.1.3
         version: 4.1.3(react-hook-form@7.56.4(react@18.3.1))
-      '@mjackson/headers':
-        specifier: ^0.10.0
-        version: 0.10.0
       '@radix-ui/react-accordion':
         specifier: ^1.2.11
         version: 1.2.11(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -107,9 +104,6 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
-      delayed-scroll-restoration-polyfill:
-        specifier: ^0.1.1
-        version: 0.1.1
       emoji-picker-react:
         specifier: ^4.12.2
         version: 4.12.2(react@18.3.1)
@@ -743,9 +737,6 @@ packages:
     resolution: {integrity: sha512-llMXd39jtP0HpQLVI37Bf1m2ADlEb35GYSh1SDSLsBhR+5iCxiNGlT31yqbNtVHygHAtMy6dWFERpU2JgufhPg==}
     engines: {node: '>=18'}
     hasBin: true
-
-  '@mjackson/headers@0.10.0':
-    resolution: {integrity: sha512-U1Eu1gF979k7ZoIBsJyD+T5l9MjtPONsZfoXfktsQHPJD0s7SokBGx+tLKDLsOY+gzVYAWS0yRFDNY8cgbQzWQ==}
 
   '@mjackson/node-fetch-server@0.2.0':
     resolution: {integrity: sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==}
@@ -2363,9 +2354,6 @@ packages:
   define-properties@1.2.1:
     resolution: {integrity: sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==}
     engines: {node: '>= 0.4'}
-
-  delayed-scroll-restoration-polyfill@0.1.1:
-    resolution: {integrity: sha512-DcDEi1224qIzuVKJrOelOZvJd3pKsxdiAiG0hVvti/CVXBbdRlqMDZigX1Wqx+jTj6kk0+TQT7fPK8I1khBvAQ==}
 
   depd@2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
@@ -5182,8 +5170,6 @@ snapshots:
       - encoding
       - supports-color
 
-  '@mjackson/headers@0.10.0': {}
-
   '@mjackson/node-fetch-server@0.2.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -6903,8 +6889,6 @@ snapshots:
       define-data-property: 1.1.4
       has-property-descriptors: 1.0.2
       object-keys: 1.1.1
-
-  delayed-scroll-restoration-polyfill@0.1.1: {}
 
   depd@2.0.0: {}
 
