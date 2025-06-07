@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import { GROUPS_QUERY_KEYS } from '~/hooks/Group';
 import type { Group, Membership, MembershipHistory, MembershipHistoryMutate, PaginationResponse, RequestResponse, User } from '~/types';

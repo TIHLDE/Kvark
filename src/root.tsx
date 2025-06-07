@@ -5,6 +5,7 @@ import { PostHogProvider } from 'posthog-js/react';
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
 import './assets/css/index.css';
+
 import type { Route } from './+types/root';
 import API from './api/api';
 import { authClient } from './api/auth';

@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { createFeedbackInput, Feedback, PaginationResponse, RequestResponse } from '~/types';
 

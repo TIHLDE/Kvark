@@ -14,7 +14,7 @@ import { Separator } from '~/components/ui/separator';
 import { analyticsEvent, useDebounce } from '~/hooks/Utils';
 import { deepEqual } from '~/utils';
 import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { createLoader, createSerializer, type inferParserType, parseAsArrayOf, parseAsString, useQueryStates } from 'nuqs';
+import { createLoader, createSerializer, parseAsArrayOf, parseAsString, useQueryStates, type inferParserType } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { useFetcher } from 'react-router';
 

@@ -13,7 +13,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'sonner';
 
-
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
