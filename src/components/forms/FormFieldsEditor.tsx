@@ -13,6 +13,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'sonner';
 
+
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
@@ -34,27 +35,17 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     if (disabled) {
       return;
     }
-    type === FormFieldType.TEXT_ANSWER
-      ? setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [],
-          },
-        ])
-      : setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [{ title: '' }],
-          },
-        ]);
+
+    setFields((prev) => [
+      ...prev,
+      {
+        title: '',
+        required: false,
+        order: fields.length,
+        type: type,
+        options: type === FormFieldType.SINGLE_SELECT ? [{ title: '' }] : [],
+      },
+    ]);
     setAddButtonOpen(false);
   };
 

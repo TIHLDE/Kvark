@@ -102,8 +102,10 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
   };
 
   useEffect(() => {
-    !isError || goToNews(null);
-  }, [isError]);
+    if (isError) {
+      goToNews(null);
+    }
+  }, [isError, goToNews]);
 
   useEffect(() => {
     if (data) {

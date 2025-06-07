@@ -43,7 +43,8 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
                 initialFocus
                 mode='single'
                 onSelect={(e) => {
-                  field.onChange(e), onDateChange && onDateChange(e);
+                  field.onChange(e);
+                  onDateChange?.(e);
                 }}
                 selected={field.value}
               />
