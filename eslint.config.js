@@ -42,7 +42,6 @@ export default tseslint.config({
     'brace-style': ['error', '1tbs'],
     'comma-spacing': 'error',
     'comma-style': ['error', 'last'],
-    endOfLine: 'off',
     // curly: ['error', 'all'],
     'eol-last': 'error',
     eqeqeq: ['error', 'always', { null: 'ignore' }],
