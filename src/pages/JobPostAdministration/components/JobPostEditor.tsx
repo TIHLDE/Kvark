@@ -83,8 +83,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   });
 
   useEffect(() => {
-    !isError || goToJobPost(null);
-  }, [isError]);
+    if (isError) goToJobPost(null);
+  }, [isError, goToJobPost]);
 
   const setValues = useCallback(
     (newValues: JobPost | null) => {

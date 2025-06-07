@@ -76,8 +76,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
       .map((registration) => {
         const data: string[] = [];
         data.push(registration.user_info.user_id);
-        names && data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
-        emails && data.push(registration.user_info.email);
+        if (names) data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
+        if (emails) data.push(registration.user_info.email);
         return data.join(',');
       })
       .join('\n');

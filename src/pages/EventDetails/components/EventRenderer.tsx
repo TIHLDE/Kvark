@@ -234,8 +234,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     useInterval(() => {
       if (isFuture(userStartRegistrationDate)) {
         setNotOpenText(formatDistanceToNowStrict(userStartRegistrationDate, { addSuffix: true, locale: nb }));
-      } else {
-        !notOpenText || setNotOpenText(null);
+      } else if (notOpenText) {
+        setNotOpenText(null);
       }
     }, 1000);
 

@@ -37,7 +37,7 @@ export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
       onSuccess: (data) => {
         toast.success(data.detail);
         event('delete-user', 'profile', 'Deleted user');
-        !isAdmin && logOut();
+        if (!isAdmin) logOut();
         setIsOpen(false);
       },
       onError: (e) => {

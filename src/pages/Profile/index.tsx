@@ -77,7 +77,7 @@ const Profile = () => {
   useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
   useEffect(() => {
     event('change-tab', 'profile', `Changed tab to: ${tab}`);
-    tab === logoutTab.label && logout();
+    if (tab === logoutTab.label) logout();
   }, [tab]);
 
   type NavListItem = {
