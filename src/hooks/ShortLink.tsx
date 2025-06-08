@@ -1,4 +1,4 @@
-import { useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { RequestResponse, ShortLink } from '~/types';
 

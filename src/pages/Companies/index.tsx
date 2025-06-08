@@ -12,7 +12,7 @@ const Companies = () => {
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = () => {
-    !formRef.current || window.scroll({ top: formRef.current.offsetTop - 84, left: 0, behavior: 'smooth' });
+    if (formRef.current) window.scroll({ top: formRef.current.offsetTop - 84, left: 0, behavior: 'smooth' });
   };
 
   const text = {

@@ -32,6 +32,7 @@ type Filters = {
   activity?: boolean;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const formSchema = z.object({
   search: z.string().optional(),
   category: z.string().optional(),
@@ -77,7 +78,7 @@ const EventsDefaultView = () => {
     event('search', 'events', JSON.stringify(values));
     setFilters(values);
     navigate(`${location.pathname}${argsToParams(values)}`, { replace: true });
-    isDesktop || setSearchFormExpanded((prev) => !prev);
+    if (!isDesktop) setSearchFormExpanded((prev) => !prev);
   };
 
   const [searchFormExpanded, setSearchFormExpanded] = useState<boolean>(false);

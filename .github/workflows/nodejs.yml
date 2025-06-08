@@ -18,6 +18,8 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+      - name: Prettier
+        run: pnpm prettier --check ./src
 
       - name: Build
         run: pnpm build

@@ -34,27 +34,17 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     if (disabled) {
       return;
     }
-    type === FormFieldType.TEXT_ANSWER
-      ? setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [],
-          },
-        ])
-      : setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [{ title: '' }],
-          },
-        ]);
+
+    setFields((prev) => [
+      ...prev,
+      {
+        title: '',
+        required: false,
+        order: fields.length,
+        type: type,
+        options: type === FormFieldType.SINGLE_SELECT ? [{ title: '' }] : [],
+      },
+    ]);
     setAddButtonOpen(false);
   };
 

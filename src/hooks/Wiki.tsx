@@ -1,4 +1,4 @@
-import { QueryClient, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
+import { QueryClient, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { PaginationResponse, RequestResponse, WikiChildren, WikiPage, WikiRequired, WikiTree } from '~/types';
 

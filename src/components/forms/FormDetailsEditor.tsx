@@ -31,7 +31,9 @@ const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) =>
     deleteForm.mutate(undefined, {
       onSuccess: () => {
         toast.success('Skjema ble slettet');
-        navigate && navigateTo(-1);
+        if (navigate) {
+          navigateTo(-1);
+        }
       },
       onError: (e) => {
         toast.error(e.detail);

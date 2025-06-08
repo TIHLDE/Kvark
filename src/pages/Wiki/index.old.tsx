@@ -12,8 +12,7 @@ import WikiAdmin from '~/pages/Wiki/components/WikiAdmin';
 import WikiNavigator from '~/pages/Wiki/components/WikiNavigator';
 import Index from '~/pages/Wiki/specials/Index';
 import { Slash } from 'lucide-react';
-import { useMemo } from 'react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router';
 
 import WikiSearch from './components/WikiSearch';

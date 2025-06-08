@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from '~/types';
 

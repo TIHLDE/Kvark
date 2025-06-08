@@ -1,4 +1,4 @@
-import { type QueryKey, useInfiniteQuery, useMutation, type UseMutationResult, useQuery, useQueryClient, type UseQueryOptions } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type QueryKey, type UseMutationResult, type UseQueryOptions } from '@tanstack/react-query';
 import API from '~/api/api';
 import { AuthObject } from '~/api/auth';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
@@ -21,7 +21,7 @@ import type {
 } from '~/types';
 import type { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
-import { type ReactNode, useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';

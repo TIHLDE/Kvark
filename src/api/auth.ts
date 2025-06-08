@@ -70,7 +70,7 @@ export const authQueryOptions = queryOptions({
       };
       getQueryClient().setQueryData(['user', null], user);
       return AuthObjectSchema.parse({ user: authUser, permissions: permission.permissions, tihldeUser: user });
-    } catch (e) {
+    } catch {
       // If we get an error, we want to invalidate the cache
       return null;
     }
@@ -95,7 +95,7 @@ export async function authClient() {
       return undefined;
     }
     return authObject;
-  } catch (e) {
+  } catch {
     // If we get an error, we want to invalidate the cache
     invalidateAuth();
     return undefined;
