@@ -87,7 +87,7 @@
     "@react-router/dev": "^7.6.1",
     "@react-router/serve": "^7.6.1",
     "@types/canvas-confetti": "^1.6.4",
-    "@types/node": "^22.15.29",
+    "@types/node": "^24.0.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.0",
     "@types/react-helmet": "^6.1.11",
