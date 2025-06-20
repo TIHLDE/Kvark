@@ -83,7 +83,7 @@ const NewStudent = () => {
           </p>
           <div className='flex gap-2 flex-col md:flex-row'>
             <Button asChild className='bg-sky-500 text-white font-semibold' onClick={fadderukaSignupAnalytics}>
-              <a href='https://forms.gle/DdL3F7XHvCHFVzdi8' rel='noreferrer' target='_blank'>
+              <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' rel='noreferrer' target='_blank'>
                 Meld meg på!
               </a>
             </Button>
