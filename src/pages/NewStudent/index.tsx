@@ -79,7 +79,7 @@ const NewStudent = () => {
           <h2 className='text-3xl md:text-5xl font-bold'>Fadderuka</h2>
           <p className='text-slate-700 dark:text-slate-300 my-4'>
             Fadderuka er en gyllen mulighet til å bli kjent med medstudenter og med linjeforeningen. Fadderuka varer fra uka før skolestart til en uke inn i
-            semesteret, som i år er fra 12. - 28. August. Meld deg på her for å få plass!
+            semesteret, som i år er fra 11. - 24. August. Meld deg på her for å få plass!
           </p>
           <div className='flex gap-2 flex-col md:flex-row'>
             <Button asChild className='bg-sky-500 text-white font-semibold' onClick={fadderukaSignupAnalytics}>
