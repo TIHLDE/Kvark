@@ -73,8 +73,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta content='width=device-width, initial-scale=1' name='viewport' />
         <meta content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
 
-        <meta content='#16356e' data-react-helmet='true' name='theme-color' />
-
         {/* TODO: Convert the meta tags to the links export */}
         <link href='/browser-icons/android-icon-192x192.png' rel='icon' sizes='192x192' type='image/png' />
         <link href='/browser-icons/favicon-32x32.png' rel='icon' sizes='32x32' type='image/png' />

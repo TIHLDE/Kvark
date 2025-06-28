@@ -1,15 +1,32 @@
 import Page from '~/components/navigation/Page';
-import { useGalleryById } from '~/hooks/Gallery';
+import { galleryByIdQuery, useGalleryById } from '~/hooks/Gallery';
 import { HavePermission } from '~/hooks/User';
 import GalleryRenderer, { GalleryRendererLoading } from '~/pages/GalleryDetails/components/GalleryRenderer';
 import Http404 from '~/pages/Http404';
+import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { useEffect } from 'react';
-import Helmet from 'react-helmet';
 import { useNavigate, useParams } from 'react-router';
 
+import { Route } from './+types';
 import GalleryEditorDialog from './components/GalleryEditor';
+
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
+  return {
+    gallery,
+  };
+}
+
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [
+    { property: 'og:title', content: data?.gallery.title },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: data?.gallery.image },
+  ];
+};
 
 const GalleryDetails = () => {
   const { id } = useParams<'id'>();
@@ -46,21 +63,7 @@ const GalleryDetails = () => {
         </div>
       </div>
 
-      {data ? (
-        <>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-ignore */}
-          <Helmet>
-            <meta content={data.title} property='og:title' />
-            <meta content='website' property='og:type' />
-            <meta content={window.location.href} property='og:url' />
-            <meta content={data.image} property='og:image' />
-          </Helmet>
-          <GalleryRenderer id={data.id} />
-        </>
-      ) : (
-        <GalleryRendererLoading />
-      )}
+      {data ? <GalleryRenderer id={data.id} /> : <GalleryRendererLoading />}
     </Page>
   );
 };

@@ -1,12 +1,30 @@
 import Page from '~/components/navigation/Page';
-import { useJobPostById } from '~/hooks/JobPost';
+import { jobPostByIdQuery, useJobPostById } from '~/hooks/JobPost';
 import Http404 from '~/pages/Http404';
 import JobPostRenderer, { JobPostRendererLoading } from '~/pages/JobPostDetails/components/JobPostRenderer';
+import { getQueryClient } from '~/queryClient';
 import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router';
+
+import { Route } from './+types';
+
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const jobPost = await getQueryClient().ensureQueryData(jobPostByIdQuery(Number(params.id)));
+  return {
+    jobPost,
+  };
+}
+
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [
+    { property: 'og:title', content: data?.jobPost.title },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: data?.jobPost.image },
+  ];
+};
 
 function JobPostDetails() {
   const { id } = useParams();
@@ -26,27 +44,7 @@ function JobPostDetails() {
     return <Http404 />;
   }
 
-  return (
-    <Page>
-      {isLoading ? (
-        <JobPostRendererLoading />
-      ) : (
-        data !== undefined && (
-          <>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <Helmet>
-              <meta content={data.title} property='og:title' />
-              <meta content='website' property='og:type' />
-              <meta content={window.location.href} property='og:url' />
-              <meta content={data.image} property='og:image' />
-            </Helmet>
-            <JobPostRenderer data={data} />
-          </>
-        )
-      )}
-    </Page>
-  );
+  return <Page>{isLoading ? <JobPostRendererLoading /> : data !== undefined && <JobPostRenderer data={data} />}</Page>;
 }
 
 export default JobPostDetails;

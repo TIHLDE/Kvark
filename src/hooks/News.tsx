@@ -1,16 +1,17 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { News, NewsRequired, PaginationResponse, RequestResponse } from '~/types';
 
 export const EXPORT_QUERY_KEY = 'news';
 
-export const useNewsById = (id: number) => {
-  return useQuery({
+export const newsByIdQuery = (id: number) =>
+  queryOptions({
     queryKey: [EXPORT_QUERY_KEY, id],
     queryFn: () => API.getNewsItem(id),
     enabled: id !== -1,
   });
-};
+
+export const useNewsById = (id: number) => useQuery(newsByIdQuery(id));
 
 export const useNews = () => {
   return useInfiniteQuery<PaginationResponse<News>, RequestResponse>({

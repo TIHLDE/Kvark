@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { Gallery, GalleryCreate, GalleryRequired, PaginationResponse, Picture, PictureRequired, RequestResponse } from '~/types';
 
@@ -15,11 +15,13 @@ export const GALLERY_QUERY_KEYS = {
   },
 } as const;
 
-export const useGalleryById = (galleryId: Gallery['id']) =>
-  useQuery({
+export const galleryByIdQuery = (galleryId: Gallery['id']) =>
+  queryOptions({
     queryKey: GALLERY_QUERY_KEYS.detail(galleryId),
     queryFn: () => API.getGallery(galleryId),
   });
+
+export const useGalleryById = (galleryId: Gallery['id']) => useQuery(galleryByIdQuery(galleryId));
 
 export const useGalleries = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Gallery>, RequestResponse>({

@@ -1,16 +1,17 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from '~/types';
 
 export const JOBPOST_QUERY_KEY = 'jobpost';
 
-export const useJobPostById = (id: number) => {
-  return useQuery({
+export const jobPostByIdQuery = (id: number) =>
+  queryOptions({
     queryKey: [JOBPOST_QUERY_KEY, id],
     queryFn: () => API.getJobPost(id),
     enabled: id !== -1,
   });
-};
+
+export const useJobPostById = (id: number) => useQuery(jobPostByIdQuery(id));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useJobPosts = (filters?: any) => {
