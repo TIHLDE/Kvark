@@ -29,7 +29,7 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@react-router/node": "^7.6.1",
-    "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-query-devtools": "^5.81.5",
     "@uploadthing/react": "^7.3.2",
     "@vercel/analytics": "1.5.0",
