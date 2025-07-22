@@ -126,8 +126,8 @@ importers:
         specifier: ^2.4.1
         version: 2.4.3(react-router@7.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       posthog-js:
-        specifier: ^1.239.1
-        version: 1.240.5
+        specifier: ^1.257.2
+        version: 1.257.2
       qr-scanner:
         specifier: ^1.4.2
         version: 1.4.2
@@ -2261,8 +2261,8 @@ packages:
     resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
     engines: {node: '>=18'}
 
-  core-js@3.42.0:
-    resolution: {integrity: sha512-Sz4PP4ZA+Rq4II21qkNqOEDTDrCvcANId3xpIgB34NDkWc3UduWj2dqEtN9yZIq8Dk3HyPI33x9sqqU5C8sr0g==}
+  core-js@3.44.0:
+    resolution: {integrity: sha512-aFCtd4l6GvAXwVEh3XbbVqJGHDJt0OZRa+5ePGx3LLwi12WfexqQxcsohb2wgsa/92xtl19Hd66G/L+TaAxDMw==}
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -3454,8 +3454,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  multipasta@0.2.5:
-    resolution: {integrity: sha512-c8eMDb1WwZcE02WVjHoOmUVk7fnKU/RmUcosHACglrWAuPQsEJv+E8430sXj6jNc1jHw0zrS16aCjQh4BcEb4A==}
+  multipasta@0.2.7:
+    resolution: {integrity: sha512-KPA58d68KgGil15oDqXjkUBEBYc00XvbPj5/X+dyzeo/lWm9Nc25pQRlf1D+gv4OpK7NM0J1odrbu9JNNGvynA==}
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
@@ -3751,8 +3751,8 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.240.5:
-    resolution: {integrity: sha512-sLaDiN0TrGQnF94ed85wo044ifJ5U9rBlIVe5rueLUtusE2Gc/Vis7VcHOjbBeAaJXCHwOcs/TUZZNxbRGzNgw==}
+  posthog-js@1.257.2:
+    resolution: {integrity: sha512-E+8wI/ahaiUGrmkilOtAB9aTFL+oELwOEsH1eO/2NyXB5WWcSUk6Rm1loixq8/lC4f3oR+Qqp9rHyXTSYbBDRQ==}
     peerDependencies:
       '@rrweb/types': 2.0.0-alpha.17
       rrweb-snapshot: 2.0.0-alpha.17
@@ -3762,8 +3762,8 @@ packages:
       rrweb-snapshot:
         optional: true
 
-  preact@10.26.6:
-    resolution: {integrity: sha512-5SRRBinwpwkaD+OqlBDeITlRgvd8I8QlxHJw9AxSdMNV6O+LodN9nUyYGpSF7sadHjs6RzeFShMexC6DbtWr9g==}
+  preact@10.26.9:
+    resolution: {integrity: sha512-SSjF9vcnF27mJK1XyFMNJzFd5u3pQiATFqoaDy03XuN00u4ziveVVEGt5RKJrDR8MHE/wJo9Nnad56RLzS2RMA==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -4926,7 +4926,7 @@ snapshots:
     dependencies:
       effect: 3.12.0
       find-my-way-ts: 0.1.6
-      multipasta: 0.2.5
+      multipasta: 0.2.7
 
   '@esbuild/aix-ppc64@0.25.5':
     optional: true
@@ -6797,7 +6797,7 @@ snapshots:
 
   cookie@1.0.2: {}
 
-  core-js@3.42.0: {}
+  core-js@3.44.0: {}
 
   create-require@1.1.1: {}
 
@@ -8225,7 +8225,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  multipasta@0.2.5: {}
+  multipasta@0.2.7: {}
 
   mz@2.7.0:
     dependencies:
@@ -8478,14 +8478,14 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.240.5:
+  posthog-js@1.257.2:
     dependencies:
-      core-js: 3.42.0
+      core-js: 3.44.0
       fflate: 0.4.8
-      preact: 10.26.6
+      preact: 10.26.9
       web-vitals: 4.2.4
 
-  preact@10.26.6: {}
+  preact@10.26.9: {}
 
   prelude-ls@1.2.1: {}
 
