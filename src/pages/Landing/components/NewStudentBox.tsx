@@ -62,7 +62,7 @@ const NewStudentBox = () => {
           </Button>
           {SHOW_FADDERUKA_INFO && (
             <Button asChild className='w-full' variant='outline'>
-              <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
+              <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
                 Meld deg på fadderuka
                 <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />
               </a>
