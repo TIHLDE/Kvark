@@ -1,3 +1,4 @@
+import { useAppForm } from '~/components/forms/AppForm';
 import InfoBanner from '~/components/miscellaneous/InfoBanner/InfoBanner';
 import { Button } from '~/components/ui/button';
 import { analyticsEvent } from '~/hooks/Utils';
@@ -10,9 +11,23 @@ import URLS from '~/URLS';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 
+interface TestForm {
+  users: string[];
+}
+
 export default function Landing() {
   const openEventsAnalytics = () => analyticsEvent('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => analyticsEvent('go-to-all-news', 'news-list-view', `Go to all news`);
+
+  const form = useAppForm({
+    defaultValues: {
+      users: [],
+    } as TestForm,
+    onSubmit(data) {
+      console.log('Submitted data: ', data);
+    },
+  });
+
   return (
     <div>
       <Wave />
@@ -21,6 +36,10 @@ export default function Landing() {
           <NewStudentBox />
           <InfoBanner />
           <StoriesView />
+
+          <div>
+            <form.AppField name='users'>{(field) => <field.UserField label='User' description='Select a user here' required />}</form.AppField>
+          </div>
         </div>
       </div>
       <div className='max-w-5xl w-full mx-auto py-4 space-y-6 px-4'>

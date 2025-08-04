@@ -1,12 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { SingleUserSearch } from '~/components/inputs/UserSearch';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useCreateMembership } from '~/hooks/Membership';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -27,25 +25,27 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const createMembership = useCreateMembership();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createMembership.mutate(
-      { groupSlug: groupSlug, userId: values.user.user_id },
-      {
-        onSuccess: () => {
-          form.reset();
-          setIsOpen(false);
-          toast.success('Medlem lagt til');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+    },
+    defaultValues: {
+      user: {
+        user_id: '',
       },
-    );
-  };
+    } as z.infer<typeof formSchema>,
+
+    async onSubmit({ value }) {
+      try {
+        await createMembership.mutateAsync({ groupSlug: groupSlug, userId: value.user.user_id });
+        form.reset();
+        setIsOpen(false);
+        toast.success('Medlem lagt til');
+      } catch (e) {
+        toast.error(e.detail);
+      }
+    },
+  });
 
   const OpenButton = (
     <Button variant='outline'>
@@ -62,15 +62,13 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       open={isOpen}
       title='Legg til medlem'
       trigger={OpenButton}>
-      <Form {...form}>
-        <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
-          <SingleUserSearch form={form} label='Søk etter bruker' name='user' />
+      <form className='px-2 space-y-4' onSubmit={handleFormSubmit(form)}>
+        <form.AppField name='user.user_id'>{(field) => <field.SingleUserField label='Søk etter bruker' />}</form.AppField>
 
-          <Button className='w-full' disabled={createMembership.isPending}>
-            {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}
-          </Button>
-        </form>
-      </Form>
+        <Button className='w-full' disabled={createMembership.isPending}>
+          {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}
+        </Button>
+      </form>
     </ResponsiveDialog>
   );
 };

@@ -1,9 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import { FormDetailSwitch } from '~/components/inputs/Switch';
-import FormTextarea from '~/components/inputs/Textarea';
 import { Button } from '~/components/ui/button';
-import { Form as FormWrapper } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
@@ -12,11 +7,13 @@ import { useCreateForm, useDeleteForm, useUpdateForm } from '~/hooks/Form';
 import type { EventForm, Form, FormCreate, GroupForm, TemplateForm } from '~/types';
 import { FormResourceType } from '~/types/Enums';
 import { removeIdsFromFields } from '~/utils';
+import { Loader2Icon } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
+
+import { handleFormSubmit, useAppForm } from './AppForm';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -72,8 +69,10 @@ const formSchema = z.object({
 const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
   const updateForm = useUpdateForm(groupForm.id || '-');
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+    },
     defaultValues: {
       can_submit_multiple: groupForm.can_submit_multiple,
       is_open_for_submissions: groupForm.is_open_for_submissions,
@@ -81,62 +80,65 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
       email_receiver_on_submit: groupForm.email_receiver_on_submit || '',
       title: groupForm.title || '',
       description: groupForm.description || '',
+    } as z.infer<typeof formSchema>,
+
+    async onSubmit(values) {
+      try {
+        await updateForm.mutateAsync({ resource_type: groupForm.resource_type, ...values });
+        toast.success('Skjema ble oppdatert');
+      } catch (e) {
+        toast.error(e.detail);
+      }
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    updateForm.mutate(
-      { resource_type: groupForm.resource_type, ...values },
-      {
-        onSuccess: () => {
-          toast.success('Skjema ble oppdatert');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      },
-    );
-  };
-
   return (
-    <FormWrapper {...form}>
-      <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormInput form={form} label='Tittel' name='title' required />
+    <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+      <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
 
-        <FormInput form={form} label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />
+      <form.AppField name='email_receiver_on_submit'>
+        {(field) => <field.InputField label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />}
+      </form.AppField>
 
-        <FormTextarea form={form} label='Beskrivelse' name='description' />
+      <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' />}</form.AppField>
 
-        <FormDetailSwitch
-          description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.'
-          form={form}
-          label='Tillat flere innsendinger'
-          name='can_submit_multiple'
-        />
+      <form.AppField name='can_submit_multiple'>
+        {(field) => <field.SwitchField label='Tillat flere innsendinger' description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.' />}
+      </form.AppField>
 
-        <FormDetailSwitch
-          description='Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet, og ingen kan heller se/finne det.'
-          form={form}
-          label='Åpent for innsending'
-          name='is_open_for_submissions'
-        />
+      <form.AppField name='is_open_for_submissions'>
+        {(field) => (
+          <field.SwitchField
+            label='Åpent for innsending'
+            description='Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet, og ingen kan heller se/finne det.'
+          />
+        )}
+      </form.AppField>
 
-        <FormDetailSwitch
-          description='Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.'
-          form={form}
-          label='Kun for medlemmer av gruppen'
-          name='only_for_group_members'
-        />
+      <form.AppField name='only_for_group_members'>
+        {(field) => (
+          <field.SwitchField
+            label='Kun for medlemmer av gruppen'
+            description='Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.'
+          />
+        )}
+      </form.AppField>
 
-        <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>
-          <Button className='w-full' disabled={updateForm.isPending} type='submit'>
-            {updateForm.isPending ? 'Lagrer...' : 'Lagre'}
-          </Button>
+      <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>
+        <form.AppForm>
+          <form.SubmitButton
+            loading={
+              <>
+                <Loader2Icon className='animate-spin' /> Lagrer
+              </>
+            }>
+            Lagre
+          </form.SubmitButton>
+        </form.AppForm>
 
-          <DeleteFormButton form={groupForm} navigate />
-        </div>
-      </form>
-    </FormWrapper>
+        <DeleteFormButton form={groupForm} navigate />
+      </div>
+    </form>
   );
 };
 

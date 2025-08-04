@@ -1,5 +1,5 @@
 import VIPPS from '~/assets/img/vipps.svg';
-import LoadingSpinnner from '~/components/miscellaneous/LoadingSpinner';
+import { LoadingSpinner } from '~/components/miscellaneous/loading-spinner';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { useCreatePaymentOrder } from '~/hooks/Payment';
@@ -85,7 +85,7 @@ const CountdownTimer = ({ payment_expiredate, event_id }: Registration) => {
     <Card>
       <CardContent className='py-8 text-center space-y-4'>
         <Button className='hover:bg-inherit' disabled={createPaymentOrder.isPending} onClick={() => create({ event: event_id })} variant='ghost'>
-          {createPaymentOrder.isPending ? <LoadingSpinnner /> : <img alt='Betal med vipps' src={VIPPS} />}
+          {createPaymentOrder.isPending ? <LoadingSpinner /> : <img alt='Betal med vipps' src={VIPPS} />}
         </Button>
         <h1>Betal innen {timeLeft} for å beholde plassen på arrangementet.</h1>
       </CardContent>

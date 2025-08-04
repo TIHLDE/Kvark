@@ -1,18 +1,15 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import DateTimePicker from '~/components/inputs/DateTimePicker';
-import { FormSelect } from '~/components/inputs/Select';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
+import { LoadingSpinner } from '~/components/miscellaneous/loading-spinner';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useUpdateMembershipHistory } from '~/hooks/Membership';
 import type { MembershipHistory } from '~/types';
 import { MembershipType } from '~/types/Enums';
 import { parseISO } from 'date-fns';
-import { Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { PencilIcon } from 'lucide-react';
 
 type UpdateMembershipHistoryProps = {
   membership: MembershipHistory;
@@ -38,37 +35,34 @@ const UpdateMembershipHistory = ({ membership }: UpdateMembershipHistoryProps) =
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const updateMembershipHistory = useUpdateMembershipHistory(membership.group.slug, membership.id);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+    },
     defaultValues: {
       membership_type: membership.membership_type,
       start_date: parseISO(membership.start_date),
       end_date: parseISO(membership.end_date),
+    } as z.infer<typeof formSchema>,
+
+    async onSubmit({ value }) {
+      try {
+        await updateMembershipHistory.mutateAsync({
+          ...value,
+          start_date: value.start_date.toJSON(),
+          end_date: value.end_date.toJSON(),
+        });
+        toast.success('Det tidligere medlemskapet ble oppdatert');
+        setIsOpen(false);
+      } catch (e) {
+        toast.error(e.detail);
+      }
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    updateMembershipHistory.mutate(
-      {
-        ...values,
-        start_date: values.start_date.toJSON(),
-        end_date: values.end_date.toJSON(),
-      },
-      {
-        onSuccess: () => {
-          toast.success('Det tidligere medlemskapet ble oppdatert');
-          setIsOpen(false);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      },
-    );
-  };
-
   const OpenButton = (
     <Button className='w-full' variant='outline'>
-      <Pencil className='mr-2 w-5 h-5 stroke-[1.5px]' />
+      <PencilIcon className='mr-2 w-5 h-5 stroke-[1.5px]' />
       Oppdater medlemskap
     </Button>
   );
@@ -81,27 +75,29 @@ const UpdateMembershipHistory = ({ membership }: UpdateMembershipHistoryProps) =
       open={isOpen}
       title='Oppdater medlemskap'
       trigger={OpenButton}>
-      <Form {...form}>
-        <form className='space-y-4 px-2 py-4' onSubmit={form.handleSubmit(onSubmit)}>
-          <DateTimePicker form={form} label='Startdato' name='start_date' required />
+      <form className='space-y-4 px-2 py-4' onSubmit={handleFormSubmit(form)}>
+        <form.AppField name='start_date'>{(field) => <field.DateTimeField label='Startdato' required />}</form.AppField>
 
-          <DateTimePicker form={form} label='Sluttdato' name='end_date' required />
+        <form.AppField name='end_date'>{(field) => <field.DateTimeField label='Sluttdato' required />}</form.AppField>
 
-          <FormSelect
-            form={form}
-            label='Medlemstype'
-            name='membership_type'
-            options={[
-              { value: MembershipType.MEMBER, label: 'Medlem' },
-              { value: MembershipType.LEADER, label: 'Leder' },
-            ]}
-            placeholder='Velg medlemstype'
-            required
-          />
+        <form.AppField name='membership_type'>
+          {(field) => (
+            <field.SelectField
+              label='Medlemstype'
+              placeholder='Velg medlemstype'
+              required
+              options={[
+                { value: MembershipType.MEMBER, content: 'Medlem' },
+                { value: MembershipType.LEADER, content: 'Leder' },
+              ]}
+            />
+          )}
+        </form.AppField>
 
-          <Button className='w-full'>{updateMembershipHistory.isPending ? 'Oppdaterer...' : 'Oppdater'}</Button>
-        </form>
-      </Form>
+        <form.AppForm>
+          <form.SubmitButton loading={<LoadingSpinner>Oppdaterer</LoadingSpinner>}>Oppdater</form.SubmitButton>
+        </form.AppForm>
+      </form>
     </ResponsiveDialog>
   );
 };
