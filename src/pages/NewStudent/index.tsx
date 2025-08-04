@@ -124,7 +124,7 @@ const NewStudent = () => {
           TIHLDE er drevet av frivillige studenter - bli kjent med de forskjellige vervene
         </h2>
         <p className='text-slate-700 dark:text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
-          Inntaksrunder skjer rett etter fadderuka. Du blir kalt inn på intverju ved å sende søknad.
+          Inntaksrunder skjer rett etter fadderuka. Du blir kalt inn på intervju ved å sende søknad.
         </p>
         <div className='space-y-16'>
           {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
