@@ -12,6 +12,8 @@
 
 ## Neste versjon
 
+- ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
+
 ## Versjon 2025.07.02
 
 - 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden  
