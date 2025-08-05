@@ -123,8 +123,8 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     return direction === 0 && liveCheatingAmount < max
       ? liveCheatingAmount + 1
       : direction === 1 && liveCheatingAmount > 0
-      ? liveCheatingAmount - 1
-      : liveCheatingAmount;
+        ? liveCheatingAmount - 1
+        : liveCheatingAmount;
   }, [liveCheatingAmount]);
 
   useEffect(() => setLiveCheatingAmount(generateLiveCheatingAmount()), []);

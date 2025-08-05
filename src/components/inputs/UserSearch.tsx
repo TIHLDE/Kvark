@@ -61,8 +61,8 @@ export const SingleUserSearch = <TFormValues extends FieldValues>({
                     {user && !selectedUser
                       ? `${user.first_name} ${user.last_name}`
                       : selectedUser
-                      ? `${selectedUser.first_name} ${selectedUser.last_name}`
-                      : 'Søk etter bruker'}
+                        ? `${selectedUser.first_name} ${selectedUser.last_name}`
+                        : 'Søk etter bruker'}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align='start' className='w-[400px] p-0'>

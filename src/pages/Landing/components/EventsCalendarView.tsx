@@ -72,7 +72,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
             end: parseISO(event.end_date),
             id: event.id.toString(),
             color: getColor(event),
-          } satisfies CalendarEvent),
+          }) satisfies CalendarEvent,
       ),
     [data],
   );

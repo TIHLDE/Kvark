@@ -383,7 +383,7 @@ export function ImageUpload(props: ImageUploadProps) {
     props.onChange?.(files);
   }, [files]);
 
-  const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : props.accept ?? 'image/*';
+  const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : (props.accept ?? 'image/*');
 
   const [isDragging, setIsDragging] = useState(false);
 
@@ -539,7 +539,7 @@ export function FileImage(props: FileImageProps) {
     };
   }, [src]);
 
-  return <img {...imgProps} src={typeof src === 'string' ? src : previewUrl ?? ''} />;
+  return <img {...imgProps} src={typeof src === 'string' ? src : (previewUrl ?? '')} />;
 }
 
 type FileImagePreviewProps = {
