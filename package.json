@@ -90,7 +90,7 @@
     "@types/react-dom": "^18.3.0",
     "@types/react-qr-reader": "^2.1.7",
     "@vercel/node": "^5.3.11",
-    "@vercel/react-router": "^1.1.2",
+    "@vercel/react-router": "^1.2.2",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
