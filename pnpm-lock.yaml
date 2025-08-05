@@ -105,8 +105,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       emoji-picker-react:
-        specifier: ^4.12.3
-        version: 4.12.3(react@18.3.1)
+        specifier: ^4.13.2
+        version: 4.13.2(react@18.3.1)
       immutability-helper:
         specifier: ^3.1.1
         version: 3.1.1
@@ -2415,8 +2415,8 @@ packages:
   electron-to-chromium@1.5.82:
     resolution: {integrity: sha512-Zq16uk1hfQhyGx5GpwPAYDwddJuSGhtRhgOA2mCxANYaDT79nAeGnaXogMGng4KqLaJUVnOnuL0+TDop9nLOiA==}
 
-  emoji-picker-react@4.12.3:
-    resolution: {integrity: sha512-Pf+pTenW/uM+Juw197dbCtcB45uqvl9Y5/BzK44L72Aqvavt4UPmCqb+w0UKzUJkzh0Tp1rThfHVwoQXXbOZvQ==}
+  emoji-picker-react@4.13.2:
+    resolution: {integrity: sha512-azaJQLTshEOZVhksgU136izJWJyZ4Clx6xQ6Vctzk1gOdPPAUbTa/JYDwZJ8rh97QxnjpyeftXl99eRlYr3vNA==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16'
@@ -6929,7 +6929,7 @@ snapshots:
 
   electron-to-chromium@1.5.82: {}
 
-  emoji-picker-react@4.12.3(react@18.3.1):
+  emoji-picker-react@4.13.2(react@18.3.1):
     dependencies:
       flairup: 1.0.0
       react: 18.3.1
