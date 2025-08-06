@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.6.0",
     "@react-router/dev": "^7.6.1",
     "@react-router/serve": "^7.6.1",
     "@types/canvas-confetti": "^1.6.4",
