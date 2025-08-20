@@ -1,8 +1,8 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useFormSubmissions } from '~/hooks/Form';
-import { useState, useEffect } from 'react';
 import type { UserSubmission } from '~/types';
+import { useEffect, useState } from 'react';
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 export type FormUserStatisticsProps = {
   formId: string;
@@ -48,11 +48,6 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
 
   const submissions = allSubmissions;
 
-  if (submissions.length > 0) {
-    console.log('Sample form submission:', submissions[0]);
-    console.log('Available fields:', Object.keys(submissions[0]));
-  }
-
   const studyProgramData = submissions.reduce((acc, submission) => {
     const studyProgram = submission.user.study?.group?.name || 'Ukjent';
     acc[studyProgram] = (acc[studyProgram] || 0) + 1;
@@ -73,13 +68,16 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
 
   const answerTypesData = submissions.reduce((acc, submission) => {
     submission.answers.forEach((answer) => {
-      if (answer.answer_text && answer.answer_text.trim()) {
+      if ('answer_text' in answer && answer.answer_text && answer.answer_text.trim()) {
         acc['Tekst'] = (acc['Tekst'] || 0) + 1;
       }
-      if (answer.selected_options && answer.selected_options.length > 0) {
+      if ('selected_options' in answer && Array.isArray(answer.selected_options) && answer.selected_options.length > 0) {
         acc['Valgte alternativer'] = (acc['Valgte alternativer'] || 0) + 1;
       }
-      if ((!answer.answer_text || !answer.answer_text.trim()) && (!answer.selected_options || answer.selected_options.length === 0)) {
+      if (
+        (('answer_text' in answer && (!answer.answer_text || !answer.answer_text.trim())) || !('answer_text' in answer)) &&
+        (('selected_options' in answer && (!answer.selected_options || answer.selected_options.length === 0)) || !('selected_options' in answer))
+      ) {
         acc['Tomme svar'] = (acc['Tomme svar'] || 0) + 1;
       }
     });
@@ -110,8 +108,8 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
   const uniqueUsers = new Set(submissions.map((s) => s.user.user_id)).size;
 
   return (
-    <div className='space-y-6'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+    <div className='space-y-8 p-4'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         <Card>
           <CardHeader>
             <CardTitle>Totalt antall svar</CardTitle>
@@ -130,25 +128,25 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
         </Card>
       </div>
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
         <Card>
           <CardHeader>
             <CardTitle>Studieprogram</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
+          <CardContent className='p-6'>
+            <ResponsiveContainer height={300} width='100%'>
               <PieChart>
                 <Pie
-                  data={studyProgramChartData}
                   cx='50%'
                   cy='50%'
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  data={studyProgramChartData}
+                  dataKey='value'
                   fill='#8884d8'
-                  dataKey='value'>
+                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                  outerRadius={60}>
                   {studyProgramChartData.map((entry, index) => (
-                    <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell fill={COLORS[index % COLORS.length]} key={`cell-${entry.name}`} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -161,8 +159,8 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
           <CardHeader>
             <CardTitle>Studieår</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
+          <CardContent className='p-6'>
+            <ResponsiveContainer height={300} width='100%'>
               <BarChart data={studyYearChartData}>
                 <CartesianGrid strokeDasharray='3 3' />
                 <XAxis dataKey='name' />
@@ -178,20 +176,20 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
           <CardHeader>
             <CardTitle>Kjønn</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
+          <CardContent className='p-6'>
+            <ResponsiveContainer height={300} width='100%'>
               <PieChart>
                 <Pie
-                  data={genderChartData}
                   cx='50%'
                   cy='50%'
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  data={genderChartData}
+                  dataKey='value'
                   fill='#8884d8'
-                  dataKey='value'>
+                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                  outerRadius={60}>
                   {genderChartData.map((entry, index) => (
-                    <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell fill={COLORS[index % COLORS.length]} key={`cell-${entry.name}`} />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -204,20 +202,20 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
           <CardHeader>
             <CardTitle>Type svar</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
+          <CardContent className='p-6'>
+            <ResponsiveContainer height={300} width='100%'>
               <PieChart>
                 <Pie
-                  data={answerTypesChartData}
                   cx='50%'
                   cy='50%'
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={80}
+                  data={answerTypesChartData}
+                  dataKey='value'
                   fill='#8884d8'
-                  dataKey='value'>
+                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  labelLine={false}
+                  outerRadius={60}>
                   {answerTypesChartData.map((entry, index) => (
-                    <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell fill={COLORS[index % COLORS.length]} key={`cell-${entry.name}`} />
                   ))}
                 </Pie>
                 <Tooltip />
