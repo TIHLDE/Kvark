@@ -15,6 +15,7 @@ export default [
       route(':id/:urlTitle?', './pages/EventDetails/index.tsx'),
     ]),
     route('bedrifter', './pages/Companies/index.tsx'),
+    route('interesse', './pages/CompanyInterest/index.tsx'),
     route('toddel', './pages/Toddel/index.tsx'),
 
     ...prefix('sporreskjema', [
