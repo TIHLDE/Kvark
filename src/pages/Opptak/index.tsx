@@ -84,8 +84,21 @@ const Opptak = () => {
     async () => {
       const submissionsPromises = opptakForms.map(async ({ form }) => {
         try {
-          const submissions = await API.getSubmissions(form.id, { page: 1 });
-          return { formId: form.id, submissions };
+          const allSubmissions: Array<UserSubmission> = [];
+          let page = 1;
+          let hasMore = true;
+
+          while (hasMore) {
+            const response = await API.getSubmissions(form.id, { page });
+            if (response.results) {
+              allSubmissions.push(...response.results);
+            }
+
+            hasMore = response.next !== null;
+            page++;
+          }
+
+          return { formId: form.id, submissions: { results: allSubmissions } };
         } catch (error) {
           return { formId: form.id, submissions: null };
         }

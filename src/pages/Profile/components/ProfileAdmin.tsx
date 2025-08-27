@@ -90,12 +90,19 @@ const Admin = () => {
       primary: 'Ny gruppe',
       secondary: 'Legg til en ny gruppe',
     },
+    {
+      apps: [PermissionApp.OPPTAK],
+      icon: Plus,
+      to: URLS.opptakAdmin,
+      primary: 'Opptak',
+      secondary: 'Legg til en ny gruppe',
+    },
   ];
 
   return (
     <ul className='space-y-2'>
-      {cards.map((card, i) => (
-        <AdminCard key={i} {...card} />
+      {cards.map((card) => (
+        <AdminCard key={card.to} {...card} />
       ))}
     </ul>
   );
