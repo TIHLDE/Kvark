@@ -21,7 +21,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
     <NavLink
       className='block bg-muted rounded-lg'
       params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
-      to='/stillingsannonser/:id/:urlTitle'>
+      to='/stillingsannonser/:id/:urlTitle?'>
       <div className='group rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 bg-muted/30'>
         {/* Responsive layout - vertical on mobile, horizontal on sm and up */}
         <div className='flex flex-col xl:flex-row h-full'>

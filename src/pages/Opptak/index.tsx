@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import API from '~/api/api';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
@@ -9,7 +10,6 @@ import { useGroupsByType } from '~/hooks/Group';
 import type { GroupForm, UserSubmission } from '~/types';
 import { Calendar, Download, FileText, Users } from 'lucide-react';
 import { useMemo } from 'react';
-import { useQuery } from 'react-query';
 import { toast } from 'sonner';
 
 export async function clientLoader({ request }: { request: Request }) {
@@ -32,9 +32,9 @@ const Opptak = () => {
 
   const groupSlugs = useMemo(() => SUB_GROUPS.map((g) => g.slug), [SUB_GROUPS]);
 
-  const allGroupForms = useQuery(
-    ['all-group-forms', groupSlugs],
-    async () => {
+  const allGroupForms = useQuery({
+    queryKey: ['all-group-forms', groupSlugs],
+    async queryFn() {
       const formsPromises = SUB_GROUPS.map(async (group) => {
         try {
           const forms = await API.getGroupForms(group.slug);
@@ -47,10 +47,8 @@ const Opptak = () => {
       const results = await Promise.all(formsPromises);
       return results;
     },
-    {
-      enabled: SUB_GROUPS.length > 0,
-    },
-  );
+    enabled: SUB_GROUPS.length > 0,
+  });
 
   const opptakForms = useMemo(() => {
     const forms: Array<{ group: string; groupName: string; form: GroupForm }> = [];
@@ -79,9 +77,9 @@ const Opptak = () => {
 
   const formIds = useMemo(() => opptakForms.map((f) => f.form.id), [opptakForms]);
 
-  const allFormSubmissions = useQuery(
-    ['all-form-submissions', formIds],
-    async () => {
+  const allFormSubmissions = useQuery({
+    queryKey: ['all-form-submissions', formIds],
+    async queryFn() {
       const submissionsPromises = opptakForms.map(async ({ form }) => {
         try {
           const allSubmissions: Array<UserSubmission> = [];
@@ -107,10 +105,8 @@ const Opptak = () => {
       const results = await Promise.all(submissionsPromises);
       return results;
     },
-    {
-      enabled: opptakForms.length > 0,
-    },
-  );
+    enabled: opptakForms.length > 0,
+  });
 
   const allSubmissions = useMemo(() => {
     const submissions: Array<UserSubmission & { formId: string }> = [];

@@ -11,7 +11,7 @@ export type GalleryListItemProps = {
 };
 
 const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
-  <NavLink params={{ id: gallery.id, urlTitle: urlEncode(gallery.title) }} to='/galleri/:id/:urlTitle'>
+  <NavLink params={{ id: gallery.id, urlTitle: urlEncode(gallery.title) }} to='/galleri/:id/:urlTitle?'>
     <Card className='h-[1/6]'>
       <CardHeader>
         <CardTitle className='text-black dark:text-white'>{gallery.title}</CardTitle>

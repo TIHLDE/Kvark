@@ -53,7 +53,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
     <NavLink
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
       params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}
-      to='/arrangementer/:id/:urlTitle'>
+      to='/arrangementer/:id/:urlTitle?'>
       <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
       <div className='py-2 space-y-1'>
