@@ -62,6 +62,7 @@ export enum PermissionApp {
   BANNERS = 'banner',
   GROUPFORM = 'groupform',
   FEEDBACK = 'feedback',
+  OPPTAK = 'opptak',
 }
 
 export enum Groups {

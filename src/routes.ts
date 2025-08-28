@@ -2,6 +2,7 @@ import { index, layout, prefix, route, type RouteConfig } from '@react-router/de
 
 // TODO: Go through all routes and check if they work
 export default [
+  route('interesse', './pages/CompanyInterest/index.tsx'),
   layout('./pages/MainLayout.tsx', [
     index('./pages/Landing/index.tsx'),
     route('ny-student', './pages/NewStudent/index.tsx'),
@@ -90,6 +91,7 @@ export default [
       route('nyheter/:newsId?', './pages/NewsAdministration/index.tsx'),
       route('brukere', './pages/UserAdmin/index.tsx'),
       route('prikker', './pages/StrikeAdmin/index.tsx'),
+      route('opptak', './pages/Opptak/index.tsx'),
     ]),
 
     route('logg-inn', './pages/LogIn/index.tsx'),

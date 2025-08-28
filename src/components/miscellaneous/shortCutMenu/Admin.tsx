@@ -43,12 +43,17 @@ const ShortCutAdmin = ({ setOpen }: Pick<ShortCutMenuProps, 'setOpen'>) => {
       title: 'Bannere',
       path: URLS.bannerAdmin,
     },
+    {
+      apps: [PermissionApp.OPPTAK],
+      title: 'Opptak',
+      path: URLS.opptakAdmin,
+    },
   ];
 
   return (
     <ShortCutSectionWrapper title='Admin'>
-      {links.map((link, index) => (
-        <HavePermission apps={link.apps} key={index}>
+      {links.map((link) => (
+        <HavePermission apps={link.apps} key={link.path}>
           <ShortCutLink setOpen={setOpen} {...link} />
         </HavePermission>
       ))}
