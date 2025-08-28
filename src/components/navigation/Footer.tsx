@@ -18,8 +18,8 @@ const Footer = () => {
   const mediaList = [
     { img: FACEBOOK, link: 'https://www.facebook.com/tihlde/' },
     { img: INSTAGRAM, link: 'https://www.instagram.com/tihlde/' },
-    { img: TWITTER, link: 'https://twitter.com/tihlde' },
-    { img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
+    //{ img: TWITTER, link: 'https://twitter.com/tihlde' },
+    //{ img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
     { img: NOTION, link: 'https://www.notion.so/tihlde/invite/442710f897b596ecd4f8e078cb25fcf76045125a' },
     { img: DISCORD, link: 'https://discord.gg/HNt5XQdyxy' },
   ];
@@ -52,18 +52,18 @@ const Footer = () => {
         </div>
 
         <div className='space-y-12 lg:max-w-sm w-full'>
-          <div className='space-y-4'>
+	{/*<div className='space-y-4'>
             <a className='mx-auto' href='https://www.lysekonsern.no/' rel='noopener noreferrer' target='_blank'>
               <img alt='Sponsor' className='w-60 md:w-72 mx-auto' loading='lazy' src={MAINSPONSOR} />
             </a>
             <h1 className='text-sm text-center'>Hovedsamarbeidspartner</h1>
-          </div>
+          </div>*/}
 
           <div className='space-y-4'>
-            <Separator className='bg-white' />
-            <div className='grid grid-cols-3 gap-y-6 lg:flex lg:items-center lg:space-x-8'>
+	  {/*<Separator className='bg-white' />*/}
+            <div className='grid grid-cols-2 place-items-center gap-y-6 lg:flex lg:mt-32 lg:items-center'>
               {mediaList.map((media, index) => (
-                <a className='mx-auto' href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
+                <a className='mx-8' href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
                   <img alt='SoMe' className='w-8' loading='lazy' src={media.img} />
                 </a>
               ))}
