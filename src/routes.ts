@@ -2,6 +2,7 @@ import { index, layout, prefix, route, type RouteConfig } from '@react-router/de
 
 // TODO: Go through all routes and check if they work
 export default [
+  route('interesse', './pages/CompanyInterest/index.tsx'),
   layout('./pages/MainLayout.tsx', [
     index('./pages/Landing/index.tsx'),
     route('ny-student', './pages/NewStudent/index.tsx'),
@@ -15,7 +16,6 @@ export default [
       route(':id/:urlTitle?', './pages/EventDetails/index.tsx'),
     ]),
     route('bedrifter', './pages/Companies/index.tsx'),
-    route('interesse', './pages/CompanyInterest/index.tsx'),
     route('toddel', './pages/Toddel/index.tsx'),
 
     ...prefix('sporreskjema', [

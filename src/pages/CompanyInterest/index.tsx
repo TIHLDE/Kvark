@@ -58,7 +58,7 @@ export default function CompanyInterest() {
   };
 
   return (
-    <div className='relative bg-white dark:bg-background mt-16'>
+    <div className='relative bg-white dark:bg-background'>
       <div className='lg:absolute lg:inset-0 lg:left-1/2'>
         <div className='relative h-64 w-full sm:h-80 lg:absolute lg:h-full'>
           <img alt='Bedriftspresentasjon' className='h-full w-full object-cover' src='/bedpres.jpg' />
