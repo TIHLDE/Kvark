@@ -38,9 +38,9 @@
 
 ## 🚀 Getting started
 
-Kvark requires Node 18.x or higher and pnpm.
+Kvark requires Node 22.x or higher and pnpm.
 
-```
+```sh
 # Setup a local repository
 git clone https://github.com/tihlde/Kvark.git
 cd Kvark
@@ -51,15 +51,17 @@ pnpm install
 # Thats it!
 ```
 
-From now on it's enough to run `pnpm start` to run the application.
+From now on it's enough to run `pnpm dev` to run the application in development mode.
 
 #### ⚙ Configuration
 
 The application requires configuration of some environment variables in order to run.
-These should be put in a _.env_ file in the repository root.
+These should be put in a `.env` file in the repository root. The `.env.example` file
+contains all required variables with default values.
 
-```
-VITE_API_URL=YOUR_API_URL_HERE
+```env
+# The backend API endpoint to use
+VITE_API_URL=https://api-dev.tihlde.org/
 ```
 
 ## ❤ Contributing
@@ -69,6 +71,12 @@ We are committed to a fully transparent development process
 and highly appreciate any contributions.
 Whether you are helping us fixing bugs, proposing new features, improving our documentation
 or spreading the word - **we would love to have you as part of the community**.
+
+<p align="center">
+  <a href="https://github.com/TIHLDE/Kvark/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=TIHLDE/Kvark" />
+  </a>
+</p>
 
 ## 🤝 Found a bug? Missing a specific feature?
 
@@ -80,7 +88,7 @@ If you open the workspace-file in VSCode, the code will be formatted automatical
 
 ## 📫 Contact
 
-Feel free to send us a message on our official [slack channel](https://tihlde.slack.com/archives/C01CJ0EQCFM).
+Feel free to send us a message on our official [discord server](https://discord.gg/HNt5XQdyxy).
 Of course you can always reach out to us directly at index@tihlde.org.
 
 ## 📘 Licence
