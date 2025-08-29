@@ -7,6 +7,11 @@ export const WIKI_URLS = {
   EVENT_RULES: 'https://wiki.tihlde.org/arrangementer',
 };
 
+export const MOBILE_APP = {
+  Android: 'https://play.google.com/store/apps/details?id=com.tihlde.app',
+  iOS: 'https://apps.apple.com/no/app/tihlde/id6742454079',
+};
+
 const URLS = {
   badges: {
     index: '/badges/',

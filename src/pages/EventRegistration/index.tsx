@@ -1,5 +1,7 @@
 import { CheckedState } from '@radix-ui/react-checkbox';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import AppleAppStoreBadge from '~/assets/img/apple-appstore-badge.svg';
+import GooglePlayBadge from '~/assets/img/google-play-badge.svg';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -13,6 +15,7 @@ import { useDebounce } from '~/hooks/Utils';
 import Http404 from '~/pages/Http404';
 import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
+import { MOBILE_APP } from '~/URLS';
 import { ListChecks, QrCode } from 'lucide-react';
 import { createRef, useEffect, useMemo, useState } from 'react';
 import { href, redirect, useParams } from 'react-router';
@@ -155,7 +158,23 @@ const EventRegistration = () => {
               {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
             </TabsContent>
             <TabsContent value='qr'>
-              <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />
+              <div>
+                <div className='flex flex-col items-center space-y-4 mb-4'>
+                  <p className='text-muted-foreground text-center'>
+                    Vi kommer til å fjerne QR-Scanneren fra nettsiden i fremtiden. Du finner en bedre QR-Scanner i{' '}
+                    <strong className='text-foreground'>TIHLDE appen</strong>. Bytt over for en bedre opplevelse!
+                  </p>
+                  <div>
+                    <a href={MOBILE_APP.iOS} target='_blank' rel='noopener noreferrer'>
+                      <img src={AppleAppStoreBadge} alt='Last ned iPhone-appen' className='inline-block w-auto h-12' />
+                    </a>{' '}
+                    <a href={MOBILE_APP.Android} target='_blank' rel='noopener noreferrer'>
+                      <img src={GooglePlayBadge} alt='Last ned Android-appen' className='inline-block w-auto h-12' />
+                    </a>
+                  </div>
+                </div>
+                <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />
+              </div>
             </TabsContent>
           </Tabs>
         </CardContent>
