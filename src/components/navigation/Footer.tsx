@@ -3,7 +3,7 @@ import FACEBOOK from '~/assets/icons/facebook.svg';
 import INSTAGRAM from '~/assets/icons/instagram.svg';
 import NOTION from '~/assets/icons/notion.svg';
 import VERCEL from '~/assets/icons/vercel.svg';
-import NITO from '~/assets/img/nito.png';
+import NITO from '~/assets/img/nito.svg';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
