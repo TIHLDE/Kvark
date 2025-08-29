@@ -2,15 +2,16 @@ import DISCORD from '~/assets/icons/discord.svg';
 import FACEBOOK from '~/assets/icons/facebook.svg';
 import INSTAGRAM from '~/assets/icons/instagram.svg';
 import NOTION from '~/assets/icons/notion.svg';
-import SNAPCHAT from '~/assets/icons/snapchat.svg';
-import TWITTER from '~/assets/icons/twitter.svg';
 import VERCEL from '~/assets/icons/vercel.svg';
-import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
-import NITO from '~/assets/img/nito.png';
+import NITO from '~/assets/img/nito.svg';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { href, Link } from 'react-router';
+
+// import SNAPCHAT from '~/assets/icons/snapchat.svg';
+// import TWITTER from '~/assets/icons/twitter.svg';
+// import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
 
 const Footer = () => {
   const { event } = useAnalytics();
@@ -52,7 +53,7 @@ const Footer = () => {
         </div>
 
         <div className='space-y-12 lg:max-w-sm w-full'>
-	{/*<div className='space-y-4'>
+          {/*<div className='space-y-4'>
             <a className='mx-auto' href='https://www.lysekonsern.no/' rel='noopener noreferrer' target='_blank'>
               <img alt='Sponsor' className='w-60 md:w-72 mx-auto' loading='lazy' src={MAINSPONSOR} />
             </a>
@@ -60,7 +61,7 @@ const Footer = () => {
           </div>*/}
 
           <div className='space-y-4'>
-	  {/*<Separator className='bg-white' />*/}
+            {/*<Separator className='bg-white' />*/}
             <div className='grid grid-cols-2 place-items-center gap-y-6 lg:flex lg:mt-32 lg:items-center'>
               {mediaList.map((media, index) => (
                 <a className='mx-8' href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
