@@ -65,7 +65,10 @@ const ProfileTopbarButton = () => {
             options:
               theme.theme === 'light'
                 ? {
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    arrowColor: 'rgb(255, 255, 255)',
                     primaryColor: 'rgb(29, 67, 140)',
+                    textColor: 'rgb(12, 12, 12)',
                   }
                 : {
                     backgroundColor: 'rgb(30, 41, 59)',
