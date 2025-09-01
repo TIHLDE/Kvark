@@ -115,6 +115,8 @@ function MembershipOptions({ closeMenu }: { closeMenu: () => void }) {
   const navigate = useNavigate();
 
   if (!auth) return null;
+  if (auth.user.groups.length === 0) return null;
+
   return (
     <>
       <CommandGroup heading='Mine medlemskap'>
@@ -180,7 +182,7 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
     ].filter(({ apps: requiredApps }) => requiredApps.every((app) => auth.permissions[app]?.write === true || auth.permissions[app]?.write_all === true));
   }, [auth]);
 
-  if (!auth) return null;
+  if (!auth || apps.length === 0) return null;
   return (
     <CommandGroup heading='Admin'>
       {apps.map((app) => (
