@@ -84,8 +84,8 @@ export default function Feedback() {
 
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
-  const { mutate: createReaction } = useCreateReaction();
-  const { mutate: deleteReaction } = useDeleteReaction();
+  const { mutateAsync: createReaction } = useCreateReaction();
+  const { mutateAsync: deleteReaction } = useDeleteReaction();
 
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
@@ -156,52 +156,47 @@ export default function Feedback() {
     });
   };
 
-  const handleThumbsUp = (item: Feedback) => {
+  const handleThumbsUp = async (item: Feedback) => {
     for (const reaction of item.reactions) {
       // If already upvoted, do nothing
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
         return;
       }
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
-        deleteReaction(reaction.reaction_id);
+        await deleteReaction(reaction.reaction_id);
         break;
       }
     }
 
-    // fixme: delte the timout once the backend can handle the fast deletion and creation of reactions
-    setTimeout(() => {
-      createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' });
-      refetchFeedbacks().then((r) => {
-        if (r.isSuccess) {
-          toast.success('Du har stemt tommel opp på tilbakemeldingen');
-        } else {
-          toast.error('Noe gikk galt, prøv igjen senere');
-        }
-      });
-    }, 150);
+    await createReaction(
+      { content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' },
+      {
+        onSuccess: async () => {
+          await refetchFeedbacks();
+        },
+      },
+    );
   };
 
-  const handleThumbsDown = (item: Feedback) => {
+  const handleThumbsDown = async (item: Feedback) => {
     for (const reaction of item.reactions) {
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
         return;
       }
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
-        deleteReaction(reaction.reaction_id);
+        await deleteReaction(reaction.reaction_id);
         break;
       }
     }
 
-    setTimeout(() => {
-      createReaction({ content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' });
-      refetchFeedbacks().then((r) => {
-        if (r.isSuccess) {
-          toast.success('Du har stemt tommel ned på tilbakemeldingen');
-        } else {
-          toast.error('Noe gikk galt, prøv igjen senere');
-        }
-      });
-    }, 150);
+    await createReaction(
+      { content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' },
+      {
+        onSuccess: async () => {
+          await refetchFeedbacks();
+        },
+      },
+    );
   };
 
   return (
