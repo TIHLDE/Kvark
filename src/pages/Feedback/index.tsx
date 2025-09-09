@@ -160,6 +160,11 @@ export default function Feedback() {
     for (const reaction of item.reactions) {
       // If already upvoted, do nothing
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
+        await deleteReaction(reaction.reaction_id, {
+          onSuccess: async () => {
+            await refetchFeedbacks();
+          },
+        });
         return;
       }
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
@@ -181,6 +186,11 @@ export default function Feedback() {
   const handleThumbsDown = async (item: Feedback) => {
     for (const reaction of item.reactions) {
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
+        await deleteReaction(reaction.reaction_id, {
+          onSuccess: async () => {
+            await refetchFeedbacks();
+          },
+        });
         return;
       }
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
