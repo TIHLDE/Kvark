@@ -56,8 +56,8 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
       to='/arrangementer/:id/:urlTitle?'>
       <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
-      <div className='py-2 space-y-1'>
-        <h1 className={cn(titleFontSize, 'font-bold text-black dark:text-white')}>{event.title}</h1>
+      <div className='space-y-1 py-2 w-full contain-inline-size'>
+        <h1 className={cn(titleFontSize, 'font-bold text-black dark:text-white truncate block w-full')}>{event.title}</h1>
         <div className='flex items-center space-x-1'>
           <Calendar className='w-5 h-5 stroke-[1.5px] text-muted-foreground' />
           <p className={cn('text-muted-foreground', contentFontSize)}>{formatDate(parseISO(event.start_date))}</p>
