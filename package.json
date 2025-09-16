@@ -94,7 +94,7 @@
     "@vercel/node": "^5.3.11",
     "@vercel/react-router": "^1.1.2",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9.32.0",
+    "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
