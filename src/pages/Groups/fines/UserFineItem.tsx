@@ -5,7 +5,6 @@ import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { useBatchUpdateUserGroupFines, useGroupUserFines } from '~/hooks/Group';
 import { useAnalytics } from '~/hooks/Utils';
 import FineItem, { FineItemProps } from '~/pages/Groups/fines/FineItem';
-import { useFinesFilter } from '~/pages/Groups/fines/FinesContext';
 import type { GroupUserFine } from '~/types';
 import { Check, HandCoins } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -13,15 +12,19 @@ import { toast } from 'sonner';
 
 export type UserFineItemProps = Pick<FineItemProps, 'groupSlug' | 'isAdmin'> & {
   userFine: GroupUserFine;
+  filters: {
+    approved?: boolean;
+    payed?: boolean;
+  };
 };
 
-const UserFineItem = ({ userFine, groupSlug, isAdmin }: UserFineItemProps) => {
+const UserFineItem = ({ userFine, groupSlug, isAdmin, filters }: UserFineItemProps) => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const { event } = useAnalytics();
-  const finesFilter = useFinesFilter();
+
   const updateUserFines = useBatchUpdateUserGroupFines(groupSlug, userFine.user.user_id);
 
-  const { data, hasNextPage, isFetching, fetchNextPage } = useGroupUserFines(groupSlug, userFine.user.user_id, finesFilter, { enabled: expanded });
+  const { data, hasNextPage, isFetching, fetchNextPage } = useGroupUserFines(groupSlug, userFine.user.user_id, filters, { enabled: expanded });
   const fines = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   const toggleApproved = () => {
