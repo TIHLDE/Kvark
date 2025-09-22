@@ -92,7 +92,7 @@ export default function Feedback() {
   const { mutateAsync: deleteReaction } = useDeleteReaction();
 
   const userHasReacted = useCallback(
-    (item: Feedback, emoji: string) => item.reactions.some((r) => r.user?.user_id === user?.user_id && r.emoji === emoji),
+    (item: Feedback, emoji: string) => item.reactions?.some((r) => r.user?.user_id === user?.user_id && r.emoji === emoji) ?? false,
     [user?.user_id],
   );
 
@@ -168,7 +168,7 @@ export default function Feedback() {
   };
 
   const handleThumbsUp = async (item: Feedback) => {
-    for (const reaction of item.reactions) {
+    for (const reaction of item.reactions ?? []) {
       // If already upvoted, do nothing
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
         await deleteReaction(reaction.reaction_id, {
@@ -195,7 +195,7 @@ export default function Feedback() {
   };
 
   const handleThumbsDown = async (item: Feedback) => {
-    for (const reaction of item.reactions) {
+    for (const reaction of item.reactions ?? []) {
       if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
         await deleteReaction(reaction.reaction_id, {
           onSuccess: async () => {
@@ -376,10 +376,10 @@ export default function Feedback() {
                     <div className='flex flex-row items-center space-x-8'>
                       <div className='flex space-x-4'>
                         <button className={reactionWrapClass(upvoted)} disabled={createFeedback.isPending} onClick={() => handleThumbsUp(item)} type='button'>
-                          <button aria-pressed={upvoted} className='flex items-center'>
+                          <div aria-pressed={upvoted} className='flex items-center'>
                             👍
-                          </button>
-                          <span>{item.upvotes}</span>
+                          </div>
+                          <span>{item.upvotes ?? 0}</span>
                         </button>
                         <button
                           className={reactionWrapClass(downvoted)}
@@ -389,7 +389,7 @@ export default function Feedback() {
                           <div aria-pressed={downvoted} className='flex items-center'>
                             👎
                           </div>
-                          <span>{item.downvotes}</span>
+                          <span>{item.downvotes ?? 0}</span>
                         </button>
                       </div>
                       {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
