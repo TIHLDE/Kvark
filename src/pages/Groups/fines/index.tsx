@@ -7,7 +7,7 @@ import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } 
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
-import { useClearCheckedFines, useFinesFilter } from '~/pages/Groups/fines/FinesContext';
+import { useClearCheckedFines } from '~/pages/Groups/fines/FinesContext';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router';
@@ -31,7 +31,7 @@ const Fines = () => {
   const { data: members } = useMemberships(slug || '-');
 
   const [tab, setTab] = useState<string>('all');
-  const [finesFilter, setFinesFilter] = useFinesFilter();
+  const [finesFilter, setFinesFilter] = useState<{ approved?: boolean; payed?: boolean }>({ payed: false });
   const clearCheckedFines = useClearCheckedFines();
 
   useEffect(() => clearCheckedFines(), [tab]);
@@ -144,7 +144,7 @@ const Fines = () => {
           )}
           <div className='space-y-2'>
             {userFines.map((userFine) => (
-              <UserFineItem groupSlug={group.slug} isAdmin={isAdmin} key={userFine.user.user_id} userFine={userFine} />
+              <UserFineItem groupSlug={group.slug} isAdmin={isAdmin} key={userFine.user.user_id} userFine={userFine} filters={finesFilter} />
             ))}
           </div>
           {userFinesHasNextPage && <PaginateButton className='w-full mt-4' isLoading={userFinesIsFetching} nextPage={userFinesFetchNextPage} />}
