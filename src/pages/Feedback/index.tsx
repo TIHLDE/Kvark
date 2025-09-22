@@ -8,8 +8,10 @@ import { Input } from '~/components/ui/input';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { Textarea } from '~/components/ui/textarea';
+import { useCreateReaction, useDeleteReaction } from '~/hooks/EmojiReaction';
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from '~/hooks/Feedback';
 import { useUser, useUserMemberships } from '~/hooks/User';
+import type { Feedback } from '~/types/Feedback';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -81,12 +83,21 @@ export default function Feedback() {
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
 
-  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching } = useFeedbacks(filters);
+  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching, refetch: refetchFeedbacks } = useFeedbacks(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
 
   const createFeedback = useCreateFeedback();
   const deleteFeedback = useDeleteFeedback();
+  const { mutateAsync: createReaction } = useCreateReaction();
+  const { mutateAsync: deleteReaction } = useDeleteReaction();
 
+  const userHasReacted = useCallback(
+    (item: Feedback, emoji: string) => item.reactions.some((r) => r.user?.user_id === user?.user_id && r.emoji === emoji),
+    [user?.user_id],
+  );
+
+  const reactionWrapClass = (active: boolean) =>
+    `flex items-center space-x-2 rounded-md px-2 py-1 transition ${active ? 'bg-gray-200 dark:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.04]'}`;
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
     defaultValues: {
@@ -154,6 +165,59 @@ export default function Feedback() {
         toast.error(e.detail);
       },
     });
+  };
+
+  const handleThumbsUp = async (item: Feedback) => {
+    for (const reaction of item.reactions) {
+      // If already upvoted, do nothing
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
+        await deleteReaction(reaction.reaction_id, {
+          onSuccess: async () => {
+            await refetchFeedbacks();
+          },
+        });
+        return;
+      }
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
+        await deleteReaction(reaction.reaction_id);
+        break;
+      }
+    }
+
+    await createReaction(
+      { content_type: 'feedback', object_id: item.id, emoji: ':thumbs-up:' },
+      {
+        onSuccess: async () => {
+          await refetchFeedbacks();
+        },
+      },
+    );
+  };
+
+  const handleThumbsDown = async (item: Feedback) => {
+    for (const reaction of item.reactions) {
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-down:') {
+        await deleteReaction(reaction.reaction_id, {
+          onSuccess: async () => {
+            await refetchFeedbacks();
+          },
+        });
+        return;
+      }
+      if (reaction.user?.user_id === user?.user_id && reaction.emoji === ':thumbs-up:') {
+        await deleteReaction(reaction.reaction_id);
+        break;
+      }
+    }
+
+    await createReaction(
+      { content_type: 'feedback', object_id: item.id, emoji: ':thumbs-down:' },
+      {
+        onSuccess: async () => {
+          await refetchFeedbacks();
+        },
+      },
+    );
   };
 
   return (
@@ -277,50 +341,75 @@ export default function Feedback() {
             </CardContent>
           </Card>
         ) : (
-          feedbacks.map((item, index) => (
-            <Collapsible
-              className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
-              key={index}
-              onOpenChange={() => toggleItem(item.id)}
-              open={openItems.includes(item.id)}>
-              <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
-                <div className='flex items-center space-x-4'>
-                  {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
-                  <span className='font-medium truncate max-w-md'>{item.title}</span>
-                </div>
-                <div className='flex items-center space-x-4'>
-                  {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
-                </div>
-              </CollapsibleTrigger>
-              <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
-                <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
-                <div className='flex justify-between items-center'>
-                  <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
-                    Opprettet:{' '}
-                    {new Date(item.created_at).toLocaleString('no-NO', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </p>
-                  {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
-                    <ResponsiveAlertDialog
-                      action={() => onDeleteFeedback(item.id)}
-                      description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
-                      title='Slett feedback?'
-                      trigger={
-                        <Button className='md:w-40 block' type='button' variant='destructive'>
-                          Slett feedback
-                        </Button>
-                      }
-                    />
-                  )}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          ))
+          feedbacks.map((item, index) => {
+            const upvoted = userHasReacted(item, ':thumbs-up');
+            const downvoted = userHasReacted(item, ':thumbs-down');
+
+            return (
+              <Collapsible
+                className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
+                key={index}
+                onOpenChange={() => toggleItem(item.id)}
+                open={openItems.includes(item.id)}>
+                <CollapsibleTrigger className='w-full p-4 flex items-center justify-between'>
+                  <div className='flex items-center space-x-4'>
+                    {item.feedback_type === 'Bug' ? <BugIcon className='w-6 h-6 text-red-400' /> : <LightbulbIcon className='w-6 h-6 text-yellow-400' />}
+                    <span className='font-medium truncate max-w-md'>{item.title}</span>
+                  </div>
+                  <div className='flex items-center space-x-4'>
+                    {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
+                  <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
+                  <div className='flex justify-between items-center'>
+                    <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>
+                      Opprettet:{' '}
+                      {new Date(item.created_at).toLocaleString('no-NO', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                    <div className='flex flex-row items-center space-x-8'>
+                      <div className='flex space-x-4'>
+                        <button className={reactionWrapClass(upvoted)} disabled={createFeedback.isPending} onClick={() => handleThumbsUp(item)} type='button'>
+                          <button aria-pressed={upvoted} className='flex items-center'>
+                            👍
+                          </button>
+                          <span>{item.upvotes}</span>
+                        </button>
+                        <button
+                          className={reactionWrapClass(downvoted)}
+                          disabled={createFeedback.isPending}
+                          onClick={() => handleThumbsDown(item)}
+                          type='button'>
+                          <div aria-pressed={downvoted} className='flex items-center'>
+                            👎
+                          </div>
+                          <span>{item.downvotes}</span>
+                        </button>
+                      </div>
+                      {(item.author.user_id === user?.user_id || memberships.some((membership) => membership.group?.slug === 'index')) && (
+                        <ResponsiveAlertDialog
+                          action={() => onDeleteFeedback(item.id)}
+                          description='Er du sikker på at du vil slette feedbacken? Dette kan ikke angres.'
+                          title='Slett feedback?'
+                          trigger={
+                            <Button className='md:w-40 block' type='button' variant='destructive'>
+                              Slett feedback
+                            </Button>
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            );
+          })
         )}
 
         {hasNextPage && <PaginateButton className='w-full' isLoading={isFetching} nextPage={fetchNextPage} />}
