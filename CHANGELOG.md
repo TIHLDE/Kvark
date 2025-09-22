@@ -14,6 +14,7 @@
 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
 - 🦟 **Event Kort** Fikset slik at arrangement kort ikke overflyter til ny linje på hovedsiden
+- 🦟 **Filter** Fikset slik at man kan filtrere etter betalt / aksepterte bøter.
 
 ## Versjon 2025.07.02
 
