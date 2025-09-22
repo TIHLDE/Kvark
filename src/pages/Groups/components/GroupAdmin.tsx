@@ -1,22 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import FormBasicSwitch from '~/components/inputs/Switch';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useUpdateGroup } from '~/hooks/Group';
+import type { FormGroupValues } from '~/types';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { FormGroupValues } from 'types';
-
-import { useUpdateGroup } from 'hooks/Group';
-
-import FormInput from 'components/inputs/Input';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import FormBasicSwitch from 'components/inputs/Switch';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { SingleUserSearch } from 'components/inputs/UserSearch';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type UpdateGroupModalProps = {
   group: FormGroupValues;
@@ -43,7 +40,7 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
       fines_activated: group.fines_activated,
       name: group.name,
       fines_admin: group.fines_admin || null,
-      image: group.image || '',
+      image: group.image ?? '',
     },
   });
   const watchFinesActivated = form.watch('fines_activated');
@@ -94,8 +91,8 @@ const GroupAdmin = ({ group }: UpdateGroupModalProps) => {
               </>
             )}
 
-            <Button className='w-full' disabled={updateGroup.isLoading} type='submit'>
-              {updateGroup.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updateGroup.isPending} type='submit'>
+              {updateGroup.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>

@@ -1,5 +1,7 @@
 'use client';
 
+import { Button } from '~/components/ui/button';
+import { cn } from '~/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import {
   addDays,
@@ -25,10 +27,7 @@ import {
   subYears,
 } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
 import { createContext, forwardRef, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-
-import { Button } from 'components/ui/button';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../../../components/ui/popover';
 import { ScrollArea } from '../../../components/ui/scroll-area';
@@ -530,8 +529,6 @@ const getDaysInMonth = (date: Date) => {
     calendar.push(new Date(currentDate));
     currentDate = addDays(currentDate, 1);
   }
-
-  console.log(calendar);
 
   return calendar;
 };

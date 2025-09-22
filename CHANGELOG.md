@@ -12,6 +12,25 @@
 
 ## Neste versjon
 
+- ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
+- 🦟 **Event Kort** Fikset slik at arrangement kort ikke overflyter til ny linje på hovedsiden
+
+## Versjon 2025.07.02
+
+- 🦟 **Oppdaterte lenker** Kontakt oss og samtlige lenker bruker nå riktig URL for wiki-siden
+- 🦟 **Mobilmeny-komponenten** Fikset en bug med rendering av drawer-komponenten
+- 🦟 **Kalender** Tidligere arrangementer forsvinner ikke fra kalenderen
+- 🦟 **Autentisering "State"** Fikset noen problemer relatert til innlogging og oppdateringer i navigasjonsmenyen
+- ⚡ **Gammel Wiki** Vi har en ny wiki på https://wiki.tihlde.org, men man kan åpne den gamle på https://tihlde.org/wiki-old
+- ⚡ **Oppdatert Rammeverk** Vi har gjort oppdateringer på de fleste pakker og rammeverket vi bruker til nettsiden
+- ✨ **Karriere- (stillinger) og arrangementsidene** Vi har oppdatert utseendet med flere filtre
+
+## Versjon 2025.24.02
+
+- ✨ **Kjøp og Salg** La til en knapp til TIHLDEs kjøp og salg facebook-gruppe for betalte arrangementer.
+
+- ✨ **Profilbilder** Brukere kan nå oppdatere profilbildet sitt på nettsiden.
+
 - 🦟 **Allergener** Fjernet allergener fra gruppevisning for de uten skrive rettigheter.
 
 - 🦟 **Tilbakemeldinger** Fikset at popupen for tilbakemeldinger åpnes på nytt etter først gang.

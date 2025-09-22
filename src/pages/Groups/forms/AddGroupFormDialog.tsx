@@ -1,20 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateForm } from '~/hooks/Form';
+import type { Group, GroupFormCreate } from '~/types';
+import { FormResourceType } from '~/types/Enums';
+import URLS from '~/URLS';
 import { Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
-
-import { Group, GroupFormCreate } from 'types';
-import { FormResourceType } from 'types/Enums';
-
-import { useCreateForm } from 'hooks/Form';
-
-import FormInput from 'components/inputs/Input';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type AddGroupFormDialogProps = {
   groupSlug: Group['slug'];
@@ -71,7 +68,7 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
           <FormInput form={form} label='Tittel' name='title' required />
 
           <Button className='w-full' type='submit'>
-            {createGroupForm.isLoading ? 'Oppretter skjema...' : 'Opprett spørreskjema'}
+            {createGroupForm.isPending ? 'Oppretter skjema...' : 'Opprett spørreskjema'}
           </Button>
         </form>
       </Form>

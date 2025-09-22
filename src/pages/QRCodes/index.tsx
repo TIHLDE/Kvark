@@ -1,27 +1,31 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateQRCode, useQRCodes } from '~/hooks/QRCode';
+import URLS from '~/URLS';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
 
-import { useCreateQRCode, useQRCodes } from 'hooks/QRCode';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-
+import { Route } from './+types';
 import QRCodeItem from './components/QRCodeItem';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Navn må fylles ut' }),
   content: z.string().min(1, { message: 'Innhold må fylles ut' }).url({ message: 'Ugyldig URL' }),
 });
+
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 const QRCodes = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -110,8 +114,8 @@ const QRCodes = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={createQRCode.isLoading} type='submit'>
-                {createQRCode.isLoading ? 'Oppretter...' : 'Opprett'}
+              <Button className='w-full' disabled={createQRCode.isPending} type='submit'>
+                {createQRCode.isPending ? 'Oppretter...' : 'Opprett'}
               </Button>
             </form>
           </Form>

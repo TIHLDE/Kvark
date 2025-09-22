@@ -1,12 +1,14 @@
-import { useParams } from 'react-router-dom';
+import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
 
-import { useBadgesOverallLeaderboard } from 'hooks/Badge';
+import { Route } from './+types/BadgesCategoryLeaderboard';
 
-import BadgesLeaderboard from 'pages/Badges/BadgesLeaderboard';
+export function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const { categoryId } = params;
+  return {
+    categoryId,
+  };
+}
 
-export const BadgesOverallLeaderboard = () => {
-  const { categoryId } = useParams<'categoryId'>();
-  return <BadgesLeaderboard filters={{ category: categoryId || '_' }} options={{ enabled: Boolean(categoryId) }} useHook={useBadgesOverallLeaderboard} />;
-};
-
-export default BadgesOverallLeaderboard;
+export default function BadgesOverallLeaderboard({ loaderData: { categoryId } }: Route.ComponentProps) {
+  return <BadgesLeaderboard filters={{ category: categoryId }} />;
+}

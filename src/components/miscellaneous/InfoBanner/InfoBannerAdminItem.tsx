@@ -1,26 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import DateTimePicker from '~/components/inputs/DateTimePicker';
+import FormInput from '~/components/inputs/Input';
+import FormTextarea from '~/components/inputs/Textarea';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoBanner } from '~/hooks/InfoBanner';
+import type { InfoBanner } from '~/types';
+import { formatDate } from '~/utils';
 import { formatDistance, parseISO } from 'date-fns';
-import nbLocale from 'date-fns/locale/nb';
+import { nb } from 'date-fns/locale';
 import { Info, Pencil, Trash } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { formatDate } from 'utils';
 import { z } from 'zod';
-
-import { InfoBanner } from 'types';
-
-import { useCreateInfoBanner, useDeleteInfoBanner, useInfoBanner, useUpdateInfoBanner } from 'hooks/InfoBanner';
-
-import DateTimePicker from 'components/inputs/DateTimePicker';
-import FormInput from 'components/inputs/Input';
-import FormTextarea from 'components/inputs/Textarea';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 type InfoBannerFormProps = {
   bannerId?: string;
@@ -46,7 +43,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
     defaultValues: {
       title: banner?.title || '',
       description: banner?.description || '',
-      image: banner?.image || '',
+      image: banner?.image ?? '',
       image_alt: banner?.image_alt || '',
       url: banner?.url || '',
       visible_from: banner ? parseISO(banner.visible_from) : new Date(),
@@ -57,7 +54,7 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   const setValues = useCallback(
     (newValues: InfoBanner | null) => {
       form.reset({
-        image: newValues?.image || '',
+        image: newValues?.image ?? '',
         image_alt: newValues?.image_alt || '',
         title: newValues?.title || '',
         description: newValues?.description || '',
@@ -80,9 +77,10 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   }, [banner, setValues]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (updateBanner.isLoading || createBanner.isLoading) {
+    if (updateBanner.isPending || createBanner.isPending) {
       return;
     }
+
     const infoBanner = {
       ...values,
       visible_from: values.visible_from.toJSON(),
@@ -140,8 +138,8 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
 
             <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
 
-            <Button className='w-full' disabled={createBanner.isLoading || updateBanner.isLoading}>
-              {createBanner.isLoading || updateBanner.isLoading ? 'Lagrer...' : 'Lagre'}
+            <Button className='w-full' disabled={createBanner.isPending || updateBanner.isPending}>
+              {createBanner.isPending || updateBanner.isPending ? 'Lagrer...' : 'Lagre'}
             </Button>
           </form>
         </Form>
@@ -196,7 +194,7 @@ const InfoBannerItem = ({ banner }: InfoBannerItemProps) => {
                 : formatDistance(parseISO(banner.visible_until), new Date(), {
                     includeSeconds: true,
                     addSuffix: true,
-                    locale: nbLocale,
+                    locale: nb,
                   })
             }. Vises på forsiden fra ${formatDate(parseISO(banner.visible_from))} til ${formatDate(parseISO(banner.visible_until))}.`}
           </p>

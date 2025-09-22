@@ -1,20 +1,18 @@
+import FieldEditor from '~/components/forms/FieldEditor';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { Separator } from '~/components/ui/separator';
+import { useFormSubmissions, useUpdateForm } from '~/hooks/Form';
+import type { Form, SelectFormField, TextFormField } from '~/types';
+import { FormFieldType } from '~/types/Enums';
 import update from 'immutability-helper';
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toast } from 'sonner';
 
-import { Form, SelectFormField, TextFormField } from 'types';
-import { FormFieldType } from 'types/Enums';
-
-import { useFormSubmissions, useUpdateForm } from 'hooks/Form';
-
-import FieldEditor from 'components/forms/FieldEditor';
-import { Button } from 'components/ui/button';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import { Separator } from 'components/ui/separator';
 export type FormFieldsEditorProps = {
   form: Form;
   onSave?: () => void;
@@ -25,7 +23,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
   const { data: submissions, isLoading: isSubmissionsLoading } = useFormSubmissions(form.id, 1);
   const updateForm = useUpdateForm(form.id);
   const disabledFromSubmissions = (submissions ? Boolean(submissions.count) : true) && !isSubmissionsLoading;
-  const disabled = updateForm.isLoading || isSubmissionsLoading || disabledFromSubmissions;
+  const disabled = updateForm.isPending || isSubmissionsLoading || disabledFromSubmissions;
   const [fields, setFields] = useState<Array<TextFormField | SelectFormField>>(form.fields);
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const [formTitle, setFormTitle] = useState(form.title);
@@ -36,27 +34,17 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     if (disabled) {
       return;
     }
-    type === FormFieldType.TEXT_ANSWER
-      ? setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [],
-          },
-        ])
-      : setFields((prev) => [
-          ...prev,
-          {
-            title: '',
-            required: false,
-            order: fields.length,
-            type: type,
-            options: [{ title: '' }],
-          },
-        ]);
+
+    setFields((prev) => [
+      ...prev,
+      {
+        title: '',
+        required: false,
+        order: fields.length,
+        type: type,
+        options: type === FormFieldType.SINGLE_SELECT ? [{ title: '' }] : [],
+      },
+    ]);
     setAddButtonOpen(false);
   };
 

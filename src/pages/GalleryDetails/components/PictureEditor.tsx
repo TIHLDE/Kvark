@@ -1,17 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useDeletePicture, usePictureById, useUpdatePicture } from '~/hooks/Gallery';
+import type { Gallery, Picture } from '~/types';
 import { Pencil } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { Gallery, Picture } from 'types';
-
-import { useDeletePicture, usePictureById, useUpdatePicture } from 'hooks/Gallery';
-
-import FormInput from 'components/inputs/Input';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type PictureEditorDialogProps = {
   pictureId: Picture['id'];
@@ -84,11 +81,11 @@ const PictureEditorDialog = ({ galleryId, pictureId, onClose }: PictureEditorDia
           <FormInput form={form} label='Bildetekst' name='image_alt' />
 
           <Button className='w-full' type='submit'>
-            {editPicture.isLoading ? 'Oppdaterer bilde...' : 'Oppdater bilde'}
+            {editPicture.isPending ? 'Oppdaterer bilde...' : 'Oppdater bilde'}
           </Button>
 
           <Button className='w-full' onClick={remove} type='button' variant='destructive'>
-            {deletePicture.isLoading ? 'Sletter bilde...' : 'Slett bilde'}
+            {deletePicture.isPending ? 'Sletter bilde...' : 'Slett bilde'}
           </Button>
         </form>
       </Form>

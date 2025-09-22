@@ -1,9 +1,7 @@
+import { Input } from '~/components/ui/input';
+import { useDebounce } from '~/hooks/Utils';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-
-import { useDebounce } from 'hooks/Utils';
-
-import { Input } from 'components/ui/input';
+import { useSearchParams } from 'react-router';
 
 const EventParticipantSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();

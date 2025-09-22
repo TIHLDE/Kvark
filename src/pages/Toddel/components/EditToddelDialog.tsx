@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Calendar } from '~/components/ui/calendar';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useDeleteToddel, useUpdateToddel } from '~/hooks/Toddel';
+import { cn } from '~/lib/utils';
+import type { Toddel } from '~/types';
 import { format, formatISO9075, parseISO } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
 import { CalendarIcon, EllipsisVertical } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { Toddel } from 'types';
-
-import { useDeleteToddel, useUpdateToddel } from 'hooks/Toddel';
-
-import { FormFileUpload, FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Calendar } from 'components/ui/calendar';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 type EditToddelDialogProps = {
   toddel: Toddel;
@@ -112,7 +109,6 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name='published_at'
@@ -144,13 +140,10 @@ const EditToddelDialog = ({ toddel }: EditToddelDialogProps) => {
                 </FormItem>
               )}
             />
-
             <FormImageUpload form={form} label='Velg bilde *' name='image' />
-
             <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
-
-            <Button className='w-full' disabled={updateToddel.isLoading} type='submit'>
-              {updateToddel.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updateToddel.isPending} type='submit'>
+              {updateToddel.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>

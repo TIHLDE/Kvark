@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import { FormDetailSwitch } from '~/components/inputs/Switch';
+import FormTextarea from '~/components/inputs/Textarea';
+import { Button } from '~/components/ui/button';
+import { Form as FormWrapper } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateForm, useDeleteForm, useUpdateForm } from '~/hooks/Form';
+import type { EventForm, Form, FormCreate, GroupForm, TemplateForm } from '~/types';
+import { FormResourceType } from '~/types/Enums';
+import { removeIdsFromFields } from '~/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { removeIdsFromFields } from 'utils';
 import { z } from 'zod';
-
-import { EventForm, Form, FormCreate, GroupForm, TemplateForm } from 'types';
-import { FormResourceType } from 'types/Enums';
-
-import { useCreateForm, useDeleteForm, useUpdateForm } from 'hooks/Form';
-
-import FormInput from 'components/inputs/Input';
-import { FormDetailSwitch } from 'components/inputs/Switch';
-import FormTextarea from 'components/inputs/Textarea';
-import { Button } from 'components/ui/button';
-import { Form as FormWrapper } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 export type FormDetailsEditorProps = {
   form: Form;
@@ -34,7 +31,9 @@ const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) =>
     deleteForm.mutate(undefined, {
       onSuccess: () => {
         toast.success('Skjema ble slettet');
-        navigate && navigateTo(-1);
+        if (navigate) {
+          navigateTo(-1);
+        }
       },
       onError: (e) => {
         toast.error(e.detail);
@@ -130,8 +129,8 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
         />
 
         <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>
-          <Button className='w-full' disabled={updateForm.isLoading} type='submit'>
-            {updateForm.isLoading ? 'Lagrer...' : 'Lagre'}
+          <Button className='w-full' disabled={updateForm.isPending} type='submit'>
+            {updateForm.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
 
           <DeleteFormButton form={groupForm} navigate />
@@ -182,7 +181,7 @@ const EventFormDetailsEditor = ({ form }: EventFormDetailsEditorProps) => {
             <Input onChange={(e) => setFormtemplateName(e.target.value)} value={formtemplateName} />
           </div>
           <Button className='w-full' onClick={saveAsTemplate}>
-            {createForm.isLoading ? 'Lagrer...' : 'Lagre'}
+            {createForm.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
         </div>
       </ResponsiveDialog>

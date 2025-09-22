@@ -1,35 +1,20 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { PaginateButton } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { useBadgesOverallLeaderboard } from '~/hooks/Badge';
+import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
+import URLS from '~/URLS';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { InfiniteQueryObserverResult, QueryKey, UseInfiniteQueryOptions } from 'react-query';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
+import { Link } from 'react-router';
 import { z } from 'zod';
-
-import { BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from 'types';
-
-import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { PaginateButton } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from 'components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
 export type BadgesLeaderboard = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filters?: any;
-  options?: UseInfiniteQueryOptions<
-    PaginationResponse<BadgesOverallLeaderboard>,
-    RequestResponse,
-    PaginationResponse<BadgesOverallLeaderboard>,
-    PaginationResponse<BadgesOverallLeaderboard>,
-    QueryKey
-  >;
-  useHook: (
-    filters?: BadgesLeaderboard['filters'],
-    options?: BadgesLeaderboard['options'],
-  ) => InfiniteQueryObserverResult<PaginationResponse<BadgesOverallLeaderboard>, RequestResponse>;
 };
 
 const formSchema = z.object({
@@ -37,7 +22,7 @@ const formSchema = z.object({
   studyyear: z.string(),
 });
 
-export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboard) => {
+export const BadgesLeaderboard = ({ filters }: BadgesLeaderboard) => {
   const { data: studies = [] } = useStudyGroups();
   const { data: studyyears = [] } = useStudyyearGroups();
 
@@ -58,7 +43,7 @@ export const BadgesLeaderboard = ({ useHook, filters, options }: BadgesLeaderboa
     [watchFilters],
   );
 
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useHook({ ...formFilters, ...filters }, { ...options });
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgesOverallLeaderboard({ ...formFilters, ...filters });
   const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (

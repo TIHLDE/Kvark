@@ -1,9 +1,8 @@
+import { useEventById } from '~/hooks/Event';
+import URLS from '~/URLS';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
-
-import { useEventById } from 'hooks/Event';
+import { Link } from 'react-router';
 
 import { Skeleton } from '../../../components/ui/skeleton';
 

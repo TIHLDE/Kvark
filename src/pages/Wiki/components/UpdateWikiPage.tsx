@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useDeleteWikiPage, useUpdateWikiPage } from '~/hooks/Wiki';
+import { WikiPage } from '~/types';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
-import { urlEncode } from 'utils';
 import { z } from 'zod';
-
-import { WikiPage } from 'types';
-
-import { useDeleteWikiPage, useUpdateWikiPage } from 'hooks/Wiki';
-
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 import WikiPageTree from './WikiPageTree';
 
@@ -133,15 +130,15 @@ const UpdateWikiPage = ({ page }: UpdateWikiPageProps) => {
 
             <WikiPageTree selectedNode={treeNode} setSelectedNode={setTreeNode} />
 
-            <Button className='w-full' disabled={updatePage.isLoading} type='submit'>
-              {updatePage.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+            <Button className='w-full' disabled={updatePage.isPending} type='submit'>
+              {updatePage.isPending ? 'Oppdaterer...' : 'Oppdater'}
             </Button>
           </form>
         </Form>
 
         <div className='border-t py-2 px-2'>
-          <Button className='w-full' disabled={deletePage.isLoading} onClick={onDelete} variant='destructive'>
-            {deletePage.isLoading ? 'Sletter...' : 'Slett'}
+          <Button className='w-full' disabled={deletePage.isPending} onClick={onDelete} variant='destructive'>
+            {deletePage.isPending ? 'Sletter...' : 'Slett'}
           </Button>
         </div>
       </ScrollArea>

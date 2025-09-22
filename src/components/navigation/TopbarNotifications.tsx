@@ -1,22 +1,20 @@
-import parseISO from 'date-fns/parseISO';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { notificationQueryOptions, useMarkAllNotificationsAsRead } from '~/hooks/Notification';
+import { useUser } from '~/hooks/User';
+import type { Notification } from '~/types';
+import { getTimeSince } from '~/utils';
+import { parseISO } from 'date-fns';
 import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getTimeSince } from 'utils';
-
-import { Notification } from 'types';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useNotifications } from 'hooks/Notification';
-import { useUser } from 'hooks/User';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from 'components/ui/drawer';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import { ScrollArea } from 'components/ui/scroll-area';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router';
 
 type NotificationItemProps = {
   notification: Notification;
@@ -81,10 +79,27 @@ const NotificationItemLoading = () => (
 const NotificationsTopbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { data: user } = useUser();
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNotifications({ enabled: showNotifications });
+
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useInfiniteQuery(notificationQueryOptions);
+
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
   const notifications = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
+
+  const markAllAsReadMutation = useMarkAllNotificationsAsRead();
+
+  const markAllAsRead = useCallback(() => {
+    const unreadNotificationIds = notifications.filter((notification) => !notification.read).map((notification) => notification.id);
+    if (unreadNotificationIds?.length === 0) return;
+
+    markAllAsReadMutation.mutate({ ids: unreadNotificationIds });
+  }, [notifications, markAllAsReadMutation]);
+
+  useEffect(() => {
+    if (!showNotifications) return;
+    if (markAllAsReadMutation.isPending) return;
+    markAllAsRead();
+  }, [showNotifications, markAllAsReadMutation.isPending, markAllAsRead]);
 
   if (!isDesktop) {
     return (
@@ -112,7 +127,7 @@ const NotificationsTopbar = () => {
           <ScrollArea className='h-[60vh] pb-4 pr-0'>
             {isLoading && <NotificationItemLoading />}
             {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
-            {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
+            {error && <h1 className='text-center mt-8'>{(error as { detail?: string })?.detail}</h1>}
             {data !== undefined && (
               <div>
                 {notifications.map((notification, index) => (
@@ -155,7 +170,7 @@ const NotificationsTopbar = () => {
         <ScrollArea className='h-[60vh] pb-4 pr-0'>
           {isLoading && <NotificationItemLoading />}
           {isEmpty && <NotFoundIndicator header='Fant ingen varsler' />}
-          {error && <h1 className='text-center mt-8'>{error.detail}</h1>}
+          {error && <h1 className='text-center mt-8'>{(error as { detail?: string })?.detail}</h1>}
           {data !== undefined && (
             <div>
               {notifications.map((notification, index) => (

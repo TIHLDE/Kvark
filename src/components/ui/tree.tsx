@@ -1,9 +1,8 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { cn } from "lib/utils";
+import { cn } from "~/lib/utils";
 import { ChevronRight, LucideIcon } from "lucide-react";
 import { forwardRef, useCallback, useMemo, useState } from "react";
 import { ScrollArea } from "./scroll-area";
-import useResizeObserver from "use-resize-observer";
 
 interface TreeDataItem {
   id: string;
@@ -71,11 +70,9 @@ const Tree = forwardRef<
     return ids;
   }, [data, initialSlelectedItemId])
 
-  const { ref: refRoot, width, height } = useResizeObserver();
-
   return (
-    <div ref={refRoot} className={cn("overflow-hidden", className)}>
-      <ScrollArea style={{ width, height }}>
+    <div className={cn("overflow-hidden", className)}>
+      <ScrollArea className="h-full w-full">
         <div className="relative p-2">
           <TreeItem
             data={data}

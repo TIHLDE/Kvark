@@ -1,12 +1,9 @@
+import { Card, CardContent } from '~/components/ui/card';
+import { HavePermission } from '~/hooks/User';
+import { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
 import { Boxes, BriefcaseBusiness, Calendar, ChevronRightIcon, Grip, Info, LucideIcon, Newspaper, Plus, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { PermissionApp } from 'types/Enums';
-
-import { HavePermission } from 'hooks/User';
-
-import { Card, CardContent } from 'components/ui/card';
+import { Link } from 'react-router';
 
 const Admin = () => {
   type CardProps = {
@@ -93,12 +90,19 @@ const Admin = () => {
       primary: 'Ny gruppe',
       secondary: 'Legg til en ny gruppe',
     },
+    {
+      apps: [PermissionApp.OPPTAK],
+      icon: Plus,
+      to: URLS.opptakAdmin,
+      primary: 'Opptak',
+      secondary: 'Legg til en ny gruppe',
+    },
   ];
 
   return (
     <ul className='space-y-2'>
-      {cards.map((card, i) => (
-        <AdminCard key={i} {...card} />
+      {cards.map((card) => (
+        <AdminCard key={card.to} {...card} />
       ))}
     </ul>
   );

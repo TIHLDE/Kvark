@@ -1,25 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormTextarea from '~/components/inputs/Textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { Skeleton } from '~/components/ui/skeleton';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useActivateUser, useDeclineUser, useUser } from '~/hooks/User';
+import UserDeleteDialog from '~/pages/Profile/components/ProfileSettings/UserDeleteDialog';
+import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSettings';
+import type { UserList } from '~/types';
+import { getUserAffiliation } from '~/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { getUserAffiliation } from 'utils';
 import { z } from 'zod';
-
-import { UserList } from 'types';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useActivateUser, useDeclineUser, useUser } from 'hooks/User';
-
-import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
-import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
-
-import FormTextarea from 'components/inputs/Textarea';
-import { Avatar, AvatarFallback, AvatarImage } from 'components/ui/avatar';
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { Skeleton } from 'components/ui/skeleton';
 
 const formSchema = z.object({
   reason: z.string().optional(),
@@ -64,8 +60,8 @@ const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
         <form className='space-y-4' onSubmit={form.handleSubmit(decline)}>
           <FormTextarea form={form} label='Begrunnelse (valgfri)' name='reason' />
 
-          <Button className='w-full' disabled={declineUser.isLoading} type='submit'>
-            {declineUser.isLoading ? 'Avslår...' : 'Avslå bruker'}
+          <Button className='w-full' disabled={declineUser.isPending} type='submit'>
+            {declineUser.isPending ? 'Avslår...' : 'Avslå bruker'}
           </Button>
         </form>
       </Form>

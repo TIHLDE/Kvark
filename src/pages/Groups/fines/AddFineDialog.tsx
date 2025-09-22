@@ -1,26 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormSelect } from '~/components/inputs/Select';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import { MultiUserSearch } from '~/components/inputs/UserSearch';
+import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateGroupFine, useGroupLaws } from '~/hooks/Group';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import type { Group, GroupFineCreate } from '~/types';
+import { formatLawHeader } from '~/utils';
 import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { formatLawHeader } from 'utils';
 import { z } from 'zod';
-
-import { Group, GroupFineCreate } from 'types';
-
-import { useCreateGroupFine, useGroupLaws } from 'hooks/Group';
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import FormInput from 'components/inputs/Input';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormSelect } from 'components/inputs/Select';
-import { FormImageUpload } from 'components/inputs/Upload';
-import { MultiUserSearch } from 'components/inputs/UserSearch';
-import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type AddFineDialogProps = {
   groupSlug: Group['slug'];
@@ -138,8 +135,8 @@ const AddFineDialog = ({ groupSlug }: AddFineDialogProps) => {
 
               <FormImageUpload form={form} label='Bildebevis (Valgfritt)' name='image' />
 
-              <Button className='w-full' disabled={createFine.isLoading} type='submit'>
-                {createFine.isLoading ? 'Oppretter bot...' : 'Opprett bot'}
+              <Button className='w-full' disabled={createFine.isPending} type='submit'>
+                {createFine.isPending ? 'Oppretter bot...' : 'Opprett bot'}
               </Button>
             </form>
           </Form>

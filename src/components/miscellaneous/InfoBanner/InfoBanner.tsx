@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom';
-
-import { useVisibleInfoBanners } from 'hooks/InfoBanner';
-
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useVisibleInfoBanners } from '~/hooks/InfoBanner';
+import { Link } from 'react-router';
 
 import AspectRatioImg from '../AspectRatioImg';
 

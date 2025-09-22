@@ -1,26 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Separator } from '~/components/ui/separator';
+import { Skeleton } from '~/components/ui/skeleton';
+import { useEventById, useEventRegistrations } from '~/hooks/Event';
+import EventMessageSender from '~/pages/EventAdministration/components/EventMessageSender';
+import EventStatistics from '~/pages/EventAdministration/components/EventStatistics';
+import Participant from '~/pages/EventAdministration/components/Participant';
+import type { Event } from '~/types';
 import { Copy, Info } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { Event } from 'types';
-
-import { useEventById, useEventRegistrations } from 'hooks/Event';
-
-import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
-import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
-import Participant from 'pages/EventAdministration/components/Participant';
-
-import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
-import { Button, PaginateButton } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { Checkbox } from 'components/ui/checkbox';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from 'components/ui/form';
-import { Separator } from 'components/ui/separator';
-import { Skeleton } from 'components/ui/skeleton';
 
 import EventParticipantSearch from './EventParticipantSearch';
 import EventUserRegistrator from './EventUserRegistrator';
@@ -80,8 +76,8 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
       .map((registration) => {
         const data: string[] = [];
         data.push(registration.user_info.user_id);
-        names && data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
-        emails && data.push(registration.user_info.email);
+        if (names) data.push(`${registration.user_info.first_name} ${registration.user_info.last_name}`);
+        if (emails) data.push(registration.user_info.email);
         return data.join(',');
       })
       .join('\n');

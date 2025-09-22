@@ -1,23 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormFileUpload, FormImageUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import { Calendar } from '~/components/ui/calendar';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useCreateToddel } from '~/hooks/Toddel';
+import { cn } from '~/lib/utils';
 import { format, formatISO9075, parseISO } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
 import { CalendarIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { useCreateToddel } from 'hooks/Toddel';
-
-import { FormFileUpload, FormImageUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import { Calendar } from 'components/ui/calendar';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 const formSchema = z.object({
   edition: z.number().min(1, { message: 'Feltet er påkrevd' }),
@@ -144,8 +142,8 @@ const CreateToddelDialog = () => {
 
             <FormFileUpload accept='application/pdf' form={form} label='Velg PDF *' name='pdf' />
 
-            <Button className='w-full' disabled={createToddel.isLoading} type='submit'>
-              {createToddel.isLoading ? 'Oppretter...' : 'Opprett'}
+            <Button className='w-full' disabled={createToddel.isPending} type='submit'>
+              {createToddel.isPending ? 'Oppretter...' : 'Opprett'}
             </Button>
           </form>
         </Form>

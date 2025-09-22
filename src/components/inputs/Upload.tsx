@@ -1,21 +1,25 @@
-import { CloudUploadIcon, FilePlus } from 'lucide-react';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { DropzoneOptions, useDropzone } from 'react-dropzone';
-import Cropper from 'react-easy-crop';
+import { useDropzone } from '@uploadthing/react';
+import API from '~/api/api';
+import { blobToFile, getCroppedImgAsBlob, readFile } from '~/components/inputs/ImageUploadUtils';
+import { Button } from '~/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '~/components/ui/dialog';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { useAnalytics } from '~/hooks/Utils';
+import { cn } from '~/lib/utils';
+import { uuidv4 } from '~/utils';
+import { CloudUploadIcon, FilePlus, ImagePlus, Trash2, Upload, X } from 'lucide-react';
+import { ChangeEvent, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Cropper, { Area } from 'react-easy-crop';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
-import API from 'api/api';
-
-import { useAnalytics } from 'hooks/Utils';
-
-import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
-import { Button } from 'components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from 'components/ui/dialog';
-import { Label } from 'components/ui/label';
+import { FormField } from '../ui/form';
+import { FormInputBase } from './Input';
 
 type FormImageMultipleUploadProps = {
-  fileTypes: DropzoneOptions['accept'];
+  fileTypes: Record<string, string[]>;
   setFiles: Dispatch<SetStateAction<File[]>>;
   label?: string;
 };
@@ -58,7 +62,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
@@ -78,7 +82,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -283,3 +287,277 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
 
   return <UploadButton />;
 };
+
+const zodFile = z.instanceof(File).refine((f) => f instanceof File, { message: 'Invalid file' });
+
+export const FileObjectSchema = z.object({
+  id: z.string(),
+  file: z.union([zodFile, z.string()]),
+  name: z.string().nonempty(),
+});
+
+export type FileObject = z.infer<typeof FileObjectSchema>;
+
+export function useImageUpload({ value }: { value?: FileObject[] }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<FileObject[]>([]);
+
+  const prevValue = useRef<FileObject[] | undefined>(undefined);
+
+  useEffect(() => {
+    if (value && prevValue.current === undefined) {
+      setFiles(value);
+    }
+  }, [value]);
+  useEffect(() => {
+    prevValue.current = value?.length ? value : undefined;
+  }, [value]);
+
+  const handleThumbnailClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target?.files ?? []);
+    if (files.length > 0) {
+      const fileObjects = files.map((f) => ({
+        id: uuidv4(),
+        file: f,
+        name: f.name,
+      }));
+      setFiles(fileObjects);
+    }
+  }, []);
+
+  const handleRemove = useCallback(
+    (id?: string) => {
+      if (id) {
+        setFiles((prev) => prev.filter((f) => f.id !== id));
+      } else {
+        setFiles([]);
+      }
+    },
+    [files, setFiles],
+  );
+
+  return {
+    files,
+    fileInputRef,
+    handleThumbnailClick,
+    handleFileChange,
+    handleRemove,
+  };
+}
+
+type SupportedImageFormats = '.jpeg' | '.jpg' | 'png' | 'gif';
+type AcceptImageFormats = SupportedImageFormats[] | 'image/*';
+
+type ImageUploadProps = {
+  title?: string;
+  description?: string;
+  multiple?: boolean;
+  accept?: AcceptImageFormats;
+  value?: FileObject[];
+  onChange?: (files: FileObject[]) => void;
+};
+
+// TODO: Fix this component. Some times it doesnt change the files when clicked. Works alwats when dragging.
+export function ImageUpload(props: ImageUploadProps) {
+  const { files, fileInputRef, handleThumbnailClick, handleFileChange, handleRemove } = useImageUpload({ value: props.value });
+
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const previewFile = useMemo(() => {
+    return files.find((f) => f.id === previewId);
+  }, [files, previewId]);
+
+  useEffect(() => {
+    if (files.length > 0 && !previewFile) {
+      setPreviewId(files[0].id);
+    }
+    if (!files.length) {
+      setPreviewId(null);
+    }
+  }, [files, previewFile]);
+
+  useEffect(() => {
+    props.onChange?.(files);
+  }, [files]);
+
+  const accept = Array.isArray(props.accept) ? `image/${props.accept.map((v) => `.${v}`).join(', ')}` : (props.accept ?? 'image/*');
+
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragging(false);
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFileChange({
+          target: {
+            files,
+          } as unknown as EventTarget & HTMLInputElement,
+        } as unknown as ChangeEvent<HTMLInputElement>);
+      }
+    },
+    [handleFileChange],
+  );
+
+  return (
+    <div>
+      <Input accept={accept} className='hidden' multiple={props.multiple} onChange={handleFileChange} ref={fileInputRef} type='file' />
+      {!previewFile ? (
+        <div
+          className={cn(
+            'flex h-64 cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50 transition-colors hover:bg-muted',
+            isDragging && 'border-primary/50 bg-primary/5',
+          )}
+          onClick={handleThumbnailClick}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}>
+          <div className='rounded-full bg-background p-3 shadow-sm'>
+            <ImagePlus className='h-6 w-6 text-muted-foreground' />
+          </div>
+          <div className='text-center'>
+            <p className='text-sm font-medium'>{props.title ?? `Last opp ${props.multiple ? 'bilde(r)' : 'et bilde'}`} </p>
+            <p className='text-xs text-muted-foreground'>{props.description ?? 'Dra filer her eller klikk for å laste opp'}</p>
+          </div>
+        </div>
+      ) : (
+        <div className='relative'>
+          <div className='group relative h-64 overflow-hidden rounded-lg border'>
+            <FileImage
+              alt='Preview'
+              className='object-cover transition-transform duration-300 group-hover:scale-105'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              src={previewFile?.file}
+            />
+            <div className='absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100' />
+            <div className='absolute inset-0 flex items-center justify-center gap-2 opacity-0 transition-opacity group-hover:opacity-100'>
+              <Button className='h-9 w-9 p-0' onClick={handleThumbnailClick} size='sm' variant='secondary'>
+                <Upload className='h-4 w-4' />
+              </Button>
+              <Button className='h-9 p-0 flex items-center gap-2 px-2' onClick={() => handleRemove()} size='sm' variant='destructive'>
+                <Trash2 className='h-4 w-4' /> {files.length > 1 && <span>{files.length}</span>}
+              </Button>
+            </div>
+          </div>
+          {files.map((file) => (
+            <div className='mt-2 flex items-center gap-2 text-sm text-muted-foreground' key={file.id}>
+              <div className='flex gap-2 items-center'>
+                <Button
+                  className='h-10 w-10 p-0 overflow-hidden'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setPreviewId(file.id);
+                  }}
+                  variant='ghost'>
+                  <FileImage alt={`preview-${file.id}`} className='h-full w-full' src={file.file} />
+                </Button>
+                <span className='truncate'>{file.name}</span>
+              </div>
+              <button className='ml-auto rounded-full p-1 hover:bg-muted' onClick={() => handleRemove(file.id)}>
+                <X className='h-4 w-4' />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type NewFormImageUploadProps<TFormValues extends FieldValues> = {
+  form: UseFormReturn<TFormValues>;
+  name: Path<TFormValues>;
+  label?: string;
+  title?: string;
+  dropZoneDescription?: string;
+  description?: string;
+  multiple?: boolean;
+  accept?: AcceptImageFormats;
+  required?: boolean;
+};
+export function NewFormImageUpload<TFieldValues extends FieldValues>(props: NewFormImageUploadProps<TFieldValues>) {
+  return (
+    <FormField
+      control={props.form.control}
+      name={props.name}
+      render={({ field }) => (
+        <FormInputBase description={props.description} label={props.label} required={props.required}>
+          <ImageUpload
+            accept={props.accept}
+            description={props.dropZoneDescription}
+            multiple={props.multiple}
+            onChange={field.onChange}
+            title={props.title}
+            value={field.value}
+          />
+        </FormInputBase>
+      )}
+    />
+  );
+}
+
+type FileImageProps = Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'src'> & {
+  src?: File | string;
+};
+
+export function FileImage(props: FileImageProps) {
+  const { src, ...imgProps } = props;
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  useEffect(() => {
+    if (!src || typeof src === 'string') {
+      return;
+    }
+    const url = URL.createObjectURL(src);
+    setPreviewUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [src]);
+
+  return <img {...imgProps} src={typeof src === 'string' ? src : (previewUrl ?? '')} />;
+}
+
+type FileImagePreviewProps = {
+  file?: File | string;
+  render: (url: string | undefined) => React.ReactNode;
+};
+export function FileImagePreview({ file, render }: FileImagePreviewProps) {
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!file || typeof file === 'string') {
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    return () => {
+      URL.revokeObjectURL(url);
+      setPreviewUrl(undefined);
+    };
+  }, [file]);
+  return render(previewUrl ?? (typeof file === 'string' ? file : undefined));
+}

@@ -1,9 +1,7 @@
-import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
-import { FormFieldType } from 'types/Enums';
-
-import { useFormById } from 'hooks/Form';
-
-import { Table, TableBody, TableCell, TableHead, TableRow } from 'components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableRow } from '~/components/ui/table';
+import { useFormById } from '~/hooks/Form';
+import type { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from '~/types';
+import { FormFieldType } from '~/types/Enums';
 
 export type FormUserAnswersProps = {
   submission: UserSubmission;

@@ -1,13 +1,11 @@
+import Page from '~/components/navigation/Page';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import URLS from '~/URLS';
 import { BarChart2, CirclePlus, LucideIcon, Shapes, Trophy } from 'lucide-react';
 import { Suspense } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import URLS from 'URLS';
-
-import useMediaQuery, { MEDIUM_SCREEN } from 'hooks/MediaQuery';
-
-import Page from 'components/navigation/Page';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
+import { Link, Outlet, useLocation } from 'react-router';
 
 const Badges = () => {
   const location = useLocation();

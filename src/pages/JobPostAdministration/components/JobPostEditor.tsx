@@ -1,28 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import DateTimePicker from '~/components/inputs/DateTimePicker';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { FormImageUpload } from '~/components/inputs/Upload';
+import RendererPreview from '~/components/miscellaneous/RendererPreview';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { Switch } from '~/components/ui/switch';
+import { useCreateJobPost, useDeleteJobPost, useJobPostById, useUpdateJobPost } from '~/hooks/JobPost';
+import JobPostRenderer from '~/pages/JobPostDetails/components/JobPostRenderer';
+import type { JobPost } from '~/types';
+import { JobPostType } from '~/types/Enums';
+import { getJobpostType } from '~/utils';
 import { parseISO } from 'date-fns';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { getJobpostType } from 'utils';
 import { z } from 'zod';
-
-import { JobPost } from 'types';
-import { JobPostType } from 'types/Enums';
-
-import { useCreateJobPost, useDeleteJobPost, useJobPostById, useUpdateJobPost } from 'hooks/JobPost';
-
-import JobPostRenderer from 'pages/JobPostDetails/components/JobPostRenderer';
-
-import DateTimePicker from 'components/inputs/DateTimePicker';
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { FormImageUpload } from 'components/inputs/Upload';
-import RendererPreview from 'components/miscellaneous/RendererPreview';
-import { Button } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
-import { Switch } from 'components/ui/switch';
 
 import DeleteJobPost from './DeleteJobPost';
 import JobPostFormSkeleton from './JobPostFormSkeleton';
@@ -62,8 +58,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   const updateJobPost = useUpdateJobPost(jobpostId || -1);
   const deleteJobPost = useDeleteJobPost(jobpostId || -1);
   const isUpdating = useMemo(
-    () => createJobPost.isLoading || updateJobPost.isLoading || deleteJobPost.isLoading,
-    [createJobPost.isLoading, updateJobPost.isLoading, deleteJobPost.isLoading],
+    () => createJobPost.isPending || updateJobPost.isPending || deleteJobPost.isPending,
+    [createJobPost.isPending, updateJobPost.isPending, deleteJobPost.isPending],
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -87,8 +83,8 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
   });
 
   useEffect(() => {
-    !isError || goToJobPost(null);
-  }, [isError]);
+    if (isError) goToJobPost(null);
+  }, [isError, goToJobPost]);
 
   const setValues = useCallback(
     (newValues: JobPost | null) => {

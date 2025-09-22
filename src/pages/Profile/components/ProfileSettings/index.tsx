@@ -1,17 +1,13 @@
+import { Button } from '~/components/ui/button';
+import Expandable from '~/components/ui/expandable';
+import { useExportUserData, useForgotPassword } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import UserNotificationSettings, { ConnectWithDiscord } from '~/pages/Profile/components/ProfileSettings/NotificationSettings';
+import UserDeleteDialog from '~/pages/Profile/components/ProfileSettings/UserDeleteDialog';
+import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSettings';
+import type { User } from '~/types';
 import { BellPlusIcon, CloudDownloadIcon, KeyRoundIcon, TrashIcon, UserCogIcon } from 'lucide-react';
 import { toast } from 'sonner';
-
-import { User } from 'types';
-
-import { useExportUserData, useForgotPassword } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import UserNotificationSettings, { ConnectWithDiscord } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
-import UserDeleteDialog from 'pages/Profile/components/ProfileSettings/UserDeleteDialog';
-import UserSettings from 'pages/Profile/components/ProfileSettings/UserSettings';
-
-import { Button } from 'components/ui/button';
-import Expandable from 'components/ui/expandable';
 
 export type ProfileSettingsProps = {
   user: User;
@@ -58,7 +54,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         description='Motta en link i din epost til side der du kan endre passord'
         icon={<KeyRoundIcon className='stroke-[1.5px]' />}
         title='Endre passord'>
-        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={resetPassword} size='lg' variant='outline'>
+        <Button className='w-full' disabled={forgotPassword.isPending} onClick={resetPassword} size='lg' variant='outline'>
           Endre Passord
         </Button>
       </Expandable>
@@ -74,7 +70,7 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         description='Få tilsendt alle data vi har lagret i tilknytning til din bruker'
         icon={<CloudDownloadIcon className='stroke-[1.5px]' />}
         title='Eksporter brukerdata'>
-        <Button className='w-full' disabled={forgotPassword.isLoading} onClick={runExportUserdata} size='lg' variant='outline'>
+        <Button className='w-full' disabled={exportUserData.isPending} onClick={runExportUserdata} size='lg' variant='outline'>
           Eksporter brukerdata
         </Button>
       </Expandable>

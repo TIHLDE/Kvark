@@ -1,5 +1,5 @@
-import { Event } from 'types/Event';
-import { User } from 'types/User';
+import { Event } from '~/types/Event';
+import { User } from '~/types/User';
 
 export type Order = {
   order_id: string;

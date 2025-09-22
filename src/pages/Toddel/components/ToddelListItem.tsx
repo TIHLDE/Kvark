@@ -1,10 +1,10 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Skeleton } from '~/components/ui/skeleton';
+import { HavePermission } from '~/hooks/User';
+import type { Toddel } from '~/types';
+import { PermissionApp } from '~/types/Enums';
+import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
-import { formatDate } from 'utils';
-
-import { Toddel } from 'types';
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Skeleton } from 'components/ui/skeleton';
 
 import EditToddelDialog from './EditToddelDialog';
 
@@ -23,7 +23,9 @@ const ToddelListItem = ({ toddel }: ToddelListItemProps) => {
           </CardDescription>
         </div>
 
-        <EditToddelDialog toddel={toddel} />
+        <HavePermission apps={[PermissionApp.TODDEL]}>
+          <EditToddelDialog toddel={toddel} />
+        </HavePermission>
       </CardHeader>
       <CardContent className='px-0 pb-2'>
         <a href={toddel.pdf} rel='noreferrer' target='_blank'>

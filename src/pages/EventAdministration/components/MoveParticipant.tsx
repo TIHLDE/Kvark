@@ -1,9 +1,7 @@
+import { Button } from '~/components/ui/button';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { useUpdateEventRegistration } from '~/hooks/Event';
 import { toast } from 'sonner';
-
-import { useUpdateEventRegistration } from 'hooks/Event';
-
-import { Button } from 'components/ui/button';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 type MoveParticipantProps = {
   eventId: number;

@@ -1,15 +1,12 @@
+import { Button, PaginateButton } from '~/components/ui/button';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useNews } from '~/hooks/News';
+import type { News } from '~/types';
+import URLS from '~/URLS';
 import { ChevronRight, List } from 'lucide-react';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { News } from 'types';
-
-import { useNews } from 'hooks/News';
-
-import { Button, PaginateButton } from 'components/ui/button';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
+import { Link } from 'react-router';
 
 const NewsList = () => {
   const [open, setOpen] = useState<boolean>(false);

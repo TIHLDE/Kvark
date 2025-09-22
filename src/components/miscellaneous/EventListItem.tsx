@@ -1,18 +1,15 @@
+import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
+import { Skeleton } from '~/components/ui/skeleton';
+import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
+import { cn } from '~/lib/utils';
+import type { EventList } from '~/types';
+import { Category, Groups } from '~/types/Enums';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { cn } from 'lib/utils';
 import { Calendar, Shapes } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-import { formatDate, urlEncode } from 'utils';
 
-import { EventList } from 'types';
-import { Category, Groups } from 'types/Enums';
-
-import useMediaQuery, { LARGE_SCREEN } from 'hooks/MediaQuery';
-
-import AspectRatioImg from 'components/miscellaneous/AspectRatioImg';
-import { Skeleton } from 'components/ui/skeleton';
+import NavLink from '../ui/navlink';
 
 export type EventListItemProps = {
   event: EventList;
@@ -53,13 +50,14 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
   };
 
   return (
-    <Link
+    <NavLink
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
-      to={`${URLS.events}${event.id}/${urlEncode(event.title)}/`}>
+      params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}
+      to='/arrangementer/:id/:urlTitle?'>
       <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
-      <div className='py-2 space-y-1'>
-        <h1 className={cn(titleFontSize, 'font-bold text-black dark:text-white')}>{event.title}</h1>
+      <div className='space-y-1 py-2 w-full contain-inline-size'>
+        <h1 className={cn(titleFontSize, 'font-bold text-black dark:text-white truncate block w-full')}>{event.title}</h1>
         <div className='flex items-center space-x-1'>
           <Calendar className='w-5 h-5 stroke-[1.5px] text-muted-foreground' />
           <p className={cn('text-muted-foreground', contentFontSize)}>{formatDate(parseISO(event.start_date))}</p>
@@ -71,7 +69,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
           </div>
         )}
       </div>
-    </Link>
+    </NavLink>
   );
 };
 

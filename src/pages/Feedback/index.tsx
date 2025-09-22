@@ -1,24 +1,28 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
+import { Button, PaginateButton } from '~/components/ui/button';
+import { Card, CardContent } from '~/components/ui/card';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { Textarea } from '~/components/ui/textarea';
+import { useCreateReaction, useDeleteReaction } from '~/hooks/EmojiReaction';
+import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from '~/hooks/Feedback';
+import { useUser, useUserMemberships } from '~/hooks/User';
+import type { Feedback } from '~/types/Feedback';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import type { Feedback } from 'types/Feedback';
+import { Route } from './+types';
 
-import { useCreateReaction, useDeleteReaction } from 'hooks/EmojiReaction';
-import { useCreateFeedback, useDeleteFeedback, useFeedback } from 'hooks/Feedback';
-import { useUser, useUserMemberships } from 'hooks/User';
-
-import { Button, PaginateButton } from 'components/ui/button';
-import { Card, CardContent } from 'components/ui/card';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { Textarea } from 'components/ui/textarea';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 type Filters = {
   search?: string;
@@ -79,7 +83,7 @@ export default function Feedback() {
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
 
-  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching, refetch: refetchFeedbacks } = useFeedback(filters);
+  const { data: feedbacksData, hasNextPage, fetchNextPage, isFetching, refetch: refetchFeedbacks } = useFeedbacks(filters);
   const feedbacks = useMemo(() => (feedbacksData !== undefined ? feedbacksData.pages.flatMap((page) => page.results) : []), [feedbacksData]);
 
   const createFeedback = useCreateFeedback();
@@ -371,7 +375,7 @@ export default function Feedback() {
                     </p>
                     <div className='flex flex-row items-center space-x-8'>
                       <div className='flex space-x-4'>
-                        <button className={reactionWrapClass(upvoted)} disabled={createFeedback.isLoading} onClick={() => handleThumbsUp(item)} type='button'>
+                        <button className={reactionWrapClass(upvoted)} disabled={createFeedback.isPending} onClick={() => handleThumbsUp(item)} type='button'>
                           <button aria-pressed={upvoted} className='flex items-center'>
                             👍
                           </button>
@@ -379,7 +383,7 @@ export default function Feedback() {
                         </button>
                         <button
                           className={reactionWrapClass(downvoted)}
-                          disabled={createFeedback.isLoading}
+                          disabled={createFeedback.isPending}
                           onClick={() => handleThumbsDown(item)}
                           type='button'>
                           <div aria-pressed={downvoted} className='flex items-center'>

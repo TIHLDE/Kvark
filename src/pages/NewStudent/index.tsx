@@ -1,13 +1,11 @@
+import Page from '~/components/navigation/Page';
+import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from '~/hooks/MediaQuery';
+import { useIsAuthenticated } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from 'hooks/MediaQuery';
-import { useIsAuthenticated } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
+import { Link } from 'react-router';
 
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';
@@ -63,7 +61,7 @@ const NewStudent = () => {
           bruker om du ikke har gjort dette allerede.
         </p>
         <div className='flex flex-col md:flex-row gap-2'>
-          <a href='https://forms.gle/DdL3F7XHvCHFVzdi8' rel='noreferrer' target='_blank'>
+          <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' rel='noreferrer' target='_blank'>
             <Button className='font-semibold  bg-sky-500 text-white'>
               Meld meg på fadderuka <Users2 className='h-4' />
             </Button>
@@ -81,11 +79,11 @@ const NewStudent = () => {
           <h2 className='text-3xl md:text-5xl font-bold'>Fadderuka</h2>
           <p className='text-slate-700 dark:text-slate-300 my-4'>
             Fadderuka er en gyllen mulighet til å bli kjent med medstudenter og med linjeforeningen. Fadderuka varer fra uka før skolestart til en uke inn i
-            semesteret, som i år er fra 12. - 28. August. Meld deg på her for å få plass!
+            semesteret, som i år er fra 14. - 28. August. Meld deg på her for å få plass!
           </p>
           <div className='flex gap-2 flex-col md:flex-row'>
             <Button asChild className='bg-sky-500 text-white font-semibold' onClick={fadderukaSignupAnalytics}>
-              <a href='https://forms.gle/DdL3F7XHvCHFVzdi8' rel='noreferrer' target='_blank'>
+              <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' rel='noreferrer' target='_blank'>
                 Meld meg på!
               </a>
             </Button>
@@ -126,7 +124,7 @@ const NewStudent = () => {
           TIHLDE er drevet av frivillige studenter - bli kjent med de forskjellige vervene
         </h2>
         <p className='text-slate-700 dark:text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
-          Inntaksrunder skjer rett etter fadderuka. Du blir kalt inn på intverju ved å sende søknad.
+          Inntaksrunder skjer rett etter fadderuka. Du blir kalt inn på intervju ved å sende søknad.
         </p>
         <div className='space-y-16'>
           {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}

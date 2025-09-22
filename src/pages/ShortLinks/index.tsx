@@ -1,24 +1,28 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { authClientWithRedirect } from '~/api/auth';
+import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useCreateShortLink, useDeleteShortLink, useShortLinks } from '~/hooks/ShortLink';
+import { useAnalytics, useShare } from '~/hooks/Utils';
+import type { ShortLink } from '~/types';
 import { Copy, Network, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { ShortLink } from 'types';
+import { Route } from './+types';
 
-import { useCreateShortLink, useDeleteShortLink, useShortLinks } from 'hooks/ShortLink';
-import { useAnalytics, useShare } from 'hooks/Utils';
-
-import NotFoundIndicator from 'components/miscellaneous/NotFoundIndicator';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Label } from 'components/ui/label';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  await authClientWithRedirect(request);
+}
 
 type ShortLinkItemProps = {
   shortLink: ShortLink;
@@ -179,8 +183,8 @@ const ShortLinks = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={createShortLink.isLoading} type='submit'>
-                {createShortLink.isLoading ? 'Oppretter...' : 'Opprett'}
+              <Button className='w-full' disabled={createShortLink.isPending} type='submit'>
+                {createShortLink.isPending ? 'Oppretter...' : 'Opprett'}
               </Button>
             </form>
           </Form>

@@ -62,6 +62,7 @@ export enum PermissionApp {
   BANNERS = 'banner',
   GROUPFORM = 'groupform',
   FEEDBACK = 'feedback',
+  OPPTAK = 'opptak',
 }
 
 export enum Groups {
@@ -107,9 +108,9 @@ export enum GroupType {
 }
 
 export enum JobPostType {
+  SUMMER_JOB = 'SUMMER_JOB',
   PART_TIME = 'PART_TIME',
   FULL_TIME = 'FULL_TIME',
-  SUMMER_JOB = 'SUMMER_JOB',
   OTHER = 'OTHER',
 }
 

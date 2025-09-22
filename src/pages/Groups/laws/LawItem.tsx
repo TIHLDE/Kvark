@@ -1,22 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import FormInput from '~/components/inputs/Input';
+import FormTextarea from '~/components/inputs/Textarea';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useDeleteGroupLaw, useUpdateGroupLaw } from '~/hooks/Group';
+import type { Group, GroupLaw } from '~/types';
+import { formatLawHeader, parseLawParagraphNumber } from '~/utils';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { formatLawHeader, parseLawParagraphNumber } from 'utils';
 import { z } from 'zod';
-
-import { Group, GroupLaw } from 'types';
-
-import { useDeleteGroupLaw, useUpdateGroupLaw } from 'hooks/Group';
-
-import FormInput from 'components/inputs/Input';
-import FormTextarea from 'components/inputs/Textarea';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type LawItemProps = {
   groupSlug: Group['slug'];
@@ -126,8 +123,8 @@ const LawItem = ({ law, groupSlug, isAdmin = false }: LawItemProps) => {
                   type='number'
                 />
 
-                <Button className='w-full' disabled={updateLaw.isLoading} type='submit'>
-                  {updateLaw.isLoading ? 'Oppdaterer...' : 'Oppdater'}
+                <Button className='w-full' disabled={updateLaw.isPending} type='submit'>
+                  {updateLaw.isPending ? 'Oppdaterer...' : 'Oppdater'}
                 </Button>
 
                 <ResponsiveAlertDialog

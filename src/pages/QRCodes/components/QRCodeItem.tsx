@@ -1,14 +1,11 @@
+import { Button } from '~/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
+import { useDeleteQRCode } from '~/hooks/QRCode';
+import type { QRCode } from '~/types';
 import { Download, Trash } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { toast } from 'sonner';
-
-import { QRCode } from 'types';
-
-import { useDeleteQRCode } from 'hooks/QRCode';
-
-import { Button } from 'components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card';
-import ResponsiveAlertDialog from 'components/ui/responsive-alert-dialog';
 
 export type QRCodeItemProps = {
   qrCode: QRCode;

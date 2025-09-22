@@ -1,21 +1,18 @@
+import InfoCard from '~/components/layout/InfoCard';
+import Page from '~/components/navigation/Page';
+import { Button } from '~/components/ui/button';
+import CompaniesForm from '~/pages/Companies/components/CompaniesForm';
+import { UserStudy } from '~/types/Enums';
+import URLS from '~/URLS';
+import { getUserStudyLong } from '~/utils';
 import { Mail } from 'lucide-react';
 import { useRef } from 'react';
-import URLS from 'URLS';
-import { getUserStudyLong } from 'utils';
-
-import { UserStudy } from 'types/Enums';
-
-import CompaniesForm from 'pages/Companies/components/CompaniesForm';
-
-import InfoCard from 'components/layout/InfoCard';
-import Page from 'components/navigation/Page';
-import { Button } from 'components/ui/button';
 
 const Companies = () => {
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = () => {
-    !formRef.current || window.scroll({ top: formRef.current.offsetTop - 84, left: 0, behavior: 'smooth' });
+    if (formRef.current) window.scroll({ top: formRef.current.offsetTop - 84, left: 0, behavior: 'smooth' });
   };
 
   const text = {
@@ -26,7 +23,7 @@ Det legger mye vekt på praktisk utvikling av systemer og programmer, og student
     digsec: `Dette bachelorstudiet setter fokus på den drift-tekniske IKT-kompetansen bedrifter etterspør. Studentene lærer planleggingsprosesser og oppsett av virtuelle maskiner med bruk av teknologier som VMWare og HyperV. Videre temaer i studiet er Linux, Windows Server, “Cloud Computing” og overvåkning og sikkerhet i digital infrastruktur.`,
     digsam: `Digital transformasjon er et veletablert forskningsområde som tar for seg hvordan utøvelse og koordinering av samarbeidsaktiviteter kan støttes ved hjelp av ulike IKT-systemer. Studentene ved denne 2 årige masteren er i stand til å samhandle effektivt i forskjellige tverrfaglige problemløsningsprosesser.`,
     digfor: `Digital forretningsutvikling kombinerer IT, økonomi og ledelse for å skape forretningsutviklere med tverrfaglig kompetanse. For at samfunnet skal digitaliseres er det nødvendig med ledere som har både teknisk og økonomisk kompetanse. Digital forretningsutvikling er lagt opp med høyt fokus på praktisk erfaring innenfor teamarbeid og kommunikasjon. Studiet søker å utdanne dyktige endringsagenter som kan effektivisere arbeidsprosesser og implementere digitale løsninger i bedrifter.`,
-    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår [karriereside](${URLS.jobposts}).`,
+    ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår [stillingsannonse side](${URLS.jobposts}).`,
     course: `Et kurs er et faglig arrangement hvor fokuset skal være på å introdusere studentene for faglige erfaringer som de kan få bruk for i arbeidslivet. Kurset kan inneholde en rask presentasjon av bedriften før kurset starter. Vi legger tilrette for matservering på skolen etter kurset, eller bespisning på restaurant i etterkant.`,
     companyTrips: `Under et bedriftsbesøk reiser studentene til bedriftens lokale for et valgfritt arrangement. Et bedriftsbesøk gir dere som bedrift muligheten til å vise studentene frem hvor de kan jobbe, og bli godt kjent med dem. `,
     companies: `En bedriftspresentasjon gir dere som organisasjon mulighet til å presentere dere for TIHLDE sine studenter. Dette er en gylden mulighet til å gjøre studentene bevisst på hvem dere er, hva dere tilbyr og hvordan dere jobber.
@@ -37,7 +34,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Page className='space-y-12'>
+    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
       <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
         <div className='space-y-2'>
           <h1 className='text-3xl lg:text-5xl font-bold'>For bedrifter</h1>

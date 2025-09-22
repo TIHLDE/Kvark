@@ -1,18 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '~/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { Textarea } from '~/components/ui/textarea';
+import { useNotifyEventRegistrations } from '~/hooks/Event';
+import useMediaQuery, { SMALL_SCREEN } from '~/hooks/MediaQuery';
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { useNotifyEventRegistrations } from 'hooks/Event';
-import useMediaQuery, { SMALL_SCREEN } from 'hooks/MediaQuery';
-
-import { Button } from 'components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { Textarea } from 'components/ui/textarea';
 
 export type EventMessageSenderProps = {
   eventId: number;
@@ -37,7 +35,7 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (notify.isLoading) {
+    if (notify.isPending) {
       return;
     }
     notify.mutate(
@@ -108,8 +106,8 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
             )}
           />
 
-          <Button className='w-full' disabled={notify.isLoading} type='submit'>
-            {notify.isLoading ? 'Sender melding...' : 'Send melding'}
+          <Button className='w-full' disabled={notify.isPending} type='submit'>
+            {notify.isPending ? 'Sender melding...' : 'Send melding'}
           </Button>
         </form>
       </Form>

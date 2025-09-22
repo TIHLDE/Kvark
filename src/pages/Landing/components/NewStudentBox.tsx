@@ -1,14 +1,12 @@
-import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from 'constant';
+import { Button } from '~/components/ui/button';
+import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
+import { useIsAuthenticated, useUser } from '~/hooks/User';
+import { useAnalytics, usePersistedState } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { getYear } from 'date-fns';
 import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import URLS from 'URLS';
-
-import { useIsAuthenticated, useUser } from 'hooks/User';
-import { useAnalytics, usePersistedState } from 'hooks/Utils';
-
-import { Button } from 'components/ui/button';
+import { Link } from 'react-router';
 
 const NewStudentBox = () => {
   const { event } = useAnalytics();
@@ -64,7 +62,7 @@ const NewStudentBox = () => {
           </Button>
           {SHOW_FADDERUKA_INFO && (
             <Button asChild className='w-full' variant='outline'>
-              <a href='https://s.tihlde.org/fadderuka-paamelding' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
+              <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' onClick={fadderukaSignupAnalytics} rel='noopener noreferrer' target='_blank'>
                 Meld deg på fadderuka
                 <ArrowUpRightFromSquare className='ml-2 w-5 h-5 stroke-[1.5px]' />
               </a>

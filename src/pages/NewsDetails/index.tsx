@@ -1,17 +1,32 @@
+import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
+import Page from '~/components/navigation/Page';
+import { newsByIdQuery, useNewsById } from '~/hooks/News';
+import Http404 from '~/pages/Http404';
+import NewsRenderer, { NewsRendererLoading } from '~/pages/NewsDetails/components/NewsRenderer';
+import { getQueryClient } from '~/queryClient';
+import URLS from '~/URLS';
+import { urlEncode } from '~/utils';
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import { useNavigate, useParams } from 'react-router-dom';
-import URLS from 'URLS';
-import { urlEncode } from 'utils';
+import { useNavigate, useParams } from 'react-router';
 
-import { useNewsById } from 'hooks/News';
+import { Route } from './+types';
 
-import Http404 from 'pages/Http404';
-import NewsRenderer, { NewsRendererLoading } from 'pages/NewsDetails/components/NewsRenderer';
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const news = await getQueryClient().ensureQueryData(newsByIdQuery(Number(params.id)));
 
-import Page from 'components/navigation/Page';
+  return {
+    news,
+  };
+}
 
-import TIHLDELOGO from 'assets/img/TihldeBackground.jpg';
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [
+    { property: 'og:title', content: data?.news.title },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: window.location.href },
+    { property: 'og:image', content: data?.news.image || 'https://tihlde.org' + TIHLDELOGO },
+  ];
+};
 
 const NewsDetails = () => {
   const { id } = useParams();
@@ -33,16 +48,6 @@ const NewsDetails = () => {
 
   return (
     <Page>
-      {data && (
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        <Helmet>
-          <meta content={data.title} property='og:title' />
-          <meta content='website' property='og:type' />
-          <meta content={window.location.href} property='og:url' />
-          <meta content={data.image || 'https://tihlde.org' + TIHLDELOGO} property='og:image' />
-        </Helmet>
-      )}
       <div className='pb-4'>{isLoading ? <NewsRendererLoading /> : data !== undefined && <NewsRenderer data={data} />}</div>
     </Page>
   );

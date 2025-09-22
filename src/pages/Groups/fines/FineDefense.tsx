@@ -1,16 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { useUpdateGroupFineDefense } from '~/hooks/Group';
 import { Shield } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { useUpdateGroupFineDefense } from 'hooks/Group';
-
-import MarkdownEditor from 'components/inputs/MarkdownEditor';
-import { Button } from 'components/ui/button';
-import { Form } from 'components/ui/form';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
 
 type FineDefenseProps = {
   groupSlug: string;
@@ -63,7 +61,7 @@ const FineDefense = ({ groupSlug, fineId, defense }: FineDefenseProps) => {
           <MarkdownEditor form={form} label='Forsvar' name='defense' required />
 
           <Button className='w-full' type='submit'>
-            {updateFineDefense.isLoading ? 'Lagrer...' : 'Lagre'}
+            {updateFineDefense.isPending ? 'Lagrer...' : 'Lagre'}
           </Button>
         </form>
       </Form>

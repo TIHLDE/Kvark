@@ -1,9 +1,9 @@
-import { ACCESS_TOKEN } from 'constant';
-import type { ReactNode } from 'react';
-import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
-
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type QueryKey, type UseMutationResult, type UseQueryOptions } from '@tanstack/react-query';
+import API from '~/api/api';
+import { AuthObject } from '~/api/auth';
+import { getCookie, removeCookie, setCookie } from '~/api/cookie';
+import { ACCESS_TOKEN } from '~/constant';
+import { getQueryClient } from '~/queryClient';
 import type {
   Badge,
   EventList,
@@ -13,18 +13,16 @@ import type {
   MembershipHistory,
   PaginationResponse,
   RequestResponse,
-  Strike,
   User,
   UserCreate,
   UserList,
   UserNotificationSetting,
-  UserNotificationSettingChoice,
   UserPermissions,
-} from 'types';
-import type { PermissionApp } from 'types/Enums';
-
-import API from 'api/api';
-import { getCookie, removeCookie, setCookie } from 'api/cookie';
+} from '~/types';
+import type { PermissionApp } from '~/types/Enums';
+import URLS from '~/URLS';
+import { useEffect, type ReactNode } from 'react';
+import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -38,77 +36,113 @@ export const USER_NOTIFICATION_SETTINGS_QUERY_KEY = 'user_notification_settings'
 export const USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY = 'user_notification_setting_choices';
 export const USERS_QUERY_KEY = 'users';
 
-export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
+export const useUser = (userId?: User['user_id'], options: { enabled?: boolean } = {}) => {
   const isAuthenticated = useIsAuthenticated();
   const logOut = useLogout();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
-    ...options,
-    onError: () => {
-      if (!userId) {
-        logOut();
-        window.location.reload();
+  const query = useQuery({
+    queryKey: [USER_QUERY_KEY, userId],
+    queryFn: () => API.getUserData(userId),
+    initialData: () => {
+      if (userId == null) {
+        // Get the auth user object from the query client if no userId is provided.
+        const auth = getQueryClient().getQueryData<AuthObject | null>(['auth']);
+        if (auth == null) {
+          return undefined;
+        }
+        return auth.tihldeUser;
       }
+      return undefined;
     },
+    enabled: Boolean(isAuthenticated),
+    ...options,
   });
+
+  useEffect(() => {
+    if (query.isError && !userId) {
+      logOut();
+      window.location.reload();
+    }
+  }, [query.isError, userId, logOut]);
+
+  return query;
 };
 
 export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>) => {
   const isAuthenticated = useIsAuthenticated();
-  return useQuery<UserPermissions | undefined, RequestResponse>(
-    [USER_PERMISSIONS_QUERY_KEY],
-    () => (isAuthenticated ? API.getUserPermissions() : undefined),
-    options,
-  );
+  return useQuery({
+    queryKey: [USER_PERMISSIONS_QUERY_KEY],
+    queryFn: () => API.getUserPermissions(),
+    enabled: isAuthenticated,
+    ...options,
+  });
 };
 
 export const useUserBadges = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
-    [USER_BADGES_QUERY_KEY, userId],
-    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>({
+    queryKey: [USER_BADGES_QUERY_KEY, userId],
+    queryFn: ({ pageParam }) => API.getUserBadges(userId, { page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
 export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
-  return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
-    [USER_EVENTS_QUERY_KEY, userId, expired],
-    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam, expired: expired }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+  return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>({
+    queryKey: [USER_EVENTS_QUERY_KEY, userId, expired],
+    queryFn: ({ pageParam }) => API.getUserEvents(userId, { page: pageParam, expired: expired }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUserForms = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
-    [USER_FORMS_QUERY_KEY, filters],
-    ({ pageParam = 1 }) => API.getUserForms({ ...filters, page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+  useInfiniteQuery<PaginationResponse<Form>, RequestResponse>({
+    queryKey: [USER_FORMS_QUERY_KEY, filters],
+    queryFn: ({ pageParam }) => API.getUserForms({ ...(filters ?? {}), page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
+// TODO: Investigate if this needs to be an infinite query
 export const useUserMemberships = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => API.getUserMemberships(userId));
+  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>({
+    queryKey: [USER_MEMBERSHIPS_QUERY_KEY, userId],
+    queryFn: () => API.getUserMemberships(userId),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
+// TODO: Investigate if this needs to ba an infinite query
 export const useUserMembershipHistories = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>([USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId], () =>
-    API.getUserMembershipHistories(userId),
-  );
+  useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>({
+    queryKey: [USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId],
+    queryFn: () => API.getUserMembershipHistories(userId),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
-export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
+export const useUserStrikes = (userId?: string) =>
+  useQuery({
+    queryKey: [USER_STRIKES_QUERY_KEY, userId],
+    queryFn: () => API.getUserStrikes(userId),
+  });
 
 export const useUserNotificationSettings = () =>
-  useQuery<Array<UserNotificationSetting>, RequestResponse>([USER_NOTIFICATION_SETTINGS_QUERY_KEY], () => API.getUserNotificationSettings());
+  useQuery({
+    queryKey: [USER_NOTIFICATION_SETTINGS_QUERY_KEY],
+    queryFn: () => API.getUserNotificationSettings(),
+  });
 
 export const useUserNotificationSettingChoices = () =>
-  useQuery<Array<UserNotificationSettingChoice>, RequestResponse>([USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY], () => API.getUserNotificationSettingChoices());
+  useQuery({
+    queryKey: [USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY],
+    queryFn: () => API.getUserNotificationSettingChoices(),
+  });
 
 export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<UserNotificationSetting>, RequestResponse, UserNotificationSetting, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((data) => API.updateUserNotificationSettings(data), {
+  return useMutation({
+    mutationFn: (data) => API.updateUserNotificationSettings(data),
     onSuccess: (data) => {
       queryClient.setQueryData([USER_NOTIFICATION_SETTINGS_QUERY_KEY], data);
     },
@@ -117,53 +151,68 @@ export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<Use
 
 export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((slackCode) => API.slackConnect(slackCode), {
-    onSuccess: () => queryClient.invalidateQueries([USER_QUERY_KEY]),
+  return useMutation({
+    mutationFn: (slackCode) => API.slackConnect(slackCode),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: [USER_QUERY_KEY],
+      }),
   });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUsers = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
-    [USERS_QUERY_KEY, filters],
-    ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
-    {
-      getNextPageParam: (lastPage) => lastPage.next,
-    },
-  );
+  useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>({
+    queryKey: [USERS_QUERY_KEY, filters],
+    queryFn: ({ pageParam }) => API.getUsers({ ...filters, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
 export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestResponse, { username: string; password: string }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ username, password }) => API.authenticate(username, password), {
+  return useMutation({
+    mutationFn: ({ username, password }) => API.authenticate(username, password),
     onSuccess: (data) => {
       setCookie(ACCESS_TOKEN, data.token);
       queryClient.removeQueries();
-      queryClient.prefetchQuery([USER_QUERY_KEY], () => API.getUserData());
+      queryClient.prefetchQuery({ queryKey: [USER_QUERY_KEY], queryFn: () => API.getUserData() });
     },
   });
 };
 
-export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
+export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> =>
+  useMutation({
+    mutationFn: (email) => API.forgotPassword(email),
+  });
 
 export const useLogout = () => {
+  const { revalidate } = useRevalidator();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
+    revalidate();
     navigate(URLS.landing);
   };
 };
 
 export const useIsAuthenticated = () => typeof getCookie(ACCESS_TOKEN) !== 'undefined';
 
-export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => useMutation((user) => API.createUser(user));
+export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> =>
+  useMutation({
+    mutationFn: (user) => API.createUser(user),
+  });
 
 export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
+  return useMutation({
+    mutationFn: ({ userId, user }) => API.updateUserData(userId, user),
     onSuccess: (data) => {
-      queryClient.invalidateQueries([USERS_QUERY_KEY]);
+      queryClient.invalidateQueries({
+        queryKey: [USERS_QUERY_KEY],
+      });
       const user = queryClient.getQueryData<User | undefined>([USER_QUERY_KEY]);
       if (data.user_id === user?.user_id) {
         queryClient.setQueryData([USER_QUERY_KEY], data);
@@ -172,25 +221,36 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
-export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> =>
+  useMutation({
+    mutationFn: () => API.exportUserData(),
+  });
 
 export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
-  useMutation((userId) => API.deleteUser(userId));
+  useMutation({
+    mutationFn: (userId) => API.deleteUser(userId),
+  });
 
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation((userId) => API.activateUser(userId), {
+  return useMutation({
+    mutationFn: (userId) => API.activateUser(userId),
     onSuccess: () => {
-      queryClient.invalidateQueries([USERS_QUERY_KEY]);
+      queryClient.invalidateQueries({
+        queryKey: [USERS_QUERY_KEY],
+      });
     },
   });
 };
 
 export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResponse, { userId: string; reason: string }, unknown> => {
   const queryClient = useQueryClient();
-  return useMutation(({ userId, reason }) => API.declineUser(userId, reason), {
+  return useMutation({
+    mutationFn: ({ userId, reason }) => API.declineUser(userId, reason),
     onSuccess: () => {
-      queryClient.invalidateQueries([USERS_QUERY_KEY]);
+      queryClient.invalidateQueries({
+        queryKey: [USERS_QUERY_KEY],
+      });
     },
   });
 };
@@ -200,7 +260,10 @@ export const useHavePermission = (
   options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>,
 ) => {
   const { data, isLoading } = useUserPermissions(options);
-  return { allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions[app].write || data?.permissions[app].write_all)), isLoading };
+  return {
+    allowAccess: isLoading ? false : Boolean(apps.some((app) => data?.permissions?.[app]?.write || data?.permissions?.[app]?.write_all)),
+    isLoading,
+  };
 };
 
 export type HavePermissionProps = {

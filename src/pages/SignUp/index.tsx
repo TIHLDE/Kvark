@@ -1,26 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Page from '~/components/navigation/Page';
+import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
+import { Button, buttonVariants } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
+import { useConfetti } from '~/hooks/Confetti';
+import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
+import { useRedirectUrl } from '~/hooks/Misc';
+import { useCreateUser } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import type { UserCreate } from '~/types';
+import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
-
-import { UserCreate } from 'types';
-
-import { useConfetti } from 'hooks/Confetti';
-import { useStudyGroups, useStudyyearGroups } from 'hooks/Group';
-import { useRedirectUrl, useSetRedirectUrl } from 'hooks/Misc';
-import { useCreateUser } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
-import { Alert, AlertDescription, AlertTitle } from 'components/ui/alert';
-import { Button, buttonVariants } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 
 const formSchema = z
   .object({
@@ -48,8 +45,7 @@ const SignUp = () => {
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const redirectURL = useRedirectUrl();
+  const [redirectURL, setLogInRedirectURL] = useRedirectUrl();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,14 +76,14 @@ const SignUp = () => {
       onSuccess: () => {
         run();
         event('signup', 'auth', `Signed up`);
-        setLogInRedirectURL(null);
+        setLogInRedirectURL(undefined);
         navigate(redirectURL || URLS.login);
       },
       onError: (e) => {
         Object.keys(e.detail).forEach((key: string) => {
           if (key in userData) {
             const errorKey = key as keyof UserCreate;
-            const errorMessage = (e.detail as unknown as Record<string, any>)[key];
+            const errorMessage = (e.detail as unknown as Record<string, string | undefined>)[key];
             form.setError(errorKey, { message: errorMessage });
           }
         });
@@ -281,8 +277,8 @@ const SignUp = () => {
                 </AlertDescription>
               </Alert>
 
-              <Button className='w-full' disabled={createUser.isLoading} size='lg' type='submit'>
-                {createUser.isLoading ? 'Oppretter bruker...' : 'Opprett bruker'}
+              <Button className='w-full' disabled={createUser.isPending} size='lg' type='submit'>
+                {createUser.isPending ? 'Oppretter bruker...' : 'Opprett bruker'}
               </Button>
             </form>
           </Form>

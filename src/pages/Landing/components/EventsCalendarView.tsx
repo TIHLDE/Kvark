@@ -1,14 +1,12 @@
+import { useEvents } from '~/hooks/Event';
+import { useAnalytics } from '~/hooks/Utils';
+import type { Category, EventList } from '~/types';
+import { Category as CategoryEnum, Groups } from '~/types/Enums';
 import { VariantProps } from 'class-variance-authority';
 import { endOfMonth, parseISO, startOfMonth } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-
-import { Category, EventList } from 'types';
-import { Category as CategoryEnum, Groups } from 'types/Enums';
-
-import { useEvents } from 'hooks/Event';
-import { useAnalytics } from 'hooks/Utils';
 
 import { Card } from '../../../components/ui/card';
 import {
@@ -50,7 +48,7 @@ export type EventsCalendarViewProps = {
 const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
   const { event } = useAnalytics();
   const [filters, setFilters] = useState<Filters>({ start_range: startOfMonth(new Date()).toISOString(), end_range: endOfMonth(new Date()).toISOString() });
-  const { data, fetchNextPage } = useEvents({ category, filters });
+  const { data, fetchNextPage } = useEvents({ category, ...filters });
   const events = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   useEffect(() => {
@@ -74,7 +72,7 @@ const EventsCalendarView = ({ category }: EventsCalendarViewProps) => {
             end: parseISO(event.end_date),
             id: event.id.toString(),
             color: getColor(event),
-          } satisfies CalendarEvent),
+          }) satisfies CalendarEvent,
       ),
     [data],
   );

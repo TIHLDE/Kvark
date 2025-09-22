@@ -1,14 +1,13 @@
+import { Button } from '~/components/ui/button';
+import { Calendar } from '~/components/ui/calendar';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
+import { TimePickerDisplay } from '~/components/ui/timePicker/display';
+import { cn } from '~/lib/utils';
 import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
-import { cn } from 'lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { Button } from 'components/ui/button';
-import { Calendar } from 'components/ui/calendar';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Popover, PopoverContent, PopoverTrigger } from 'components/ui/popover';
-import { TimePickerDisplay } from 'components/ui/timePicker/display';
 
 type DateTimePickerProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;
@@ -44,7 +43,8 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
                 initialFocus
                 mode='single'
                 onSelect={(e) => {
-                  field.onChange(e), onDateChange && onDateChange(e);
+                  field.onChange(e);
+                  onDateChange?.(e);
                 }}
                 selected={field.value}
               />

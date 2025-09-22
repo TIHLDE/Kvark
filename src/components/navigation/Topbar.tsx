@@ -1,11 +1,6 @@
-import { cn } from 'lib/utils';
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import URLS from 'URLS';
-
-import TihldeLogo from 'components/miscellaneous/TihldeLogo';
-import { NavigationItem } from 'components/navigation/Navigation';
-import ProfileTopbarButton from 'components/navigation/ProfileTopbarButton';
+import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
+import { NavigationItem } from '~/components/navigation/Navigation';
+import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,7 +9,11 @@ import {
   NavigationMenuList,
   NavigationMenuListItem,
   NavigationMenuTrigger,
-} from 'components/ui/navigation-menu';
+} from '~/components/ui/navigation-menu';
+import { cn } from '~/lib/utils';
+import URLS from '~/URLS';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router';
 
 const TopBarItem = (props: NavigationItem) => {
   const location = useLocation();
@@ -24,15 +23,16 @@ const TopBarItem = (props: NavigationItem) => {
 
     return (
       <NavigationMenuItem>
-        <Link to={props.to}>
-          <NavigationMenuLink
+        <NavigationMenuLink asChild>
+          <Link
             className={cn(
               'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
               selected && 'dark:text-white text-muted-foreground font-bold',
-            )}>
+            )}
+            to={props.to}>
             {props.text}
-          </NavigationMenuLink>
-        </Link>
+          </Link>
+        </NavigationMenuLink>
       </NavigationMenuItem>
     );
   }

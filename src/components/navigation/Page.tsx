@@ -1,4 +1,4 @@
-import { cn } from 'lib/utils';
+import { cn } from '~/lib/utils';
 
 type PageProps = {
   children: React.ReactNode;
@@ -6,7 +6,7 @@ type PageProps = {
 };
 
 const Page = ({ children, className }: PageProps) => {
-  return <div className={cn('w-full py-20 md:py-28 px-4 md:px-12', className)}>{children}</div>;
+  return <div className={cn('w-full py-20 md:py-28 px-2 md:px-12', className)}>{children}</div>;
 };
 
 export default Page;

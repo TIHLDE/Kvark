@@ -1,10 +1,9 @@
-import { cn } from 'lib/utils';
-import { ReactNode, useEffect, useState } from 'react';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from 'components/ui/collapsible';
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from 'components/ui/form';
-import { Switch } from 'components/ui/switch';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Switch } from '~/components/ui/switch';
+import { cn } from '~/lib/utils';
+import { useEffect, useState, type ReactNode } from 'react';
+import type { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type BoolExpandProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;
@@ -18,7 +17,9 @@ type BoolExpandProps<TFormValues extends FieldValues> = {
 const BoolExpand = <TFormValues extends FieldValues>({ form, name, title, description, children, className }: BoolExpandProps<TFormValues>) => {
   const [expanded, setExpanded] = useState<boolean>(false);
 
-  useEffect(() => setExpanded(form.watch(name)), [form.watch(name)]);
+  const watchName = form.watch(name);
+
+  useEffect(() => setExpanded(Boolean(watchName)), [watchName]);
 
   return (
     <Collapsible className={cn('w-full bg-white dark:bg-inherit rounded-md border', className)} onOpenChange={setExpanded} open={expanded}>

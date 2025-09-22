@@ -1,11 +1,9 @@
+import { Button } from '~/components/ui/button';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
+import { ContentType } from '~/types/ContentType';
 import { ListIcon } from 'lucide-react';
-
-import { ContentType } from 'types/ContentType';
-
-import { Button } from 'components/ui/button';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea, ScrollBar } from 'components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs';
 
 import { ReactionListItem } from './ReactionListItem';
 

@@ -1,18 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import Page from '~/components/navigation/Page';
+import { Button, buttonVariants } from '~/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
+import { useForgotPassword } from '~/hooks/User';
+import { useAnalytics } from '~/hooks/Utils';
+import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { toast } from 'sonner';
-import URLS from 'URLS';
 import { z } from 'zod';
-
-import { useForgotPassword } from 'hooks/User';
-import { useAnalytics } from 'hooks/Utils';
-
-import Page from 'components/navigation/Page';
-import { Button, buttonVariants } from 'components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from 'components/ui/form';
-import { Input } from 'components/ui/input';
 
 const formSchema = z.object({
   email: z.string().email('Ugyldig e-post').min(1, { message: 'Feltet er påkrevd' }),
@@ -67,8 +65,8 @@ const ForgotPassword = () => {
                 )}
               />
 
-              <Button className='w-full' disabled={forgotPassword.isLoading} size='lg' type='submit'>
-                {forgotPassword.isLoading ? 'Henter nytt passord...' : 'Få nytt passord'}
+              <Button className='w-full' disabled={forgotPassword.isPending} size='lg' type='submit'>
+                {forgotPassword.isPending ? 'Henter nytt passord...' : 'Få nytt passord'}
               </Button>
             </form>
           </Form>

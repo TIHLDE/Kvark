@@ -1,15 +1,12 @@
+import { FileMultipleUpload } from '~/components/inputs/Upload';
+import { Button } from '~/components/ui/button';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { ScrollArea } from '~/components/ui/scroll-area';
+import { useUploadPictures } from '~/hooks/Gallery';
+import type { Gallery } from '~/types';
 import { UploadCloud, X } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-
-import { Gallery } from 'types';
-
-import { useUploadPictures } from 'hooks/Gallery';
-
-import { FileMultipleUpload } from 'components/inputs/Upload';
-import { Button } from 'components/ui/button';
-import ResponsiveDialog from 'components/ui/responsive-dialog';
-import { ScrollArea } from 'components/ui/scroll-area';
 
 export type PictureUploadProps = {
   id: Gallery['id'];
@@ -21,7 +18,7 @@ const PictureUpload = ({ id }: PictureUploadProps) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const submit = () => {
-    if (upload.isLoading || !files) {
+    if (upload.isPending || !files) {
       return;
     }
     upload.mutate(
@@ -67,8 +64,8 @@ const PictureUpload = ({ id }: PictureUploadProps) => {
 
           <PictureView />
 
-          <Button className='w-full' disabled={files.length < 1 || upload.isLoading} onClick={submit}>
-            {upload.isLoading ? 'Laster opp...' : 'Last opp bilder'}
+          <Button className='w-full' disabled={files.length < 1 || upload.isPending} onClick={submit}>
+            {upload.isPending ? 'Laster opp...' : 'Last opp bilder'}
           </Button>
         </div>
       </ScrollArea>
