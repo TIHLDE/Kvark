@@ -1,10 +1,8 @@
 import type { GroupFine } from '~/types';
 import { atom, useAtom } from 'jotai';
 
-const finesFilterAtom = atom<{ approved?: boolean; payed?: boolean }>({ payed: false });
 const checkedFinesAtom = atom<GroupFine['id'][]>([]);
 
-export const useFinesFilter = () => useAtom(finesFilterAtom);
 export const useCheckedFines = () => useAtom(checkedFinesAtom);
 export const useToggleCheckedFine = () => {
   const [, setCheckedFines] = useCheckedFines();
