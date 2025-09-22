@@ -7,7 +7,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { authClient, useOptionalAuth } from '~/hooks/auth';
+import { authClient } from '~/hooks/auth';
 import URLS from '~/URLS';
 import { parseAsString, useQueryState } from 'nuqs';
 import { useState } from 'react';
@@ -53,7 +53,6 @@ export default function LoginPage() {
   const [redirectUrl] = useQueryState('redirectTo', parseAsString.withDefault(''));
 
   const session = authClient.useSession();
-  const legacySession = useOptionalAuth();
 
   const [enableLegacyLogin, setEnableLegacyLogin] = useState(false);
 
@@ -66,26 +65,10 @@ export default function LoginPage() {
   });
 
   async function loginWithFeide() {
-    const { data, error } = await authClient.signIn.oauth2({
+    await authClient.signIn.oauth2({
       providerId: 'feide',
       callbackURL: new URL(redirectUrl, window.location.origin).toString(),
     });
-    // TODO: This under here is actually correct, just not working with the current feide setup
-    /*
-    if (error) {
-      console.error('Error logging in with Feide', error);
-      return;
-    }
-    if (!data) {
-      console.error('No data returned from Feide');
-      return;
-    }
-    const feideUrl = new URL(data.url);
-    const photonRedirectUrl = new URL('/api/auth/oauth2/callback/feide', env.PHOTON_API_URL);
-
-    feideUrl.searchParams.set('redirect_uri', photonRedirectUrl.toString());
-    window.location.assign(feideUrl.toString());
-    */
   }
 
   return (
