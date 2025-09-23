@@ -129,7 +129,7 @@ const EventsDefaultView = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value='all'>Alle kategorier</SelectItem>
+                  <SelectItem value=' '>Alle kategorier</SelectItem>
                   {categories
                     .filter((c) => c.text !== 'Aktivitet')
                     .map((category, index) => (
