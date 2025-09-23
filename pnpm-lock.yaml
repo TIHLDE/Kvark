@@ -114,8 +114,8 @@ importers:
         specifier: ^5.1.30
         version: 5.1.30
       jotai:
-        specifier: ^2.13.0
-        version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1)
+        specifier: ^2.14.0
+        version: 2.14.0(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@18.3.1)
@@ -3422,8 +3422,8 @@ packages:
     resolution: {integrity: sha512-VXe6RjJkBPj0ohtqaO8vSWP3ZhAKo66fKrFNCll4BTcwljPLz03pCbaNKfzGP5MbrCYcbJ7v0nOYYwUzTEIdXQ==}
     hasBin: true
 
-  jotai@2.13.1:
-    resolution: {integrity: sha512-cRsw6kFeGC9Z/D3egVKrTXRweycZ4z/k7i2MrfCzPYsL9SIWcPXTyqv258/+Ay8VUEcihNiE/coBLE6Kic6b8A==}
+  jotai@2.14.0:
+    resolution: {integrity: sha512-JQkNkTnqjk1BlSUjHfXi+pGG/573bVN104gp6CymhrWDseZGDReTNniWrLhJ+zXbM6pH+82+UNJ2vwYQUkQMWQ==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@babel/core': '>=7.0.0'
@@ -8428,7 +8428,7 @@ snapshots:
   jiti@2.6.0:
     optional: true
 
-  jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1):
+  jotai@2.14.0(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1):
     optionalDependencies:
       '@babel/core': 7.28.3
       '@babel/template': 7.27.2
