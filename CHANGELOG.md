@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2025.05.05
 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
 - 🦟 **Event Kort** Fikset slik at arrangement kort ikke overflyter til ny linje på hovedsiden
