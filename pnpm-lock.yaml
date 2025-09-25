@@ -114,8 +114,8 @@ importers:
         specifier: ^5.1.30
         version: 5.1.30
       jotai:
-        specifier: ^2.13.0
-        version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1)
+        specifier: ^2.15.0
+        version: 2.15.0(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1)
       lucide-react:
         specifier: ^0.544.0
         version: 0.544.0(react@18.3.1)
@@ -2594,6 +2594,10 @@ packages:
     resolution: {integrity: sha512-vEtk+OcP7VBRtQZ1EJ3bdgzSfBjgnEalLTp5zjJrS+2Z1w2KZly4SBdac/WDU3hhsNAZ9E8SC96ME4Ey8MZ7cg==}
     engines: {node: '>=8'}
 
+  detect-libc@2.1.1:
+    resolution: {integrity: sha512-ecqj/sy1jcK1uWrwpR67UhYrIFQ+5WlGxth34WquCbamhFA6hkkwiu37o6J5xCHdo1oixJRfVRw+ywV+Hq/0Aw==}
+    engines: {node: '>=8'}
+
   detect-node-es@1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
 
@@ -3422,8 +3426,8 @@ packages:
     resolution: {integrity: sha512-VXe6RjJkBPj0ohtqaO8vSWP3ZhAKo66fKrFNCll4BTcwljPLz03pCbaNKfzGP5MbrCYcbJ7v0nOYYwUzTEIdXQ==}
     hasBin: true
 
-  jotai@2.13.1:
-    resolution: {integrity: sha512-cRsw6kFeGC9Z/D3egVKrTXRweycZ4z/k7i2MrfCzPYsL9SIWcPXTyqv258/+Ay8VUEcihNiE/coBLE6Kic6b8A==}
+  jotai@2.15.0:
+    resolution: {integrity: sha512-nbp/6jN2Ftxgw0VwoVnOg0m5qYM1rVcfvij+MZx99Z5IK13eGve9FJoCwGv+17JvVthTjhSmNtT5e1coJnr6aw==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@babel/core': '>=7.0.0'
@@ -7441,6 +7445,9 @@ snapshots:
 
   detect-libc@2.1.0: {}
 
+  detect-libc@2.1.1:
+    optional: true
+
   detect-node-es@1.1.0: {}
 
   devlop@1.1.0:
@@ -8428,7 +8435,7 @@ snapshots:
   jiti@2.6.0:
     optional: true
 
-  jotai@2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1):
+  jotai@2.15.0(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.18)(react@18.3.1):
     optionalDependencies:
       '@babel/core': 7.28.3
       '@babel/template': 7.27.2
@@ -8876,7 +8883,7 @@ snapshots:
 
   node-gyp-build-optional-packages@5.2.2:
     dependencies:
-      detect-libc: 2.1.0
+      detect-libc: 2.1.1
     optional: true
 
   node-gyp-build@4.8.4: {}
