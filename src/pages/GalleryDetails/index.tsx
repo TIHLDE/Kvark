@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { Route } from './+types';
 import GalleryEditorDialog from './components/GalleryEditor';
+import PictureUpload from './components/PictureUpload';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
@@ -53,7 +54,7 @@ const GalleryDetails = () => {
             <HavePermission apps={[PermissionApp.PICTURE]}>
               {data && (
                 <div className='flex items-center space-x-2'>
-                  {/* <PictureUpload id={data.id} /> */}
+                  <PictureUpload id={data.id} />
                   <GalleryEditorDialog id={data.id} />
                 </div>
               )}
