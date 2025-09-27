@@ -38,10 +38,10 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
                 </Button>
               </PopoverTrigger>
             </FormControl>
-            <PopoverContent className='w-auto p-0'>
+            <PopoverContent className='w-auto overflow-hidden p-0'>
               <Calendar
-                initialFocus
                 mode='single'
+                captionLayout='dropdown'
                 onSelect={(e) => {
                   field.onChange(e);
                   onDateChange?.(e);
