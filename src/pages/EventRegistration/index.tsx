@@ -17,7 +17,7 @@ import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
 import { MOBILE_APP } from '~/URLS';
 import { ListChecks, QrCode } from 'lucide-react';
-import { createRef, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { href, redirect, useParams } from 'react-router';
 import { toast } from 'sonner';
 
@@ -47,7 +47,7 @@ const QrScan = ({ onScan }: QrScanProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scanned]);
 
-  const videoRef = createRef<HTMLVideoElement>();
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useScanner(videoRef, {
     onResult(result) {

@@ -6,69 +6,17 @@ import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
 import type { SelectFormField, TextFormField } from '~/types';
 import { FormFieldType } from '~/types/Enums';
-import { Circle, GripHorizontal, Square, Trash, X } from 'lucide-react';
-import { useMemo, useRef } from 'react';
-import { useDrag, useDrop, type XYCoord } from 'react-dnd';
+import { Circle, Square, Trash, X } from 'lucide-react';
+import { useMemo } from 'react';
 
 export type FieldEditorProps = {
-  index: number;
   field: TextFormField | SelectFormField;
   updateField: (newField: TextFormField | SelectFormField) => void;
-  moveField: (dragIndex: number, hoverIndex: number) => void;
   removeField: () => void;
   disabled?: boolean;
 };
 
-interface DragItem {
-  index: number;
-  id: string;
-  type: string;
-}
-
-const FieldEditor = ({ moveField, index, field, updateField, removeField, disabled = false }: FieldEditorProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [{ isDragging }, drag, preview] = useDrag({
-    type: 'Field',
-    item: (id) => ({ id, index }),
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-
-  const [{ handlerId }, drop] = useDrop<DragItem, void, { handlerId: string | symbol | null }>({
-    accept: 'Field',
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      };
-    },
-    hover(item: DragItem, monitor) {
-      if (!ref.current) {
-        return;
-      }
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return;
-      }
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return;
-      }
-
-      moveField(dragIndex, hoverIndex);
-
-      item.index = hoverIndex;
-    },
-  });
-
+const FieldEditor = ({ field, updateField, removeField, disabled = false }: FieldEditorProps) => {
   const addFieldOption = () => {
     if (field.type !== FormFieldType.TEXT_ANSWER && !disabled) {
       updateField({ ...field, options: [...field.options, { title: '' }] });
@@ -101,12 +49,10 @@ const FieldEditor = ({ moveField, index, field, updateField, removeField, disabl
   }, [field]);
 
   const TypeIcon = useMemo(() => (field.type === FormFieldType.SINGLE_SELECT ? Circle : Square), [field]);
-  drop(drag(ref));
   return (
-    <div className={cn('w-full p-4 border rounded-md bg-card space-y-4', isDragging && 'opacity-50')} data-handler-id={handlerId} ref={preview}>
+    <div className='w-full space-y-4'>
       <div className='flex items-center justify-between'>
-        <div className='flex items-center cursor-pointer space-x-2' ref={ref}>
-          <GripHorizontal className='w-5 h-5' />
+        <div className='flex items-center cursor-pointer space-x-2'>
           <div>
             <h1 className={cn('', disabled && 'text-muted-foreground')}>{title}</h1>
             <p className='text-sm text-muted-foreground'>{description}</p>

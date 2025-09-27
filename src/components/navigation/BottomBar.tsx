@@ -12,7 +12,7 @@ import { href, Link } from 'react-router';
 import NavLink from '../ui/navlink';
 
 type Item = {
-  icon: JSX.Element;
+  icon: React.ReactNode;
   text: string;
   to: string;
 };

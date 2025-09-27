@@ -11,7 +11,7 @@ export type ScannerOptions = {
 
 // Sourced from: https://github.com/jakub-ucinski/qr-scanner-react/blob/cf465602c9967b71717c271d32892cfeb14ff7c9/src/hooks/useScanner.tsx
 export function useScanner(
-  vid: React.RefObject<HTMLVideoElement>,
+  vid: React.RefObject<HTMLVideoElement | null>,
   { onResult = () => {}, color = 'both', maxScansPerSecond = 5, onError = () => {}, cameraPreference = 'environment' }: ScannerOptions,
 ) {
   const inversion = (color && color === 'dark' && 'original') || (color && color === 'light' && 'invert') || 'both';
