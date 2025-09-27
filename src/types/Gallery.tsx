@@ -1,6 +1,6 @@
 import type { EventList } from '~/types';
 
-export type GalleryCreate = Pick<Gallery, 'title'>;
+export type GalleryCreate = Omit<Gallery, 'event' | 'id'>;
 export type GalleryRequired = Partial<Gallery> & Pick<Gallery, 'title'>;
 export type PictureRequired = Partial<Picture> & Pick<Picture, 'image'>;
 

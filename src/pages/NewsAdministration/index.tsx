@@ -5,30 +5,25 @@ import NewsEditor from '~/pages/NewsAdministration/components/NewsEditor';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { href, Link, redirect, useNavigate, useParams } from 'react-router';
+import { href, Link, redirect } from 'react-router';
 
 import { Route } from './+types';
 import NewsList from './components/NewsList';
 
-export async function clientLoader({ request }: Route.ClientActionArgs) {
+export async function clientLoader({ request, params }: Route.ClientActionArgs) {
   const auth = await authClientWithRedirect(request);
 
   if (!userHasWritePermission(auth.permissions, PermissionApp.NEWS)) {
     return redirect(href('/'));
   }
+
+  return {
+    newsId: params.newsId ? Number(params.newsId) : undefined,
+  };
 }
 
-const NewsAdministration = () => {
-  const navigate = useNavigate();
-  const { newsId } = useParams();
-
-  const goToNews = (newNews: number | null) => {
-    if (newNews) {
-      navigate(`${URLS.news}${newNews}/`);
-    } else {
-      navigate(URLS.newsAdmin);
-    }
-  };
+export default function NewsAdministration({ loaderData }: Route.ComponentProps) {
+  const { newsId } = loaderData;
 
   return (
     <Page className='max-w-6xl mx-auto'>
@@ -58,10 +53,8 @@ const NewsAdministration = () => {
           </div>
         </div>
 
-        <NewsEditor goToNews={goToNews} newsId={Number(newsId)} />
+        <NewsEditor newsId={Number(newsId)} />
       </div>
     </Page>
   );
-};
-
-export default NewsAdministration;
+}

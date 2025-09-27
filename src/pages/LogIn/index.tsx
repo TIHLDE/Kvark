@@ -1,69 +1,43 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { loginUser } from '~/api/auth';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import Page from '~/components/navigation/Page';
-import { Button, buttonVariants } from '~/components/ui/button';
+import { buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
 import { analyticsEvent } from '~/hooks/Utils';
 import { RequestResponse } from '~/types';
 import URLS from '~/URLS';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, redirect, useSubmit } from 'react-router';
+import { parseAsString, useQueryState } from 'nuqs';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { Route } from './+types';
 
 const formSchema = z.object({
   username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),
   password: z.string().min(1, { message: 'Passorde er påkrevd' }),
 });
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const redirectUrl = new URL(request.url)?.searchParams?.get('redirectTo') ?? '/';
-  const result = formSchema.safeParse(await request.json());
-  if (!result.success) {
-    return {
-      success: false,
-      errors: result.error.flatten().fieldErrors,
-    } as const;
-  }
+type LoginFormValues = z.infer<typeof formSchema>;
 
-  const { username, password } = result.data;
-  try {
-    await loginUser(username, password);
-    analyticsEvent('login', 'auth', 'Logged inn');
-    return redirect(redirectUrl);
-  } catch (e) {
-    return {
-      success: false,
-      errors: {
-        username: (e as RequestResponse).detail ?? 'Noe gikk galt',
-      },
-    } as const;
-  }
-}
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [redirectUrl] = useQueryState('redirect', parseAsString.withDefault('/'));
 
-export default function LoginPage({ actionData }: Route.ComponentProps) {
-  const submit = useSubmit();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: { onBlur: formSchema, onSubmit: formSchema },
     defaultValues: {
       username: '',
       password: '',
+    } as LoginFormValues,
+    async onSubmit({ value }) {
+      try {
+        await loginUser(value.username, value.password);
+        analyticsEvent('login', 'auth', 'Logged inn');
+        navigate(redirectUrl);
+      } catch (e) {
+        toast.error('Kunne ikke logge inn: ' + ((e as RequestResponse).detail ?? 'Noe gikk galt'));
+      }
     },
   });
-
-  useEffect(() => {
-    if (actionData?.success === false) {
-      for (const [key, value] of Object.entries(actionData.errors)) {
-        form.setError(key as keyof z.infer<typeof formSchema>, { message: value });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionData]);
 
   return (
     <Page>
@@ -73,45 +47,17 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
           <CardDescription>Logg inn med ditt TIHLDE brukernavn og passord</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form className='space-y-6' onSubmit={form.handleSubmit((v) => submit(v, { method: 'POST', encType: 'application/json' }))}>
-              <FormField
-                control={form.control}
-                name='username'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Brukernavn <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+            <form.AppField name='username'>{(field) => <field.InputField label='Brukernavn' required placeholder='Skriv her...' />}</form.AppField>
 
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Passord <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' type='password' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <form.AppField name='password'>{(field) => <field.InputField label='Passord' required placeholder='Skriv her...' type='password' />}</form.AppField>
 
-              <Button className='w-full' disabled={form.formState.isSubmitting} size='lg' type='submit'>
-                {form.formState.isSubmitting ? 'Logger inn...' : 'Logg inn'}
-              </Button>
-            </form>
-          </Form>
+            <form.AppForm>
+              <form.SubmitButton className='w-full' size='lg'>
+                Logg inn
+              </form.SubmitButton>
+            </form.AppForm>
+          </form>
 
           <div className='flex items-center justify-center space-x-12 mt-6'>
             <Link className={buttonVariants({ variant: 'link' })} to={URLS.forgotPassword}>

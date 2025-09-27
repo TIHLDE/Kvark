@@ -1,18 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import MarkdownEditor from '~/components/inputs/MarkdownEditor';
-import { FormImageUpload } from '~/components/inputs/Upload';
-import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import RendererPreview from '~/components/miscellaneous/RendererPreview';
-import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
-import { Switch } from '~/components/ui/switch';
 import { useCreateNews, useDeleteNews, useNewsById, useUpdateNews } from '~/hooks/News';
 import NewsRenderer from '~/pages/NewsDetails/components/NewsRenderer';
 import type { News } from '~/types';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { href, Navigate, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -21,7 +14,6 @@ import NewsEditorSkeleton from './NewsEditorSkeleton';
 
 export type NewsEditorProps = {
   newsId: number | null;
-  goToNews: (newNews: number | null) => void;
 };
 
 const formSchema = z.object({
@@ -30,102 +22,74 @@ const formSchema = z.object({
   body: z.string().min(1, { message: 'Innholdet kan ikke være tomt' }),
   image: z.string(),
   image_alt: z.string(),
-  creator: z.object({ user_id: z.string() }).nullable(),
+  creator: z.string().optional(),
   emojis_allowed: z.boolean(),
 });
 
-const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
+type FormValues = z.infer<typeof formSchema>;
+
+export default function NewsEditor({ newsId }: NewsEditorProps) {
   const { data, isError, isLoading } = useNewsById(newsId || -1);
   const createNews = useCreateNews();
   const updateNews = useUpdateNews(newsId || -1);
   const deleteNews = useDeleteNews(newsId || -1);
-  const isUpdating = useMemo(
-    () => createNews.isPending || updateNews.isPending || deleteNews.isPending,
-    [createNews.isPending, updateNews.isPending, deleteNews.isPending],
-  );
+  const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      onSubmit: formSchema,
+    },
     defaultValues: {
-      title: '',
-      header: '',
-      creator: null,
-      body: '',
-      image: '',
-      image_alt: '',
-      emojis_allowed: false,
+      title: data?.title ?? '',
+      header: data?.header ?? '',
+      creator: data?.creator?.user_id ?? '',
+      body: data?.body ?? '',
+      image: data?.image ?? '',
+      image_alt: data?.image_alt ?? '',
+      emojis_allowed: data?.emojis_allowed ?? false,
+    } as FormValues,
+
+    async onSubmit({ value }) {
+      if (!newsId) {
+        await createNews.mutateAsync(
+          { ...value, creator: value.creator ?? null },
+          {
+            onSuccess: (data) => {
+              toast.success('Nyheten ble opprettet');
+              navigate(href('/nyheter/:id', { id: String(data.id) }));
+            },
+            onError: (e) => {
+              toast.error(e.detail);
+            },
+          },
+        );
+      } else {
+        await updateNews.mutateAsync(
+          { ...value, creator: value.creator ?? null },
+          {
+            onSuccess: () => {
+              toast.success('Nyheten ble oppdatert');
+            },
+            onError: (e) => {
+              toast.error(e.detail);
+            },
+          },
+        );
+      }
     },
   });
 
-  const setValues = useCallback(
-    (newValues: News | null) => {
-      form.reset({
-        title: newValues?.title || '',
-        header: newValues?.header || '',
-        creator: newValues?.creator || null,
-        body: newValues?.body || '',
-        image: newValues?.image || '',
-        image_alt: newValues?.image_alt || '',
-        emojis_allowed: newValues?.emojis_allowed || false,
-      });
-    },
-    [form.reset],
-  );
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (!newsId) {
-      createNews.mutate(
-        { ...values, creator: values.creator?.user_id || null },
-        {
-          onSuccess: (data) => {
-            toast.success('Nyheten ble opprettet');
-            goToNews(data.id);
-          },
-          onError: (e) => {
-            toast.error(e.detail);
-          },
-        },
-      );
-    } else {
-      updateNews.mutate(
-        { ...values, creator: values.creator?.user_id || null },
-        {
-          onSuccess: () => {
-            toast.success('Nyheten ble oppdatert');
-          },
-          onError: (e) => {
-            toast.error(e.detail);
-          },
-        },
-      );
-    }
-  };
-
-  useEffect(() => {
-    if (isError) {
-      goToNews(null);
-    }
-  }, [isError, goToNews]);
-
-  useEffect(() => {
-    if (data) {
-      setValues(data);
-    } else {
-      setValues(null);
-    }
-  }, [data, setValues]);
-
   const getNewsPreview = (): News | null => {
-    const title = form.getValues('title');
-    const header = form.getValues('header');
-    const body = form.getValues('body');
+    const { title, header, body } = form.state.values as FormValues;
 
     if (!title && !header && !body) {
       return null;
     }
 
     return {
-      ...form.getValues(),
+      ...(form.state.values as FormValues),
+      creator: null,
       created_at: new Date().toJSON(),
       id: 1,
       updated_at: new Date().toJSON(),
@@ -136,7 +100,7 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     deleteNews.mutate(null, {
       onSuccess: (data) => {
         toast.success(data.detail);
-        goToNews(null);
+        navigate(href('/nyheter'));
       },
       onError: (e) => {
         toast.error(e.detail);
@@ -144,98 +108,52 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
     });
   };
 
+  useEffect(() => {
+    form.reset();
+  }, [data, form]);
+
   if (isLoading) {
     return <NewsEditorSkeleton />;
+  }
+
+  if (isError) {
+    return <Navigate to={href('/nyheter')} />;
   }
 
   return (
     <Card>
       <CardContent className='py-6'>
-        <Form {...form}>
-          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name='title'
-              render={({ field }) => (
-                <FormItem className='w-full'>
-                  <FormLabel>
-                    Tittel <span className='text-red-300'>*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder='Skriv her...' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+          <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
 
-            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <FormField
-                control={form.control}
-                name='header'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Header <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className='space-y-6 w-full md:grid md:gap-x-4 md:grid-cols-2'>
+            <form.AppField name='header'>{(field) => <field.InputField label='Header' required />}</form.AppField>
 
-              <SingleUserSearch className='w-[800px]' form={form} label='Forfatter' name='creator' />
-            </div>
+            <form.AppField name='creator'>{(field) => <field.UserField label='Forfatter' multiple={false} />}</form.AppField>
+          </div>
 
-            <MarkdownEditor form={form} label='Innhold' name='body' required />
+          <form.AppField name='body'>{(field) => <field.TextareaField label='Innhold' required />}</form.AppField>
 
-            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
+          <form.AppField name='image'>{(field) => <field.ImageUploadField label='Velg bilde' />}</form.AppField>
 
-            <FormField
-              control={form.control}
-              name='image_alt'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Alternativ bildetekst</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Skriv her...' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form.AppField name='image_alt'>{(field) => <field.InputField label='Alternativ bilde tekst' />}</form.AppField>
 
-            <FormField
-              control={form.control}
-              name='emojis_allowed'
-              render={({ field }) => (
-                <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
-                  <div className='space-y-0.5'>
-                    <FormLabel className='text-base'>Reaksjoner</FormLabel>
-                    <FormDescription>La brukere reagere på nyheten med emojis</FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <form.AppField name='emojis_allowed'>
+            {(field) => <field.SwitchField label='Reaksjoner' description='La brukere reagere på nyheten med emojis' />}
+          </form.AppField>
 
-            <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
-              <DeleteNews deleteNews={remove} newsId={newsId} />
+          <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
+            <DeleteNews deleteNews={remove} newsId={newsId} />
 
-              <RendererPreview getContent={getNewsPreview} renderer={NewsRenderer} />
-              <Button className='w-full md:w-40 block' disabled={isUpdating} type='submit'>
+            <RendererPreview getContent={getNewsPreview} renderer={NewsRenderer} />
+            <form.AppForm>
+              <form.SubmitButton className='w-full md:w-40 block' loading='Lagrer endringer...' type='submit'>
                 {newsId ? 'Oppdater nyhet' : 'Opprett nyhet'}
-              </Button>
-            </div>
-          </form>
-        </Form>
+              </form.SubmitButton>
+            </form.AppForm>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );
-};
-
-export default NewsEditor;
+}

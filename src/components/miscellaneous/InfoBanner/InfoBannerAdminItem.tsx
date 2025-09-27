@@ -1,10 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import DateTimePicker from '~/components/inputs/DateTimePicker';
-import FormInput from '~/components/inputs/Input';
-import FormTextarea from '~/components/inputs/Textarea';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
@@ -14,8 +9,7 @@ import { formatDate } from '~/utils';
 import { formatDistance, parseISO } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { Info, Pencil, Trash } from 'lucide-react';
-import { useCallback, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -33,13 +27,15 @@ const formSchema = z.object({
   visible_until: z.date(),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
   const { data: banner } = useInfoBanner(bannerId || '');
   const updateBanner = useUpdateInfoBanner(bannerId || '');
   const createBanner = useCreateInfoBanner();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: { onBlur: formSchema },
     defaultValues: {
       title: banner?.title || '',
       description: banner?.description || '',
@@ -48,101 +44,89 @@ export const InfoBannerForm = ({ bannerId }: InfoBannerFormProps) => {
       url: banner?.url || '',
       visible_from: banner ? parseISO(banner.visible_from) : new Date(),
       visible_until: banner ? parseISO(banner.visible_until) : new Date(),
+    } as FormValues,
+    async onSubmit({ value }) {
+      if (updateBanner.isPending || createBanner.isPending) return;
+      const infoBanner = {
+        ...value,
+        visible_from: value.visible_from.toJSON(),
+        visible_until: value.visible_until.toJSON(),
+      } as InfoBanner;
+      if (bannerId) {
+        await updateBanner.mutateAsync(infoBanner, {
+          onSuccess: () => {
+            toast.success('Banneret ble oppdatert.');
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      } else {
+        await createBanner.mutateAsync(infoBanner, {
+          onSuccess: () => {
+            toast.success('Banneret ble opprettet.');
+            setValues(null);
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      }
     },
   });
 
   const setValues = useCallback(
     (newValues: InfoBanner | null) => {
-      form.reset({
-        image: newValues?.image ?? '',
-        image_alt: newValues?.image_alt || '',
-        title: newValues?.title || '',
-        description: newValues?.description || '',
-        url: newValues?.url || '',
-        visible_from: newValues ? parseISO(newValues.visible_from) : new Date(),
-        visible_until: newValues ? parseISO(newValues.visible_until) : new Date(),
-      });
+      form.setFieldValue('image', newValues?.image ?? '');
+      form.setFieldValue('image_alt', newValues?.image_alt || '');
+      form.setFieldValue('title', newValues?.title || '');
+      form.setFieldValue('description', newValues?.description || '');
+      form.setFieldValue('url', newValues?.url || '');
+      form.setFieldValue('visible_from', newValues ? parseISO(newValues.visible_from) : new Date());
+      form.setFieldValue('visible_until', newValues ? parseISO(newValues.visible_until) : new Date());
       if (!newValues) {
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
-        form.setValue('visible_until', tomorrow);
+        form.setFieldValue('visible_until', tomorrow);
       }
     },
-    [form.reset],
-  );
-
-  useEffect(() => {
-    setValues(banner || null);
-  }, [banner, setValues]);
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (updateBanner.isPending || createBanner.isPending) {
-      return;
-    }
-
-    const infoBanner = {
-      ...values,
-      visible_from: values.visible_from.toJSON(),
-      visible_until: values.visible_until.toJSON(),
-    } as InfoBanner;
-    if (bannerId) {
-      updateBanner.mutate(infoBanner, {
-        onSuccess: () => {
-          toast.success('Banneret ble oppdatert.');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    } else {
-      createBanner.mutate(infoBanner, {
-        onSuccess: () => {
-          toast.success('Banneret ble opprettet.');
-          form.reset();
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    }
-  };
-
-  const OpenButton = (
-    <Button size={bannerId ? 'icon' : 'default'} variant={bannerId ? 'ghost' : 'default'}>
-      {bannerId ? <Pencil className='h-4 w-4' /> : 'Nytt banner'}
-    </Button>
+    [form],
   );
 
   return (
     <ResponsiveDialog
       description={bannerId ? 'Her kan du redigere et banner' : 'Her kan du opprette et nytt banner'}
       title={bannerId ? 'Rediger banner' : 'Nytt banner'}
-      trigger={OpenButton}>
+      trigger={
+        <Button size={bannerId ? 'icon' : 'default'} variant={bannerId ? 'ghost' : 'default'}>
+          {bannerId ? <Pencil className='h-4 w-4' /> : 'Nytt banner'}
+        </Button>
+      }>
       <ScrollArea className='h-[60vh]'>
-        <Form {...form}>
-          <form className='space-y-4 px-2 py-6' onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput form={form} label='Tittel' name='title' required />
+        <form className='space-y-4 px-2 py-6' onSubmit={handleFormSubmit(form)}>
+          <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
 
-            <div className='w-full flex items-center space-x-4'>
-              <DateTimePicker form={form} label='Start' name='visible_from' required />
+          <div className='w-full flex items-center space-x-4'>
+            <form.AppField name='visible_from'>{(field) => <field.DateTimeField label='Start' required />}</form.AppField>
 
-              <DateTimePicker form={form} label='Slutt' name='visible_until' required />
-            </div>
+            <form.AppField name='visible_until'>{(field) => <field.DateTimeField label='Slutt' required />}</form.AppField>
+          </div>
 
-            <FormInput description='F.eks: https://tihlde.org eller https://nrk.no' form={form} label='Url' name='url' />
+          <form.AppField name='url'>{(field) => <field.InputField description='F.eks: https://tihlde.org eller https://nrk.no' label='Url' />}</form.AppField>
 
-            <FormTextarea form={form} label='Beskrivelse' name='description' required />
+          <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' required />}</form.AppField>
 
-            <FormImageUpload form={form} label='Bilde' name='image' ratio='21:9' />
+          <form.AppField name='image'>{(field) => <field.ImageUploadField label='Bilde' />}</form.AppField>
 
-            <FormInput form={form} label='Alternativ bildetekst' name='image_alt' />
+          <form.AppField name='image_alt'>{(field) => <field.InputField label='Alternativ bildetekst' />}</form.AppField>
 
-            <Button className='w-full' disabled={createBanner.isPending || updateBanner.isPending}>
+          <form.AppForm>
+            <form.SubmitButton className='w-full' disabled={createBanner.isPending || updateBanner.isPending}>
               {createBanner.isPending || updateBanner.isPending ? 'Lagrer...' : 'Lagre'}
-            </Button>
-          </form>
-        </Form>
+            </form.SubmitButton>
+          </form.AppForm>
+        </form>
       </ScrollArea>
     </ResponsiveDialog>
   );
@@ -160,18 +144,16 @@ const InfoBannerDeleteDialog = ({ bannerId }: InfoBannerFormProps) => {
       },
     });
 
-  const OpenButton = (
-    <Button size='icon' variant='ghost'>
-      <Trash className='h-4 w-4' />
-    </Button>
-  );
-
   return (
     <ResponsiveAlertDialog
       action={remove}
       description='Er du sikker på at du vil slette banneret? Dette kan ikke angres på.'
       title='Slett banner'
-      trigger={OpenButton}
+      trigger={
+        <Button size='icon' variant='ghost'>
+          <Trash className='h-4 w-4' />
+        </Button>
+      }
     />
   );
 };

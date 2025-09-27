@@ -1,4 +1,13 @@
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type QueryKey, type UseMutationResult, type UseQueryOptions } from '@tanstack/react-query';
+import {
+  queryOptions,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryKey,
+  type UseMutationResult,
+  type UseQueryOptions,
+} from '@tanstack/react-query';
 import API from '~/api/api';
 import { AuthObject } from '~/api/auth';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
@@ -36,12 +45,18 @@ export const USER_NOTIFICATION_SETTINGS_QUERY_KEY = 'user_notification_settings'
 export const USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY = 'user_notification_setting_choices';
 export const USERS_QUERY_KEY = 'users';
 
+export const getUserQueryOptions = (userId?: User['user_id']) => {
+  return queryOptions({
+    queryKey: [USER_QUERY_KEY, userId],
+    queryFn: () => API.getUserData(userId),
+  });
+};
+
 export const useUser = (userId?: User['user_id'], options: { enabled?: boolean } = {}) => {
   const isAuthenticated = useIsAuthenticated();
   const logOut = useLogout();
   const query = useQuery({
-    queryKey: [USER_QUERY_KEY, userId],
-    queryFn: () => API.getUserData(userId),
+    ...getUserQueryOptions(userId),
     initialData: () => {
       if (userId == null) {
         // Get the auth user object from the query client if no userId is provided.

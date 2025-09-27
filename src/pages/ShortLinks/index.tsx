@@ -1,11 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { authClientWithRedirect } from '~/api/auth';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
@@ -14,7 +12,6 @@ import { useAnalytics, useShare } from '~/hooks/Utils';
 import type { ShortLink } from '~/types';
 import { Copy, Network, Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -99,39 +96,32 @@ const formSchema = z.object({
   url: z.string().min(1, { message: 'URL må fylles ut' }).url({ message: 'Ugyldig URL' }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const ShortLinks = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { data, error } = useShortLinks();
   const createShortLink = useCreateShortLink();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      url: '',
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      onSubmit: formSchema,
+      async onSubmitAsync({ value }) {
+        await createShortLink.mutateAsync(value, {
+          onSuccess: () => {
+            toast.success('Lenken ble opprettet');
+            setIsOpen(false);
+          },
+          onError: (e) => {
+            toast.error('Kunne ikke opprette linken: ' + e.detail);
+          },
+        });
+      },
     },
+    defaultValues: { name: '', url: '' } as FormValues,
   });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createShortLink.mutate(values, {
-      onSuccess: () => {
-        toast.success('Lenken ble opprettet');
-        form.reset();
-        setIsOpen(false);
-      },
-      onError: (e) => {
-        toast.error(e.detail || 'Kunne ikke opprette linken');
-      },
-    });
-  };
-
-  const CreateButton = (
-    <Button>
-      <Plus className='w-5 h-5 stroke-[1.5px] mr-2' />
-      Opprett ny link
-    </Button>
-  );
 
   return (
     <Page className='space-y-12'>
@@ -147,47 +137,23 @@ const ShortLinks = () => {
           onOpenChange={setIsOpen}
           open={isOpen}
           title='Ny lenke'
-          trigger={CreateButton}>
-          <Form {...form}>
-            <form className='space-y-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Navn <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          trigger={
+            <Button>
+              <Plus className='w-5 h-5 stroke-[1.5px] mr-2' />
+              Opprett ny link
+            </Button>
+          }>
+          <form className='space-y-6 px-2' onSubmit={handleFormSubmit(form)}>
+            <form.AppField name='name'>{(field) => <field.InputField label='Navn' required />}</form.AppField>
 
-              <FormField
-                control={form.control}
-                name='url'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      URL <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormDescription>URL til lenken du vil forkorte</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <form.AppField name='url'>{(field) => <field.InputField label='URL' description='URL til lenken du vil forkorte' required />}</form.AppField>
 
-              <Button className='w-full' disabled={createShortLink.isPending} type='submit'>
+            <form.AppForm>
+              <form.SubmitButton className='w-full' disabled={createShortLink.isPending} type='submit'>
                 {createShortLink.isPending ? 'Oppretter...' : 'Opprett'}
-              </Button>
-            </form>
-          </Form>
+              </form.SubmitButton>
+            </form.AppForm>
+          </form>
         </ResponsiveDialog>
       </div>
 

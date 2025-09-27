@@ -51,16 +51,19 @@ export function SelectField({ group, options, placeholder, ...props }: SelectFie
           </SelectItem>
         ))}
 
-        {grouped?.map((group) => (
-          <SelectGroup key={group.id}>
-            <SelectLabel>{group.label}</SelectLabel>
-            {group.options.map((opt) => (
-              <SelectItem key={`group-${opt.value}`} value={opt.value}>
-                {opt.content}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        ))}
+        {grouped?.map(
+          (group) =>
+            group.options.length > 0 && (
+              <SelectGroup key={group.id}>
+                <SelectLabel>{group.label}</SelectLabel>
+                {group.options.map((opt) => (
+                  <SelectItem key={`group-${opt.value}`} value={opt.value}>
+                    {opt.content}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            ),
+        )}
       </SelectContent>
     </Select>
   );

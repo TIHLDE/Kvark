@@ -1,14 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import MarkdownEditor from '~/components/inputs/MarkdownEditor';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useUpdateGroupFine } from '~/hooks/Group';
-import type { GroupFine } from '~/types';
+import type { GroupFine, RequestResponse } from '~/types';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -19,56 +15,63 @@ type EditFineProps = {
 
 const formSchema = z.object({
   reason: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
-  amount: z.string(),
+  amount: z
+    .string()
+    .min(1, { message: 'Beløpet kan ikke være tomt' })
+    .refine((v) => !Number.isNaN(Number(v)), { message: 'Beløpet må være et gyldig tall' }),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 const EditFine = ({ groupSlug, fine }: EditFineProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const editFine = useUpdateGroupFine(groupSlug, fine.id);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: { onBlur: formSchema, onSubmit: formSchema },
     defaultValues: {
-      reason: fine.reason || '',
-      amount: fine.amount.toString() || '',
+      reason: fine.reason ?? '',
+      amount: fine.amount.toString() ?? '',
+    } as FormValues,
+    async onSubmit({ value }) {
+      const data = {
+        reason: value.reason,
+        amount: Number(value.amount),
+      };
+      await toast.promise(
+        editFine.mutateAsync(data, {
+          onSuccess: () => setIsOpen(false),
+        }),
+        {
+          loading: 'Oppdaterer boten...',
+          success: 'Boten ble oppdatert',
+          error: (e) => `Kunne ikke oppdatere boten: ${(e as RequestResponse).detail ?? 'Noe gikk galt'}`,
+        },
+      );
     },
   });
 
-  const onUpdate = (values: z.infer<typeof formSchema>) => {
-    const data = {
-      reason: values.reason,
-      amount: parseInt(values.amount),
-    };
-    editFine.mutate(data, {
-      onSuccess: () => {
-        toast.success('Boten ble oppdatert');
-      },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
-  };
-
-  const OpenButton = (
-    <Button className='w-full' variant='outline'>
-      <Pencil className='mr-2 w-5 h-5' />
-      Rediger bot
-    </Button>
-  );
-
   return (
-    <ResponsiveDialog description='Her kan du redigere boten' onOpenChange={setIsOpen} open={isOpen} title='Rediger bot' trigger={OpenButton}>
-      <Form {...form}>
-        <form className='space-y-6' onSubmit={form.handleSubmit(onUpdate)}>
-          <MarkdownEditor form={form} label='Beskrivelse' name='reason' required />
-
-          <FormInput disabled={fine.approved || fine.payed} form={form} label='Beløp' name='amount' required type='number' />
-
-          <Button className='w-full' disabled={editFine.isPending} type='submit'>
-            {editFine.isPending ? 'Oppdaterer...' : 'Oppdater'}
-          </Button>
-        </form>
-      </Form>
+    <ResponsiveDialog
+      description='Her kan du redigere boten'
+      onOpenChange={setIsOpen}
+      open={isOpen}
+      title='Rediger bot'
+      trigger={
+        <Button className='w-full' variant='outline'>
+          <Pencil className='mr-2 w-5 h-5' />
+          Rediger bot
+        </Button>
+      }>
+      <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+        <form.AppField name='reason'>{(field) => <field.TextareaField label='Beskrivelse' required />}</form.AppField>
+        <form.AppField name='amount'>{(field) => <field.InputField type='number' label='Beløp' placeholder='Skriv her...' required />}</form.AppField>
+        <form.AppForm>
+          <form.SubmitButton className='w-full' loading='Oppdaterer...' type='submit'>
+            Oppdater
+          </form.SubmitButton>
+        </form.AppForm>
+      </form>
     </ResponsiveDialog>
   );
 };

@@ -1,15 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import { FormSelect } from '~/components/inputs/Select';
-import { FormDetailSwitch } from '~/components/inputs/Switch';
-import FormTextarea from '~/components/inputs/Textarea';
-import { FormImageUpload } from '~/components/inputs/Upload';
-import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { useUpdateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { User } from '~/types';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -23,106 +15,119 @@ const formSchema = z.object({
   first_name: z.string({ required_error: 'Fornavn er påkrevd' }).min(1, { message: 'Fornavn er påkrevd' }),
   last_name: z.string({ required_error: 'Etternavn er påkrevd' }).min(1, { message: 'Etternavn er påkrevd' }),
   email: z.string().email({ message: 'Epost er ugyldig' }),
-  image: z.string().optional(),
+  image: z.string(),
   gender: z.string(),
-  allergy: z.string().optional(),
-  tool: z.string().optional(),
+  allergy: z.string(),
+  tool: z.string(),
   public_event_registrations: z.boolean(),
   accepts_event_rules: z.boolean(),
   allows_photo_by_default: z.boolean(),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
   const { event } = useAnalytics();
   const updateUser = useUpdateUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { ...user, image: user.image || '', gender: user.gender.toString() },
+  const form = useAppForm({
+    validators: { onBlur: formSchema, onSubmit: formSchema },
+    defaultValues: {
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      image: user.image || '',
+      gender: user.gender.toString(),
+      allergy: user.allergy || '',
+      tool: user.tool || '',
+      public_event_registrations: user.public_event_registrations,
+      accepts_event_rules: user.accepts_event_rules,
+      allows_photo_by_default: user.allows_photo_by_default,
+    } as FormValues,
+    async onSubmit({ value }) {
+      await updateUser.mutateAsync(
+        { userId: user.user_id, user: { ...user, ...value, gender: parseInt(value.gender) } },
+        {
+          onSuccess: () => {
+            toast.success('Bruker oppdatert');
+            event('update-settings', 'profile', 'Update');
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        },
+      );
+    },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (updateUser.isPending) {
-      return;
-    }
-    updateUser.mutate(
-      { userId: user.user_id, user: { ...user, ...values, gender: parseInt(values.gender) } },
-      {
-        onSuccess: () => {
-          toast.success('Bruker oppdatert');
-          event('update-settings', 'profile', 'Update');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      },
-    );
-  };
-
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
-    <Form {...form}>
-      <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
-        {isAdmin && (
-          <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
-            <FormInput form={form} label='Fornavn' name='first_name' required />
+    <form className='space-y-4' onSubmit={handleFormSubmit(form)}>
+      {isAdmin && (
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
+          <form.AppField name='first_name'>{(field) => <field.InputField label='Fornavn' required />}</form.AppField>
 
-            <FormInput form={form} label='Etternavn' name='last_name' required />
+          <form.AppField name='last_name'>{(field) => <field.InputField label='Etternavn' required />}</form.AppField>
 
-            <FormInput form={form} label='Epost' name='email' required type='email' />
-          </div>
+          <form.AppField name='email'>{(field) => <field.InputField label='Epost' required type='email' />}</form.AppField>
+        </div>
+      )}
+
+      <form.AppField name='image'>{(field) => <field.ImageUploadField label='Velg profilbilde' />}</form.AppField>
+
+      <form.AppField name='gender'>
+        {(field) => (
+          <field.SelectField
+            label='Kjønn'
+            options={[
+              { value: '1', content: 'Mann' },
+              { value: '2', content: 'Kvinne' },
+              { value: '3', content: 'Annet' },
+            ]}
+          />
         )}
+      </form.AppField>
 
-        <FormImageUpload form={form} label='Velg profilbilde' name='image' />
+      <form.AppField name='tool'>{(field) => <field.InputField label='Kjøkkenredskap' />}</form.AppField>
 
-        <FormSelect
-          form={form}
-          label='Kjønn'
-          name='gender'
-          options={[
-            { label: 'Mann', value: 1 },
-            { label: 'Kvinne', value: 2 },
-            { label: 'Annet', value: 3 },
-          ]}
-        />
+      <form.AppField name='allergy'>
+        {(field) => <field.TextareaField description='Dine allergier vises til arrangører ved arrangementer' label='Dine allergier' />}
+      </form.AppField>
 
-        <FormInput form={form} label='Kjøkkenredskap' name='tool' />
+      <form.AppField name='public_event_registrations'>
+        {(field) => (
+          <field.SwitchField
+            label='Offentlige arrangementspåmeldinger'
+            description='Bestemmer om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer, og om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.'
+          />
+        )}
+      </form.AppField>
 
-        <FormTextarea description='Dine allergier vises til arrangører ved arrangementer' form={form} label='Dine allergier' name='allergy' />
+      <form.AppField name='accepts_event_rules'>
+        {(field) => <field.SwitchField label='Aksepterer arrangementreglene' description='Se arrangementreglene i wiki' />}
+      </form.AppField>
+      <div className='text-sm'>
+        <Link className='text-primary' to='/wiki/arrangementsregler/'>
+          Arrangementreglene
+        </Link>
+      </div>
 
-        <FormDetailSwitch
-          description='Bestemmer om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer, og om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.'
-          form={form}
-          label='Offentlige arrangementspåmeldinger'
-          name='public_event_registrations'
-        />
+      <form.AppField name='allows_photo_by_default'>
+        {(field) => (
+          <field.SwitchField
+            label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
+            description='Godtar at bilder av deg kan deles på TIHLDE sine plattformer'
+          />
+        )}
+      </form.AppField>
 
-        <FormDetailSwitch
-          description={
-            <Link className='text-primary' to='/wiki/arrangementsregler/'>
-              Arrangementreglene
-            </Link>
-          }
-          form={form}
-          label='Aksepterer arrangementreglene'
-          name='accepts_event_rules'
-        />
-
-        <FormDetailSwitch
-          description='Godtar at bilder av deg kan deles på TIHLDE sine plattformer'
-          form={form}
-          label='Jeg godtar at bilder av meg kan deles på TIHLDE sine plattformer'
-          name='allows_photo_by_default'
-        />
-
-        <Button className='w-full' type='submit'>
-          {updateUser.isPending ? 'Lagrer...' : 'Lagre'}
-        </Button>
-      </form>
-    </Form>
+      <form.AppForm>
+        <form.SubmitButton loading={'Lagrer...'} className='w-full' type='submit'>
+          Lagre
+        </form.SubmitButton>
+      </form.AppForm>
+    </form>
   );
 };
 

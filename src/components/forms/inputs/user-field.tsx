@@ -1,7 +1,9 @@
 import UserSelect from '~/components/inputs/UserSelect';
+import { useDebounce } from '~/hooks/Utils';
 import { useState } from 'react';
 
 import { FieldBase, InputBaseProps } from '.';
+import { useFieldContext } from '../AppForm';
 
 type UserFieldProps = InputBaseProps & {
   multiple?: boolean;
@@ -9,47 +11,37 @@ type UserFieldProps = InputBaseProps & {
 };
 
 const options = [
-  { name: 'Alice Hevense', user_id: 'ahevense' },
-  { name: 'Bob Brun', user_id: 'bbrun' },
-  { name: 'Charlie Dean', user_id: 'cdean' },
-  { name: 'David Franklin', user_id: 'dfranklin' },
-  { name: 'Eve Jones', user_id: 'ejones' },
-  { name: 'Frank Smith', user_id: 'fsmith' },
-  { name: 'George Thomas', user_id: 'gthomas' },
-  { name: 'Hannah White', user_id: 'hwhite' },
-  { name: 'Ivy Johnson', user_id: 'ijohnson' },
-  { name: 'Kevin Garcia', user_id: 'kgarcia' },
+  { name: 'Alice Hevense', id: 'ahevense' },
+  { name: 'Bob Brun', id: 'bbrun' },
+  { name: 'Charlie Dean', id: 'cdean' },
+  { name: 'David Franklin', id: 'dfranklin' },
+  { name: 'Eve Jones', id: 'ejones' },
+  { name: 'Frank Smith', id: 'fsmith' },
+  { name: 'George Thomas', id: 'gthomas' },
+  { name: 'Hannah White', id: 'hwhite' },
+  { name: 'Ivy Johnson', id: 'ijohnson' },
+  { name: 'Kevin Garcia', id: 'kgarcia' },
 ];
 
-export function UserField({ label, description, required, ...props }: UserFieldProps) {
+export function UserField({ label, description, required, multiple = false, ...props }: UserFieldProps) {
+  const field = useFieldContext<string | string[] | undefined>();
   const [search, setSearch] = useState<string>('');
 
-  const [value, setValue] = useState<string | string[]>((props.multiple === true ? ([] as string[]) : '') as string | string[]);
+  const { data, isLoading } = useUsers({ search: debouncedSearch || undefined, in_group: inGroup });
 
-  function handleChange(newValue: string | string[]) {
-    setValue(newValue);
-  }
+  const currentArray = Array.isArray(field.state.value) ? field.state.value : field.state.value ? [field.state.value] : [];
 
-  if (props.multiple === true && !Array.isArray(value)) {
-    throw new Error(`Invalid value type ${typeof value} for UserField with multiple selection enabled. Expected a string[]`);
-  }
-
-  if (props.multiple !== true && Array.isArray(value)) {
-    throw new Error(`Invalid value type ${typeof value} for UserField with multiple selection disabled. Expected a string`);
+  function handleChange(newValue: string[]) {
+    if (multiple) {
+      field.handleChange(newValue);
+    } else {
+      field.handleChange(newValue[0] ?? '');
+    }
   }
 
   return (
     <FieldBase {...{ label, description, required }}>
-      {/* @ts-expect-error This component uses some typescript magic that isn't supported in this case */}
-      <UserSelect
-        users={options}
-        search={search}
-        setSearch={setSearch}
-        value={value}
-        onChange={handleChange}
-        multiple={props.multiple}
-        placeholder={props.placeholder}
-      />
+      <UserSelect users={options} setSearch={setSearch} value={currentArray} onChange={handleChange} multiple={multiple} placeholder={props.placeholder} />
     </FieldBase>
   );
 }

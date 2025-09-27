@@ -361,7 +361,7 @@ type ImageUploadProps = {
   onChange?: (files: FileObject[]) => void;
 };
 
-// TODO: Fix this component. Some times it doesnt change the files when clicked. Works alwats when dragging.
+// TODO: Fix this component. Some times it doesnt change the files when clicked. Works always when dragging.
 export function ImageUpload(props: ImageUploadProps) {
   const { files, fileInputRef, handleThumbnailClick, handleFileChange, handleRemove } = useImageUpload({ value: props.value });
 

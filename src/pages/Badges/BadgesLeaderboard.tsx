@@ -1,106 +1,71 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { PaginateButton } from '~/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form';
+import { Label } from '~/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useBadgesOverallLeaderboard } from '~/hooks/Badge';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
 import URLS from '~/URLS';
+import { parseAsString, useQueryState } from 'nuqs';
 import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
-import { z } from 'zod';
 
 export type BadgesLeaderboard = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filters?: any;
 };
 
-const formSchema = z.object({
-  study: z.string(),
-  studyyear: z.string(),
-});
-
 export const BadgesLeaderboard = ({ filters }: BadgesLeaderboard) => {
   const { data: studies = [] } = useStudyGroups();
   const { data: studyyears = [] } = useStudyyearGroups();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      study: 'all',
-      studyyear: 'all',
-    },
+  const [study, setStudy] = useQueryState('study', parseAsString.withDefault('all'));
+  const [studyyear, setStudyyear] = useQueryState('studyyear', parseAsString.withDefault('all'));
+
+  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgesOverallLeaderboard({
+    study: study === 'all' ? undefined : study,
+    studyyear: studyyear === 'all' ? undefined : studyyear,
+    ...filters,
   });
 
-  const watchFilters = form.watch();
-  const formFilters = useMemo(
-    () => ({
-      studyyear: watchFilters.studyyear === 'all' ? undefined : watchFilters.studyyear,
-      study: watchFilters.study === 'all' ? undefined : watchFilters.study,
-    }),
-    [watchFilters],
-  );
-
-  const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgesOverallLeaderboard({ ...formFilters, ...filters });
   const leaderboardEntries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
     <div className='space-y-4 py-4'>
-      <Form {...form}>
-        <form className='flex items-center space-x-4'>
-          <FormField
-            control={form.control}
-            name='studyyear'
-            render={({ field }) => (
-              <FormItem {...field} className='w-full'>
-                <FormLabel>Klasser</FormLabel>
-                <Select defaultValue={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Klasser' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='all'>Alle</SelectItem>
-                    {studyyears.map((group) => (
-                      <SelectItem key={group.slug} value={group.slug}>
-                        {`Brukere som startet i ${group.name}`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='study'
-            render={({ field }) => (
-              <FormItem {...field} className='w-full'>
-                <FormLabel>Studier</FormLabel>
-                <Select defaultValue={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder='Studier' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value='all'>Alle</SelectItem>
-                    {studies.map((group) => (
-                      <SelectItem key={group.slug} value={group.slug}>
-                        {group.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+      <div className='grid grid-cols-2 gap-4 items-center w-full'>
+        <Label>
+          Klasser
+          <Select value={studyyear} onValueChange={setStudyyear}>
+            <SelectTrigger>
+              <SelectValue placeholder='Studie år' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='all'>Alle</SelectItem>
+              {studyyears.map((v) => (
+                <SelectItem key={v.slug} value={v.slug}>
+                  Brukere som startet i {v.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Label>
+        <Label>
+          Studier
+          <Select value={study} onValueChange={setStudy}>
+            <SelectTrigger>
+              <SelectValue placeholder='Studier' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='all'>Alle</SelectItem>
+              {studies.map((v) => (
+                <SelectItem key={v.slug} value={v.slug}>
+                  {v.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Label>
+      </div>
 
       <div>
         {!isLoading && !leaderboardEntries.length && <NotFoundIndicator header='Ingen har mottatt badges enda' />}

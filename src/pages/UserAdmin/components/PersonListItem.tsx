@@ -1,9 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormTextarea from '~/components/inputs/Textarea';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
-import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { Skeleton } from '~/components/ui/skeleton';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
@@ -13,73 +11,74 @@ import UserSettings from '~/pages/Profile/components/ProfileSettings/UserSetting
 import type { UserList } from '~/types';
 import { getUserAffiliation } from '~/utils';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  reason: z.string().optional(),
+  reason: z.string(),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 const DeclineUser = ({ user }: Pick<PersonListItemProps, 'user'>) => {
   const [showDialog, setShowDialog] = useState(false);
   const declineUser = useDeclineUser();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const decline = (values: z.infer<typeof formSchema>) =>
-    declineUser.mutate(
-      { userId: user.user_id, reason: values.reason || '' },
-      {
-        onSuccess: (data) => {
-          setShowDialog(false);
-          toast.success(data.detail);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      onSubmit: formSchema,
+      async onSubmitAsync({ value }) {
+        await declineUser.mutateAsync(
+          { userId: user.user_id, reason: value.reason },
+          {
+            onSuccess: (data) => {
+              setShowDialog(false);
+              toast.success(data.detail);
+            },
+            onError: (e) => {
+              toast.error(e.detail);
+            },
+          },
+        );
       },
-    );
-
-  const OpenButton = (
-    <Button className='w-full' variant='outline'>
-      Avslå
-    </Button>
-  );
-
+    },
+    defaultValues: { reason: '' } as FormValues,
+  });
   return (
     <ResponsiveDialog
       description='Brukeren vil få beskjed via epost om at brukeren ble avslått sammen med begrunnelsen.'
       onOpenChange={setShowDialog}
       open={showDialog}
       title='Avslå bruker'
-      trigger={OpenButton}>
-      <Form {...form}>
-        <form className='space-y-4' onSubmit={form.handleSubmit(decline)}>
-          <FormTextarea form={form} label='Begrunnelse (valgfri)' name='reason' />
-
-          <Button className='w-full' disabled={declineUser.isPending} type='submit'>
-            {declineUser.isPending ? 'Avslår...' : 'Avslå bruker'}
-          </Button>
-        </form>
-      </Form>
+      trigger={
+        <Button className='w-full' variant='outline'>
+          Avslå
+        </Button>
+      }>
+      <form className='space-y-4' onSubmit={handleFormSubmit(form)}>
+        <form.AppField name='reason'>{(field) => <field.TextareaField label='Begrunnelse (valgfri)' />}</form.AppField>
+        <form.AppForm>
+          <form.SubmitButton loading={'Avslår...'} className='w-full' type='submit'>
+            Avslå bruker
+          </form.SubmitButton>
+        </form.AppForm>
+      </form>
     </ResponsiveDialog>
   );
 };
 
 export type PersonListItemProps = {
   user: UserList;
-  is_TIHLDE_member?: boolean;
+  isMember?: boolean;
 };
 
-const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) => {
+const PersonListItem = ({ user, isMember = true }: PersonListItemProps) => {
   const activateUser = useActivateUser();
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   const [expanded, setExpanded] = useState(false);
-  const { data } = useUser(user.user_id, { enabled: expanded && is_TIHLDE_member });
+  const { data } = useUser(user.user_id, { enabled: expanded && isMember });
   const activate = () =>
     activateUser.mutate(user.user_id, {
       onSuccess: (data) => {
@@ -90,22 +89,20 @@ const PersonListItem = ({ user, is_TIHLDE_member = true }: PersonListItemProps) 
       },
     });
 
-  const UserAvatar = (
-    <Avatar>
-      <AvatarImage alt={user.first_name} src={user.image} />
-      <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
-    </Avatar>
-  );
-
   return (
     <Expandable
       description={(isDesktop && getUserAffiliation(user)) || undefined}
-      icon={UserAvatar}
+      icon={
+        <Avatar>
+          <AvatarImage alt={user.first_name} src={user.image} />
+          <AvatarFallback>{user.first_name[0] + user.last_name[0]}</AvatarFallback>
+        </Avatar>
+      }
       onOpenChange={setExpanded}
       open={expanded}
       title={`${user.first_name} ${user.last_name}`}>
       <div>
-        {is_TIHLDE_member ? (
+        {isMember ? (
           data && (
             <div className='space-y-2'>
               <UserSettings isAdmin user={data} />

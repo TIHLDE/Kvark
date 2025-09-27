@@ -8,7 +8,6 @@ import { useGroups } from '~/hooks/Group';
 import { useWikiPage } from '~/hooks/Wiki';
 import { cn } from '~/lib/utils';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
-import WikiAdmin from '~/pages/Wiki/components/WikiAdmin';
 import WikiNavigator from '~/pages/Wiki/components/WikiNavigator';
 import Index from '~/pages/Wiki/specials/Index';
 import { Slash } from 'lucide-react';
@@ -58,7 +57,6 @@ const Wiki = () => {
           {data && (
             <>
               <ShareButton shareId={data.path} shareType='pages' title={data.title} />
-              <WikiAdmin page={data} />
             </>
           )}
         </div>

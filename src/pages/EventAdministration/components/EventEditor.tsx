@@ -1,117 +1,81 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SelectGroup } from '@radix-ui/react-select';
-import BoolExpand from '~/components/inputs/BoolExpand';
-import DateTimePicker from '~/components/inputs/DateTimePicker';
-import MarkdownEditor from '~/components/inputs/MarkdownEditor';
-import { FormImageUpload } from '~/components/inputs/Upload';
-import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import RendererPreview from '~/components/miscellaneous/RendererPreview';
-import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import Expandable from '~/components/ui/expandable';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '~/components/ui/select';
-import { Switch } from '~/components/ui/switch';
 import { useCategories } from '~/hooks/Categories';
 import { useCreateEvent, useDeleteEvent, useEventById, useUpdateEvent } from '~/hooks/Event';
 import { useGroupsByType } from '~/hooks/Group';
-import { useUser, useUserMemberships, useUserPermissions } from '~/hooks/User';
-import EventEditPriorityPools from '~/pages/EventAdministration/components/EventEditPriorityPools';
+import { useUserMemberships, useUserPermissions } from '~/hooks/User';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
-import type { BaseGroup, Category, Event, EventMutate, PriorityPool, PriorityPoolMutate } from '~/types';
+import type { Event, EventMutate, PriorityPool, PriorityPoolMutate } from '~/types';
 import { GroupType, MembershipType } from '~/types/Enums';
 import { addHours, parseISO, setHours, startOfHour, subDays } from 'date-fns';
-import { Info } from 'lucide-react';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { InfoIcon } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import CloseEvent from './CloseEvent';
 import DeleteEvent from './DeleteEvent';
 import EventEditorSkeleton from './EventEditorSkeleton';
+import EventEditPriorityPools from './EventEditPriorityPools';
 
 export type EventEditorProps = {
   eventId: number | null;
   goToEvent: (newEvent: number | null) => void;
 };
 
-type GroupOption =
-  | {
-      type: 'header';
-      header: string;
-    }
-  | {
-      type: 'group';
-      group: BaseGroup;
-    };
-
 const formSchema = z
   .object({
-    category: z.string({ required_error: 'Du må velge en kategori' }).min(1, { message: 'Du må velge en kategori' }),
-    description: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
+    category: z.string().min(1),
+    description: z.string().min(1),
     end_date: z.date(),
     end_registration_at: z.date(),
-    organizer: z.string().min(1, { message: 'Du må velge en arrangør' }),
+    organizer: z.string().min(1),
     image: z.string(),
     image_alt: z.string(),
-    limit: z.number().min(0, { message: 'Antall plasser må være 0 eller høyere' }),
-    location: z.string().min(1, { message: 'Stedet kan ikke være tomt' }),
+    limit: z.number().min(0),
+    location: z.string().min(1),
     sign_up: z.boolean(),
     sign_off_deadline: z.date(),
     start_date: z.date(),
     start_registration_at: z.date(),
-    title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),
+    title: z.string().min(1),
     only_allow_prioritized: z.boolean(),
     can_cause_strikes: z.boolean(),
     enforces_previous_strikes: z.boolean(),
     is_paid_event: z.boolean(),
     price: z.number().optional(),
-    paytime: z.string().optional(),
-    contact_person: z.object({ user_id: z.string() }).nullable(),
+    contact_person: z.string().optional(),
     emojis_allowed: z.boolean(),
   })
   .superRefine((data, ctx) => {
     if (data.sign_up && data.end_registration_at <= data.start_registration_at) {
-      ctx.addIssue({
-        message: 'Påmeldingsslutt må være etter påmeldingsstart',
-        path: ['end_registration_at'],
-        code: z.ZodIssueCode.custom,
-      });
+      ctx.addIssue({ message: 'Påmeldingsslutt må være etter påmeldingsstart', path: ['end_registration_at'], code: z.ZodIssueCode.custom });
     }
-
     if (data.end_date <= data.start_date) {
-      ctx.addIssue({
-        message: 'Sluttdato må være etter startdato',
-        path: ['end_date'],
-        code: z.ZodIssueCode.custom,
-      });
+      ctx.addIssue({ message: 'Sluttdato må være etter startdato', path: ['end_date'], code: z.ZodIssueCode.custom });
     }
-
     if (data.is_paid_event && data.price && data.price < 10) {
-      ctx.addIssue({
-        message: 'Prisen må være 10 eller høyere',
-        path: ['price'],
-        code: z.ZodIssueCode.custom,
-      });
+      ctx.addIssue({ message: 'Prisen må være 10 eller høyere', path: ['price'], code: z.ZodIssueCode.custom });
     }
   });
+
+type FormValues = z.infer<typeof formSchema>;
 
 const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
   const { data, isLoading } = useEventById(eventId || -1);
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent(eventId || -1);
   const deleteEvent = useDeleteEvent(eventId || -1);
-  const isUpdating = useMemo(
-    () => createEvent.isPending || updateEvent.isPending || deleteEvent.isPending,
-    [createEvent.isPending, updateEvent.isPending, deleteEvent.isPending],
-  );
 
   const [priorityPools, setPriorityPools] = useState<Array<PriorityPoolMutate>>([]);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      onSubmit: formSchema,
+    },
     defaultValues: {
       category: data?.category?.toString() || '',
       description: data?.description || '',
@@ -132,100 +96,153 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       enforces_previous_strikes: data ? data.enforces_previous_strikes : true,
       is_paid_event: data?.is_paid_event || false,
       price: data?.paid_information?.price,
-      paytime: '02:00',
-      contact_person: data?.contact_person || null,
+      contact_person: data?.contact_person?.user_id || '',
       emojis_allowed: data?.emojis_allowed || false,
+    } as FormValues,
+
+    async onSubmit({ value }) {
+      const event = {
+        ...value,
+        priority_pools: priorityPools,
+        end_date: value.end_date.toJSON(),
+        end_registration_at: value.end_registration_at.toJSON(),
+        sign_off_deadline: value.sign_off_deadline.toJSON(),
+        start_date: value.start_date.toJSON(),
+        start_registration_at: value.start_registration_at.toJSON(),
+        is_paid_event: value.is_paid_event,
+        paid_information: value.is_paid_event ? { price: value.price, paytime: '02:00' } : undefined,
+        contact_person: value.contact_person || null,
+        emojis_allowed: value.emojis_allowed,
+      } as unknown as EventMutate;
+
+      if (eventId) {
+        await updateEvent.mutateAsync(event, {
+          onSuccess: () => {
+            toast.success('Arrangementet ble oppdatert');
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      } else {
+        await createEvent.mutateAsync(event, {
+          onSuccess: (newEvent) => {
+            toast.success('Arrangementet ble opprettet');
+            goToEvent(newEvent.id);
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      }
     },
   });
 
   const { data: categories = [] } = useCategories();
 
-  const setValues = useCallback(
-    (newValues: Event | null) => {
-      setPriorityPools(newValues?.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })) || []);
-      const category = newValues?.category as unknown as Category;
-      form.reset({
-        category: category?.id.toString() || '',
-        description: newValues?.description || '',
-        end_date: newValues?.end_date ? parseISO(newValues.end_date) : new Date(),
-        end_registration_at: newValues?.end_registration_at ? parseISO(newValues.end_registration_at) : new Date(),
-        organizer: newValues?.organizer?.slug || '',
-        image: newValues?.image ?? '',
-        image_alt: newValues?.image_alt || '',
-        limit: newValues?.limit || 0,
-        location: newValues?.location || '',
-        sign_off_deadline: newValues?.sign_off_deadline ? parseISO(newValues.sign_off_deadline) : new Date(),
-        sign_up: newValues?.sign_up || false,
-        start_date: newValues?.start_date ? parseISO(newValues.start_date) : new Date(),
-        start_registration_at: newValues?.start_registration_at ? parseISO(newValues.start_registration_at) : new Date(),
-        title: newValues?.title || '',
-        only_allow_prioritized: newValues ? newValues.only_allow_prioritized : false,
-        can_cause_strikes: newValues ? newValues.can_cause_strikes : true,
-        enforces_previous_strikes: newValues ? newValues.enforces_previous_strikes : true,
-        is_paid_event: newValues?.is_paid_event || false,
-        price: (newValues?.paid_information?.price && parseInt(newValues.paid_information.price.toString())) || 0,
-        paytime: '02:00',
-        contact_person: newValues?.contact_person || null,
-        emojis_allowed: newValues?.emojis_allowed || false,
-      });
-      if (!newValues) {
-        setTimeout(() => updateDates(new Date()), 10);
+  const updateDates = useCallback(
+    (start?: Date) => {
+      if (start && start instanceof Date && !isNaN(start.valueOf())) {
+        const getDate = (daysBefore: number, hour: number) =>
+          startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
+        form.setFieldValue('start_registration_at', getDate(7, 12));
+        form.setFieldValue('end_registration_at', getDate(0, 12));
+        form.setFieldValue('sign_off_deadline', getDate(1, 12));
+        form.setFieldValue('end_date', addHours(start, 2));
       }
     },
-    [form.reset],
+    [form],
   );
 
-  /**
-   * Update the form-data when the opened event changes
-   */
   useEffect(() => {
-    setValues(data || null);
-  }, [data, setValues]);
+    if (data) {
+      setPriorityPools(data.priority_pools.map((pool) => ({ groups: pool.groups.map((group) => group.slug) })));
+    } else {
+      setPriorityPools([]);
+      setTimeout(() => updateDates(new Date()), 10);
+    }
+    form.reset();
+  }, [data, form, updateDates]);
 
   const { data: permissions } = useUserPermissions();
   const { data: userGroups } = useUserMemberships();
   const memberships = useMemo(() => (userGroups ? userGroups.pages.map((page) => page.results).flat() : []), [userGroups]);
-  const { data: user } = useUser();
   const { data: groups, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS } = useGroupsByType();
 
-  const groupOptions = useMemo<Array<GroupOption>>(() => {
+  const [groupOptions, groupOptionGroups] = useMemo(() => {
     if (!permissions) {
-      return [];
+      return [[], []];
     }
-    if (permissions.permissions.event.write_all) {
-      const array: Array<GroupOption> = [];
-      if (BOARD_GROUPS.length) {
-        array.push({ type: 'header', header: 'Hovedorgan' });
-        BOARD_GROUPS.forEach((group) => array.push({ type: 'group', group }));
-      }
-      if (SUB_GROUPS.length) {
-        array.push({ type: 'header', header: 'Undergrupper' });
-        SUB_GROUPS.forEach((group) => array.push({ type: 'group', group }));
-      }
-      if (COMMITTEES.length) {
-        array.push({ type: 'header', header: 'Komitéer' });
-        COMMITTEES.forEach((group) => array.push({ type: 'group', group }));
-      }
-      if (INTERESTGROUPS.length) {
-        array.push({ type: 'header', header: 'Interessegrupper' });
-        INTERESTGROUPS.forEach((group) => array.push({ type: 'group', group }));
-      }
-      return array;
+
+    const options: { groupId?: string; value: string; content: React.ReactNode }[] = [];
+    const groupOptions: { id: string; label: string }[] = [];
+
+    if (BOARD_GROUPS.length) {
+      groupOptions.push({ id: 'hovedorgan', label: 'Hovedorgan' });
+      options.push(
+        ...BOARD_GROUPS.map((group) => ({
+          groupId: 'hovedorgan',
+          value: group.slug,
+          content: group.name,
+        })),
+      );
     }
-    return memberships
-      .filter((membership) => membership.membership_type === MembershipType.LEADER || [GroupType.BOARD, GroupType.SUBGROUP].includes(membership.group.type))
-      .map((membership) => ({ type: 'group', group: membership.group }));
-  }, [memberships, permissions, user, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
+
+    if (SUB_GROUPS.length) {
+      groupOptions.push({ id: 'undergrupper', label: 'Undergrupper' });
+      options.push(
+        ...SUB_GROUPS.map((group) => ({
+          groupId: 'undergrupper',
+          value: group.slug,
+          content: group.name,
+        })),
+      );
+    }
+
+    if (COMMITTEES.length) {
+      groupOptions.push({ id: 'komiteer', label: 'Komitéer' });
+      options.push(
+        ...COMMITTEES.map((group) => ({
+          groupId: 'komiteer',
+          value: group.slug,
+          content: group.name,
+        })),
+      );
+    }
+
+    if (INTERESTGROUPS.length) {
+      groupOptions.push({ id: 'interessegrupper', label: 'Interessegrupper' });
+      options.push(
+        ...INTERESTGROUPS.map((group) => ({
+          groupId: 'interessegrupper',
+          value: group.slug,
+          content: group.name,
+        })),
+      );
+    }
+    if (!permissions.permissions.event.write_all) {
+      const relevantMemberships = memberships.filter(
+        (membership) => membership.membership_type === MembershipType.LEADER || [GroupType.BOARD, GroupType.SUBGROUP].includes(membership.group.type),
+      );
+
+      const userOptions = options.filter((option) => {
+        return relevantMemberships.some((membership) => membership.group.slug === option.value);
+      });
+      const userGroupOptions = groupOptions.filter((group) => userOptions.some((option) => option.groupId === group.id));
+
+      return [userOptions, userGroupOptions];
+    }
+    return [options, groupOptions];
+  }, [memberships, permissions, BOARD_GROUPS, COMMITTEES, INTERESTGROUPS, SUB_GROUPS]);
 
   const getEventPreview = (): Event | null => {
-    const title = form.getValues('title');
-    const description = form.getValues('description');
+    const { title: previewTitle, description: previewDescription } = form.state.values as FormValues;
 
-    if (!title && !description) {
+    if (!previewTitle && !previewDescription) {
       return null;
     }
 
-    const values = form.getValues();
+    const values = form.state.values as FormValues;
     return {
       ...values,
       category: parseInt(values.category),
@@ -243,7 +260,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
       paid_information: {
         price: values?.price,
       },
-    } as Event;
+    } as unknown as Event;
   };
 
   const remove = () => {
@@ -269,342 +286,99 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
     });
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const event = {
-      ...values,
-      priority_pools: priorityPools,
-      end_date: values.end_date.toJSON(),
-      end_registration_at: values.end_registration_at.toJSON(),
-      sign_off_deadline: values.sign_off_deadline.toJSON(),
-      start_date: values.start_date.toJSON(),
-      start_registration_at: values.start_registration_at.toJSON(),
-      is_paid_event: values.is_paid_event,
-      paid_information: values.is_paid_event
-        ? {
-            price: values.price,
-            paytime: '02:00',
-          }
-        : undefined,
-      contact_person: values.contact_person?.user_id || null,
-      emojis_allowed: values.emojis_allowed,
-    } as unknown as EventMutate;
-
-    if (eventId) {
-      updateEvent.mutate(event, {
-        onSuccess: () => {
-          toast.success('Arrangementet ble oppdatert');
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    } else {
-      createEvent.mutate(event, {
-        onSuccess: (newEvent) => {
-          toast.success('Arrangementet ble opprettet');
-          goToEvent(newEvent.id);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    }
-  };
-
-  /**
-   * Sets the dates of the event to a standarized structure compared to the start-date. Runned when start-date is changed.
-   * Registration start -> 12:00, 7 days before start
-   * Registration end -> 12:00, same day as start
-   * Sign off deadline -> 12:00, 1 days start
-   * End-date -> 2 hours after start
-   * @param start The start-date
-   */
-  const updateDates = (start?: Date) => {
-    if (start && start instanceof Date && !isNaN(start.valueOf())) {
-      const getDate = (daysBefore: number, hour: number) =>
-        startOfHour(setHours(subDays(start, daysBefore), daysBefore === 0 ? Math.min(hour, start.getHours()) : hour));
-      form.setValue('start_registration_at', getDate(7, 12));
-      form.setValue('end_registration_at', getDate(0, 12));
-      form.setValue('sign_off_deadline', getDate(1, 12));
-      form.setValue('end_date', addHours(start, 2));
-    }
-  };
-
-  const getCategoryValue = (value: string): string => {
-    const category = categories.find((category) => category.id === parseInt(value));
-    if (category) {
-      return category.id.toString();
-    }
-    return '';
-  };
-
-  const getCategoryName = (value: string): string => {
-    const category = categories.find((category) => category.id === parseInt(value));
-    if (category) {
-      return category.text;
-    }
-    return 'Kategori';
-  };
-
-  const getGroupName = (slug: string): string => {
-    const group = groups?.find((group) => group.slug === slug);
-    return group ? group.name : 'Gruppe';
-  };
-
-  if (isLoading) {
+  if (isLoading || (!data && eventId)) {
     return <EventEditorSkeleton />;
   }
 
   return (
     <Card>
       <CardContent className='py-6'>
-        <Form {...form}>
-          <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <FormField
-                control={form.control}
-                name='title'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Tittel <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+          <div className='w-full grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2'>
+            <form.AppField name='title'>{(field) => <field.InputField label='Tittel' placeholder='Skriv her...' required />}</form.AppField>
+            <form.AppField name='location'>{(field) => <field.InputField label='Sted' placeholder='Skriv her...' required />}</form.AppField>
+          </div>
 
-              <FormField
-                control={form.control}
-                name='location'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Sted <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <DateTimePicker form={form} label='Start' name='start_date' onDateChange={updateDates} required />
+          <div className='w-full grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2'>
+            <form.AppField name='start_date'>{(field) => <field.DateTimeField label='Start' required onDateChange={updateDates} />}</form.AppField>
+            <form.AppField name='end_date'>{(field) => <field.DateTimeField label='Slutt' required />}</form.AppField>
+          </div>
 
-              <DateTimePicker form={form} label='Slutt' name='end_date' required />
-            </div>
-            <BoolExpand description='Bestem start og slutt for påmelding' form={form} name='sign_up' title='Påmelding'>
-              <div className='space-y-4'>
-                <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-                  <DateTimePicker form={form} label='Start påmelding' name='start_registration_at' required />
-
-                  <DateTimePicker form={form} label='Slutt påmelding' name='end_registration_at' required />
+          <form.AppField name='sign_up'>
+            {(field) => (
+              <field.BoolExpand title='Påmelding' description='Bestem start og slutt for påmelding'>
+                <div className='w-full grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2'>
+                  <form.AppField name='start_registration_at'>{(field) => <field.DateTimeField label='Start påmelding' required />}</form.AppField>
+                  <form.AppField name='end_registration_at'>{(field) => <field.DateTimeField label='Slutt påmelding' required />}</form.AppField>
                 </div>
-
-                <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-                  <DateTimePicker form={form} label='Avmeldingsfrist' name='sign_off_deadline' required />
-
-                  <FormField
-                    control={form.control}
-                    name='limit'
-                    render={({ field }) => (
-                      <FormItem className='w-full'>
-                        <FormLabel>
-                          Antall plasser <span className='text-red-300'>*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input type='number' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} placeholder='0' />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div className='w-full grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2'>
+                  <form.AppField name='sign_off_deadline'>{(field) => <field.DateTimeField label='Avmeldingsfrist' required />}</form.AppField>
+                  <form.AppField name='limit'>{(field) => <field.InputField label='Antall plasser' type='number' placeholder='0' required />}</form.AppField>
                 </div>
-
-                <div className='space-y-2'>
-                  <FormField
-                    control={form.control}
-                    name='only_allow_prioritized'
-                    render={({ field }) => (
-                      <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
-                        <div className='space-y-0.5'>
-                          <FormLabel className='text-base'>Kun prioriterte</FormLabel>
-                          <FormDescription>Kun personer som er prioriterte får melde seg på</FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name='can_cause_strikes'
-                    render={({ field }) => (
-                      <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
-                        <div className='space-y-0.5'>
-                          <FormLabel className='text-base'>Kan gi prikker</FormLabel>
-                          <FormDescription>Deltakelse kan gi prikker</FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name='enforces_previous_strikes'
-                    render={({ field }) => (
-                      <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
-                        <div className='space-y-0.5'>
-                          <FormLabel className='text-base'>Håndhev prikker</FormLabel>
-                          <FormDescription>Håndhev straff fra prikker fra tidligere arrangementer</FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch checked={field.value} onCheckedChange={field.onChange} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <Expandable description='Bestem hvilke grupper som skal prioriteres' icon={<Info />} title='Prioriterte grupper'>
+                <form.AppField name='only_allow_prioritized'>
+                  {(field) => <field.SwitchField label='Kun prioriterte' description='Kun personer som er prioriterte får melde seg på' />}
+                </form.AppField>
+                <form.AppField name='can_cause_strikes'>
+                  {(field) => <field.SwitchField label='Kan gi prikker' description='Deltakelse kan gi prikker' />}
+                </form.AppField>
+                <form.AppField name='enforces_previous_strikes'>
+                  {(field) => <field.SwitchField label='Håndhev prikker' description='Håndhev straff fra prikker fra tidligere arrangementer' />}
+                </form.AppField>
+                <Expandable description='Bestem hvilke grupper som skal prioriteres' icon={<InfoIcon />} title='Prioriterte grupper'>
                   <EventEditPriorityPools priorityPools={priorityPools} setPriorityPools={setPriorityPools} />
                 </Expandable>
-              </div>
-            </BoolExpand>
-            <MarkdownEditor form={form} label='Innhold' name='description' required />
+              </field.BoolExpand>
+            )}
+          </form.AppField>
 
-            <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
+          <form.AppField name='description'>{(field) => <field.TextareaField label='Innhold' required />}</form.AppField>
 
-            <FormField
-              control={form.control}
-              name='image_alt'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Alternativ bildetekst</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Skriv her...' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+          <form.AppField name='image'>{(field) => <field.ImageUploadField label='Velg bilde' />}</form.AppField>
+
+          <form.AppField name='image_alt'>{(field) => <field.InputField label='Alternativ bildetekst' placeholder='Skriv her...' />}</form.AppField>
+
+          <div className='w-full grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-2'>
+            <form.AppField name='organizer'>
+              {(field) => <field.SelectField label='Arrangør' placeholder='Velg arrangør' required options={groupOptions} group={groupOptionGroups} />}
+            </form.AppField>
+
+            <form.AppField name='category'>
+              {(field) => (
+                <field.SelectField
+                  label='Kategori'
+                  placeholder='Velg kategori'
+                  required
+                  options={categories.map((category) => ({
+                    value: category.id.toString(),
+                    content: category.text,
+                  }))}
+                />
               )}
-            />
-            <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <FormField
-                control={form.control}
-                name='organizer'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Arrangør <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <Select defaultValue={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={getGroupName(field.value)} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {groupOptions.map((option, index) => (
-                          <Fragment key={index}>
-                            <SelectGroup>
-                              {option.type === 'header' ? (
-                                <SelectLabel>{option.header}</SelectLabel>
-                              ) : (
-                                <SelectItem value={option.group.slug}>{option.group.name}</SelectItem>
-                              )}
-                            </SelectGroup>
-                          </Fragment>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            </form.AppField>
+          </div>
 
-              <FormField
-                control={form.control}
-                name='category'
-                render={({ field }) => (
-                  <FormItem className='w-full'>
-                    <FormLabel>
-                      Kategori <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <Select
-                      // defaultValue={getCategoryValue(field.value)} onValueChange={(value) => field.onChange(parseInt(value))}
-                      defaultValue={getCategoryValue(field.value)}
-                      onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={getCategoryName(field.value)} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((category, index) => (
-                          <SelectItem key={index} value={category.id.toString()}>
-                            {category.text}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <BoolExpand description='Bestem en pris hvis du ønsker et betalt arrangement' form={form} name='is_paid_event' title='Betalt arrangement'>
-              <FormField
-                control={form.control}
-                name='price'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Pris <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input type='number' {...field} onChange={(event) => field.onChange(parseInt(event.target.value))} placeholder='0' />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </BoolExpand>
-            <FormField
-              control={form.control}
-              name='emojis_allowed'
-              render={({ field }) => (
-                <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
-                  <div className='space-y-0.5'>
-                    <FormLabel className='text-base'>Reaksjoner</FormLabel>
-                    <FormDescription>La brukere reagere på nyheten med emojis</FormDescription>
-                  </div>
-                  <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <SingleUserSearch className='w-full' form={form} label='Kontaktperson' name='contact_person' />
-            <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
-              <DeleteEvent deleteEvent={remove} eventId={eventId} />
-              <CloseEvent closeEvent={closeEvent} eventId={eventId} />
-              <RendererPreview getContent={getEventPreview} renderer={EventRenderer} />
-              <Button className='w-full md:w-48 block' disabled={isUpdating} type='submit'>
+          <form.AppField name='is_paid_event'>
+            {(field) => (
+              <field.BoolExpand title='Betalt arrangement' description='Bestem en pris hvis du ønsker et betalt arrangement'>
+                <form.AppField name='price'>{(field) => <field.InputField label='Pris' placeholder='0' type='number' required />}</form.AppField>
+              </field.BoolExpand>
+            )}
+          </form.AppField>
+
+          <form.AppField name='emojis_allowed'>{(field) => <field.SwitchField label='Raksjoner' description='La brukere reagere med emojis' />}</form.AppField>
+
+          {/* <SingleUserSearch className='w-full' form={form} label='Kontaktperson' name='contact_person' /> */}
+          <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
+            <DeleteEvent deleteEvent={remove} eventId={eventId} />
+            <CloseEvent closeEvent={closeEvent} eventId={eventId} />
+            <RendererPreview getContent={getEventPreview} renderer={EventRenderer} />
+            <form.AppForm>
+              <form.SubmitButton loading={eventId ? 'Oppdaterer arrangement...' : 'Oppretter arrangement...'} className='w-full md:w-48 block'>
                 {eventId ? 'Oppdater arrangement' : 'Opprett arrangement'}
-              </Button>
-            </div>
-          </form>
-        </Form>
+              </form.SubmitButton>
+            </form.AppForm>
+          </div>
+        </form>
       </CardContent>
     </Card>
   );

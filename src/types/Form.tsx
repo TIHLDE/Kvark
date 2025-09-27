@@ -7,11 +7,13 @@ import { UserBase } from '~/types/User';
 // Interfaces used for the creating of forms and viewing forms
 // -----------------------------------------------------------
 
+export type FormFieldVariants = TextFormField | SelectFormField;
+
 export interface FormBase {
   id: string;
   title: string;
   description?: string;
-  fields: Array<TextFormField | SelectFormField>;
+  fields: Array<FormFieldVariants>;
   viewer_has_answered: boolean;
   template: boolean;
 }

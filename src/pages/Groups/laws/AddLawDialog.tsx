@@ -1,16 +1,14 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import FormTextarea from '~/components/inputs/Textarea';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
+import { FormControl, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
+import { Input } from '~/components/ui/input';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateGroupLaw } from '~/hooks/Group';
-import type { Group } from '~/types';
+import type { Group, RequestResponse } from '~/types';
 import { parseLawParagraphNumber } from '~/utils';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -19,51 +17,44 @@ export type AddLawDialogProps = {
 };
 
 const formSchema = z.object({
-  amount: z.string(),
+  amount: z
+    .string()
+    .min(1, { message: 'Kan ikke være tom' })
+    .refine((v) => !Number.isNaN(Number(v)), { message: 'Må være et gyldig tall' }),
   description: z.string().optional(),
   paragraph: z.string().regex(/^\d+(\.\d{1,2})?$/, { message: 'Paragraf må være et tall med opptil to desimaler' }),
   title: z.string().min(1, { message: 'Tittel er påkrevd' }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const createLaw = useCreateGroupLaw(groupSlug);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: { onBlur: formSchema, onChange: formSchema, onSubmit: formSchema },
     defaultValues: {
       amount: '1',
       description: '',
       paragraph: '1',
       title: '',
+    } as FormValues,
+    async onSubmit({ value }) {
+      const data = {
+        amount: Number(value.amount),
+        description: value.description || '',
+        paragraph: parseLawParagraphNumber(value.paragraph),
+        title: value.title,
+      };
+      await toast.promise(createLaw.mutateAsync(data), {
+        loading: 'Oppretter lovparagrafen...',
+        success: 'Lovparagrafen ble opprettet',
+        error: (e) => `Kunne ikke opprette lovparagrafen: ${(e as RequestResponse).detail ?? 'Noe gikk galt'}`,
+      });
+      form.reset();
     },
   });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const data = {
-      amount: parseInt(values.amount),
-      description: values.description || '',
-      paragraph: parseLawParagraphNumber(values.paragraph),
-      title: values.title,
-    };
-    createLaw.mutate(data, {
-      onSuccess: () => {
-        toast.success('Lovparagrafen ble opprettet');
-        setDialogOpen(false);
-        form.reset();
-      },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
-  };
-
-  const OpenButton = (
-    <Button className='w-full'>
-      <Plus className='w-5 h-5 mr-2' />
-      Ny lovparagraf
-    </Button>
-  );
 
   return (
     <ResponsiveDialog
@@ -71,37 +62,28 @@ const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {
       onOpenChange={setDialogOpen}
       open={dialogOpen}
       title='Ny lovparagraf'
-      trigger={OpenButton}>
+      trigger={
+        <Button className='w-full'>
+          <Plus className='w-5 h-5 mr-2' />
+          Ny lovparagraf
+        </Button>
+      }>
       <ScrollArea className='h-[60vh]'>
-        <Form {...form}>
-          <form className='space-y-6 pb-6 px-2' onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput
-              description='Heltall for overskrift. Maks 2 siffer på hver side av komma'
-              form={form}
-              label='Paragraf'
-              name='paragraph'
-              required
-              type='number'
-            />
-
-            <FormInput description='For eks.: Forsentkomming' form={form} label='Tittel' name='title' required />
-
-            <FormTextarea description='La stå tom for å ikke kunne velges ved botgivning' form={form} label='Beskrivelse' name='description' />
-
-            <FormInput
-              description='Brukes for å forhåndsutfylle antall bøter når det lages en ny'
-              form={form}
-              label='Veiledende antall bøter'
-              name='amount'
-              required
-              type='number'
-            />
-
-            <Button className='w-full' disabled={createLaw.isPending} type='submit'>
-              {createLaw.isPending ? 'Oppretter...' : 'Opprett'}
-            </Button>
-          </form>
-        </Form>
+        <form className='space-y-6 pb-6 px-2' onSubmit={handleFormSubmit(form)}>
+          <form.AppField name='paragraph'>{(field) => <field.InputField type='number' label='Paragraf' placeholder='Skriv her...' />}</form.AppField>
+          <form.AppField name='title'>{(field) => <field.InputField label='Tittel' placeholder='Skriv her...' />}</form.AppField>
+          <form.AppField name='description'>
+            {(field) => <field.TextareaField label='Beskrivelse' description='La stå tom for å ikke kunne velges ved botgivning' />}
+          </form.AppField>
+          <form.AppField name='amount'>
+            {(field) => <field.InputField type='number' label='Veiledende antall bøter' placeholder='Skriv her...' />}
+          </form.AppField>
+          <form.AppForm>
+            <form.SubmitButton className='w-full' loading='Oppretter...' type='submit'>
+              Opprett
+            </form.SubmitButton>
+          </form.AppForm>
+        </form>
       </ScrollArea>
     </ResponsiveDialog>
   );

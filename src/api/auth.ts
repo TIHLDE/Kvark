@@ -53,7 +53,7 @@ export const authQueryOptions = queryOptions({
       const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
 
       // TODO: Check if we need to handle pagination here
-      // Pagination on the backend returns 25 objects. I dont we have to worry about that here
+      // Pagination on the backend returns 25 objects. We dont have to worry about that here
       const memberships = (await API.getUserMemberships(user.user_id)).results;
       const authUser = {
         id: user.user_id,

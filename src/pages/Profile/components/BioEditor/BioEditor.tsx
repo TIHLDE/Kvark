@@ -1,12 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import FormTextarea from '~/components/inputs/Textarea';
-import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { useCreateUserBio, useUpdateUserBio } from '~/hooks/UserBio';
 import type { UserBio } from '~/types';
 import { Dispatch, SetStateAction } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -20,31 +15,28 @@ const formSchema = z.object({
     .or(z.literal('')),
   gitHub_link: z
     .string()
+    .startsWith('https://github.com/', { message: 'URL må starte med "https://github.com/"' })
     .url({
-      message: 'URL må starte med "https://github.com/"',
+      message: 'Må være en gyldig url',
     })
     .max(300, {
       message: 'Maks 300 tegn',
     })
     .optional()
-    .or(z.literal(''))
-    .refine((url: string | undefined) => !url || url.startsWith('https://github.com/'), {
-      message: 'URL må starte med "https://github.com/"',
-    }),
+    .or(z.literal('')),
   linkedIn_link: z
     .string()
+    .startsWith('https://linkedin.com/', { message: 'URL må starte med "https://linkedin.com/"' })
     .url({
-      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
+      message: 'Må være en gyldig url',
     })
     .max(300, {
       message: 'Maks 300 tegn',
     })
     .optional()
-    .or(z.literal(''))
-    .refine((url: string | undefined) => !url || url.startsWith('https://linkedin.com/') || url.startsWith('https://no.linkedin.com/'), {
-      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
-    }),
+    .or(z.literal('')),
 });
+type FormValues = z.infer<typeof formSchema>;
 
 export type UserBioProps = {
   userBio: UserBio;
@@ -55,57 +47,58 @@ const UserBioForm = ({ userBio, setOpen }: UserBioProps) => {
   const createUserBio = useCreateUserBio();
   const updateUserBio = useUpdateUserBio(userBio ? userBio.id : 0);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      onSubmit: formSchema,
+    },
     defaultValues: {
       description: userBio ? userBio.description : '',
       gitHub_link: userBio ? userBio.gitHub_link : '',
       linkedIn_link: userBio ? userBio.linkedIn_link : '',
+    } as FormValues,
+    async onSubmit({ value }) {
+      if (!userBio) {
+        await createUserBio.mutateAsync(value, {
+          onSuccess: () => {
+            toast.success('Profilbio ble opprettet');
+            setOpen(false);
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      } else {
+        await updateUserBio.mutateAsync(value, {
+          onSuccess: () => {
+            toast.success('Profilbio ble oppdatert');
+            setOpen(false);
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      }
     },
   });
 
-  const description = form.watch('description') || '';
-
-  const charactersLeft = 500 - description.length;
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (!userBio) {
-      createUserBio.mutate(values, {
-        onSuccess: () => {
-          toast.success('Profilbio ble opprettet');
-          setOpen(false);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    } else {
-      updateUserBio.mutate(values, {
-        onSuccess: () => {
-          toast.success('Profilbio ble oppdatert');
-          setOpen(false);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      });
-    }
-  };
-
   return (
-    <Form {...form}>
-      <form className='space-y-6 px-4 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
-        <FormTextarea description={`Tegn igjen: ${charactersLeft}`} form={form} label='Beskrivelse' maxLength={500} name='description' />
+    <form className='space-y-6 px-4 pb-6' onSubmit={handleFormSubmit(form)}>
+      <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' />}</form.AppField>
+      <form.Subscribe selector={(s) => s.values.description as string}>
+        {(desc) => <p className='text-sm text-muted-foreground'>Tegn igjen: {500 - (desc?.length || 0)}</p>}
+      </form.Subscribe>
 
-        <FormInput description='Din GitHub profil.' form={form} label='GitHub' name='gitHub_link' />
+      <form.AppField name='gitHub_link'>{(field) => <field.InputField label='GitHub' description='Din GitHub profil.' />}</form.AppField>
 
-        <FormInput description='Din LinkedIn profil.' form={form} label='LinkedIn' name='linkedIn_link' />
+      <form.AppField name='linkedIn_link'>{(field) => <field.InputField label='LinkedIn' description='Din LinkedIn profil.' />}</form.AppField>
 
-        <Button className='w-full' type='submit'>
+      <form.AppForm>
+        <form.SubmitButton className='w-full' type='submit'>
           {!userBio ? 'Opprett' : 'Oppdater'}
-        </Button>
-      </form>
-    </Form>
+        </form.SubmitButton>
+      </form.AppForm>
+    </form>
   );
 };
 

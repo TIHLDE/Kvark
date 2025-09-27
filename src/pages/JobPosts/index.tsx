@@ -1,11 +1,9 @@
-'use client';
-
 import API from '~/api/api';
-import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
 import { Badge } from '~/components/ui/badge';
 import { Button, PaginateButton } from '~/components/ui/button';
+import { Checkbox } from '~/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
@@ -296,12 +294,23 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
       {/* Class/grade filter */}
       <div className='space-y-3'>
         <Label className='text-sm font-medium'>Klassetrinn</Label>
-        <FormMultiCheckboxComponent
-          items={grade}
-          label={''}
-          onChange={(classes) => setQueryFilters({ ...queryFilters, classes })}
-          value={queryFilters.classes}
-        />
+        <div className='grid gap-2'>
+          {grade.map((g) => {
+            const checked = queryFilters.classes.includes(g.value);
+            return (
+              <label className='flex items-center gap-2' key={g.value}>
+                <Checkbox
+                  checked={checked}
+                  onCheckedChange={() => {
+                    const next = checked ? queryFilters.classes.filter((c) => c !== g.value) : [...queryFilters.classes, g.value];
+                    setQueryFilters({ ...queryFilters, classes: next });
+                  }}
+                />
+                <span className='text-sm'>{g.label}</span>
+              </label>
+            );
+          })}
+        </div>
       </div>
 
       <Separator />

@@ -1,20 +1,19 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { authClientWithRedirect } from '~/api/auth';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { Textarea } from '~/components/ui/textarea';
 import { useCreateReaction, useDeleteReaction } from '~/hooks/EmojiReaction';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useCreateFeedback, useDeleteFeedback, useFeedbacks } from '~/hooks/Feedback';
 import { useUser, useUserMemberships } from '~/hooks/User';
 import type { Feedback } from '~/types/Feedback';
 import { BugIcon, ChevronDownIcon, ChevronUpIcon, LightbulbIcon, PlusIcon } from 'lucide-react';
+import { parseAsString, useQueryState } from 'nuqs';
 import { useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -24,12 +23,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   await authClientWithRedirect(request);
 }
 
-type Filters = {
-  search?: string;
-  feedback_type?: string;
-};
-
-const ideaFormSchema = z.object({
+const formSchema = z.object({
   title: z
     .string()
     .min(2, {
@@ -48,36 +42,23 @@ const ideaFormSchema = z.object({
     }),
 });
 
-const bugFormSchema = z.object({
-  title: z
-    .string()
-    .min(2, {
-      message: 'Tittelen må være minst 2 tegn.',
-    })
-    .max(50, {
-      message: 'Tittelen kan ikke overstige 50 tegn.',
-    }),
-  description: z
-    .string()
-    .min(10, {
-      message: 'Beskrivelsen må være minst 10 tegn.',
-    })
-    .max(500, {
-      message: 'Beskrivelsen kan ikke overstige 500 tegn.',
-    }),
-});
+type FormValues = z.infer<typeof formSchema>;
 
 export default function Feedback() {
   const [openIdea, setOpenIdea] = useState(false);
   const [openBug, setOpenBug] = useState(false);
-  const getInitialFilters = useCallback((): Filters => {
-    const params = new URLSearchParams(location.search);
-    const feedback_type = params.get('feedback_type') || undefined;
-    const search = params.get('search') || undefined;
-    return { feedback_type, search };
-  }, []);
 
-  const [filters] = useState<Filters>(getInitialFilters());
+  const [feedbackTypeFilter, setFeedbackTypeFilter] = useQueryState('type', parseAsString.withDefault(''));
+
+  function handleFeedbackTypeFilterChange(value: string) {
+    setFeedbackTypeFilter(value === '__clear' ? '' : value);
+  }
+
+  const filters = useMemo(() => {
+    return {
+      feedback_type: feedbackTypeFilter as string | undefined,
+    };
+  }, [feedbackTypeFilter]);
 
   const { data: user } = useUser();
   const { data: userGroups } = useUserMemberships();
@@ -98,20 +79,44 @@ export default function Feedback() {
 
   const reactionWrapClass = (active: boolean) =>
     `flex items-center space-x-2 rounded-md px-2 py-1 transition ${active ? 'bg-gray-200 dark:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.04]'}`;
-  const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
-    resolver: zodResolver(ideaFormSchema),
-    defaultValues: {
-      title: '',
-      description: '',
+
+  async function submitFeedback(feedbackType: 'Idea' | 'Bug', values: FormValues) {
+    return await createFeedback.mutateAsync(
+      {
+        feedback_type: feedbackType,
+        ...values,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Tilbakemeldingen ble registrert');
+          setOpenIdea(false);
+          setOpenBug(false);
+        },
+        onError(e: { detail?: string }) {
+          toast.error(e.detail || 'Noe gikk galt');
+        },
+      },
+    );
+  }
+
+  const ideaForm = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        await submitFeedback('Idea', value);
+      },
     },
+    defaultValues: { title: '', description: '' } as FormValues,
   });
 
-  const bugForm = useForm<z.infer<typeof bugFormSchema>>({
-    resolver: zodResolver(bugFormSchema),
-    defaultValues: {
-      title: '',
-      description: '',
+  const bugForm = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        await submitFeedback('Bug', value);
+      },
     },
+    defaultValues: { title: '', description: '' } as FormValues,
   });
 
   const [openItems, setOpenItems] = useState<number[]>([]);
@@ -119,42 +124,6 @@ export default function Feedback() {
   const toggleItem = (id: number) => {
     setOpenItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
-
-  function onSubmitIdea(values: z.infer<typeof ideaFormSchema>) {
-    createFeedback.mutate(
-      {
-        feedback_type: 'Idea',
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          toast.success('Ideen ble registrert');
-          setOpenIdea(false);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      },
-    );
-  }
-
-  function onSubmitBug(values: z.infer<typeof bugFormSchema>) {
-    createFeedback.mutate(
-      {
-        feedback_type: 'Bug',
-        ...values,
-      },
-      {
-        onSuccess: () => {
-          toast.success('Feilen ble registrert');
-          setOpenBug(false);
-        },
-        onError: (e) => {
-          toast.error(e.detail);
-        },
-      },
-    );
-  }
 
   const onDeleteFeedback = (feedbackId: number) => {
     deleteFeedback.mutate(feedbackId, {
@@ -249,39 +218,15 @@ export default function Feedback() {
               </Button>
             }>
             <div className='pl-5 pr-5'>
-              <Form {...ideaForm}>
-                <form className='space-y-8' onSubmit={ideaForm.handleSubmit(onSubmitIdea)}>
-                  <FormField
-                    control={ideaForm.control}
-                    name='title'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tittel</FormLabel>
-                        <FormControl>
-                          <Input placeholder='Skriv inn tittel på ideen' {...field} />
-                        </FormControl>
-                        <FormDescription>Gi en kort og konsis tittel for ideen.</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={ideaForm.control}
-                    name='description'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Beskrivelse</FormLabel>
-                        <FormControl>
-                          <Textarea className='resize-none' placeholder='Beskriv ideen i detalj' {...field} />
-                        </FormControl>
-                        <FormDescription>Gi en detaljert beskrivelse av ideen.</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type='submit'>Send inn</Button>
-                </form>
-              </Form>
+              <form className='space-y-8' onSubmit={handleFormSubmit(ideaForm)}>
+                <ideaForm.AppField name='title'>{(field) => <field.InputField label='Tittel' placeholder='Skriv inn tittel på ideen' />}</ideaForm.AppField>
+                <ideaForm.AppField name='description'>
+                  {(field) => <field.TextareaField className='resize-none' label='Beskrivelse' placeholder='Beskriv ideen i detalj' />}
+                </ideaForm.AppField>
+                <ideaForm.AppForm>
+                  <ideaForm.SubmitButton type='submit'>Send inn</ideaForm.SubmitButton>
+                </ideaForm.AppForm>
+              </form>
             </div>
           </ResponsiveDialog>
           <ResponsiveDialog
@@ -294,41 +239,29 @@ export default function Feedback() {
               </Button>
             }>
             <div className='pl-5 pr-5'>
-              <Form {...bugForm}>
-                <form className='space-y-8' onSubmit={bugForm.handleSubmit(onSubmitBug)}>
-                  <FormField
-                    control={bugForm.control}
-                    name='title'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tittel</FormLabel>
-                        <FormControl>
-                          <Input placeholder='Skriv inn tittel på feilen' {...field} />
-                        </FormControl>
-                        <FormDescription>Gi en kort og konsis tittel for feilen.</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={bugForm.control}
-                    name='description'
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Beskrivelse</FormLabel>
-                        <FormControl>
-                          <Textarea className='resize-none' placeholder='Beskriv feilen i detalj' {...field} />
-                        </FormControl>
-                        <FormDescription>Gi en detaljert beskrivelse av feilen.</FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type='submit'>Send inn</Button>
-                </form>
-              </Form>
+              <form className='space-y-8' onSubmit={handleFormSubmit(bugForm)}>
+                <bugForm.AppField name='title'>{(field) => <field.InputField label='Tittel' placeholder='Skriv inn tittel på feilen' />}</bugForm.AppField>
+                <bugForm.AppField name='description'>
+                  {(field) => <field.TextareaField className='resize-none' label='Beskrivelse' placeholder='Beskriv feilen i detalj' />}
+                </bugForm.AppField>
+                <bugForm.AppForm>
+                  <bugForm.SubmitButton type='submit'>Send inn</bugForm.SubmitButton>
+                </bugForm.AppForm>
+              </form>
             </div>
           </ResponsiveDialog>
+        </div>
+        <div>
+          <Select value={feedbackTypeFilter} onValueChange={handleFeedbackTypeFilterChange}>
+            <SelectTrigger>
+              <SelectValue placeholder='Filter' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='__clear'>Alle</SelectItem>
+              <SelectItem value='Idea'>Idé</SelectItem>
+              <SelectItem value='Bug'>Feil</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

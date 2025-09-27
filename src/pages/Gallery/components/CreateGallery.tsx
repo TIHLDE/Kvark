@@ -1,81 +1,85 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import FormTextarea from '~/components/inputs/Textarea';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateGallery } from '~/hooks/Gallery';
 import { Plus } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { href, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
   title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
-  description: z.string().optional(),
-  image: z.string().optional(),
-  image_alt: z.string().optional(),
+  description: z.string(),
+  image: z.string(),
+  image_alt: z.string(),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 const CreateGallery = () => {
   const createGallery = useCreateGallery();
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        await createGallery.mutateAsync(
+          {
+            ...value,
+            slug: '_',
+          },
+          {
+            onSuccess: (data) => {
+              toast.success('Galleriet ble lagt til');
+              navigate(
+                href('/galleri/:id', {
+                  id: data.id,
+                }),
+              );
+            },
+            onError: (e) => {
+              toast.error(e.detail);
+            },
+          },
+        );
+      },
+    },
     defaultValues: {
       title: '',
       description: '',
       image: '',
       image_alt: '',
-    },
+    } as FormValues,
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    const data = {
-      ...values,
-      slug: '_',
-    };
-
-    createGallery.mutate(data, {
-      onSuccess: (data) => {
-        toast.success('Galleriet ble lagt til');
-        navigate(`/galleri/${data.id}`);
-      },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
-  };
-
-  const OpenButton = (
-    <Button value='outline'>
-      <Plus className='w-5 h-5 mr-2' />
-      Nytt galleri
-    </Button>
-  );
-
   return (
-    <ResponsiveDialog description='Opprett et nytt galleri' title='Nytt galleri' trigger={OpenButton}>
+    <ResponsiveDialog
+      description='Opprett et nytt galleri'
+      title='Nytt galleri'
+      trigger={
+        <Button value='outline'>
+          <Plus className='w-5 h-5 mr-2' />
+          Nytt galleri
+        </Button>
+      }>
       <ScrollArea className='h-[60vh]'>
-        <Form {...form}>
-          <form className='space-y-6 pl-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput form={form} label='Tittel' name='title' required />
+        <form className='space-y-6 pl-2 pb-6' onSubmit={handleFormSubmit(form)}>
+          <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
 
-            <FormTextarea form={form} label='Beskrivelse' name='description' />
+          <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' />}</form.AppField>
 
-            <FormImageUpload form={form} label='Cover-bilde' name='image' />
+          <form.AppField name='image'>{(field) => <field.ImageUploadField label='Cover-bilde' />}</form.AppField>
 
-            <FormInput form={form} label='Bildetekst' name='image_alt' />
+          <form.AppField name='image_alt'>{(field) => <field.InputField label='Bildetekst' />}</form.AppField>
 
-            <Button className='w-full' disabled={createGallery.isPending} type='submit'>
+          <form.AppForm>
+            <form.SubmitButton className='w-full' disabled={createGallery.isPending} type='submit'>
               Opprett galleri
-            </Button>
-          </form>
-        </Form>
+            </form.SubmitButton>
+          </form.AppForm>
+        </form>
       </ScrollArea>
     </ResponsiveDialog>
   );

@@ -1,6 +1,5 @@
 import { index, layout, prefix, route, type RouteConfig } from '@react-router/dev/routes';
 
-// TODO: Go through all routes and check if they work
 export default [
   route('interesse', './pages/CompanyInterest/index.tsx'),
   layout('./pages/MainLayout.tsx', [
@@ -8,6 +7,9 @@ export default [
     route('ny-student', './pages/NewStudent/index.tsx'),
 
     route('tilbakemelding', './pages/Feedback/index.tsx'),
+
+    // Form test page for development
+    route('form-test', './pages/FormTest/index.tsx'),
 
     ...prefix('arrangementer', [
       index('./pages/Events/index.tsx'),
@@ -30,7 +32,6 @@ export default [
       route(':slug', './pages/Groups/GroupDetails.tsx', [
         index('./pages/Groups/about/index.tsx'),
         route('arrangementer', './pages/Groups/events/index.tsx'),
-        // TODO: Add a button to create a new fine
         route('boter', './pages/Groups/fines/index.tsx'),
         route('lovverk', './pages/Groups/laws/index.tsx'),
         route('sporreskjemaer', './pages/Groups/forms/index.tsx'),

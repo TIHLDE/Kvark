@@ -1,14 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
-import FormInput from '~/components/inputs/Input';
-import { FormSelect } from '~/components/inputs/Select';
-import { Button } from '~/components/ui/button';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Form } from '~/components/ui/form';
 import { useCreateGroup } from '~/hooks/Group';
 import type { GroupCreate } from '~/types';
 import { GroupType, PermissionApp } from '~/types/Enums';
-import { useForm } from 'react-hook-form';
 import { href, redirect } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -32,35 +27,28 @@ export async function clientLoader({ request }: Route.ClientActionArgs) {
 export default function NewGroupAdministration() {
   const createGroup = useCreateGroup();
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+  const form = useAppForm({
+    validators: { onBlur: schema },
     defaultValues: { name: '', slug: '', type: GroupType.BOARD },
-  });
+    async onSubmit({ value }: { value: z.infer<typeof schema> }) {
+      const data: GroupCreate = {
+        name: value.name,
+        slug: value.slug.toLowerCase(),
+        type: value.type,
+      };
 
-  const onSubmit = (values: z.infer<typeof schema>) => {
-    const data: GroupCreate = {
-      name: values.name,
-      slug: values.slug.toLowerCase(),
-      type: values.type,
-    };
-
-    createGroup.mutate(data, {
-      onSuccess: () => {
+      try {
+        await createGroup.mutateAsync(data);
         toast.success('Gruppen ble opprettet');
         form.reset();
-      },
-      onError: (e) => {
-        Object.keys(e.detail).forEach((key: string) => {
-          if (key in data) {
-            const errorKey = key as keyof GroupCreate;
-            const errorMessage = (e.detail as unknown as Record<string, string | undefined>)[key];
-            form.setError(errorKey, { message: errorMessage });
-          }
-        });
-        toast.error('Det er en eller flere feil i skjemaet');
-      },
-    });
-  };
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          return toast.error(e.message);
+        }
+        toast.error((e as { detail: string }).detail);
+      }
+    },
+  });
 
   return (
     <div className='max-w-5xl mx-auto pt-24 px-2'>
@@ -70,33 +58,38 @@ export default function NewGroupAdministration() {
           <CardDescription>Velg gruppetype og opprett en ny gruppe.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput form={form} label='Gruppenavn' name='name' required />
-              <FormInput
-                description='En slug er en kort tekststreng som brukes i URL-adresser for å identifisere en spesifikk ressurs på en webside'
-                form={form}
-                label='Slug'
-                name='slug'
-                required
-              />
-              <FormSelect
-                form={form}
-                label='Gruppetype'
-                name='type'
-                options={[
-                  { value: GroupType.BOARD, label: 'Styre' },
-                  { value: GroupType.SUBGROUP, label: 'Undergruppe' },
-                  { value: GroupType.COMMITTEE, label: 'Komité' },
-                  { value: GroupType.INTERESTGROUP, label: 'Interessegruppe' },
-                ]}
-                required
-              />
-              <Button type='submit' variant='default'>
+          <form className='space-y-4' onSubmit={handleFormSubmit(form)}>
+            <form.AppField name='name'>{(field) => <field.InputField label='Gruppenavn' required />}</form.AppField>
+            <form.AppField name='slug'>
+              {(field) => (
+                <field.InputField
+                  description='En slug er en kort tekststreng som brukes i URL-adresser for å identifisere en spesifikk ressurs på en webside'
+                  label='Slug'
+                  required
+                />
+              )}
+            </form.AppField>
+            <form.AppField name='type'>
+              {(field) => (
+                <field.SelectField
+                  label='Gruppetype'
+                  options={[
+                    { value: GroupType.BOARD, content: 'Styre' },
+                    { value: GroupType.SUBGROUP, content: 'Undergruppe' },
+                    { value: GroupType.COMMITTEE, content: 'Komité' },
+                    { value: GroupType.INTERESTGROUP, content: 'Interessegruppe' },
+                  ]}
+                  required
+                />
+              )}
+            </form.AppField>
+
+            <form.AppForm>
+              <form.SubmitButton type='submit' variant='default'>
                 Opprett Gruppe
-              </Button>
-            </form>
-          </Form>
+              </form.SubmitButton>
+            </form.AppForm>
+          </form>
         </CardContent>
       </Card>
     </div>

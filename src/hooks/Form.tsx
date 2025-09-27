@@ -21,10 +21,14 @@ export const SUBMISSIONS_QUERY_KEY = 'submission';
 export const STATISTICS_QUERY_KEY = 'statistics';
 export const TEMPLATE_QUERY_KEY = 'templates';
 
+export const formByIdQuery = (formId: string) => ({
+  queryKey: [FORM_QUERY_KEY, formId],
+  queryFn: () => API.getForm(formId),
+});
+
 export const useFormById = (formId: string) =>
   useQuery({
-    queryKey: [FORM_QUERY_KEY, formId],
-    queryFn: () => API.getForm(formId),
+    ...formByIdQuery(formId),
     enabled: formId !== '-',
   });
 export const useFormStatisticsById = (formId: string) =>

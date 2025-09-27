@@ -1,9 +1,7 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Checkbox } from '~/components/ui/checkbox';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useEventById, useEventRegistrations } from '~/hooks/Event';
@@ -12,11 +10,9 @@ import EventStatistics from '~/pages/EventAdministration/components/EventStatist
 import Participant from '~/pages/EventAdministration/components/Participant';
 import type { Event } from '~/types';
 import { Copy, Info } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 import { toast } from 'sonner';
-import { z } from 'zod';
 
 import EventParticipantSearch from './EventParticipantSearch';
 import EventUserRegistrator from './EventUserRegistrator';
@@ -26,11 +22,6 @@ type RegistrationsProps = {
   eventId: Event['id'];
   needsSorting?: boolean;
 };
-
-const formSchema = z.object({
-  names: z.boolean(),
-  emails: z.boolean(),
-});
 
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
   const [searchParams] = useSearchParams();
@@ -45,10 +36,16 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     ...(searchParams.has('allow_photo') && !onWait ? { allow_photo: searchParams.get('allow_photo') } : {}),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { names: false, emails: false },
-  });
+  const [names, setNames] = useState(false);
+  const [emails, setEmails] = useState(false);
+
+  function handleCopyDetails() {
+    if (!names && !emails) {
+      return toast.info('Ingenting kopier til utklippstavlen');
+    }
+    navigator.clipboard.writeText(getRegistrationDetails(names, emails));
+    toast.success('Detaljene ble kopiert til utklippstavlen');
+  }
 
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -66,9 +63,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     });
   }
 
-  const getRegistrationDetails = (values: z.infer<typeof formSchema>) => {
-    const { names, emails } = values;
-
+  const getRegistrationDetails = (names: boolean, emails: boolean) => {
     if (!names && !emails) {
       return '';
     }
@@ -81,21 +76,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
         return data.join(',');
       })
       .join('\n');
-  };
-
-  const copyRegistrationDetails = (values: z.infer<typeof formSchema>) => {
-    const tempInput = document.createElement('textarea');
-    tempInput.value = getRegistrationDetails(values);
-
-    if (!tempInput.value) {
-      return toast.error('Ingen detaljer valgt for kopiering');
-    }
-
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    toast.success('Detaljene ble kopiert til utklippstavlen');
   };
 
   return (
@@ -139,56 +119,30 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
                 </AlertDescription>
               </Alert>
 
-              <Form {...form}>
-                <form className='p-4 space-y-2' onSubmit={form.handleSubmit(copyRegistrationDetails)}>
-                  <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
-                    <FormField
-                      control={form.control}
-                      name='names'
-                      render={({ field }) => (
-                        <FormItem className='w-full'>
-                          <label
-                            className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='names'>
-                            <FormControl>
-                              <Checkbox checked={field.value} id='names' onCheckedChange={field.onChange} />
-                            </FormControl>
-                            <div className='space-y-1 leading-none'>
-                              <FormLabel>Navn</FormLabel>
-                              <FormDescription>Kopier navnene til deltagerne</FormDescription>
-                            </div>
-                          </label>
-                        </FormItem>
-                      )}
-                    />
+              <div className='p-4 space-y-2'>
+                <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
+                  <label className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'>
+                    <Checkbox checked={names} onCheckedChange={(v) => setNames(Boolean(v))} />
+                    <div className='space-y-1 leading-none'>
+                      Navn
+                      <p>Kopier navnene til deltagerne</p>
+                    </div>
+                  </label>
 
-                    <FormField
-                      control={form.control}
-                      name='emails'
-                      render={({ field }) => (
-                        <FormItem className='w-full'>
-                          <label
-                            className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
-                            htmlFor='emails'>
-                            <FormControl>
-                              <Checkbox checked={field.value} id='emails' onCheckedChange={field.onChange} />
-                            </FormControl>
-                            <div className='space-y-1 leading-none'>
-                              <FormLabel>Epost</FormLabel>
-                              <FormDescription>Kopier epostene til deltagerne</FormDescription>
-                            </div>
-                          </label>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <label className='w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'>
+                    <Checkbox checked={emails} onCheckedChange={(v) => setEmails(Boolean(v))} />
+                    <div className='space-y-1 leading-none'>
+                      Epost
+                      <p>Kopier epostene til deltagerne</p>
+                    </div>
+                  </label>
+                </div>
 
-                  <Button className='w-full' type='submit' variant='outline'>
-                    <Copy className='w-5 h-5 mr-2' />
-                    Kopier detaljer om deltagere
-                  </Button>
-                </form>
-              </Form>
+                <Button className='w-full' variant='outline' onClick={handleCopyDetails}>
+                  <Copy className='w-5 h-5 mr-2' />
+                  Kopier detaljer om deltagere
+                </Button>
+              </div>
             </>
           )}
           {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}

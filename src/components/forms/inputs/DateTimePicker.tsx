@@ -1,26 +1,29 @@
 import { Button } from '~/components/ui/button';
 import { Calendar } from '~/components/ui/calendar';
-import { FormControl } from '~/components/ui/form';
+import { FormControl, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { TimePickerDisplay } from '~/components/ui/timePicker/display';
 import { cn } from '~/lib/utils';
-import { format } from 'date-fns/format';
+import { format } from 'date-fns';
 import { nb } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
-import { ComponentProps } from 'react';
 
-import { FieldBase } from '.';
 import { useFieldContext } from '../AppForm';
 
-type DateTimeFieldProps = ComponentProps<typeof FieldBase> & {
+type DateTimePickerProps = {
+  label: string;
+  required?: boolean;
+  className?: string;
   onDateChange?: (date?: Date) => void;
 };
 
-export function DateTimeField(props: DateTimeFieldProps) {
+const DateTimePicker = ({ label, required, className, onDateChange }: DateTimePickerProps) => {
   const field = useFieldContext<Date | undefined>();
-
   return (
-    <FieldBase {...props}>
+    <FormItem className={cn('w-full', className)}>
+      <FormLabel>
+        {label} {required && <span className='text-red-300'>*</span>}
+      </FormLabel>
       <Popover>
         <FormControl>
           <PopoverTrigger asChild>
@@ -36,21 +39,18 @@ export function DateTimeField(props: DateTimeFieldProps) {
             mode='single'
             onSelect={(e) => {
               field.handleChange(e);
-              props.onDateChange?.(e);
+              onDateChange?.(e);
             }}
             selected={field.state.value}
           />
           <div className='p-3 border-t border-border'>
-            <TimePickerDisplay
-              date={field.state.value}
-              setDate={(e) => {
-                field.handleChange(e);
-                props.onDateChange?.(e);
-              }}
-            />
+            <TimePickerDisplay date={field.state.value} setDate={field.handleChange} />
           </div>
         </PopoverContent>
       </Popover>
-    </FieldBase>
+      <FormMessage />
+    </FormItem>
   );
-}
+};
+
+export default DateTimePicker;

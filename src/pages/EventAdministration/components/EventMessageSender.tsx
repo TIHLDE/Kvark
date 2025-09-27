@@ -1,14 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
-import { Textarea } from '~/components/ui/textarea';
 import { useNotifyEventRegistrations } from '~/hooks/Event';
-import useMediaQuery, { SMALL_SCREEN } from '~/hooks/MediaQuery';
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -21,50 +16,35 @@ const formSchema = z.object({
   message: z.string().min(1, { message: 'Oppgi en melding' }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const notify = useNotifyEventRegistrations(eventId);
-  const isTablet = useMediaQuery(SMALL_SCREEN);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        await notify.mutateAsync(
+          { title: value.title, message: value.message },
+          {
+            onSuccess: (values) => {
+              toast.success(values.detail);
+            },
+            onError: (error) => {
+              toast.error(error.detail);
+            },
+          },
+        );
+        setDialogOpen(false);
+      },
+    },
     defaultValues: {
       title: '',
       message: '',
-    },
+    } as FormValues,
   });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (notify.isPending) {
-      return;
-    }
-    notify.mutate(
-      { title: values.title, message: values.message },
-      {
-        onSuccess: (values) => {
-          toast.success(values.detail);
-          form.reset();
-          setDialogOpen(false);
-        },
-        onError: (error) => {
-          toast.error(error.detail);
-        },
-      },
-    );
-  };
-
-  const SmallOpenButton = (
-    <Button size='icon' variant='secondary'>
-      <Mail className='w-5 h-5 stroke-[1.5px]' />
-    </Button>
-  );
-
-  const OpenButton = (
-    <Button variant='secondary'>
-      <Mail className='mr-2 w-5 h-5 stroke-[1.5px]' />
-      Send epost
-    </Button>
-  );
 
   return (
     <ResponsiveDialog
@@ -73,44 +53,23 @@ const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {
       onOpenChange={setDialogOpen}
       open={dialogOpen}
       title='Send melding til påmeldte'
-      trigger={!isTablet ? SmallOpenButton : OpenButton}>
-      <Form {...form}>
-        <form className='space-y-4 px-4' onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            name='title'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Tittel <span className='text-red-300'>*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Skriv her...' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+      trigger={
+        <Button variant='secondary'>
+          <Mail className='mr-2 w-5 h-5 stroke-[1.5px]' />
+          Send epost
+        </Button>
+      }>
+      <form className='space-y-4 px-4' onSubmit={handleFormSubmit(form)}>
+        <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required placeholder='Skriv her...' />}</form.AppField>
 
-          <FormField
-            name='message'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Melding <span className='text-red-300'>*</span>
-                </FormLabel>
-                <FormControl>
-                  <Textarea {...field} placeholder='Skriv her...' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <form.AppField name='message'>{(field) => <field.TextareaField label='Melding' required placeholder='Skriv her...' />}</form.AppField>
 
-          <Button className='w-full' disabled={notify.isPending} type='submit'>
+        <form.AppForm>
+          <form.SubmitButton className='w-full' disabled={notify.isPending} type='submit'>
             {notify.isPending ? 'Sender melding...' : 'Send melding'}
-          </Button>
-        </form>
-      </Form>
+          </form.SubmitButton>
+        </form.AppForm>
+      </form>
     </ResponsiveDialog>
   );
 };

@@ -15,7 +15,6 @@ const GroupLaws = () => {
   const { data: laws } = useGroupLaws(slug || '-');
 
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
-
   if (!laws || !slug || !group) {
     return null;
   }

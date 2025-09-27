@@ -1,17 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import API from '~/api/api';
-import FormInput from '~/components/inputs/Input';
-import FormMultiCheckbox from '~/components/inputs/MultiCheckbox';
-import FormTextarea from '~/components/inputs/Textarea';
-import { Button } from '~/components/ui/button';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Card, CardContent } from '~/components/ui/card';
-import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
-import type { CompaniesEmail } from '~/types';
 import { addMonths } from 'date-fns';
-import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -28,47 +22,55 @@ const formSchema = z.object({
   comment: z.string().optional(),
 });
 
+type FormSchema = z.infer<typeof formSchema>;
+
 const CompaniesForm = () => {
   const { event } = useAnalytics();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const sendEmailMutation = useMutation({
+    mutationFn: API.emailForm,
+  });
+
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        if (sendEmailMutation.isPending) throw new Error('Du har en melding som venter på å bli sendt inn');
+
+        await sendEmailMutation.mutateAsync(
+          {
+            info: {
+              bedrift: value.bedrift,
+              kontaktperson: value.kontaktperson,
+              epost: value.epost,
+            },
+            time: value.time,
+            type: value.type,
+            comment: value.comment || '',
+          },
+          {
+            onSuccess: () => {
+              event('submit-form', 'companies', `Company: ${value.bedrift}`);
+              toast.success('Meldingen er sendt inn');
+            },
+            onError: (error: unknown) => {
+              event('submit-form-error', 'companies', 'Company: ' + value.bedrift);
+              if (error instanceof Error) toast.error(error.message ?? 'Noe gikk galt');
+              if ((error as { detail?: string })?.detail) toast.error((error as { detail?: string })?.detail);
+            },
+          },
+        );
+      },
+    },
     defaultValues: {
       bedrift: '',
       kontaktperson: '',
       epost: '',
-      time: [],
-      type: [],
-    },
+      time: [] as string[],
+      type: [] as string[],
+      comment: '',
+    } as FormSchema,
   });
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const companyData: CompaniesEmail = {
-        info: {
-          bedrift: values.bedrift,
-          kontaktperson: values.kontaktperson,
-          epost: values.epost,
-        },
-        time: values.time,
-        type: values.type,
-        comment: values.comment || '',
-      };
-      const response = await API.emailForm(companyData);
-      event('submit-form', 'companies', `Company: ${values.bedrift}`);
-      toast.success(response.detail);
-      form.reset();
-    } catch (e) {
-      form.setError('bedrift', { message: e.detail || 'Noe gikk galt' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const getSemester = (semester: number) => {
     const date = addMonths(new Date(), 1);
@@ -88,29 +90,29 @@ const CompaniesForm = () => {
   return (
     <Card>
       <CardContent className='p-4'>
-        <Form {...form}>
-          <form className='space-y-8' onSubmit={form.handleSubmit(onSubmit)}>
-            <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
-              <FormInput form={form} label='Bedrift' name='bedrift' required />
-              <FormInput form={form} label='Kontaktperson' name='kontaktperson' required />
-              <FormInput form={form} label='Epost' name='epost' required type='email' />
-            </div>
+        <form className='space-y-8' onSubmit={handleFormSubmit(form)}>
+          <div className='space-y-4 lg:space-y-0 lg:grid lg:grid-cols-3 lg:space-x-4'>
+            <form.AppField name='bedrift'>{(field) => <field.InputField label='Bedrift' required />}</form.AppField>
+            <form.AppField name='kontaktperson'>{(field) => <field.InputField label='Kontaktperson' required />}</form.AppField>
+            <form.AppField name='epost'>{(field) => <field.InputField label='Epost' required type='email' />}</form.AppField>
+          </div>
 
-            <Separator />
+          <Separator />
 
-            <div className='space-y-4 lg:space-y-0 lg:flex lg:space-x-4'>
-              <FormMultiCheckbox form={form} items={semesters} label='Semester' name='time' required />
+          <div className='space-y-4 lg:space-y-0 lg:grid lg:grid-cols-2 lg:space-x-4'>
+            <form.AppField name='time'>{(field) => <field.MultiCheckboxField items={semesters} label='Semester' required />}</form.AppField>
 
-              <FormMultiCheckbox form={form} items={types} label='Arrangementer' name='type' required />
-            </div>
+            <form.AppField name='type'>{(field) => <field.MultiCheckboxField items={types} label='Arrangementer' required />}</form.AppField>
+          </div>
 
-            <FormTextarea form={form} label='Kommentar' name='comment' />
+          <form.AppField name='comment'>{(field) => <field.TextareaField label='Kommentar' />}</form.AppField>
 
-            <Button className='w-full' disabled={isLoading}>
-              {isLoading ? 'Sender inn...' : 'Send inn'}
-            </Button>
-          </form>
-        </Form>
+          <form.AppForm>
+            <form.SubmitButton className='w-full' disabled={sendEmailMutation.isPending}>
+              {sendEmailMutation.isPending ? 'Sender inn...' : 'Send inn'}
+            </form.SubmitButton>
+          </form.AppForm>
+        </form>
       </CardContent>
     </Card>
   );

@@ -1,5 +1,4 @@
 import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
-import { SingleUserSearch } from '~/components/inputs/UserSearch';
 import { Button } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { useCreateMembership } from '~/hooks/Membership';
@@ -63,7 +62,7 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       title='Legg til medlem'
       trigger={OpenButton}>
       <form className='px-2 space-y-4' onSubmit={handleFormSubmit(form)}>
-        <form.AppField name='user.user_id'>{(field) => <field.SingleUserField label='Søk etter bruker' />}</form.AppField>
+        <form.AppField name='user.user_id'>{(field) => <field.UserField label='Søk etter bruker' />}</form.AppField>
 
         <Button className='w-full' disabled={createMembership.isPending}>
           {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}

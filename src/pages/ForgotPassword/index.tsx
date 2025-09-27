@@ -1,13 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import Page from '~/components/navigation/Page';
-import { Button, buttonVariants } from '~/components/ui/button';
+import { buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
-import { Input } from '~/components/ui/input';
 import { useForgotPassword } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -20,24 +17,26 @@ const ForgotPassword = () => {
   const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        await forgotPassword.mutateAsync(value.email, {
+          onSuccess({ detail }) {
+            toast.success(detail);
+            event('forgot-password', 'auth', 'Forgot password');
+          },
+          onError(e: unknown) {
+            if (e instanceof Error) {
+              return toast.error(e.message);
+            }
+            toast.error((e as { detail?: string }).detail ?? 'Noe gikk galt');
+          },
+        });
+      },
     },
+    defaultValues: { email: '' },
   });
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    forgotPassword.mutate(values.email, {
-      onSuccess: (data) => {
-        toast.success(data.detail);
-        event('forgot-password', 'auth', 'Forgot password');
-      },
-      onError: (e) => {
-        form.setError('email', { message: e.detail });
-      },
-    });
-  };
 
   return (
     <Page>
@@ -47,29 +46,15 @@ const ForgotPassword = () => {
           <CardDescription>Skriv inn din e-postadresse for å motta en e-post med et nytt passord.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form className='space-y-6' onSubmit={form.handleSubmit(onSubmit)}>
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Epost <span className='text-red-300'>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder='Skriv her...' type='email' {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
+            <form.AppField name='email'>{(field) => <field.InputField label='Epost' placeholder='Skriv her...' required type='email' />}</form.AppField>
 
-              <Button className='w-full' disabled={forgotPassword.isPending} size='lg' type='submit'>
-                {forgotPassword.isPending ? 'Henter nytt passord...' : 'Få nytt passord'}
-              </Button>
-            </form>
-          </Form>
+            <form.AppForm>
+              <form.SubmitButton loading='Sender e-post...' className='w-full' size='lg' type='submit'>
+                Send reset-lenke
+              </form.SubmitButton>
+            </form.AppForm>
+          </form>
 
           <div className='flex items-center justify-center space-x-12 mt-6'>
             <Link className={buttonVariants({ variant: 'link' })} to={URLS.login}>

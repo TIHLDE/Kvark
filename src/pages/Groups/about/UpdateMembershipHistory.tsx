@@ -6,10 +6,10 @@ import { useUpdateMembershipHistory } from '~/hooks/Membership';
 import type { MembershipHistory } from '~/types';
 import { MembershipType } from '~/types/Enums';
 import { parseISO } from 'date-fns';
+import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { PencilIcon } from 'lucide-react';
 
 type UpdateMembershipHistoryProps = {
   membership: MembershipHistory;

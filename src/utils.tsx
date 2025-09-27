@@ -555,3 +555,13 @@ export function deepEqual(a: unknown, b: unknown): boolean {
   // Handle NaN (the only value not equal to itself)
   return a !== a && b !== b;
 }
+
+export function assertNever<T = never>(value: never, options: { throwError?: boolean; override: T }): T {
+  const { throwError = true } = options;
+  const hasOverride = Object.hasOwn(options, 'override');
+
+  if (throwError === true && !hasOverride) {
+    throw new Error(`AssertNever received unexpected value: ${value}`);
+  }
+  return hasOverride ? options.override : value;
+}

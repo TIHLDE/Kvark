@@ -2,19 +2,16 @@ import FieldView from '~/components/forms/FieldView';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import type { Form } from '~/types';
-import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-export type FormViewProps<TFormValues extends FieldValues> = {
+export type FormViewProps = {
   form: Form;
-  submitForm: UseFormReturn<TFormValues>;
-  disabled?: boolean;
 };
 
-const FormView = <FormValues extends FieldValues>({ form, submitForm, disabled = false }: FormViewProps<FormValues>) => (
+const FormView = ({ form }: FormViewProps) => (
   <>
     {!form.fields.length && <h1 className='text-center'>Dette spørreskjemaet inneholder ingen spørsmål.</h1>}
-    {form.fields.map((field, index) => (
-      <FieldView disabled={disabled} formField={field} index={index} key={field.id} submitForm={submitForm} />
+    {form.fields.map((field) => (
+      <FieldView formField={field} key={field.id} />
     ))}
   </>
 );

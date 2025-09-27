@@ -15,6 +15,15 @@ import { z } from 'zod';
 
 import { handleFormSubmit, useAppForm } from './AppForm';
 
+type FieldComponentsWithoutAny = {
+  InputField: (props: Record<string, unknown>) => JSX.Element;
+  TextareaField: (props: Record<string, unknown>) => JSX.Element;
+  SwitchField: (props: Record<string, unknown>) => JSX.Element;
+  SelectField: (props: Record<string, unknown>) => JSX.Element;
+  MultiCheckboxField: (props: Record<string, unknown>) => JSX.Element;
+  UserField: (props: Record<string, unknown>) => JSX.Element;
+};
+
 export type FormDetailsEditorProps = {
   form: Form;
   navigate?: boolean;
@@ -32,8 +41,8 @@ const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) =>
           navigateTo(-1);
         }
       },
-      onError: (e) => {
-        toast.error(e.detail);
+      onError: (e: { detail?: string }) => {
+        toast.error(e.detail ?? 'Noe gikk galt');
       },
     });
 
@@ -66,6 +75,8 @@ const formSchema = z.object({
   email_receiver_on_submit: z.string().email().optional().or(z.literal('')),
 });
 
+type GroupFormValues = z.infer<typeof formSchema>;
+
 const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
   const updateForm = useUpdateForm(groupForm.id || '-');
 
@@ -80,48 +91,71 @@ const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {
       email_receiver_on_submit: groupForm.email_receiver_on_submit || '',
       title: groupForm.title || '',
       description: groupForm.description || '',
-    } as z.infer<typeof formSchema>,
+    } as GroupFormValues,
 
-    async onSubmit(values) {
+    async onSubmit({ value }: { value: GroupFormValues }) {
       try {
-        await updateForm.mutateAsync({ resource_type: groupForm.resource_type, ...values });
+        await updateForm.mutateAsync({ resource_type: groupForm.resource_type, ...value });
         toast.success('Skjema ble oppdatert');
-      } catch (e) {
-        toast.error(e.detail);
+      } catch (e: unknown) {
+        const detail = (e as { detail?: string })?.detail;
+        toast.error(detail ?? 'Noe gikk galt');
       }
     },
   });
 
   return (
     <form className='space-y-6' onSubmit={handleFormSubmit(form)}>
-      <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
-
-      <form.AppField name='email_receiver_on_submit'>
-        {(field) => <field.InputField label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />}
+      <form.AppField name='title'>
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return <fc.InputField label='Tittel' required />;
+        }}
       </form.AppField>
 
-      <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' />}</form.AppField>
+      <form.AppField name='email_receiver_on_submit'>
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return <fc.InputField label='Epost-mottager ved svar' name='email_receiver_on_submit' type='email' />;
+        }}
+      </form.AppField>
+
+      <form.AppField name='description'>
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return <fc.TextareaField label='Beskrivelse' />;
+        }}
+      </form.AppField>
 
       <form.AppField name='can_submit_multiple'>
-        {(field) => <field.SwitchField label='Tillat flere innsendinger' description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.' />}
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return <fc.SwitchField description='Bestemmer om brukere kan svare på dette spørreskjemaet flere ganger.' label='Tillat flere innsendinger' />;
+        }}
       </form.AppField>
 
       <form.AppField name='is_open_for_submissions'>
-        {(field) => (
-          <field.SwitchField
-            label='Åpent for innsending'
-            description='Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet, og ingen kan heller se/finne det.'
-          />
-        )}
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return (
+            <fc.SwitchField
+              description='Bestemmer om spørreskjemaet er åpent for innsending og brukere dermed kan svare på det. Hvis bryteren er avslått så kan ingen svare på skjemaet, og ingen kan heller se/finne det.'
+              label='Åpent for innsending'
+            />
+          );
+        }}
       </form.AppField>
 
       <form.AppField name='only_for_group_members'>
-        {(field) => (
-          <field.SwitchField
-            label='Kun for medlemmer av gruppen'
-            description='Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.'
-          />
-        )}
+        {(field: unknown) => {
+          const fc = field as FieldComponentsWithoutAny;
+          return (
+            <fc.SwitchField
+              description='Bestemmer hvem som kan svare på dette spørreskjemaet. Hvis bryteren er påslått så vil kun medlemmer av gruppen kunne svare på spørreskjemaet, og personer som ikke er medlem vil ikke kunne se/finne spørreskjemaet.'
+              label='Kun for medlemmer av gruppen'
+            />
+          );
+        }}
       </form.AppField>
 
       <div className='space-y-2 md:space-y-0 md:flex md:items-center md:justify-between md:space-x-2'>

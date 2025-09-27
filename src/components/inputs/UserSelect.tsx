@@ -2,7 +2,8 @@ import { Badge } from '~/components/ui/badge';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '~/components/ui/command';
 import { CommandEmpty } from 'cmdk';
 import { XIcon } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
 
 export type UserSelectOption = {
   id: string;
@@ -12,62 +13,87 @@ export type UserSelectOption = {
 export type UserSelectProps = {
   placeholder?: string;
   users: UserSelectOption[];
-  search?: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  onSearchChange: (search: string) => void;
   onChange?: (value: string[]) => void;
   value?: string[];
   multiple?: boolean;
 };
 
-/**
- *
- * @param props - The props for the UserSelect compo
- * @param props.onChange - Even if multiple is set to true, this will always return an array of ids.
- * @param props.value - The value of the select. This should always be an array of ids, even if multiple is set to false.
- * @returns
- */
 export default function UserSelect(props: UserSelectProps) {
+  const { value, onChange, users, multiple, placeholder, onSearchChange } = props;
   const [open, setOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<UserSelectOption[]>([]);
+  const [internalSelected, setInternalSelected] = useState<UserSelectOption[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
-  const handleUnselect = useCallback((option: string) => {
-    setSelected((prev) => prev.filter((s) => s !== option));
-  }, []);
+  // Determine if component is controlled
+  const isControlled = Object.hasOwn(props, 'value');
+
+  // Get current selected based on controlled/uncontrolled mode
+  const selected = useMemo(() => {
+    if (isControlled && value && users.length) {
+      return users.filter((user) => value.includes(user.id));
+    }
+    return internalSelected;
+  }, [isControlled, value, users, internalSelected]);
+
+  // Update internal state when external value changes (for controlled mode)
+  useEffect(() => {
+    if (isControlled && value && users.length) {
+      const nextSelected = users.filter((user) => value.includes(user.id));
+      setInternalSelected(nextSelected);
+    }
+  }, [isControlled, value, users]);
+
+  // Emit changes for both controlled and uncontrolled modes
+  const handleSelectionChange = useCallback(
+    (newSelected: UserSelectOption[]) => {
+      if (!isControlled) {
+        setInternalSelected(newSelected);
+      }
+      onChange?.(newSelected.map((s) => s.id));
+    },
+    [isControlled, onChange],
+  );
+
+  const handleUnselect = useCallback(
+    (option: UserSelectOption) => {
+      const newSelected = selected.filter((s) => s.id !== option.id);
+      handleSelectionChange(newSelected);
+    },
+    [selected, handleSelectionChange],
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if (inputValue === '') {
-          setSelected((prev) => {
-            return prev.slice(0, -1);
-          });
+          const newSelected = selected.slice(0, -1);
+          handleSelectionChange(newSelected);
         }
       }
     },
-    [inputValue],
+    [inputValue, selected, handleSelectionChange],
   );
 
-  const selectables = props.users.filter((option) => {
-    return !selected.some((selectedOption) => {
-      return JSON.stringify(option) === JSON.stringify(selectedOption);
-    });
-  });
+  const selectables = useMemo(() => {
+    const selectedIds = new Set(selected.map((s) => s.id));
+    return users.filter((option) => !selectedIds.has(option.id));
+  }, [users, selected]);
 
   return (
     <Command className='overflow-visible bg-transparent' onKeyDown={handleKeyDown}>
       <div className='group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2'>
         <div className='flex flex-wrap gap-1'>
-          {selected.map((framework) => {
+          {selected.map((option) => {
             return (
-              <Badge key={framework} variant='secondary'>
-                {framework}
+              <Badge key={option.id} variant='secondary'>
+                {option.name}
                 <button
                   className='ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
-                  onClick={() => handleUnselect(framework)}
+                  onClick={() => handleUnselect(option)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      handleUnselect(framework);
+                      handleUnselect(option);
                     }
                   }}
                   onMouseDown={(e) => {
@@ -86,8 +112,9 @@ export default function UserSelect(props: UserSelectProps) {
             onFocus={() => setOpen(true)}
             onValueChange={(value) => {
               setInputValue(value);
+              onSearchChange(value);
             }}
-            placeholder={props.placeholder}
+            placeholder={placeholder}
             value={inputValue}
           />
         </div>
@@ -102,14 +129,15 @@ export default function UserSelect(props: UserSelectProps) {
                   return (
                     <CommandItem
                       className={'cursor-pointer'}
-                      key={option.user_id}
+                      key={option.id}
                       onMouseDown={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                       }}
                       onSelect={() => {
                         setInputValue('');
-                        setSelected((prev) => [...prev, option]);
+                        const newSelected = multiple ? [...selected, option] : [option];
+                        handleSelectionChange(newSelected);
                       }}>
                       {option.name}
                     </CommandItem>

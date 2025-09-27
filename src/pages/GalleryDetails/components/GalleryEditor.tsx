@@ -1,9 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '~/components/inputs/Input';
-import FormTextarea from '~/components/inputs/Textarea';
-import { FormImageUpload } from '~/components/inputs/Upload';
+import { handleFormSubmit, useAppForm } from '~/components/forms/AppForm';
 import { Button } from '~/components/ui/button';
-import { Form } from '~/components/ui/form';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
@@ -11,7 +7,6 @@ import { useDeleteGallery, useGalleryById, useUpdateGallery } from '~/hooks/Gall
 import type { Gallery } from '~/types';
 import URLS from '~/URLS';
 import { Pencil } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -22,25 +17,34 @@ export type GalleryEditorProps = {
 
 const formSchema = z.object({
   title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
-  description: z.string().optional(),
-  image: z.string().optional(),
-  image_alt: z.string().optional(),
+  description: z.string(),
+  image: z.string(),
+  image_alt: z.string(),
 });
 
-const GalleryEditor = ({ id }: GalleryEditorProps) => {
-  const { data } = useGalleryById(id);
+type FormValues = z.infer<typeof formSchema>;
+
+function GalleryEditForm({ data }: { data: Gallery }) {
+  const id = data.id;
   const editGallery = useUpdateGallery(id);
   const deleteGallery = useDeleteGallery(id);
-  const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: data?.title || '',
-      description: data?.description || '',
-      image: data?.image ?? '',
-      image_alt: data?.image_alt || '',
+  const form = useAppForm({
+    validators: {
+      onBlur: formSchema,
+      async onSubmitAsync({ value }) {
+        const payload = { ...value, slug: '_' };
+        await editGallery.mutateAsync(payload, {
+          onSuccess: () => {
+            toast.success('Galleriet ble oppdatert');
+          },
+          onError: (e) => {
+            toast.error(e.detail);
+          },
+        });
+      },
     },
+    defaultValues: { title: data.title, description: data.description, image: data.image, image_alt: data.image_alt } as FormValues,
   });
 
   const remove = () =>
@@ -53,59 +57,52 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
         toast.error(e.detail);
       },
     });
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const data = {
-      ...values,
-      slug: '_',
-    };
-    editGallery.mutate(data, {
-      onSuccess: () => {
-        toast.success('Galleriet ble oppdatert');
-      },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
-  };
-
-  const OpenButton = (
-    <Button variant='outline'>
-      <Pencil className='w-5 h-5 mr-2' />
-      Rediger galleri
-    </Button>
-  );
+  const navigate = useNavigate();
 
   return (
-    <ResponsiveDialog description='Endre tittel, beskrivelse og bilde.' title='Oppdater galleri' trigger={OpenButton}>
-      <ScrollArea className='h-[60vh]'>
-        <Form {...form}>
-          <form className='space-y-6 pl-2 pb-6' onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput form={form} label='Tittel' name='title' required />
+    <form className='space-y-6 pl-2 pb-6' onSubmit={handleFormSubmit(form)}>
+      <form.AppField name='title'>{(field) => <field.InputField label='Tittel' required />}</form.AppField>
 
-            <FormTextarea form={form} label='Beskrivelse' name='description' />
+      <form.AppField name='description'>{(field) => <field.TextareaField label='Beskrivelse' />}</form.AppField>
 
-            <FormImageUpload form={form} label='Cover-bilde' name='image' />
+      <form.AppField name='image'>{(field) => <field.ImageUploadField label='Cover-bilde' />}</form.AppField>
 
-            <FormInput form={form} label='Bildetekst' name='image_alt' />
+      <form.AppField name='image_alt'>{(field) => <field.InputField label='Bildetekst' />}</form.AppField>
 
-            <Button className='w-full' disabled={editGallery.isPending} type='submit'>
-              Oppdater galleri
-            </Button>
+      <form.AppForm>
+        <form.SubmitButton className='w-full' type='submit'>
+          Oppdater galleri
+        </form.SubmitButton>
+      </form.AppForm>
 
-            <ResponsiveAlertDialog
-              action={remove}
-              description='Er du sikker på at du vil slette galleriet?'
-              title='Slett galleri'
-              trigger={
-                <Button className='w-full' variant='destructive'>
-                  Slett galleri
-                </Button>
-              }
-            />
-          </form>
-        </Form>
-      </ScrollArea>
+      <ResponsiveAlertDialog
+        action={remove}
+        description='Er du sikker på at du vil slette galleriet?'
+        title='Slett galleri'
+        trigger={
+          <Button className='w-full' variant='destructive'>
+            Slett galleri
+          </Button>
+        }
+      />
+    </form>
+  );
+}
+
+const GalleryEditor = ({ id }: GalleryEditorProps) => {
+  const { data } = useGalleryById(id);
+
+  return (
+    <ResponsiveDialog
+      description='Endre tittel, beskrivelse og bilde.'
+      title='Oppdater galleri'
+      trigger={
+        <Button variant='outline'>
+          <Pencil className='w-5 h-5 mr-2' />
+          Rediger galleri
+        </Button>
+      }>
+      <ScrollArea className='h-[60vh]'>{data && <GalleryEditForm data={data} />}</ScrollArea>
     </ResponsiveDialog>
   );
 };

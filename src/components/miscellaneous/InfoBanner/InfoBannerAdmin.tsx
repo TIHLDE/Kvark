@@ -1,30 +1,16 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
-import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
 import { useInfoBanners } from '~/hooks/InfoBanner';
 import { PermissionApp } from '~/types/Enums';
-import { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { parseAsBoolean, useQueryState } from 'nuqs';
+import { useMemo } from 'react';
 import { href, redirect } from 'react-router';
-import { z } from 'zod';
 
 import { Route } from './+types/InfoBannerAdmin';
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
-
-type Filters = {
-  is_visible: boolean;
-  is_expired: boolean;
-};
-
-const formSchema = z.object({
-  is_visible: z.boolean(),
-  is_expired: z.boolean(),
-});
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {
   const auth = await authClientWithRedirect(request);
@@ -35,54 +21,27 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 }
 
 function InfoBannerAdmin() {
-  const [filters, setFilters] = useState<Filters>({ is_visible: false, is_expired: false });
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { is_visible: false, is_expired: false },
-  });
+  const [isVisible, setIsVisible] = useQueryState('visible', parseAsBoolean.withDefault(false));
+  const [isExpired, setIsExpired] = useQueryState('expired', parseAsBoolean.withDefault(false));
 
-  const searchWithFilters = (values: z.infer<typeof formSchema>) => {
-    setFilters({ is_visible: values.is_visible, is_expired: values.is_expired });
-  };
+  const filters = useMemo(() => ({ is_visible: isVisible, is_expired: isExpired }), [isVisible, isExpired]);
+
   const { data: bannerData, hasNextPage, fetchNextPage, isFetching } = useInfoBanners(filters);
   const banners = useMemo(() => (bannerData ? bannerData.pages.map((page) => page.results).flat() : []), [bannerData]);
 
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between'>
-        <Form {...form}>
-          <form className='flex items-center space-x-4' onChange={form.handleSubmit(searchWithFilters)}>
-            <FormField
-              control={form.control}
-              name='is_visible'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className='flex space-x-2 items-center'>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      <Label>Se aktive</Label>
-                    </div>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='is_expired'
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className='flex space-x-2 items-center'>
-                      <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      <Label>Se tidligere</Label>
-                    </div>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+        <div className='flex items-center space-x-4'>
+          <label className='flex items-center gap-2'>
+            <Switch checked={isVisible} onCheckedChange={setIsVisible} />
+            <span>Se aktive</span>
+          </label>
+          <label className='flex items-center gap-2'>
+            <Switch checked={isExpired} onCheckedChange={setIsExpired} />
+            <span>Se tidligere</span>
+          </label>
+        </div>
 
         <InfoBannerForm />
       </div>

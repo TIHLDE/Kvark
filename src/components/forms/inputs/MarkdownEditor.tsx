@@ -1,12 +1,11 @@
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Button } from '~/components/ui/button';
-import { FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
+import { FormControl, FormItem, FormMessage } from '~/components/ui/form';
 import { Label } from '~/components/ui/label';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 const guide = `
   ___
@@ -196,32 +195,31 @@ const guide = `
   ~~~
   `;
 
-type MarkdownEditorProps<TFormValues extends FieldValues> = {
-  form: UseFormReturn<TFormValues>;
-  name: Path<TFormValues>;
+type MarkdownEditorProps = {
+  value: string;
+  onChange: (value: string) => void;
   label: string;
   required?: boolean;
   className?: string;
 };
 
-const MarkdownEditor = <TFormValues extends FieldValues>({ form, name, label, required, className }: MarkdownEditorProps<TFormValues>) => {
+const MarkdownEditor = ({ value, onChange, label, required, className }: MarkdownEditorProps) => {
   return (
     <div>
-      <FormField
-        control={form.control}
-        name={name}
-        render={({ field }) => (
-          <FormItem>
-            <Label>
-              {label} {required && <span className='text-red-300'>*</span>}
-            </Label>
-            <FormControl>
-              <Textarea className={cn('w-full h-[200px] md:h-[300px]', className)} placeholder='Skriv innhold her...' {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <FormItem>
+        <Label>
+          {label} {required && <span className='text-red-300'>*</span>}
+        </Label>
+        <FormControl>
+          <Textarea
+            className={cn('w-full h-[200px] md:h-[300px]', className)}
+            placeholder='Skriv innhold her...'
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
       <ResponsiveDialog
         description='Markdown er en vanlig måte å formatere tekst på nettet og brukes også på tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.'
         title='Formaterings-guide'
