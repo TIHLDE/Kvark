@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import { FORM_QUERY_KEY } from '~/hooks/Form';
 import { NOTIFICATION_QUERY_KEY } from '~/hooks/Notification';
@@ -22,10 +22,15 @@ export const EVENT_QUERY_KEYS = {
   },
 } as const;
 
-export const useEventById = (eventId: Event['id']) =>
-  useQuery({
+export const eventByIdQuery = (eventId: Event['id']) =>
+  queryOptions({
     queryKey: EVENT_QUERY_KEYS.detail(eventId),
     queryFn: () => API.getEvent(eventId),
+  });
+
+export const useEventById = (eventId: Event['id']) =>
+  useQuery({
+    ...eventByIdQuery(eventId),
     enabled: eventId !== -1,
   });
 

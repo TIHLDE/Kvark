@@ -17,12 +17,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   };
 }
 
-export const meta: Route.MetaFunction = ({ data }) => {
+export const meta: Route.MetaFunction = ({ loaderData }) => {
   return [
-    { property: 'og:title', content: data?.jobPost.title },
+    { property: 'og:title', content: loaderData?.jobPost.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data?.jobPost.image },
+    { property: 'og:image', content: loaderData?.jobPost.image },
   ];
 };
 

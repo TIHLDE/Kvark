@@ -19,12 +19,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   };
 }
 
-export const meta: Route.MetaFunction = ({ data }) => {
+export const meta: Route.MetaFunction = ({ loaderData }) => {
   return [
-    { property: 'og:title', content: data?.news.title },
+    { property: 'og:title', content: loaderData?.news.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data?.news.image || 'https://tihlde.org' + TIHLDELOGO },
+    { property: 'og:image', content: loaderData?.news.image || 'https://tihlde.org' + TIHLDELOGO },
   ];
 };
 
