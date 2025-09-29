@@ -28,7 +28,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
   const goToApplyLink = () => event('apply', 'jobposts', `Apply to: ${data.company}, ${data.title}`);
 
   return (
-    <div className='grid lg:grid-cols-[3fr,1fr] gap-4 items-start'>
+    <div className='grid lg:grid-cols-[3fr_1fr] gap-4 items-start'>
       <div className='space-y-4'>
         <AspectRatioImg alt={data.image_alt || data.title} className='rounded-md' src={data.image} />
 
@@ -97,7 +97,7 @@ export default JobPostRenderer;
 
 export const JobPostRendererLoading = () => {
   return (
-    <div className='grid lg:grid-cols-[3fr,1fr] items-start gap-4'>
+    <div className='grid lg:grid-cols-[3fr_1fr] items-start gap-4'>
       <div className='space-y-4'>
         <Skeleton className='h-96' />
         <Skeleton className='h-60' />

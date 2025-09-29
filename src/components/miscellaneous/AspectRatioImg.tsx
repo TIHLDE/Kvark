@@ -19,28 +19,28 @@ const AspectRatioImg = ({ alt, className, src, ratio = '21/9' }: AspectRatioImgP
   const setRatio = () => {
     switch (ratio) {
       case '21/9':
-        return 'aspect-[21/9]';
+        return 'aspect-21/9';
 
       case '16:9':
-        return 'aspect-[16/9]';
+        return 'aspect-video';
 
       case '16:7':
-        return 'aspect-[16/7]';
+        return 'aspect-16/7';
 
       case '4:3':
-        return 'aspect-[4/3]';
+        return 'aspect-4/3';
 
       case '1:1':
-        return 'aspect-[1/1]';
+        return 'aspect-square';
 
       case '3:4':
-        return 'aspect-[3/4]';
+        return 'aspect-3/4';
 
       case '9:16':
-        return 'aspect-[9/16]';
+        return 'aspect-9/16';
 
       default:
-        return 'aspect-[21/9]';
+        return 'aspect-21/9';
     }
   };
 

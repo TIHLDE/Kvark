@@ -32,7 +32,7 @@ export const QRButton = ({ qrValue, subtitle, className, children }: QRButtonPro
           <img src={GooglePlayBadge} alt='Last ned Android-appen' className='inline-block w-auto h-14' />
         </a>
       </div>
-      <QRCodeCanvas className='block !h-auto !w-full max-h-[70vh] mx-auto object-contain' size={1000} value={qrValue} />
+      <QRCodeCanvas className='block h-auto! w-full! max-h-[70vh] mx-auto object-contain' size={1000} value={qrValue} />
       {subtitle && <h1 className='text-center my-1 text-xl'>{subtitle}</h1>}
     </ResponsiveDialog>
   );

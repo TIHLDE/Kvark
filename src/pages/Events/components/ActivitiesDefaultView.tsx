@@ -170,10 +170,10 @@ const ActivitiesDefaultView = () => {
   );
 
   return (
-    <div className='grid lg:grid-cols-[400px,1fr] gap-6 items-start'>
+    <div className='grid lg:grid-cols-[400px_1fr] gap-6 items-start'>
       <div>
         {isDesktop ? (
-          <Card className='shadow-sm'>
+          <Card className='shadow-xs'>
             <CardHeader className='pb-3 border-b'>
               <div className='flex justify-between items-center'>
                 <div className='flex items-center gap-2'>

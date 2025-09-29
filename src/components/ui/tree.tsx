@@ -114,7 +114,7 @@ const TreeItem = forwardRef<
                 <AccordionPrimitive.Item value={item.id}>
                   <AccordionTrigger
                     className={cn(
-                      "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
+                      "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-7 before:-z-10",
                       selectedItemId === item.id && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
                     )}
                     onClick={() => handleSelectChange(item)}
@@ -181,7 +181,7 @@ const Leaf = forwardRef<
       ref={ref}
       className={cn(
         "flex items-center py-2 px-2 cursor-pointer \
-        hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
+        hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-7 before:-z-10",
         className,
         isSelected && "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0"
       )}
@@ -189,7 +189,7 @@ const Leaf = forwardRef<
     >
       {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
       {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      <span className="flex-grow text-sm truncate">{item.title}</span>
+      <span className="grow text-sm truncate">{item.title}</span>
     </div>
   );
 })
@@ -202,7 +202,7 @@ const AccordionTrigger = forwardRef<
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
-        "flex flex-1 w-full items-center py-2 transition-all last:[&[data-state=open]>svg]:rotate-90",
+        "flex flex-1 w-full items-center py-2 transition-all [&[data-state=open]>svg]:last:rotate-90",
         className
       )}
       {...props}
