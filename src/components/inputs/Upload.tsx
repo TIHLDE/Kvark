@@ -288,7 +288,9 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
   return <UploadButton />;
 };
 
-const zodFile = z.instanceof(File).refine((f) => f instanceof File, { message: 'Invalid file' });
+const zodFile = z.instanceof(File).refine((f) => f instanceof File, {
+  error: 'Invalid file',
+});
 
 export const FileObjectSchema = z.object({
   id: z.string(),

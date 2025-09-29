@@ -20,7 +20,7 @@ type UpdateMembershipHistoryProps = {
 
 const formSchema = z
   .object({
-    membership_type: z.nativeEnum(MembershipType),
+    membership_type: z.enum(MembershipType),
     start_date: z.date(),
     end_date: z.date(),
   })
@@ -29,7 +29,7 @@ const formSchema = z
       return ctx.addIssue({
         message: 'Sluttdato kan ikke være før startdato',
         path: ['end_date'],
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
       });
     }
   });

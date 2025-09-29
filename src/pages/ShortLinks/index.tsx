@@ -95,8 +95,16 @@ const ShortLinkItem = ({ shortLink }: ShortLinkItemProps) => {
 };
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: 'Navn må fylles ut' }),
-  url: z.string().min(1, { message: 'URL må fylles ut' }).url({ message: 'Ugyldig URL' }),
+  name: z.string().min(1, {
+    error: 'Navn må fylles ut',
+  }),
+  url: z
+    .url({
+      error: 'Ugyldig URL',
+    })
+    .min(1, {
+      error: 'URL må fylles ut',
+    }),
 });
 
 const ShortLinks = () => {

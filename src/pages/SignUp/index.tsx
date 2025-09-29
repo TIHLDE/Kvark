@@ -21,21 +21,39 @@ import { z } from 'zod';
 
 const formSchema = z
   .object({
-    class: z.string().min(1, { message: 'Feltet er påkrevd' }),
-    email: z.string().email('Ugyldig e-post').min(1, { message: 'Feltet er påkrevd' }),
-    first_name: z.string().min(1, { message: 'Feltet er påkrevd' }),
-    last_name: z.string().min(1, { message: 'Feltet er påkrevd' }),
-    study: z.string().min(1, { message: 'Feltet er påkrevd' }),
+    class: z.string().min(1, {
+      error: 'Feltet er påkrevd',
+    }),
+    email: z.email('Ugyldig e-post').min(1, {
+      error: 'Feltet er påkrevd',
+    }),
+    first_name: z.string().min(1, {
+      error: 'Feltet er påkrevd',
+    }),
+    last_name: z.string().min(1, {
+      error: 'Feltet er påkrevd',
+    }),
+    study: z.string().min(1, {
+      error: 'Feltet er påkrevd',
+    }),
     user_id: z
       .string()
-      .min(1, { message: 'Feltet er påkrevd' })
-      .refine((value) => !value.includes('@'), { message: 'Brukernavn må være uten @stud.ntnu.no' }),
-    password: z.string().min(8, { message: 'Minimum 8 karakterer' }),
-    password_verify: z.string().min(8, { message: 'Minimum 8 karakterer' }),
+      .min(1, {
+        error: 'Feltet er påkrevd',
+      })
+      .refine((value) => !value.includes('@'), {
+        error: 'Brukernavn må være uten @stud.ntnu.no',
+      }),
+    password: z.string().min(8, {
+      error: 'Minimum 8 karakterer',
+    }),
+    password_verify: z.string().min(8, {
+      error: 'Minimum 8 karakterer',
+    }),
   })
   .refine((data) => data.password === data.password_verify, {
-    message: 'Passordene må være like',
     path: ['password_verify'],
+    error: 'Passordene må være like',
   });
 
 const SignUp = () => {

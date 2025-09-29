@@ -18,7 +18,9 @@ type EditFineProps = {
 };
 
 const formSchema = z.object({
-  reason: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
+  reason: z.string().min(1, {
+    error: 'Beskrivelsen kan ikke være tom',
+  }),
   amount: z.string(),
 });
 

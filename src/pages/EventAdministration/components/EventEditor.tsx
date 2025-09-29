@@ -49,20 +49,36 @@ type GroupOption =
 
 const formSchema = z
   .object({
-    category: z.string({ required_error: 'Du må velge en kategori' }).min(1, { message: 'Du må velge en kategori' }),
-    description: z.string().min(1, { message: 'Beskrivelsen kan ikke være tom' }),
+    category: z
+      .string({
+        error: (issue) => (issue.input === undefined ? 'Du må velge en kategori' : undefined),
+      })
+      .min(1, {
+        error: 'Du må velge en kategori',
+      }),
+    description: z.string().min(1, {
+      error: 'Beskrivelsen kan ikke være tom',
+    }),
     end_date: z.date(),
     end_registration_at: z.date(),
-    organizer: z.string().min(1, { message: 'Du må velge en arrangør' }),
+    organizer: z.string().min(1, {
+      error: 'Du må velge en arrangør',
+    }),
     image: z.string(),
     image_alt: z.string(),
-    limit: z.number().min(0, { message: 'Antall plasser må være 0 eller høyere' }),
-    location: z.string().min(1, { message: 'Stedet kan ikke være tomt' }),
+    limit: z.number().min(0, {
+      error: 'Antall plasser må være 0 eller høyere',
+    }),
+    location: z.string().min(1, {
+      error: 'Stedet kan ikke være tomt',
+    }),
     sign_up: z.boolean(),
     sign_off_deadline: z.date(),
     start_date: z.date(),
     start_registration_at: z.date(),
-    title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),
+    title: z.string().min(1, {
+      error: 'Tittelen kan ikke være tom',
+    }),
     only_allow_prioritized: z.boolean(),
     can_cause_strikes: z.boolean(),
     enforces_previous_strikes: z.boolean(),
@@ -77,7 +93,7 @@ const formSchema = z
       ctx.addIssue({
         message: 'Påmeldingsslutt må være etter påmeldingsstart',
         path: ['end_registration_at'],
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
       });
     }
 
@@ -85,7 +101,7 @@ const formSchema = z
       ctx.addIssue({
         message: 'Sluttdato må være etter startdato',
         path: ['end_date'],
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
       });
     }
 
@@ -93,7 +109,7 @@ const formSchema = z
       ctx.addIssue({
         message: 'Prisen må være 10 eller høyere',
         path: ['price'],
-        code: z.ZodIssueCode.custom,
+        code: 'custom',
       });
     }
   });

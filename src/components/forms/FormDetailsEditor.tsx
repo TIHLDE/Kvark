@@ -64,9 +64,15 @@ const formSchema = z.object({
   can_submit_multiple: z.boolean(),
   is_open_for_submissions: z.boolean(),
   only_for_group_members: z.boolean(),
-  title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Feltet er påkrevd' }),
+  title: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Feltet er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Feltet er påkrevd',
+    }),
   description: z.string().optional(),
-  email_receiver_on_submit: z.string().email().optional().or(z.literal('')),
+  email_receiver_on_submit: z.email().optional().or(z.literal('')),
 });
 
 const GroupFormDetailsEditor = ({ groupForm }: GroupFormDetailsEditorProps) => {

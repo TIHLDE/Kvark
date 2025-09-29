@@ -19,7 +19,9 @@ const formSchema = z.object({
     {
       user_id: z.string(),
     },
-    { required_error: 'Du må velge en bruker' },
+    {
+      error: (issue) => (issue.input === undefined ? 'Du må velge en bruker' : undefined),
+    },
   ),
 });
 

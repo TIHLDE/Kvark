@@ -24,10 +24,14 @@ export type AddFineDialogProps = {
 };
 
 const formSchema = z.object({
-  description: z.string({ required_error: 'Du må velge en lov' }),
+  description: z.string({
+    error: (issue) => (issue.input === undefined ? 'Du må velge en lov' : undefined),
+  }),
   amount: z.string(),
   reason: z.string(),
-  user: z.array(z.string()).refine((v) => v.length > 0, { message: 'Du må velge minst en person' }),
+  user: z.array(z.string()).refine((v) => v.length > 0, {
+    error: 'Du må velge minst en person',
+  }),
   image: z.string().optional(),
 });
 

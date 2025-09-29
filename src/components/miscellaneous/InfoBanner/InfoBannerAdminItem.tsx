@@ -24,8 +24,12 @@ type InfoBannerFormProps = {
 };
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  description: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  title: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
+  description: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
   image: z.string().optional(),
   image_alt: z.string().optional(),
   url: z.string().optional(),

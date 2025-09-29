@@ -8,11 +8,19 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  bedrift: z.string().min(1, { message: 'Bedriftsnavn er påkrevd' }),
-  kontaktperson: z.string().min(1, { message: 'Kontaktperson er påkrevd' }),
-  epost: z.string().email({ message: 'Ugyldig e-postadresse' }),
+  bedrift: z.string().min(1, {
+    error: 'Bedriftsnavn er påkrevd',
+  }),
+  kontaktperson: z.string().min(1, {
+    error: 'Kontaktperson er påkrevd',
+  }),
+  epost: z.email({
+    error: 'Ugyldig e-postadresse',
+  }),
   telefon: z.string().optional(),
-  comment: z.string().min(1, { message: 'Beskrivelse er påkrevd' }),
+  comment: z.string().min(1, {
+    error: 'Beskrivelse er påkrevd',
+  }),
 });
 
 export default function CompanyInterest() {

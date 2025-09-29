@@ -20,9 +20,23 @@ export type UserSettingsProps = {
 };
 
 const formSchema = z.object({
-  first_name: z.string({ required_error: 'Fornavn er påkrevd' }).min(1, { message: 'Fornavn er påkrevd' }),
-  last_name: z.string({ required_error: 'Etternavn er påkrevd' }).min(1, { message: 'Etternavn er påkrevd' }),
-  email: z.string().email({ message: 'Epost er ugyldig' }),
+  first_name: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Fornavn er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Fornavn er påkrevd',
+    }),
+  last_name: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Etternavn er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Etternavn er påkrevd',
+    }),
+  email: z.email({
+    error: 'Epost er ugyldig',
+  }),
   image: z.string().optional(),
   gender: z.string(),
   allergy: z.string().optional(),

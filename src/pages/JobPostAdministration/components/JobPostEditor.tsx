@@ -32,24 +32,40 @@ export type EventEditorProps = {
 
 const formSchema = z
   .object({
-    body: z.string().min(1, { message: 'Gi annonsen en beskrivelse' }),
-    company: z.string().min(1, { message: 'Du må oppgi en bedrift' }),
-    email: z.string().email({ message: 'Ugyldig e-post' }).optional().or(z.literal('')),
+    body: z.string().min(1, {
+      error: 'Gi annonsen en beskrivelse',
+    }),
+    company: z.string().min(1, {
+      error: 'Du må oppgi en bedrift',
+    }),
+    email: z
+      .email({
+        error: 'Ugyldig e-post',
+      })
+      .optional()
+      .or(z.literal('')),
     ingress: z.string(),
     image: z.string(),
     image_alt: z.string(),
-    link: z.string().url({ message: 'Ugyldig URL' }).optional().or(z.literal('')),
+    link: z
+      .url({
+        error: 'Ugyldig URL',
+      })
+      .optional()
+      .or(z.literal('')),
     location: z.string(),
-    title: z.string().min(1, { message: 'En tittel er påkrevd' }),
+    title: z.string().min(1, {
+      error: 'En tittel er påkrevd',
+    }),
     is_continuously_hiring: z.boolean(),
-    job_type: z.nativeEnum(JobPostType),
+    job_type: z.enum(JobPostType),
     class_start: z.string(),
     class_end: z.string(),
     deadline: z.date(),
   })
   .refine((data) => parseInt(data.class_start) <= parseInt(data.class_end), {
-    message: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
     path: ['class_start'],
+    error: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
   });
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {

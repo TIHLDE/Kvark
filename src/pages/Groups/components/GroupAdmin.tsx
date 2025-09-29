@@ -20,11 +20,13 @@ export type UpdateGroupModalProps = {
 };
 
 const formSchema = z.object({
-  contact_email: z.string().email().optional(),
+  contact_email: z.email().optional(),
   description: z.string().optional(),
   fine_info: z.string().optional(),
   fines_activated: z.boolean(),
-  name: z.string().min(1, { message: 'Gruppen må ha et navn' }),
+  name: z.string().min(1, {
+    error: 'Gruppen må ha et navn',
+  }),
   fines_admin: z.object({ user_id: z.string() }).nullable(),
   image: z.string().optional(),
 });
