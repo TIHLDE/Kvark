@@ -18,11 +18,11 @@ const DeleteJobPost = ({ jobPostId, deleteJobPost }: DeleteJobPost) => {
   return (
     <ResponsiveAlertDialog
       action={handleDelete}
-      description='Er du sikker på at du vil slette stillingen? Dette kan ikke angres.'
-      title='Slett stilling?'
+      description='Er du sikker på at du vil slette annonsen? Dette kan ikke angres.'
+      title='Slett annonse?'
       trigger={
         <Button className='w-full md:w-40 block' type='button' variant='destructive'>
-          Slett stilling
+          Slett annonse
         </Button>
       }
     />
