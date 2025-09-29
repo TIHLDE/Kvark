@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
 - 🦟 **Event Kort** Fikset slik at arrangement kort ikke overflyter til ny linje på hovedsiden
 - 🦟 **Filter** Fikset filtret på arrangementet når du velger "alle kategorier" slik at det viser alle
