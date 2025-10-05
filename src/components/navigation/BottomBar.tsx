@@ -12,7 +12,7 @@ import { href, Link } from 'react-router';
 import NavLink from '../ui/navlink';
 
 type Item = {
-  icon: JSX.Element;
+  icon: React.ReactNode;
   text: string;
   to: string;
 };
@@ -52,7 +52,7 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
   return (
     <div
       className={cn(
-        'fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+        'fixed w-full z-30 rounded-t-md border-t bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60',
         className,
       )}>
       <div className='flex items-center justify-between px-8 py-2'>

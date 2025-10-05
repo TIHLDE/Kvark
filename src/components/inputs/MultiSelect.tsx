@@ -65,7 +65,7 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
               <Badge key={framework.value} variant='secondary'>
                 {framework.label}
                 <button
-                  className='ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                  className='ml-1 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
                   onClick={() => handleUnselect(framework)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
@@ -83,7 +83,7 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
           })}
           {/* Avoid having the "Search" Icon */}
           <CommandPrimitive.Input
-            className='ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground'
+            className='ml-2 flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground'
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             onValueChange={(value) => {
@@ -99,7 +99,7 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
       <div className='relative mt-2'>
         <CommandList>
           {open && selectables.length > 0 ? (
-            <div className='absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+            <div className='absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in'>
               <CommandGroup className='h-full overflow-auto'>
                 {selectables.map((option) => {
                   return (

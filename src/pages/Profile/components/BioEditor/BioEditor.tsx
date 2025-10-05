@@ -14,35 +14,33 @@ const formSchema = z.object({
   description: z
     .string()
     .max(500, {
-      message: 'Maks 500 tegn',
+      error: 'Maks 500 tegn',
     })
     .optional()
     .or(z.literal('')),
   gitHub_link: z
-    .string()
     .url({
-      message: 'URL må starte med "https://github.com/"',
+      error: 'URL må starte med "https://github.com/"',
     })
     .max(300, {
-      message: 'Maks 300 tegn',
+      error: 'Maks 300 tegn',
     })
     .optional()
     .or(z.literal(''))
     .refine((url: string | undefined) => !url || url.startsWith('https://github.com/'), {
-      message: 'URL må starte med "https://github.com/"',
+      error: 'URL må starte med "https://github.com/"',
     }),
   linkedIn_link: z
-    .string()
     .url({
-      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
+      error: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
     })
     .max(300, {
-      message: 'Maks 300 tegn',
+      error: 'Maks 300 tegn',
     })
     .optional()
     .or(z.literal(''))
     .refine((url: string | undefined) => !url || url.startsWith('https://linkedin.com/') || url.startsWith('https://no.linkedin.com/'), {
-      message: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
+      error: 'URL må starte med "https://linkedin.com/" eller "https://no.linkedin.com/"',
     }),
 });
 

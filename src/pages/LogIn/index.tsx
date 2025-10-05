@@ -16,8 +16,12 @@ import { z } from 'zod';
 import { Route } from './+types';
 
 const formSchema = z.object({
-  username: z.string().min(1, { message: 'Brukernavn er påkrevd' }),
-  password: z.string().min(1, { message: 'Passorde er påkrevd' }),
+  username: z.string().min(1, {
+    error: 'Brukernavn er påkrevd',
+  }),
+  password: z.string().min(1, {
+    error: 'Passorde er påkrevd',
+  }),
 });
 
 export async function clientAction({ request }: Route.ClientActionArgs) {

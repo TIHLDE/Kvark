@@ -17,8 +17,12 @@ export type EventMessageSenderProps = {
 };
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Oppgi en tittel' }),
-  message: z.string().min(1, { message: 'Oppgi en melding' }),
+  title: z.string().min(1, {
+    error: 'Oppgi en tittel',
+  }),
+  message: z.string().min(1, {
+    error: 'Oppgi en melding',
+  }),
 });
 
 const EventMessageSender = ({ eventId }: EventMessageSenderProps) => {

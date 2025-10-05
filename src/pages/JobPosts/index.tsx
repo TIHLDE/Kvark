@@ -131,14 +131,14 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
+    <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Stillingsannonser</h1>
         <p className='text-muted-foreground mt-2'>Finn relevante jobber for studenter</p>
       </div>
 
-      <div className='grid lg:grid-cols-[400px,1fr] gap-6 items-start'>
-        <div className='border rounded-lg bg-card shadow-sm'>
+      <div className='grid lg:grid-cols-[400px_1fr] gap-6 items-start'>
+        <div className='border rounded-lg bg-card shadow-xs'>
           <Collapsible className='group' onOpenChange={setIsOpen} open={isOpen}>
             <div className='flex justify-between items-center p-4 border-b'>
               <div className='flex items-center gap-2'>

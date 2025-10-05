@@ -97,7 +97,7 @@ export default function Feedback() {
   );
 
   const reactionWrapClass = (active: boolean) =>
-    `flex items-center space-x-2 rounded-md px-2 py-1 transition ${active ? 'bg-gray-200 dark:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.04]'}`;
+    `flex items-center space-x-2 rounded-md px-2 py-1 transition ${active ? 'bg-gray-200 dark:bg-white/10' : 'hover:bg-gray-100 dark:hover:bg-white/4'}`;
   const ideaForm = useForm<z.infer<typeof ideaFormSchema>>({
     resolver: zodResolver(ideaFormSchema),
     defaultValues: {
@@ -347,7 +347,7 @@ export default function Feedback() {
 
             return (
               <Collapsible
-                className='w-full bg-white dark:bg-white/[1%] border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
+                className='w-full bg-white dark:bg-white/1 border border-white/10 dark:border-white/10 rounded-lg overflow-hidden'
                 key={index}
                 onOpenChange={() => toggleItem(item.id)}
                 open={openItems.includes(item.id)}>
@@ -360,7 +360,7 @@ export default function Feedback() {
                     {openItems.includes(item.id) ? <ChevronUpIcon className='w-4 h-4' /> : <ChevronDownIcon className='w-4 h-4' />}
                   </div>
                 </CollapsibleTrigger>
-                <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/[2%] '>
+                <CollapsibleContent className='p-4 border-t dark:border-white/10 dark:bg-white/2 '>
                   <p className='pl-2 pb-4 text-gray-700 dark:text-gray-300'>{item.description}</p>
                   <div className='flex justify-between items-center'>
                     <p className='text-xs text-gray-600 dark:text-gray-400 mt-2 pl-2'>

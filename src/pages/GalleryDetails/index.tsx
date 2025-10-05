@@ -7,25 +7,32 @@ import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { href, redirect, useNavigate, useParams } from 'react-router';
 
 import { Route } from './+types';
 import GalleryEditorDialog from './components/GalleryEditor';
 import PictureUpload from './components/PictureUpload';
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
-  return {
-    gallery,
-  };
+  try {
+    const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
+    if (!gallery) {
+      throw redirect(href('/galleri'));
+    }
+    return {
+      gallery,
+    };
+  } catch {
+    throw redirect(href('/galleri'));
+  }
 }
 
-export const meta: Route.MetaFunction = ({ data }) => {
+export const meta: Route.MetaFunction = ({ loaderData }) => {
   return [
-    { property: 'og:title', content: data?.gallery.title },
+    { property: 'og:title', content: loaderData?.gallery.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data?.gallery.image },
+    { property: 'og:image', content: loaderData?.gallery.image },
   ];
 };
 

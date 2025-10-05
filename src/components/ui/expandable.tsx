@@ -58,7 +58,7 @@ const Expandable = ({
                     </div>
                 </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 [&>*]:p-2 md:[&>*]:p-4'>
+            <CollapsibleContent className='border border-t-secondary border-b-0 border-x-0 *:p-2 md:*:p-4'>
                 { children }
             </CollapsibleContent>
         </Collapsible>

@@ -19,8 +19,16 @@ import { Route } from './+types';
 import QRCodeItem from './components/QRCodeItem';
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: 'Navn må fylles ut' }),
-  content: z.string().min(1, { message: 'Innhold må fylles ut' }).url({ message: 'Ugyldig URL' }),
+  name: z.string().min(1, {
+    error: 'Navn må fylles ut',
+  }),
+  content: z
+    .url({
+      error: 'Ugyldig URL',
+    })
+    .min(1, {
+      error: 'Innhold må fylles ut',
+    }),
 });
 
 export async function clientLoader({ request }: Route.ClientLoaderArgs) {

@@ -148,7 +148,7 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
             <Badge key={index} variant='secondary'>
               {getGroupName(slug)}
               <button
-                className='ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                className='ml-1 rounded-full outline-hidden ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2'
                 onClick={() => removeGroupFromPriorityPool(slug, poolIndex)}
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -161,7 +161,7 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
           ))}
           {/* Avoid having the "Search" Icon */}
           <CommandPrimitive.Input
-            className='ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground'
+            className='ml-2 flex-1 bg-transparent outline-hidden placeholder:text-muted-foreground'
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
             onValueChange={setInputValue}
@@ -174,7 +174,7 @@ const MultiSelectGroup = ({ pool, setPriorityPools, groupOptions, poolIndex, dat
       <div className='relative mt-2'>
         <CommandList>
           {open && options.length > 0 ? (
-            <div className='w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in'>
+            <div className='w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-hidden animate-in'>
               <CommandGroup className='h-full overflow-auto'>
                 {options.map((option, index) => (
                   <Fragment key={index}>

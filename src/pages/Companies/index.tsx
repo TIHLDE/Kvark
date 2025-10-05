@@ -34,7 +34,7 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
   };
 
   return (
-    <Page className='space-y-8 max-w-screen-2xl mx-auto'>
+    <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
       <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
         <div className='space-y-2'>
           <h1 className='text-3xl lg:text-5xl font-bold'>For bedrifter</h1>

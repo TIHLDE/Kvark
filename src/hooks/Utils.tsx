@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type EffectCallback 
 import { toast } from 'sonner';
 
 export const useInterval = (callback: EffectCallback, msDelay: number | null) => {
-  const savedCallback = useRef<EffectCallback>();
+  const savedCallback = useRef<EffectCallback>(() => {});
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -35,7 +35,7 @@ export const useDebounce = <Type extends unknown>(value: Type, delay: number) =>
     return () => {
       clearTimeout(handler);
     };
-  }, [value]);
+  }, [value, delay]);
 
   return debouncedValue;
 };

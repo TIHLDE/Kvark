@@ -16,9 +16,15 @@ import { z } from 'zod';
 import { Route } from './+types';
 
 const schema = z.object({
-  name: z.string({ message: 'Gruppenavn er påkrevd' }),
-  slug: z.string({ message: 'Gruppeslug er påkrevd' }),
-  type: z.nativeEnum(GroupType, { message: 'Gruppetype er påkrevd' }),
+  name: z.string({
+    error: 'Gruppenavn er påkrevd',
+  }),
+  slug: z.string({
+    error: 'Gruppeslug er påkrevd',
+  }),
+  type: z.enum(GroupType, {
+    error: 'Gruppetype er påkrevd',
+  }),
 });
 
 export async function clientLoader({ request }: Route.ClientActionArgs) {

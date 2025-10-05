@@ -17,7 +17,12 @@ export type PictureEditorDialogProps = {
 };
 
 const formSchema = z.object({
-  title: z.string().max(100, { message: 'Tittelen kan ikke være lengre enn 100 tegn' }).optional(),
+  title: z
+    .string()
+    .max(100, {
+      error: 'Tittelen kan ikke være lengre enn 100 tegn',
+    })
+    .optional(),
   description: z.string().optional(),
   image_alt: z.string().optional(),
 });

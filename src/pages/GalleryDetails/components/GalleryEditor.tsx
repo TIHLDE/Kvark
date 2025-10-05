@@ -21,7 +21,13 @@ export type GalleryEditorProps = {
 };
 
 const formSchema = z.object({
-  title: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Gi galleriet en tittel' }),
+  title: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Feltet er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Gi galleriet en tittel',
+    }),
   description: z.string().optional(),
   image: z.string().optional(),
   image_alt: z.string().optional(),
