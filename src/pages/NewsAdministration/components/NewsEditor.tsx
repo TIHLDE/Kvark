@@ -25,9 +25,15 @@ export type NewsEditorProps = {
 };
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Tittelen kan ikke være tom' }),
-  header: z.string().min(1, { message: 'Header kan ikke være tom' }),
-  body: z.string().min(1, { message: 'Innholdet kan ikke være tomt' }),
+  title: z.string().min(1, {
+    error: 'Tittelen kan ikke være tom',
+  }),
+  header: z.string().min(1, {
+    error: 'Header kan ikke være tom',
+  }),
+  body: z.string().min(1, {
+    error: 'Innholdet kan ikke være tomt',
+  }),
   image: z.string(),
   image_alt: z.string(),
   creator: z.object({ user_id: z.string() }).nullable(),

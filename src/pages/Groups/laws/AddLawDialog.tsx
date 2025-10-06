@@ -21,8 +21,12 @@ export type AddLawDialogProps = {
 const formSchema = z.object({
   amount: z.string(),
   description: z.string().optional(),
-  paragraph: z.string().regex(/^\d+(\.\d{1,2})?$/, { message: 'Paragraf må være et tall med opptil to desimaler' }),
-  title: z.string().min(1, { message: 'Tittel er påkrevd' }),
+  paragraph: z.string().regex(/^\d+(\.\d{1,2})?$/, {
+    error: 'Paragraf må være et tall med opptil to desimaler',
+  }),
+  title: z.string().min(1, {
+    error: 'Tittel er påkrevd',
+  }),
 });
 
 const AddLawDialog = ({ groupSlug }: AddLawDialogProps) => {

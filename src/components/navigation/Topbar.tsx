@@ -72,9 +72,9 @@ const Topbar = ({ items }: TopbarProps) => {
     <>
       <header
         className={cn(
-          'fixed z-30 w-full top-0 transition-all duration-150 max-md:flex max-md:items-center max-md:justify-between',
+          'fixed left-0 right-0 z-30 w-full top-0 transition-all duration-150 max-md:flex max-md:items-center max-md:justify-between',
           !isOnTop &&
-            'border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-card/60  dark:supports-[backdrop-filter]:bg-background/60',
+            'border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-card/60  dark:supports-backdrop-filter:bg-background/60',
         )}>
         <nav className='flex items-center justify-between py-3 px-8 w-full'>
           <Link aria-label='Til forsiden' to={URLS.landing}>

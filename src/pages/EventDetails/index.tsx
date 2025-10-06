@@ -1,7 +1,9 @@
-import API from '~/api/api';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
+import { eventByIdQuery } from '~/hooks/Event';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
+import { getQueryClient } from '~/queryClient';
 import { redirect } from 'react-router';
 
 import { Route } from './+types/index';
@@ -11,26 +13,33 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
   if (Number.isNaN(eventId) || eventId < 0) {
     throw redirect('/arrangementer/');
   }
+
   try {
+    const event = await getQueryClient().ensureQueryData(eventByIdQuery(eventId));
+    if (!event) {
+      throw redirect('/arrangementer/');
+    }
     return {
-      event: await API.getEvent(eventId),
+      eventId,
+      event,
     };
   } catch {
     throw redirect('/arrangementer/');
   }
 }
 
-export function meta({ data }: Route.MetaArgs) {
+export function meta({ loaderData }: Route.MetaArgs) {
   return [
-    { property: 'og:title', content: data?.event?.title },
+    { property: 'og:title', content: loaderData?.event?.title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: data?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
+    { property: 'og:image', content: loaderData?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
   ];
 }
 
 export default function EventDetails({ loaderData }: Route.ComponentProps) {
-  const { event } = loaderData;
+  const { eventId } = loaderData;
+  const { data: event } = useSuspenseQuery(eventByIdQuery(eventId));
 
   return (
     <Page>

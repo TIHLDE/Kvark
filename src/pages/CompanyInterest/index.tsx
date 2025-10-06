@@ -8,11 +8,19 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  bedrift: z.string().min(1, { message: 'Bedriftsnavn er påkrevd' }),
-  kontaktperson: z.string().min(1, { message: 'Kontaktperson er påkrevd' }),
-  epost: z.string().email({ message: 'Ugyldig e-postadresse' }),
+  bedrift: z.string().min(1, {
+    error: 'Bedriftsnavn er påkrevd',
+  }),
+  kontaktperson: z.string().min(1, {
+    error: 'Kontaktperson er påkrevd',
+  }),
+  epost: z.email({
+    error: 'Ugyldig e-postadresse',
+  }),
   telefon: z.string().optional(),
-  comment: z.string().min(1, { message: 'Beskrivelse er påkrevd' }),
+  comment: z.string().min(1, {
+    error: 'Beskrivelse er påkrevd',
+  }),
 });
 
 export default function CompanyInterest() {
@@ -81,7 +89,7 @@ export default function CompanyInterest() {
                   <div className='mt-2.5'>
                     <input
                       {...form.register('bedrift')}
-                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       id='bedrift'
                       type='text'
                     />
@@ -95,7 +103,7 @@ export default function CompanyInterest() {
                   <div className='mt-2.5'>
                     <input
                       {...form.register('kontaktperson')}
-                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       id='kontaktperson'
                       type='text'
                     />
@@ -109,7 +117,7 @@ export default function CompanyInterest() {
                   <div className='mt-2.5'>
                     <input
                       {...form.register('epost')}
-                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       id='epost'
                       type='email'
                     />
@@ -129,7 +137,7 @@ export default function CompanyInterest() {
                     <input
                       {...form.register('telefon')}
                       aria-describedby='telefon-description'
-                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       id='telefon'
                       type='tel'
                     />
@@ -149,7 +157,7 @@ export default function CompanyInterest() {
                     <textarea
                       {...form.register('comment')}
                       aria-describedby='comment-description'
-                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+                      className='block w-full rounded-md border border-input bg-background px-3.5 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       id='comment'
                       maxLength={500}
                       placeholder='Fortell oss om hvilke type arrangementer dere ønsker å arrangere, eller andre henvendelser...'
@@ -161,7 +169,7 @@ export default function CompanyInterest() {
               </div>
               <div className='mt-10 flex justify-end border-t border-border pt-8'>
                 <button
-                  className='rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='rounded-md bg-primary px-3.5 py-2.5 text-center text-sm font-semibold text-primary-foreground shadow-2xs hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 disabled:cursor-not-allowed'
                   disabled={isLoading}
                   type='submit'>
                   {isLoading ? 'Sender inn...' : 'Meld interesse'}

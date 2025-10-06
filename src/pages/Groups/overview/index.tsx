@@ -55,8 +55,8 @@ export default function GripsOverview({ loaderData }: Route.ComponentProps) {
   );
 }
 
-function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; groups: Awaited<ReturnType<typeof getGroupsOverview>> }) {
-  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, OTHER_GROUPS } = groups;
+function Overview({ groups }: { isAuthenticated: boolean; groups: Awaited<ReturnType<typeof getGroupsOverview>> }) {
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES } = groups;
   type CollectionProps = {
     groups: Array<GroupList>;
     title: string;
@@ -77,7 +77,6 @@ function Overview({ isAuthenticated, groups }: { isAuthenticated: boolean; group
       {Boolean(BOARD_GROUPS.length) && <Collection groups={BOARD_GROUPS} title='Hovedorgan' />}
       {Boolean(SUB_GROUPS.length) && <Collection groups={SUB_GROUPS} title='Undergrupper' />}
       {Boolean(COMMITTEES.length) && <Collection groups={COMMITTEES} title='Komitéer' />}
-      {isAuthenticated && Boolean(OTHER_GROUPS.length) && <Collection groups={OTHER_GROUPS} title='Andre grupper' />}
     </>
   );
 }

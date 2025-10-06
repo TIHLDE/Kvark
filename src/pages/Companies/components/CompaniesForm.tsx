@@ -16,14 +16,20 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  bedrift: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  kontaktperson: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  epost: z.string().email({ message: 'Ugyldig e-post' }),
+  bedrift: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
+  kontaktperson: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
+  epost: z.email({
+    error: 'Ugyldig e-post',
+  }),
   time: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'Du må velge minst ett semester',
+    error: 'Du må velge minst ett semester',
   }),
   type: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'Du må velge minst en type arrangement',
+    error: 'Du må velge minst en type arrangement',
   }),
   comment: z.string().optional(),
 });

@@ -17,7 +17,13 @@ export type UserDeleteDialogProps = {
 };
 
 const formSchema = z.object({
-  userId: z.string({ required_error: 'Feltet er påkrevd' }).min(1, { message: 'Feltet er påkrevd' }),
+  userId: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Feltet er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Feltet er påkrevd',
+    }),
 });
 
 export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {

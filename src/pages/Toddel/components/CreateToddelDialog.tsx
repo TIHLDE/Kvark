@@ -18,13 +18,21 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  edition: z.number().min(1, { message: 'Feltet er påkrevd' }),
-  title: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  published_at: z.date({
-    required_error: 'Dato er påkrevd',
+  edition: z.number().min(1, {
+    error: 'Feltet er påkrevd',
   }),
-  image: z.string().min(1, { message: 'Feltet er påkrevd' }),
-  pdf: z.string().min(1, { message: 'Feltet er påkrevd' }),
+  title: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
+  published_at: z.date({
+    error: (issue) => (issue.input === undefined ? 'Dato er påkrevd' : undefined),
+  }),
+  image: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
+  pdf: z.string().min(1, {
+    error: 'Feltet er påkrevd',
+  }),
 });
 
 const CreateToddelDialog = () => {

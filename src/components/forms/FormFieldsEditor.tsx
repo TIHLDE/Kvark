@@ -1,3 +1,6 @@
+import { DndContext, DragEndEvent, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import FieldEditor from '~/components/forms/FieldEditor';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -5,12 +8,12 @@ import { Label } from '~/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '~/components/ui/popover';
 import { Separator } from '~/components/ui/separator';
 import { useFormSubmissions, useUpdateForm } from '~/hooks/Form';
+import { cn } from '~/lib/utils';
 import type { Form, SelectFormField, TextFormField } from '~/types';
 import { FormFieldType } from '~/types/Enums';
-import update from 'immutability-helper';
-import { useCallback, useEffect, useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { uuidv4 } from '~/utils';
+import { GripHorizontal } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 export type FormFieldsEditorProps = {
@@ -18,6 +21,45 @@ export type FormFieldsEditorProps = {
   onSave?: () => void;
   canEditTitle?: boolean;
 };
+
+function SortableFieldEditor({
+  field,
+  removeField,
+  updateField,
+  disabled,
+}: {
+  field: TextFormField | SelectFormField;
+  removeField: () => void;
+  updateField: (newField: TextFormField | SelectFormField) => void;
+  disabled: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: field.id ?? '',
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(
+      transform
+        ? {
+            x: transform.x,
+            y: transform.y,
+            scaleX: 1,
+            scaleY: 1,
+          }
+        : null,
+    ),
+    transition,
+  };
+
+  return (
+    <div style={style} ref={setNodeRef} className={cn('w-full flex items-center gap-2 p-4 border rounded-md bg-card', isDragging && 'shadow-lg')}>
+      <div className={cn('cursor-pointer h-fit w-fit self-start', disabled && 'cursor-not-allowed opacity-30')} {...attributes} {...listeners}>
+        <GripHorizontal className='size-5' />
+      </div>
+      <FieldEditor field={field} updateField={updateField} removeField={removeField} disabled={disabled} />
+    </div>
+  );
+}
 
 const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps) => {
   const { data: submissions, isLoading: isSubmissionsLoading } = useFormSubmissions(form.id, 1);
@@ -28,7 +70,30 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
   const [addButtonOpen, setAddButtonOpen] = useState(false);
   const [formTitle, setFormTitle] = useState(form.title);
 
-  useEffect(() => setFields(form.fields), [form]);
+  const items = useMemo(
+    () =>
+      fields.map((field) => ({
+        ...field,
+        id: field.id ?? '',
+      })),
+    [fields],
+  );
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  function handleDragEnd({ active, over }: DragEndEvent) {
+    if (over && active.id !== over?.id) {
+      const activeIndex = items.findIndex(({ id }) => id === active.id);
+      const overIndex = items.findIndex(({ id }) => id === over.id);
+
+      setFields(arrayMove(items, activeIndex, overIndex));
+    }
+  }
 
   const addField = (type: FormFieldType) => {
     if (disabled) {
@@ -38,6 +103,7 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     setFields((prev) => [
       ...prev,
       {
+        id: 'temp-' + uuidv4(),
         title: '',
         required: false,
         order: fields.length,
@@ -55,17 +121,6 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     setFields((prev) => prev.map((field, i) => (i === index ? newField : field)));
   };
 
-  const moveField = useCallback((dragIndex: number, hoverIndex: number) => {
-    setFields((prevFields: (TextFormField | SelectFormField)[]) =>
-      update(prevFields, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevFields[dragIndex] as TextFormField | SelectFormField],
-        ],
-      }).map((prevField, i) => update(prevField, { order: { $apply: () => i } })),
-    );
-  }, []);
-
   const removeField = (index: number) => {
     if (disabled) {
       return;
@@ -77,8 +132,17 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
     if (disabled) {
       return;
     }
+    const fieldsToSave = fields.map((field) => ({
+      ...field,
+      id: field.id?.startsWith('temp-') ? undefined : field.id,
+    }));
+
     updateForm.mutate(
-      { title: formTitle, fields: fields, resource_type: form.resource_type },
+      {
+        title: formTitle,
+        fields: fieldsToSave,
+        resource_type: form.resource_type,
+      },
       {
         onSuccess: () => {
           toast.success('Spørsmålene ble oppdatert');
@@ -103,19 +167,23 @@ const FormFieldsEditor = ({ form, onSave, canEditTitle }: FormFieldsEditorProps)
           </div>
         )}
         {disabledFromSubmissions && <h1 className='text-center'>Du kan ikke endre spørsmålene etter at noen har svart på dem</h1>}
-        <DndProvider backend={HTML5Backend}>
-          {fields.map((field, index) => (
-            <FieldEditor
-              disabled={disabled}
-              field={field}
-              index={index}
-              key={index}
-              moveField={moveField}
-              removeField={() => removeField(index)}
-              updateField={(newField: TextFormField | SelectFormField) => updateField(newField, index)}
-            />
-          ))}
-        </DndProvider>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <SortableContext disabled={disabledFromSubmissions} items={items} strategy={verticalListSortingStrategy}>
+            <div className='space-y-4'>
+              {items.map((field, index) => (
+                <SortableFieldEditor
+                  key={field.id}
+                  field={field}
+                  disabled={disabledFromSubmissions}
+                  updateField={(newField) => updateField(newField, index)}
+                  removeField={() => {
+                    removeField(index);
+                  }}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
         <div className='flex items-center space-x-2'>
           <Popover onOpenChange={setAddButtonOpen} open={addButtonOpen}>
             <PopoverTrigger asChild>

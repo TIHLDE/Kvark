@@ -154,7 +154,10 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
                   data={studyProgramChartData}
                   dataKey='value'
                   fill='#8884d8'
-                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => {
+                    const percentValue = Number(percent as unknown);
+                    return `${name} ${((Number.isNaN(percentValue) ? 0 : percentValue) * 100).toFixed(0)}%`;
+                  }}
                   labelLine={false}
                   outerRadius={60}>
                   {studyProgramChartData.map((entry, index) => (
@@ -197,7 +200,10 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
                   data={genderChartData}
                   dataKey='value'
                   fill='#8884d8'
-                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => {
+                    const percentValue = Number(percent as unknown);
+                    return `${name} ${((Number.isNaN(percentValue) ? 0 : percentValue) * 100).toFixed(0)}%`;
+                  }}
                   labelLine={false}
                   outerRadius={60}>
                   {genderChartData.map((entry, index) => (
@@ -223,7 +229,10 @@ const FormUserStatistics = ({ formId }: FormUserStatisticsProps) => {
                   data={answerTypesChartData}
                   dataKey='value'
                   fill='#8884d8'
-                  label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => {
+                    const percentValue = Number(percent as unknown);
+                    return `${name} ${((Number.isNaN(percentValue) ? 0 : percentValue) * 100).toFixed(0)}%`;
+                  }}
                   labelLine={false}
                   outerRadius={60}>
                   {answerTypesChartData.map((entry, index) => (

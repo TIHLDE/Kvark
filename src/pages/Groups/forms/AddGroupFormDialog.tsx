@@ -18,7 +18,13 @@ export type AddGroupFormDialogProps = {
 };
 
 const formSchema = z.object({
-  title: z.string({ required_error: 'Tittel er påkrevd' }).min(1, { message: 'Navngi spørreskjemaet' }),
+  title: z
+    .string({
+      error: (issue) => (issue.input === undefined ? 'Tittel er påkrevd' : undefined),
+    })
+    .min(1, {
+      error: 'Navngi spørreskjemaet',
+    }),
 });
 
 const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {

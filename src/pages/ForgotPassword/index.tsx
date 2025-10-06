@@ -13,7 +13,9 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  email: z.string().email('Ugyldig e-post').min(1, { message: 'Feltet er påkrevd' }),
+  email: z.email('Ugyldig e-post').min(1, {
+    error: 'Feltet er påkrevd',
+  }),
 });
 
 const ForgotPassword = () => {

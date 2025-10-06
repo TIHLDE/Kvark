@@ -15,7 +15,7 @@ const Wave = () => {
 
   return (
     <div className='w-full h-[600px]'>
-      <div className='overflow-hidden absolute w-full h-[600px] bg-gradient-to-tr from-indigo-200 to-white dark:from-indigo-900 dark:to-background'>
+      <div className='overflow-hidden absolute w-full h-[600px] bg-linear-to-tr from-indigo-200 to-white dark:from-indigo-900 dark:to-background'>
         <div className='max-w-[920px] relative z-20 pt-[150px] px-[15px] pb-[100px] m-auto'>
           <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px] text-primary' size='large' />
           <h1 className='text-center md:text-lg py-2'>
@@ -57,7 +57,7 @@ const Wave = () => {
           </>
         )}
 
-        <div className='absolute left-0 right-0 bottom-0 w-full overflow-hidden h-[130px] z-[15]'>
+        <div className='absolute left-0 right-0 bottom-0 w-full overflow-hidden h-[130px] z-15'>
           <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-top z-10 opacity-50 origin-bottom'>
             <WaveSvg className='absolute w-full h-[200px]' type='top' />
             <WaveSvg className='absolute w-full h-[200px]' type='top' />

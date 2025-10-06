@@ -56,7 +56,7 @@ const NotificationItem = ({ notification, setShowNotifications }: NotificationIt
         {notification.link && (
           <Button asChild className='w-auto h-auto px-4 py-2' variant='secondary'>
             <Link className='text-xs' onClick={linkOnClick} to={notification.link}>
-              <SquareArrowOutUpRight className='h-[1rem] w-[1rem] stroke-[1.5px] mr-2' />
+              <SquareArrowOutUpRight className='h-4 w-4 stroke-[1.5px] mr-2' />
               Les mer
             </Link>
           </Button>

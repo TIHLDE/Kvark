@@ -21,8 +21,8 @@ export type StrikeCreateDialogProps = {
 
 const formSchema = z
   .object({
-    strike_size: z.number().int().positive(),
-    strike_enum: z.union([z.nativeEnum(StrikeReason), z.literal('custom')]),
+    strike_size: z.int().positive(),
+    strike_enum: z.union([z.enum(StrikeReason), z.literal('custom')]),
     description: z.string().optional(),
   })
   .superRefine((values, ctx) => {
