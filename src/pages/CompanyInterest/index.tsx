@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import API from '~/api/api';
+import { Checkbox } from '~/components/ui/checkbox';
 import { useAnalytics } from '~/hooks/Utils';
 import type { CompaniesEmail } from '~/types';
 import { useState } from 'react';
@@ -18,10 +19,19 @@ const formSchema = z.object({
     error: 'Ugyldig e-postadresse',
   }),
   telefon: z.string().optional(),
+  interests: z.array(z.string()).min(1, { error: 'Velg minst én interesse' }),
   comment: z.string().min(1, {
     error: 'Beskrivelse er påkrevd',
   }),
 });
+
+const interestOptions = [
+  { value: 'bedpres', label: 'Bedriftspresentasjon' },
+  { value: 'kurs', label: 'Kurs' },
+  { value: 'insta_takeover', label: 'Instagram Takeover' },
+  { value: 'tihldex', label: 'TIHLDEx (Bedriftsekrusjon til Oslo H26)' },
+  { value: 'stillingsannonse', label: 'Stillingsannonse' },
+];
 
 export default function CompanyInterest() {
   const { event } = useAnalytics();
@@ -34,6 +44,7 @@ export default function CompanyInterest() {
       kontaktperson: '',
       epost: '',
       telefon: '',
+      interests: [],
       comment: '',
     },
   });
@@ -51,7 +62,7 @@ export default function CompanyInterest() {
           epost: values.epost,
         },
         time: [],
-        type: ['Bedriftspresentasjon'],
+        type: values.interests,
         comment: `${values.comment}${values.telefon ? `\n\nTelefon: ${values.telefon}` : ''}`,
       };
       const response = await API.emailForm(companyData);
@@ -141,6 +152,39 @@ export default function CompanyInterest() {
                       id='telefon'
                       type='tel'
                     />
+                  </div>
+                </div>
+
+                <div className='sm:col-span-2'>
+                  <label className='block text-sm/6 font-semibold text-foreground' htmlFor='interests'>
+                    Hva er dere interessert i? *
+                  </label>
+                  <div className='mt-2.5 space-y-3'>
+                    {interestOptions.map((option) => (
+                      <div key={option.value} className='flex items-center space-x-2'>
+                        <Checkbox
+                          id={option.value}
+                          checked={form.watch('interests').includes(option.value)}
+                          onCheckedChange={(checked) => {
+                            const currentInterests = form.getValues('interests');
+                            if (checked) {
+                              form.setValue('interests', [...currentInterests, option.value]);
+                            } else {
+                              form.setValue(
+                                'interests',
+                                currentInterests.filter((interest) => interest !== option.value),
+                              );
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor={option.value}
+                          className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer'>
+                          {option.label}
+                        </label>
+                      </div>
+                    ))}
+                    {form.formState.errors.interests && <p className='text-sm text-destructive'>{form.formState.errors.interests.message}</p>}
                   </div>
                 </div>
 
