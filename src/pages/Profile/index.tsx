@@ -74,7 +74,6 @@ const Profile = () => {
 
   const [tab, setTab] = useState(userId ? badgesTab.label : eventTab.label);
 
-  useEffect(() => setTab(userId ? badgesTab.label : eventTab.label), [userId]);
   useEffect(() => {
     event('change-tab', 'profile', `Changed tab to: ${tab}`);
     if (tab === logoutTab.label) logout();

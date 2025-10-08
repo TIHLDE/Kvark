@@ -9,19 +9,19 @@ import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 import { Link } from 'react-router';
 
+const ExternalLink = ({ text, href }: { text: string; href: string }) => {
+  return (
+    <a className='text-sky-500 font-semibold md:hover:text-sky-700' href={href} rel='noreferrer' target='_blank'>
+      {text}
+    </a>
+  );
+};
+
 const SignUpOptions = () => {
   const createFeideSession = () => {
     const url = `${FEIDE_AUTH_URL}?client_id=${FEIDE_CLIENT_ID}&response_type=code&redirect_uri=${FEIDE_REDIRECT_URI}&scope=openid&state=${FEIDE_AUTH_STATE}`;
 
     window.location.replace(url);
-  };
-
-  const ExternalLink = ({ text, href }: { text: string; href: string }) => {
-    return (
-      <a className='text-sky-500 font-semibold md:hover:text-sky-700' href={href} rel='noreferrer' target='_blank'>
-        {text}
-      </a>
-    );
   };
 
   return (
