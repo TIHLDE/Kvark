@@ -1,13 +1,14 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Textarea } from '~/components/ui/textarea';
 import { cn } from '~/lib/utils';
+import { ReactNode } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 
 type FormTextareaProps<TFormValues extends FieldValues> = {
   form: UseFormReturn<TFormValues>;
   name: Path<TFormValues>;
   label: string;
-  description?: string;
+  description?: string | ReactNode;
   placeholder?: string;
   required?: boolean;
   className?: string;

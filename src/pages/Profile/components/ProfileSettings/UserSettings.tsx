@@ -105,7 +105,16 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
 
         <FormInput form={form} label='Kjøkkenredskap' name='tool' />
 
-        <FormTextarea description='Dine allergier vises til arrangører ved arrangementer' form={form} label='Dine allergier' name='allergy' />
+        <FormTextarea
+          description={
+            <>
+              <span className='font-bold'>Ikke</span> skriv tulleallergier, eller &quot;ingen&quot;pn. Dine allergier vises til bedrifter ved arrangementer
+            </>
+          }
+          form={form}
+          label='Dine allergier'
+          name='allergy'
+        />
 
         <FormDetailSwitch
           description='Bestemmer om du skal stå oppført med navnet ditt eller være anonym i deltagerlister på arrangementer, og om arrangement-kalenderen din skal være aktivert og mulig å abonnere på.'
