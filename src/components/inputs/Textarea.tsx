@@ -42,7 +42,7 @@ const FormTextarea = <TFormValues extends FieldValues>({
               disabled={disabled}
               {...field}
               maxLength={maxLength}
-              placeholder={placeholder || 'Skriv her...ikke skriv tulleallergier'}
+              placeholder={placeholder || 'Skriv her. Ikke skriv tulleallergier'}
             />
           </FormControl>
           <FormMessage />
