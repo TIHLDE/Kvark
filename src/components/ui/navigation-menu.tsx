@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react"
 
 import { cn } from "~/lib/utils"
 import { forwardRef } from "react"
-import { Link } from "react-router"
+import { Link } from "@tanstack/react-router"
 
 const NavigationMenu = forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,

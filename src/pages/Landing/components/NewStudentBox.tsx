@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
 import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
 import { useIsAuthenticated, useUser } from '~/hooks/User';
@@ -6,7 +7,6 @@ import URLS from '~/URLS';
 import { getYear } from 'date-fns';
 import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 const NewStudentBox = () => {
   const { event } = useAnalytics();

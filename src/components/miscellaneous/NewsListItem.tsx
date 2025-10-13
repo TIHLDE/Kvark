@@ -1,21 +1,17 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { News } from '~/types';
-import { formatDate, urlEncode } from '~/utils';
+import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
-import { href, useNavigate } from 'react-router';
 
 export type NewsListItemProps = {
   news: News;
 };
 
 const NewsListItem = ({ news }: NewsListItemProps) => {
-  const naviate = useNavigate();
-
   return (
-    <div
-      className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'
-      onClick={() => naviate(href('/nyheter/:id/:urlTitle?', { id: news.id.toString(), urlTitle: urlEncode(news.title) }))}>
+    <Link to='/nyheter/$id/{$-urlTitle}' className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'>
       <AspectRatioImg alt={news.image_alt || news.title} src={news.image} />
 
       <div>
@@ -23,7 +19,7 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
         <p>{news.header}</p>
         <p className='text-muted-foreground'>{formatDate(parseISO(news.created_at), { time: false })}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

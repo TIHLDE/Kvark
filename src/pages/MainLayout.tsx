@@ -1,10 +1,14 @@
+import { createFileRoute, Outlet } from '@tanstack/react-router';
 import ShortCutMenu from '~/components/miscellaneous/shortCutMenu';
 import Navigation from '~/components/navigation/Navigation';
 import { Toaster } from '~/components/ui/sonner';
 import { ThemeProvider } from '~/hooks/Theme';
 import { ReactQueryProvider } from '~/queryClient';
-import { NuqsAdapter } from 'nuqs/adapters/react-router/v7';
-import { Outlet } from 'react-router';
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
+
+export const Route = createFileRoute('/_MainLayout')({
+  component: Layout,
+});
 
 const Providers = ({ children }: React.PropsWithChildren) => {
   return (

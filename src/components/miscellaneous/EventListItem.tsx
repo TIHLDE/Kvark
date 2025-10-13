@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
@@ -8,8 +9,6 @@ import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 import { Calendar, Shapes } from 'lucide-react';
 import { useMemo } from 'react';
-
-import NavLink from '../ui/navlink';
 
 export type EventListItemProps = {
   event: EventList;
@@ -50,7 +49,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
   };
 
   return (
-    <NavLink
+    <Link
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
       params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}
       to='/arrangementer/:id/:urlTitle?'>
@@ -69,7 +68,7 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
           </div>
         )}
       </div>
-    </NavLink>
+    </Link>
   );
 };
 
