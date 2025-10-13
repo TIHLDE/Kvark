@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { Button } from '~/components/ui/button';
 import { useIsAuthenticated } from '~/hooks/User';
@@ -5,7 +6,6 @@ import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
 import { LogIn, Plus, User } from 'lucide-react';
-import { Link } from 'react-router';
 
 const Wave = () => {
   const { event } = useAnalytics();

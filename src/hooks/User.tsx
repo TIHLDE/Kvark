@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type QueryKey, type UseMutationResult, type UseQueryOptions } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
 import API from '~/api/api';
 import { AuthObject } from '~/api/auth';
 import { getCookie, removeCookie, setCookie } from '~/api/cookie';
@@ -20,9 +21,7 @@ import type {
   UserPermissions,
 } from '~/types';
 import type { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { useEffect, type ReactNode } from 'react';
-import { useNavigate, useRevalidator } from 'react-router';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -187,14 +186,12 @@ export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestR
   });
 
 export const useLogout = () => {
-  const { revalidate } = useRevalidator();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   return () => {
     removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
-    revalidate();
-    navigate(URLS.landing);
+    navigate({ to: '/' });
   };
 };
 

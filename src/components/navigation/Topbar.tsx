@@ -1,3 +1,4 @@
+import { Link, useLocation } from '@tanstack/react-router';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
 import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
@@ -13,7 +14,6 @@ import {
 import { cn } from '~/lib/utils';
 import URLS from '~/URLS';
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
 
 const TopBarItem = (props: NavigationItem) => {
   const location = useLocation();

@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import DISCORD from '~/assets/icons/discord.svg';
 import FACEBOOK from '~/assets/icons/facebook.svg';
 import INSTAGRAM from '~/assets/icons/instagram.svg';
@@ -7,7 +8,6 @@ import NITO from '~/assets/img/nito.svg';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
-import { href, Link } from 'react-router';
 
 // import SNAPCHAT from '~/assets/icons/snapchat.svg';
 // import TWITTER from '~/assets/icons/twitter.svg';
@@ -88,7 +88,7 @@ const Footer = () => {
 
       <div>
         <h1 className='text-center'>
-          Feil på siden? <Link to={href('/tilbakemelding')}>Rapporter til Index</Link>
+          Feil på siden? <Link to='/tilbakemelding'>Rapporter til Index</Link>
         </h1>
       </div>
     </div>

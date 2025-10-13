@@ -2,18 +2,17 @@ import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 
-import './assets/css/index.css';
+import '~/assets/css/index.css';
 
-import type { Route } from './+types/root';
-import API from './api/api';
-import { authClient } from './api/auth';
-import { SHOW_NEW_STUDENT_INFO } from './constant';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
+import API from '~/api/api';
+import { authClient } from '~/api/auth';
+import { SHOW_NEW_STUDENT_INFO } from '~/constant';
 
 const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
 
-export const links: Route.LinksFunction = () => [
+export const links = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
   {
     rel: 'preconnect',
@@ -39,7 +38,7 @@ const metaData = {
     'Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU',
 };
 
-export const meta: Route.MetaFunction = () => [
+export const meta = () => [
   { title: 'TIHLDE' },
   { name: 'description', content: metaData.description },
   { property: 'og:url', content: metaData.url },
@@ -55,14 +54,21 @@ export const meta: Route.MetaFunction = () => [
   { property: 'twitter:image', content: metaData.image },
 ];
 
-export type RootLoaderData = Route.ComponentProps['loaderData'];
+export const Route = createRootRoute({
+  loader: clientLoader,
+  component: App,
+});
 
-export async function clientLoader() {
+async function clientLoader() {
   await authClient();
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -81,8 +87,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link href='/manifest.json' rel='manifest' />
         <meta content='#ffffff' name='msapplication-TileColor' />
         <meta content='/browser-icons/ms-icon-144x144.png' name='msapplication-TileImage' />
-        <Meta />
-        <Links />
       </head>
       <body>
         <PostHogProvider
@@ -92,8 +96,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           }}>
           <Analytics />
           {children}
-          <ScrollRestoration />
-          <Scripts />
         </PostHogProvider>
       </body>
     </html>

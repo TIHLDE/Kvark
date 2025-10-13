@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
 import InfoBanner from '~/components/miscellaneous/InfoBanner/InfoBanner';
 import { Button } from '~/components/ui/button';
 import { analyticsEvent } from '~/hooks/Utils';
@@ -8,9 +9,12 @@ import StoriesView from '~/pages/Landing/components/StoriesView';
 import Wave from '~/pages/Landing/components/Wave';
 import URLS from '~/URLS';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router';
 
-export default function Landing() {
+export const Route = createFileRoute('/_MainLayout/')({
+  component: Landing,
+});
+
+function Landing() {
   const openEventsAnalytics = () => analyticsEvent('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => analyticsEvent('go-to-all-news', 'news-list-view', `Go to all news`);
   return (

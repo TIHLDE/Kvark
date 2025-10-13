@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
@@ -8,9 +9,12 @@ import { useForgotPassword } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
+
+export const Route = createFileRoute('/_MainLayout/glemt-passord')({
+  component: ForgotPassword,
+});
 
 const formSchema = z.object({
   email: z.email('Ugyldig e-post').min(1, {
@@ -18,7 +22,7 @@ const formSchema = z.object({
   }),
 });
 
-const ForgotPassword = () => {
+function ForgotPassword() {
   const { event } = useAnalytics();
   const forgotPassword = useForgotPassword();
 
@@ -86,6 +90,4 @@ const ForgotPassword = () => {
       </Card>
     </Page>
   );
-};
-
-export default ForgotPassword;
+}
