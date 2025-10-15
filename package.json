@@ -91,7 +91,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.1",
     "@types/react-qr-reader": "^2.1.7",
-    "@vercel/node": "^5.3.24",
+    "@vercel/node": "^5.4.0",
     "@vercel/react-router": "^1.1.2",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
