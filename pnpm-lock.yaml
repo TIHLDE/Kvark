@@ -117,8 +117,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       emoji-picker-react:
-        specifier: ^4.13.3
-        version: 4.13.3(react@19.2.0)
+        specifier: ^4.14.2
+        version: 4.14.2(react@19.2.0)
       isbot:
         specifier: ^5.1.31
         version: 5.1.31
@@ -2700,8 +2700,8 @@ packages:
   electron-to-chromium@1.5.224:
     resolution: {integrity: sha512-kWAoUu/bwzvnhpdZSIc6KUyvkI1rbRXMT0Eq8pKReyOyaPZcctMli+EgvcN1PAvwVc7Tdo4Fxi2PsLNDU05mdg==}
 
-  emoji-picker-react@4.13.3:
-    resolution: {integrity: sha512-aZaxCI72oUQfvZtYuQ9RaYLEwmH3GVgAr5SEeB97Y7gWL06zJ4VTuSl8rAMVY7GNmd0tf/EQ1W2SDuXTl0q9AA==}
+  emoji-picker-react@4.14.2:
+    resolution: {integrity: sha512-tQfuZ5pqZnaqh/aGtgjp5iFqEKC2SoFOSs7YxbnSignstlIwNRS/Peh/Y1pFSMoODwS1DH4i0tdnod5/B/LwBw==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16'
@@ -7597,7 +7597,7 @@ snapshots:
 
   electron-to-chromium@1.5.224: {}
 
-  emoji-picker-react@4.13.3(react@19.2.0):
+  emoji-picker-react@4.14.2(react@19.2.0):
     dependencies:
       flairup: 1.0.0
       react: 19.2.0
