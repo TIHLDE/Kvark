@@ -37,13 +37,7 @@ const FormTextarea = <TFormValues extends FieldValues>({
             {label} {required && <span className='text-red-300'>*</span>}
           </FormLabel>
           <FormControl>
-            <Textarea
-              className='h-full'
-              disabled={disabled}
-              {...field}
-              maxLength={maxLength}
-              placeholder={placeholder || 'Skriv her. Ikke skriv tulleallergier'}
-            />
+            <Textarea className='h-full' disabled={disabled} {...field} maxLength={maxLength} placeholder={placeholder || 'Skriv her...'} />
           </FormControl>
           <FormMessage />
           {description && <FormDescription>{description}</FormDescription>}
