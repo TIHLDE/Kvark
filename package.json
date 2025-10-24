@@ -109,7 +109,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "optionalDependencies": {
-    "@posthog/cli": "^0.4.8"
+    "@posthog/cli": "^0.5.7"
   },
   "packageManager": "pnpm@9.0.0",
   "lint-staged": {
