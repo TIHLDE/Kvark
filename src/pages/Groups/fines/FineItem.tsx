@@ -8,7 +8,7 @@ import { cn } from '~/lib/utils';
 import type { Group, GroupFine, UserBase } from '~/types';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Check, HandCoins } from 'lucide-react';
+import { Check, HandCoins, Star } from 'lucide-react';
 import { toast } from 'sonner';
 
 import DeleteFine from './DeleteFine';
@@ -21,6 +21,7 @@ export type FineItemProps = {
   isAdmin?: boolean;
   hideUserInfo?: boolean;
   fineUser?: UserBase;
+  starred?: boolean;
 };
 
 const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItemProps) => {
@@ -50,6 +51,21 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
       {
         onSuccess: () => {
           toast.success(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
+      },
+    );
+  };
+
+  const toggleStar = () => {
+    event('update', 'fines', 'Starred a fine');
+    updateFine.mutate(
+      { starred: !fine.starred },
+      {
+        onSuccess: () => {
+          toast.success(`Boten er nå ${!fine.starred ? "lagt til i 'Hall of Shame'" : 'fjernet fra Hall of Shame'}`);
         },
         onError: (e) => {
           toast.error(e.detail);
@@ -92,6 +108,16 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
             <HandCoins className='w-4 h-4' />
             <span>{fine.payed ? 'Betalt' : 'Ikke betalt'}</span>
           </div>
+          <button
+            onClick={toggleStar}
+            className={cn(
+              'ml-auto flex items-center px-2 py-1 rounded-md border text-sm transition',
+              fine.starred
+                ? 'text-yellow-500 border-yellow-50 hover:bg-yellow-100'
+                : 'text-gray-400 border-gray-300 hover:text-yellow-500 hover:border-yellow-500',
+            )}>
+            <Star className={cn('w-4 h-4', fine.starred && 'fill-yellow-500')} />
+          </button>
         </div>
 
         <div>
