@@ -10,6 +10,7 @@ import type {
   GroupFineCreate,
   GroupFineDefenseMutate,
   GroupFineMutate,
+  GroupFineStarredMutate,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
@@ -189,6 +190,18 @@ export const useUpdateGroupFineDefense = (
 
   return useMutation({
     mutationFn: (data) => API.updateGroupFineDefense(groupSlug, fineId, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: GROUPS_QUERY_KEYS.fines.all(groupSlug) }),
+  });
+};
+
+export const useUpdateGroupFineStarred = (
+  groupSlug: Group['slug'],
+  fineId: GroupFine['id'],
+): UseMutationResult<GroupFine, RequestResponse, GroupFineStarredMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => API.updateGroupFineStarred(groupSlug, fineId, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: GROUPS_QUERY_KEYS.fines.all(groupSlug) }),
   });
 };

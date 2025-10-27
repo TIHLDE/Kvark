@@ -89,14 +89,15 @@ const Fines = () => {
         </CardContent>
       </Card>
 
-      <Tabs className='w-full space-y-6' defaultValue='all' onValueChange={setTab} value={tab}>
-        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+      <Tabs className='space-y-4  mt-3' defaultValue='all' onValueChange={setTab} value={tab}>
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-end lg:justify-between gap-x-4'>
           <TabsList>
             <TabsTrigger value='all'>Alle bøter</TabsTrigger>
             <TabsTrigger value='users'>Bøter per medlem</TabsTrigger>
+            <TabsTrigger value='hallofshame'> Hall of Shame</TabsTrigger>
           </TabsList>
 
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-center space-x-1 mt-1'>
             <Select
               defaultValue='none'
               onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))}>
