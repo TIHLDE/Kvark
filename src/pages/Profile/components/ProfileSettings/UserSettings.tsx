@@ -108,7 +108,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
         <FormTextarea
           description={
             <>
-              <span className='font-bold'>Ikke</span> skriv tulleallergier, eller &quot;ingen&quot;pn. Dine allergier vises til bedrifter/arrangører ved
+              <span className='font-bold'>Ikke</span> skriv tulleallergier, eller &quot;ingen&quot;. Dine allergier vises til bedrifter/arrangører ved
               arrangementer
             </>
           }
