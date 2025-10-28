@@ -1,32 +1,33 @@
+import { createFileRoute, Link, linkOptions, redirect, useNavigate, useParams } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import JobPostEditor from '~/pages/JobPostAdministration/components/JobPostEditor';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { href, Link, redirect, useNavigate, useParams } from 'react-router';
 
-import { Route } from './+types';
 import JobPostList from './components/JobPostList';
 
-export async function clientLoader({ request }: Route.ClientActionArgs) {
-  const auth = await authClientWithRedirect(request);
+export const Route = createFileRoute('/_MainLayout/admin/stillingsannonser/{-$jobPostId}')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
 
-  if (!userHasWritePermission(auth.permissions, PermissionApp.JOBPOST)) {
-    return redirect(href('/'));
-  }
-}
+    if (!userHasWritePermission(auth.permissions, PermissionApp.JOBPOST)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  component: JobPostAdministration,
+});
 
-const JobPostAdministration = () => {
+function JobPostAdministration() {
   const navigate = useNavigate();
-  const { jobPostId } = useParams();
+  const { jobPostId } = useParams({ strict: false });
 
   const goToJobPost = (newJobPost: number | null) => {
     if (newJobPost) {
-      navigate(`${URLS.jobpostsAdmin}${newJobPost}/`);
+      navigate(linkOptions({ to: '/admin/stillingsannonser/{-$jobPostId}', params: { jobPostId: newJobPost.toString() } }));
     } else {
-      navigate(URLS.jobpostsAdmin);
+      navigate(linkOptions({ to: '/admin/stillingsannonser/{-$jobPostId}' }));
     }
   };
 
@@ -42,13 +43,13 @@ const JobPostAdministration = () => {
             {jobPostId && (
               <>
                 <Button asChild size='icon' variant='outline'>
-                  <Link to={URLS.jobpostsAdmin}>
+                  <Link to='/admin/stillingsannonser/{-$jobPostId}'>
                     <Plus className='w-5 h-5 stroke-[1.5px]' />
                   </Link>
                 </Button>
 
                 <Button asChild className='p-0' variant='link'>
-                  <Link to={`${URLS.jobposts}${jobPostId}/`}>
+                  <Link to='/stillingsannonser/$id/{-$urlTitle}' params={{ id: jobPostId.toString() }}>
                     Se annonse
                     <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
                   </Link>
@@ -62,6 +63,4 @@ const JobPostAdministration = () => {
       </div>
     </Page>
   );
-};
-
-export default JobPostAdministration;
+}

@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import InfoCard from '~/components/layout/InfoCard';
 import Page from '~/components/navigation/Page';
 
@@ -6,7 +7,11 @@ import ChangelogCard from './components/ChangelogCard';
 export const FRONTEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Kvark/master/CHANGELOG.md';
 export const BACKEND_URL = 'https://raw.githubusercontent.com/TIHLDE/Lepton/master/CHANGELOG.md';
 
-const Changelog = () => {
+export const Route = createFileRoute('/_MainLayout/endringslogg')({
+  component: Changelog,
+});
+
+function Changelog() {
   return (
     <Page>
       <div className='space-y-4 md:space-y-0 md:flex md:items-center md:justify-between mb-4'>
@@ -29,6 +34,4 @@ const Changelog = () => {
       </div>
     </Page>
   );
-};
-
-export default Changelog;
+}

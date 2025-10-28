@@ -20,13 +20,13 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     // New Options react-router v7
-    "rootDirs": [".", "./.react-router/types"],
-    "baseUrl": ".",
+    "rootDirs": ["."],
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "*": ["./src/*"]
     },
     // Make this true once we have want to make imports more explicit
     "verbatimModuleSyntax": false
   },
-  "include": ["**/*", "**/.server/**/*", "**/.client/**/*", ".react-router/types/**/*"]
+  "include": ["**/*", "**/.server/**/*", "**/.client/**/*"]
 }

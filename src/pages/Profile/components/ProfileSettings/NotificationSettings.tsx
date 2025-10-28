@@ -1,11 +1,12 @@
 import DISCORD from '~/assets/icons/discord.svg';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { ExternalLink } from '~/components/ui/external-link';
 import { Switch } from '~/components/ui/switch';
 import { useUpdateUserNotificationSettings, useUser, useUserNotificationSettingChoices, useUserNotificationSettings } from '~/hooks/User';
 import type { User, UserNotificationSetting, UserNotificationSettingChoice } from '~/types';
+import URLS from '~/URLS';
 import { useState } from 'react';
-import { Link } from 'react-router';
 import { toast } from 'sonner';
 
 type ConnectWithSlackProps = {
@@ -26,10 +27,10 @@ export const ConnectWithDiscord = ({ className }: ConnectWithSlackProps) => {
       </CardHeader>
       <CardContent>
         <Button className='w-full' size='lg'>
-          <Link className='flex items-center' to='https://discord.gg/HNt5XQdyxy'>
+          <ExternalLink className='flex items-center' href={URLS.external.discord}>
             <img alt='Discord' className='w-6 h-6 mr-2' src={DISCORD} />
             Koble til din Discord-bruker
-          </Link>
+          </ExternalLink>
         </Button>
       </CardContent>
     </Card>

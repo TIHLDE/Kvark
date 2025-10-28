@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Badge } from '~/components/ui/badge';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -5,8 +6,6 @@ import type { JobPost } from '~/types';
 import { formatDate, getJobpostType, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 import { CalendarClock, MapPin } from 'lucide-react';
-
-import NavLink from '../ui/navlink';
 
 export type JobPostListItemProps = {
   jobPost: JobPost;
@@ -18,10 +17,10 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
   const classRange = jobPost.class_start === jobPost.class_end ? `${jobPost.class_start}. klasse` : `${jobPost.class_start}. - ${jobPost.class_end}. klasse`;
 
   return (
-    <NavLink
+    <Link
       className='block bg-muted rounded-lg'
-      params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}
-      to='/stillingsannonser/:id/:urlTitle?'>
+      to='/stillingsannonser/$id/{-$urlTitle}'
+      params={{ id: jobPost.id.toString(), urlTitle: urlEncode(jobPost.title) }}>
       <div className='group rounded-lg overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 bg-muted/30'>
         {/* Responsive layout - vertical on mobile, horizontal on sm and up */}
         <div className='flex flex-col xl:flex-row h-full'>
@@ -57,7 +56,7 @@ const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
           </div>
         </div>
       </div>
-    </NavLink>
+    </Link>
   );
 };
 

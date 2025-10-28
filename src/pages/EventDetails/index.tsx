@@ -1,44 +1,44 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
 import { eventByIdQuery } from '~/hooks/Event';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
 import { getQueryClient } from '~/queryClient';
-import { redirect } from 'react-router';
 
-import { Route } from './+types/index';
-
-export async function clientLoader({ params }: Route.LoaderArgs) {
-  const eventId = Number(params.id);
-  if (Number.isNaN(eventId) || eventId < 0) {
-    throw redirect('/arrangementer/');
-  }
-
-  try {
-    const event = await getQueryClient().ensureQueryData(eventByIdQuery(eventId));
-    if (!event) {
-      throw redirect('/arrangementer/');
+export const Route = createFileRoute('/_MainLayout/arrangementer/$id/{-$urlTitle}')({
+  loader: async ({ params }) => {
+    const eventId = Number(params.id);
+    if (Number.isNaN(eventId) || eventId < 0) {
+      throw redirect({ to: '/arrangementer' });
     }
-    return {
-      eventId,
-      event,
-    };
-  } catch {
-    throw redirect('/arrangementer/');
-  }
-}
 
-export function meta({ loaderData }: Route.MetaArgs) {
-  return [
-    { property: 'og:title', content: loaderData?.event?.title },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: loaderData?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
-  ];
-}
+    try {
+      const event = await getQueryClient().ensureQueryData(eventByIdQuery(eventId));
+      if (!event) {
+        throw redirect({ to: '/arrangementer' });
+      }
+      return {
+        eventId,
+        event,
+      };
+    } catch {
+      throw redirect({ to: '/arrangementer' });
+    }
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      { property: 'og:title', content: loaderData?.event?.title },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: typeof window !== 'undefined' ? window.location.href : '' },
+      { property: 'og:image', content: loaderData?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
+    ],
+  }),
+  component: EventDetails,
+});
 
-export default function EventDetails({ loaderData }: Route.ComponentProps) {
-  const { eventId } = loaderData;
+function EventDetails() {
+  const { eventId } = Route.useLoaderData();
   const { data: event } = useSuspenseQuery(eventByIdQuery(eventId));
 
   return (

@@ -1,10 +1,15 @@
+import { createFileRoute } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { useBadgeCategories } from '~/hooks/Badge';
 import BadgeCategoryItem from '~/pages/Badges/components/BadgeCategoryItem';
 import { useMemo } from 'react';
 
-export const BadgeCategoriesList = () => {
+export const Route = createFileRoute('/_MainLayout/badges/_index/kategorier')({
+  component: BadgeCategoriesList,
+});
+
+function BadgeCategoriesList() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadgeCategories();
   const badgeCategories = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -22,6 +27,4 @@ export const BadgeCategoriesList = () => {
       {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </>
   );
-};
-
-export default BadgeCategoriesList;
+}

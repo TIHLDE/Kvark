@@ -1,16 +1,16 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
-import { useJobPosts } from '~/hooks/JobPost';
+import { jobPostsQuery } from '~/hooks/JobPost';
 import type { JobPost } from '~/types';
-import URLS from '~/URLS';
 import { ChevronRight, List } from 'lucide-react';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const JobPostList = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, hasNextPage, fetchNextPage, isLoading } = useJobPosts();
+  const { data, hasNextPage, fetchNextPage, isLoading } = useInfiniteQuery(jobPostsQuery());
   const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
   return (
@@ -56,7 +56,11 @@ type ListItemProps = {
 const ListItem = ({ item, setOpen }: ListItemProps) => {
   return (
     <Button asChild className='block w-full rounded-md border h-auto' variant='outline'>
-      <Link className='flex items-center justify-between' onClick={() => setOpen(false)} to={`${URLS.jobpostsAdmin}${item.id}/`}>
+      <Link
+        className='flex items-center justify-between'
+        onClick={() => setOpen(false)}
+        to='/admin/stillingsannonser/{-$jobPostId}'
+        params={{ jobPostId: item.id.toString() }}>
         <div>
           <h1 className='text-lg'>{item.title}</h1>
           <p>{item.company}</p>

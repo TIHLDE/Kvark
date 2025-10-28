@@ -1,11 +1,12 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
+import { ExternalLink } from '~/components/ui/external-link';
 import useMediaQuery, { LARGE_SCREEN, MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { ArrowRight, AtSign, FacebookIcon, InstagramIcon, Users2 } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 import { Button } from '../../components/ui/button';
 import { useGroupsByType } from '../../hooks/Group';
@@ -13,7 +14,11 @@ import { useToddels } from '../../hooks/Toddel';
 import { GroupList } from '../../types/Group';
 import GroupItem from '../Groups/overview/GroupItem';
 
-const NewStudent = () => {
+export const Route = createFileRoute('/_MainLayout/ny-student')({
+  component: NewStudent,
+});
+
+function NewStudent() {
   const { event } = useAnalytics();
   const isAuthenticated = useIsAuthenticated();
 
@@ -88,12 +93,14 @@ const NewStudent = () => {
               </a>
             </Button>
             <Button asChild className='bg-sky-500 text-white font-semibold'>
-              <Link to='/arrangementer/?&expired=false&category=10&activity=false'>Hva skjer i Fadderuka?</Link>
+              <Link to='/arrangementer' search={{ expired: false, category: 10, activity: false }}>
+                Hva skjer i Fadderuka?
+              </Link>
             </Button>
             <Button asChild variant='ghost'>
-              <Link to='/wiki/ny-student/'>
+              <ExternalLink href={URLS.external.wiki.NEW_STUDENT}>
                 Les mer <ArrowRight className='h-4' />
-              </Link>
+              </ExternalLink>
             </Button>
           </div>
         </div>
@@ -163,6 +170,4 @@ const NewStudent = () => {
       </div>
     </Page>
   );
-};
-
-export default NewStudent;
+}

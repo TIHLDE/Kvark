@@ -1,17 +1,20 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { useGroupsByType } from '~/hooks/Group';
 import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import type { GroupList } from '~/types';
 
-import { Route } from './+types';
 import GroupAdmission, { GroupAdmissionLoading } from './components/GroupAdmission';
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/opptak')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: Admissions,
+});
 
-const Admissions = () => {
+function Admissions() {
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, isLoading } = useGroupsByType({ overview: true });
 
   const isDesktop = useMediaQuery(LARGE_SCREEN);
@@ -133,6 +136,4 @@ const Admissions = () => {
       </div>
     </Page>
   );
-};
-
-export default Admissions;
+}

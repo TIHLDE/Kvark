@@ -3,10 +3,8 @@ import { PaginateButton } from '~/components/ui/button';
 import { useUserBadges } from '~/hooks/User';
 import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
 import { useMemo } from 'react';
-import { useParams } from 'react-router';
 
-const ProfileBadges = () => {
-  const { userId } = useParams();
+const ProfileBadges = ({ userId }: { userId: string | undefined }) => {
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useUserBadges(userId);
   const badges = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
 

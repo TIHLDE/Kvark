@@ -1,13 +1,12 @@
+import { Link } from '@tanstack/react-router';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
 import type { MembershipHistory } from '~/types';
-import URLS from '~/URLS';
 import { formatDate, getMembershipType, getUserAffiliation } from '~/utils';
 import { parseISO } from 'date-fns';
 import { User } from 'lucide-react';
-import { Link } from 'react-router';
 
 import DeleteMembershipHistory from './DeleteMembershipHistory';
 import UpdateMembershipHistory from './UpdateMembershipHistory';
@@ -49,7 +48,7 @@ const MembershipHistoryListItem = ({ membership, isAdmin }: MembershipHistoryLis
 
             <div className='space-y-2 md:flex md:items-center md:space-x-2 md:space-y-0'>
               <Button asChild className='w-full text-black dark:text-white' variant='outline'>
-                <Link to={`${URLS.profile}${user.user_id}/`}>
+                <Link to='/profil/{-$userId}' params={{ userId: user.user_id.toString() }}>
                   <User className='mr-2 w-5 h-5 stroke-[1.5px]' />
                   Se profil
                 </Link>

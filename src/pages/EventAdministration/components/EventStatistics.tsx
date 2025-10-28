@@ -1,7 +1,7 @@
 import { useEventStatistics } from '~/hooks/Event';
 import { cn } from '~/lib/utils';
 import type { Event } from '~/types';
-import { useSearchParams } from 'react-router';
+import { parseAsString, useQueryStates } from 'nuqs';
 
 type StatProps = {
   label: string;
@@ -30,17 +30,30 @@ export type EventStatisticsProps = {
   isPaid: boolean;
 };
 
+const eventRegistrationFilter = {
+  has_attended: parseAsString.withDefault(''),
+  year: parseAsString.withDefault(''),
+  study: parseAsString.withDefault(''),
+  has_allergy: parseAsString.withDefault(''),
+  has_paid: parseAsString.withDefault(''),
+  allow_photo: parseAsString.withDefault(''),
+};
+
 const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
   const { data } = useEventStatistics(eventId);
-  const [searchParams, setSearchParams] = useSearchParams();
-  function handleFiltering(category: string, label: string) {
-    if (searchParams.get(category) === label) {
-      searchParams.delete(category);
+
+  const [queryFilters, setQueryFilters] = useQueryStates(eventRegistrationFilter);
+
+  function handleFiltering(category: keyof typeof queryFilters, label: string) {
+    const newValue = { ...queryFilters };
+    if (newValue[category] === label) {
+      newValue[category] = '';
     } else {
-      searchParams.set(category, label);
+      newValue[category] = label;
     }
-    setSearchParams(searchParams);
+    setQueryFilters(newValue);
   }
+
   if (!data) {
     return null;
   }
@@ -53,7 +66,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           {data.studyyears.map((studyyear) => (
             <Stat
-              active={searchParams.get('year') === studyyear.studyyear}
+              active={queryFilters.year === studyyear.studyyear}
               key={studyyear.studyyear}
               label={studyyear.studyyear}
               number={studyyear.amount}
@@ -67,7 +80,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           {data.studies.map((study) => (
             <Stat
-              active={searchParams.get('study') === study.study}
+              active={queryFilters.study === study.study}
               key={study.study}
               label={study.study}
               number={study.amount}
@@ -80,14 +93,14 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
         <h1>Annet:</h1>
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           <Stat
-            active={Boolean(searchParams.get('has_allergy'))}
+            active={Boolean(queryFilters.has_allergy)}
             key='Allergi'
             label='Allergi'
             number={data.has_allergy_count}
             onClick={() => handleFiltering('has_allergy', 'true')}
           />
           <Stat
-            active={Boolean(searchParams.get('allow_photo'))}
+            active={Boolean(queryFilters.allow_photo)}
             key='allow_photo'
             label='Godtar ikke foto'
             number={data.allow_photo_count}
@@ -95,7 +108,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
           />
           {Boolean(isPaid) && (
             <Stat
-              active={Boolean(searchParams.get('has_paid'))}
+              active={Boolean(queryFilters.has_paid)}
               key='has_paid'
               label='Ikke betalt'
               number={data.has_not_paid_count}
@@ -103,7 +116,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
             />
           )}
           <Stat
-            active={Boolean(searchParams.get('has_attended'))}
+            active={Boolean(queryFilters.has_attended)}
             key='has_attended'
             label='Ikke ankommet'
             number={data.list_count - data.has_attended_count}

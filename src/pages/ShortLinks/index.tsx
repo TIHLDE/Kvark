@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -18,11 +19,12 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/linker')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: ShortLinks,
+});
 
 type ShortLinkItemProps = {
   shortLink: ShortLink;
@@ -107,7 +109,7 @@ const formSchema = z.object({
     }),
 });
 
-const ShortLinks = () => {
+function ShortLinks() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { data, error } = useShortLinks();
@@ -214,6 +216,4 @@ const ShortLinks = () => {
       </div>
     </Page>
   );
-};
-
-export default ShortLinks;
+}

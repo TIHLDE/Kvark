@@ -1,9 +1,10 @@
 import AppleAppStoreBadge from '~/assets/img/apple-appstore-badge.svg';
 import GooglePlayBadge from '~/assets/img/google-play-badge.svg';
 import { Button } from '~/components/ui/button';
+import { ExternalLink } from '~/components/ui/external-link';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { cn } from '~/lib/utils';
-import { MOBILE_APP } from '~/URLS';
+import URLS from '~/URLS';
 import { QrCodeIcon } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 
@@ -25,12 +26,12 @@ export const QRButton = ({ qrValue, subtitle, className, children }: QRButtonPro
     <ResponsiveDialog title='QR-kode' trigger={OpenButton}>
       <p className='text-center md:hidden'>Medlemsbeviset er også tilgjengelig i TIHLDE-appen</p>
       <div className='grid grid-cols-2 place-items-center gap-4 px-4 my-4 md:hidden'>
-        <a href={MOBILE_APP.iOS} target='_blank' rel='noopener noreferrer'>
+        <ExternalLink href={URLS.external.mobileApp.iOS}>
           <img src={AppleAppStoreBadge} alt='Last ned iPhone-appen' className='inline-block w-auto h-14' />
-        </a>{' '}
-        <a href={MOBILE_APP.Android} target='_blank' rel='noopener noreferrer'>
+        </ExternalLink>{' '}
+        <ExternalLink href={URLS.external.mobileApp.Android}>
           <img src={GooglePlayBadge} alt='Last ned Android-appen' className='inline-block w-auto h-14' />
-        </a>
+        </ExternalLink>
       </div>
       <QRCodeCanvas className='block h-auto! w-full! max-h-[70vh] mx-auto object-contain' size={1000} value={qrValue} />
       {subtitle && <h1 className='text-center my-1 text-xl'>{subtitle}</h1>}

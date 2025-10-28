@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -9,7 +10,11 @@ import { useMemo } from 'react';
 
 import CreateToddelDialog from './components/CreateToddelDialog';
 
-const ToddelPage = () => {
+export const Route = createFileRoute('/_MainLayout/toddel')({
+  component: ToddelPage,
+});
+
+function ToddelPage() {
   const { data, error, isLoading, isFetching, hasNextPage, fetchNextPage } = useToddels();
   const toddels = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -42,6 +47,4 @@ const ToddelPage = () => {
       </div>
     </Page>
   );
-};
-
-export default ToddelPage;
+}

@@ -1,3 +1,4 @@
+import { createFileRoute, Link, useParams } from '@tanstack/react-router';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
@@ -5,10 +6,13 @@ import { useEvents } from '~/hooks/Event';
 import { useGroup } from '~/hooks/Group';
 import { useUserPermissions } from '~/hooks/User';
 import { useMemo } from 'react';
-import { Link, useParams } from 'react-router';
 
-const GroupEvents = () => {
-  const { slug } = useParams<'slug'>();
+export const Route = createFileRoute('/_MainLayout/grupper/$slug/arrangementer')({
+  component: GroupEvents,
+});
+
+function GroupEvents() {
+  const { slug } = useParams({ strict: false });
   const { data: permissions } = useUserPermissions();
   const { data: group } = useGroup(slug || '-');
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useEvents({ organizer: slug });
@@ -18,7 +22,7 @@ const GroupEvents = () => {
     <div>
       {permissions?.permissions.event.write && (
         <Button asChild className='w-full mb-4 text-black dark:text-white' variant='outline'>
-          <Link to='/admin/arrangementer'>Nytt arrangement</Link>
+          <Link to='/admin/arrangementer/{-$eventId}'>Nytt arrangement</Link>
         </Button>
       )}
       {isLoading && <EventListItemLoading />}
@@ -34,6 +38,4 @@ const GroupEvents = () => {
       {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
   );
-};
-
-export default GroupEvents;
+}

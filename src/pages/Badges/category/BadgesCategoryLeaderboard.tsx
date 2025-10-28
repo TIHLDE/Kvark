@@ -1,14 +1,15 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { authClientWithRedirect } from '~/api/auth';
 import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
 
-import { Route } from './+types/BadgesCategoryLeaderboard';
+export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId/')({
+  component: BadgesCategoryLeaderboard,
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+});
 
-export function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const { categoryId } = params;
-  return {
-    categoryId,
-  };
-}
-
-export default function BadgesOverallLeaderboard({ loaderData: { categoryId } }: Route.ComponentProps) {
+function BadgesCategoryLeaderboard() {
+  const { categoryId } = Route.useParams();
   return <BadgesLeaderboard filters={{ category: categoryId }} />;
 }

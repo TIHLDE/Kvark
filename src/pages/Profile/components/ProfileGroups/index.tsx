@@ -5,10 +5,8 @@ import { useUserMembershipHistories, useUserMemberships } from '~/hooks/User';
 import MembershipHistoryItem, { MembershipHistoryItemLoading } from '~/pages/Profile/components/ProfileGroups/MembershipHistoryItem';
 import MembershipItem, { MembershipItemLoading } from '~/pages/Profile/components/ProfileGroups/MembershipItem';
 import { useMemo } from 'react';
-import { useParams } from 'react-router';
 
-const Memberships = () => {
-  const { userId } = useParams();
+const Memberships = ({ userId }: { userId: string | undefined }) => {
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useUserMemberships(userId);
   const memberships = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -28,8 +26,7 @@ const Memberships = () => {
   );
 };
 
-const MembershipHistories = () => {
-  const { userId } = useParams();
+const MembershipHistories = ({ userId }: { userId: string | undefined }) => {
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useUserMembershipHistories(userId);
   const membershipHistories = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -49,16 +46,16 @@ const MembershipHistories = () => {
   );
 };
 
-const ProfileMemberships = () => (
+const ProfileMemberships = ({ userId }: { userId: string | undefined }) => (
   <div className='space-y-6'>
     <div className='space-y-2'>
       <h1 className='text-xl font-semibold'>Aktive medlemskap</h1>
-      <Memberships />
+      <Memberships userId={userId} />
     </div>
     <Separator />
     <div className='space-y-2'>
       <h1 className='text-xl font-semibold'>Tidligere medlemskap</h1>
-      <MembershipHistories />
+      <MembershipHistories userId={userId} />
     </div>
   </div>
 );

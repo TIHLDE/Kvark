@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Skeleton } from '~/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
@@ -9,7 +10,11 @@ import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 
 const EventsCalendarView = lazy(() => import(/* webpackChunkName: "events_calendar" */ '~/pages/Landing/components/EventsCalendarView'));
 
-const Events = () => {
+export const Route = createFileRoute('/_MainLayout/arrangementer/')({
+  component: Events,
+});
+
+function Events() {
   return (
     <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
       <div>
@@ -46,6 +51,4 @@ const Events = () => {
       </Tabs>
     </Page>
   );
-};
-
-export default Events;
+}

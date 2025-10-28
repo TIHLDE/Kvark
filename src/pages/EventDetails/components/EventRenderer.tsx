@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
 import FormUserAnswers from '~/components/forms/FormUserAnswers';
 import DetailContent from '~/components/miscellaneous/DetailContent';
@@ -11,6 +12,7 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Checkbox } from '~/components/ui/checkbox';
 import Expandable from '~/components/ui/expandable';
+import { ExternalLink } from '~/components/ui/external-link';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useConfetti } from '~/hooks/Confetti';
@@ -38,7 +40,6 @@ import { addHours, formatDistanceToNowStrict, isFuture, isPast, parseISO, subHou
 import { nb } from 'date-fns/locale';
 import { CalendarIcon, HandCoinsIcon, Heart, LoaderCircle, PencilIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
 import { toast } from 'sonner';
 
 export type EventRendererProps = {
@@ -177,8 +178,16 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                     Du har ikke svart på evalueringen av dette arrangementet. Du må svare på den før du kan melde deg på flere arrangementer.
                   </AlertDescription>
                 </Alert>
-                <Button asChild className='w-full text-black dark:text-white'>
-                  <Link to={`${URLS.form}${data.evaluation}/`}>Svar på evaluering</Link>
+                <Button asChild disabled={data.evaluation == null} className='w-full text-black dark:text-white'>
+                  {data.evaluation != null ? (
+                    <Link to='/sporreskjema/$id' params={{ id: data.evaluation }}>
+                      Svar på evaluering
+                    </Link>
+                  ) : (
+                    <Link to='/' disabled={data.evaluation == null}>
+                      Ingen evaluering funnet
+                    </Link>
+                  )}
                 </Button>
               </>
             )}
@@ -355,7 +364,8 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               info={
                 <Link
                   className='text-blue-500 dark:text-indigo-300'
-                  to={`${URLS.profile}${data.contact_person?.user_id}/`}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>
+                  to='/profil/{-$userId}'
+                  params={{ userId: data.contact_person?.user_id }}>{`${data.contact_person?.first_name} ${data.contact_person?.last_name}`}</Link>
               }
               title='Kontaktperson:'
             />
@@ -387,9 +397,11 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
               )}
 
               {data.is_paid_event && (registration?.has_paid_order || data.list_count >= data.limit) && (
-                <Link to='https://www.facebook.com/groups/598608738731749/'>
-                  <Button className='my-4 w-full'>{registration?.has_paid_order ? 'Selg billetten din her' : 'Sjekk om noen selger billett her'}</Button>
-                </Link>
+                <Button asChild className='my-4 w-full'>
+                  <ExternalLink href='https://www.facebook.com/groups/598608738731749/'>
+                    {registration?.has_paid_order ? 'Selg billetten din her' : 'Sjekk om noen selger billett her'}
+                  </ExternalLink>
+                </Button>
               )}
             </CardContent>
           </Card>
@@ -455,7 +467,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
             {!preview && data.permissions.write && (
               <Button className='w-full flex items-center space-x-2' variant='outline'>
                 <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
-                <Link className='text-sm md:text-md text-black dark:text-white' to={`${URLS.eventAdmin}${data.id}/`}>
+                <Link to='/admin/arrangementer/{-$eventId}' params={{ eventId: data.id.toString() }} className='text-sm md:text-md text-black dark:text-white'>
                   Endre arrangement
                 </Link>
               </Button>

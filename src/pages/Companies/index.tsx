@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import InfoCard from '~/components/layout/InfoCard';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -8,7 +9,11 @@ import { getUserStudyLong } from '~/utils';
 import { Mail } from 'lucide-react';
 import { useRef } from 'react';
 
-const Companies = () => {
+export const Route = createFileRoute('/_MainLayout/bedrifter')({
+  component: Companies,
+});
+
+function Companies() {
   const formRef = useRef<HTMLDivElement>(null);
 
   const scrollToForm = () => {
@@ -80,6 +85,4 @@ Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
       </div>
     </Page>
   );
-};
-
-export default Companies;
+}

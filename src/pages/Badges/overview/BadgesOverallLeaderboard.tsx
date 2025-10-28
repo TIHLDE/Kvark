@@ -1,5 +1,6 @@
+import { createFileRoute } from '@tanstack/react-router';
 import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
 
-const BadgesOverallLeaderboard = () => <BadgesLeaderboard />;
-
-export default BadgesOverallLeaderboard;
+export const Route = createFileRoute('/_MainLayout/badges/_index/')({
+  component: BadgesLeaderboard,
+});

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute } from '@tanstack/react-router';
 import API from '~/api/api';
 import { Checkbox } from '~/components/ui/checkbox';
 import { useAnalytics } from '~/hooks/Utils';
@@ -33,7 +34,11 @@ const interestOptions = [
   { value: 'stillingsannonse', label: 'Stillingsannonse' },
 ];
 
-export default function CompanyInterest() {
+export const Route = createFileRoute('/interesse')({
+  component: CompanyInterest,
+});
+
+function CompanyInterest() {
   const { event } = useAnalytics();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

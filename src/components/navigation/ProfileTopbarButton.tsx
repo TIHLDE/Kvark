@@ -25,7 +25,7 @@ const ProfileTopbarButton = () => {
       )}
       <ThemeSettings />
       {auth?.user ? (
-        <Link to='/profil'>
+        <Link to='/profil/{-$userId}'>
           <Avatar>
             <AvatarImage alt={auth.user.firstName} src={auth.user.image ?? ''} />
             <AvatarFallback>

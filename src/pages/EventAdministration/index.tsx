@@ -1,45 +1,45 @@
+import { createFileRoute, Link, linkOptions, redirect, useNavigate } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
-import NavLink from '~/components/ui/navlink';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { useEventById } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import EventEditor from '~/pages/EventAdministration/components/EventEditor';
 import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
 import { useEffect } from 'react';
-import { href, redirect, useNavigate } from 'react-router';
 
-import { Route } from './+types';
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
-export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
-  const auth = await authClientWithRedirect(request);
+export const Route = createFileRoute('/_MainLayout/admin/arrangementer/{-$eventId}')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
 
-  if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
-    return redirect(href('/'));
-  }
-  return {
+    if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  loader: ({ params }) => ({
     eventId: params.eventId,
-  };
-}
+  }),
+  component: EventAdministration,
+});
 
-export default function EventAdministration({ loaderData }: Route.ComponentProps) {
-  const { eventId } = loaderData;
+function EventAdministration() {
+  const { eventId } = Route.useLoaderData();
   const navigate = useNavigate();
   const { data: event, isError } = useEventById(eventId ? Number(eventId) : -1);
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
 
   const goToEvent = (newEvent: number | null) => {
     if (newEvent) {
-      navigate(`${URLS.eventAdmin}${newEvent}/`);
+      navigate(linkOptions({ to: '/admin/arrangementer/{-$eventId}', params: { eventId: newEvent.toString() } }));
     } else {
-      navigate(URLS.eventAdmin);
+      navigate(linkOptions({ to: '/admin/arrangementer/{-$eventId}' }));
     }
   };
 
@@ -54,10 +54,10 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
 
   const RegisterButton = ({ id }: { id: string }) => (
     <Button asChild className='px-2 md:px-4' variant='outline'>
-      <NavLink params={{ id }} to='/arrangementer/registrering/:id'>
+      <Link to='/arrangementer/registrering/$id' params={{ id: id.toString() }}>
         <ListChecks className='w-5 h-5 mr-2 stroke-[1.5px]' />
         Registrering
-      </NavLink>
+      </Link>
     </Button>
   );
 
@@ -72,18 +72,18 @@ export default function EventAdministration({ loaderData }: Route.ComponentProps
           {eventId && event && (
             <>
               <Button asChild size='icon' variant='outline'>
-                <NavLink to='/admin/arrangementer/:eventId?'>
+                <Link to='/admin/arrangementer/{-$eventId}'>
                   <Plus className='w-5 h-5 stroke-[1.5px]' />
-                </NavLink>
+                </Link>
               </Button>
 
               {!isDesktop && <RegisterButton id={eventId} />}
 
               <Button asChild className='p-0' variant='link'>
-                <NavLink params={{ id: eventId, urlTitle: urlEncode(event.title) }} to='/arrangementer/:id/:urlTitle?'>
+                <Link params={{ id: eventId, urlTitle: urlEncode(event.title) }} to='/arrangementer/$id/{-$urlTitle}'>
                   Se arrangement
                   <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
-                </NavLink>
+                </Link>
               </Button>
             </>
           )}

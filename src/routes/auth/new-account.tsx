@@ -6,7 +6,6 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import Expandable from '~/components/ui/expandable';
 import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI } from '~/constant';
-import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 
 export const Route = createFileRoute('/_MainLayout/ny-bruker')({
@@ -71,7 +70,7 @@ function SignUpOptions() {
               Feide
             </Button>
             <Button asChild className='w-full' size='lg' variant='outline'>
-              <Link to={URLS.signupForm}>
+              <Link to='/ny-bruker/skjema'>
                 <TihldeLogo className='m-0 w-6 h-6 mr-2' size='small' />
                 Manuelt
               </Link>

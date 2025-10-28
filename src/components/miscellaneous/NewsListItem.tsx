@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { News } from '~/types';
-import { formatDate } from '~/utils';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 
 export type NewsListItemProps = {
@@ -11,7 +11,10 @@ export type NewsListItemProps = {
 
 const NewsListItem = ({ news }: NewsListItemProps) => {
   return (
-    <Link to='/nyheter/$id/{$-urlTitle}' className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'>
+    <Link
+      to='/nyheter/$id/{-$urlTitle}'
+      params={{ id: news.id.toString(), urlTitle: urlEncode(news.title) }}
+      className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'>
       <AspectRatioImg alt={news.image_alt || news.title} src={news.image} />
 
       <div>

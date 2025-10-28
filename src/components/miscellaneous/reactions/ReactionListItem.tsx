@@ -1,12 +1,13 @@
+import { Link, linkOptions } from '@tanstack/react-router';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import type { Reaction } from '~/types';
-import { href, Link } from 'react-router';
 
 export const ReactionListItem = (reaction: Reaction) => {
+  const linkOpts = reaction.user?.user_id
+    ? linkOptions({ to: '/profil/{-$userId}', params: { userId: reaction.user.user_id } })
+    : linkOptions({ to: '/profil/{-$userId}' });
   return (
-    <Link
-      className='w-full px-4 py-2 rounded-md border bg-card flex justify-between items-center hover:bg-border transition-all duration-150'
-      to={reaction.user?.user_id ? href('/profil/:userId?', { userId: reaction.user.user_id }) : href('/profil/:userId?')}>
+    <Link {...linkOpts} className='w-full px-4 py-2 rounded-md border bg-card flex justify-between items-center hover:bg-border transition-all duration-150'>
       <div className='flex items-center space-x-2'>
         <Avatar>
           <AvatarImage alt={reaction.user?.first_name} src={reaction.user?.image} />

@@ -1,6 +1,6 @@
-import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
-import type { JobPost, JobPostRequired, PaginationResponse, RequestResponse } from '~/types';
+import type { JobPost, JobPostRequired, RequestResponse } from '~/types';
 
 export const JOBPOST_QUERY_KEY = 'jobpost';
 
@@ -14,14 +14,13 @@ export const jobPostByIdQuery = (id: number) =>
 export const useJobPostById = (id: number) => useQuery(jobPostByIdQuery(id));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useJobPosts = (filters?: any) => {
-  return useInfiniteQuery<PaginationResponse<JobPost>, RequestResponse>({
+export const jobPostsQuery = (filters?: any) =>
+  infiniteQueryOptions({
     queryKey: [JOBPOST_QUERY_KEY, filters],
     queryFn: ({ pageParam }) => API.getJobPosts({ ...filters, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });
-};
 
 export const useCreateJobPost = (): UseMutationResult<JobPost, RequestResponse, JobPostRequired, unknown> => {
   const queryClient = useQueryClient();

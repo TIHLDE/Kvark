@@ -1,39 +1,22 @@
-import API from '~/api/api';
+import { createFileRoute } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { ExternalLink } from '~/components/ui/external-link';
+import { useGroups } from '~/hooks/Group';
 import { GroupType } from '~/types/Enums';
 import { ArrowRight, HandCoins, Info, Plus } from 'lucide-react';
-import { Link } from 'react-router';
+import { useMemo } from 'react';
 
 import GroupItem from '../Groups/overview/GroupItem';
-import type { Route } from './+types';
 
-async function getInterestGroups() {
-  const groups = await API.getGroups({ overview: true });
+export const Route = createFileRoute('/_MainLayout/interessegrupper')({
+  component: InterestGroups,
+});
 
-  return groups.filter((group) => group.type === GroupType.INTERESTGROUP) ?? [];
-}
-
-let OverviewCache: { expire: Date; data: Awaited<ReturnType<typeof getInterestGroups>> } | undefined;
-
-export async function clientLoader() {
-  if (OverviewCache && OverviewCache.expire > new Date()) {
-    return Promise.resolve(OverviewCache.data);
-  }
-
-  const groups = await getInterestGroups();
-  OverviewCache = { expire: new Date(Date.now() + 60 * 1000 * 60), data: groups };
-
-  return groups;
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <h1 className='text-center text-muted-foreground mt-4'>{(error as { detail: string }).detail}</h1>;
-}
-
-export default function InterestGroups({ loaderData }: Route.ComponentProps) {
-  const groups = loaderData as Awaited<ReturnType<typeof getInterestGroups>>;
+function InterestGroups() {
+  const { data } = useGroups({ overview: true });
+  const groups = useMemo(() => data?.filter((group) => group.type === GroupType.INTERESTGROUP) ?? [], [data]);
   return (
     <Page>
       <Card>
@@ -44,7 +27,7 @@ export default function InterestGroups({ loaderData }: Route.ComponentProps) {
         <CardContent>
           <div className='space-y-8 md:space-y-12'>
             <div className='grid md:grid-cols-3 gap-4 items-stretch'>
-              <Link rel='noopener noreferrer' target='_blank' to='https://wiki.tihlde.org'>
+              <ExternalLink href='https://wiki.tihlde.org/struktur#interessegrupper'>
                 <Alert className='hover:bg-secondary transition-all duration-150 ease-in-out h-full'>
                   <Info />
                   <AlertTitle>Hva er en interessegruppe?</AlertTitle>
@@ -56,9 +39,9 @@ export default function InterestGroups({ loaderData }: Route.ComponentProps) {
                     </div>
                   </AlertDescription>
                 </Alert>
-              </Link>
+              </ExternalLink>
 
-              <Link rel='noopener noreferrer' target='_blank' to='https://drive.google.com/file/d/1Y4VDE8yUiIwpg5Vow6SBuO6QxnrDzagl/edit'>
+              <ExternalLink href='https://drive.google.com/file/d/1Y4VDE8yUiIwpg5Vow6SBuO6QxnrDzagl/edit'>
                 <Alert className='hover:bg-secondary transition-all duration-150 ease-in-out'>
                   <Plus />
                   <AlertTitle>Opprett interessegruppe</AlertTitle>
@@ -70,9 +53,9 @@ export default function InterestGroups({ loaderData }: Route.ComponentProps) {
                     </div>
                   </AlertDescription>
                 </Alert>
-              </Link>
+              </ExternalLink>
 
-              <Link rel='noopener noreferrer' target='_blank' to='https://wiki.tihlde.org/soknader-okonomisk#stotte-fra-hs'>
+              <ExternalLink href='https://wiki.tihlde.org/soknader-okonomisk#stotte-fra-hs'>
                 <Alert className='hover:bg-secondary transition-all duration-150 ease-in-out'>
                   <HandCoins />
                   <AlertTitle>Søk om pengestøtte</AlertTitle>
@@ -84,7 +67,7 @@ export default function InterestGroups({ loaderData }: Route.ComponentProps) {
                     </div>
                   </AlertDescription>
                 </Alert>
-              </Link>
+              </ExternalLink>
             </div>
 
             <div className='space-y-4'>

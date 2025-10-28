@@ -1,5 +1,6 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEvents } from '~/hooks/Event';
-import { useJobPosts } from '~/hooks/JobPost';
+import { jobPostsQuery } from '~/hooks/JobPost';
 import { useNews } from '~/hooks/News';
 import Story, { StoryLoading } from '~/pages/Landing/components/Story';
 import { useMemo } from 'react';
@@ -8,7 +9,7 @@ const STORIES_TO_DISPLAY = 10;
 
 const StoriesView = () => {
   const { data: news, isLoading: isNewsLoading } = useNews();
-  const { data: jobposts, isLoading: isJobPostsLoading } = useJobPosts();
+  const { data: jobposts, isLoading: isJobPostsLoading } = useInfiniteQuery(jobPostsQuery());
   const { data: events, isLoading: isEventsLoading } = useEvents();
   const items = useMemo(
     () =>

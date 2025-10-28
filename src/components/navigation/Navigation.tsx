@@ -47,11 +47,11 @@ const NavigationContent = ({ children }: NavigationProps) => {
     () => [
       {
         items: [
-          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', to: URLS.wiki },
+          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', to: URLS.external.wiki.wiki },
           { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', to: URLS.toddel },
           { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', to: URLS.groups.index },
           { title: 'Interessegrupper', text: 'Se alle interessegrupper', to: URLS.groups.interest },
-          { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', to: URLS.fondet, external: true },
+          { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', to: URLS.external.fondet, external: true },
         ],
         text: 'Generelt',
         type: 'dropdown',
@@ -69,7 +69,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
               { title: 'QR koder', text: 'Generer dine egne QR koder', to: URLS.qrCodes },
               { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', to: URLS.badges.index },
               { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', to: URLS.gallery },
-              { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', to: URLS.kontRes, external: true },
+              { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', to: URLS.external.kontRes, external: true },
               { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', to: URLS.changelog },
             ],
             text: 'For medlemmer',

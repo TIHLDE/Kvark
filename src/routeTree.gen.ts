@@ -8,16 +8,133 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DotPagesCompanyInterestIndexRouteImport } from './pages/CompanyInterest/index'
 import { Route as DotPagesMainLayoutRouteImport } from './pages/MainLayout'
+import { Route as DotPagesToddelIndexRouteImport } from './pages/Toddel/index'
+import { Route as DotPagesFeedbackIndexRouteImport } from './pages/Feedback/index'
+import { Route as DotPagesQRCodesIndexRouteImport } from './pages/QRCodes/index'
+import { Route as DotPagesAdmissionsIndexRouteImport } from './pages/Admissions/index'
+import { Route as DotPagesNewStudentIndexRouteImport } from './pages/NewStudent/index'
+import { Route as DotPagesShortLinksIndexRouteImport } from './pages/ShortLinks/index'
+import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/InterestGroups/index'
+import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
+import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
+import { Route as DotPagesHttp404IndexRouteImport } from './pages/Http404/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
 import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-account'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
 import { Route as DotRoutesAuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+import { Route as DotPagesBadgesIndexRouteImport } from './pages/Badges/index'
+import { Route as DotPagesWikiIndexRouteImport } from './pages/Wiki/index'
+import { Route as DotPagesFormIndexRouteImport } from './pages/Form/index'
+import { Route as DotPagesProfileIndexRouteImport } from './pages/Profile/index'
+import { Route as DotPagesSignUpIndexRouteImport } from './pages/SignUp/index'
+import { Route as DotPagesSignUpFeideIndexRouteImport } from './pages/SignUpFeide/index'
+import { Route as DotPagesBadgesDetailsIndexRouteImport } from './pages/Badges/details/index'
+import { Route as DotPagesStrikeAdminIndexRouteImport } from './pages/StrikeAdmin/index'
+import { Route as DotPagesOpptakIndexRouteImport } from './pages/Opptak/index'
+import { Route as DotPagesNewGroupAdministrationIndexRouteImport } from './pages/NewGroupAdministration/index'
+import { Route as DotPagesUserAdminIndexRouteImport } from './pages/UserAdmin/index'
+import { Route as DotPagesJobPostsIndexRouteImport } from './pages/JobPosts/index'
+import { Route as DotPagesNewsIndexRouteImport } from './pages/News/index'
+import { Route as DotPagesGroupsOverviewIndexRouteImport } from './pages/Groups/overview/index'
+import { Route as DotPagesGalleryIndexRouteImport } from './pages/Gallery/index'
+import { Route as DotPagesEventsIndexRouteImport } from './pages/Events/index'
+import { Route as DotPagesGroupsGroupDetailsRouteImport } from './pages/Groups/GroupDetails'
+import { Route as DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport } from './components/miscellaneous/InfoBanner/InfoBannerAdmin'
+import { Route as DotPagesJobPostDetailsIndexRouteImport } from './pages/JobPostDetails/index'
+import { Route as DotPagesNewsDetailsIndexRouteImport } from './pages/NewsDetails/index'
+import { Route as DotPagesCheatsheetIndexRouteImport } from './pages/Cheatsheet/index'
+import { Route as DotPagesGroupsFormsIndexRouteImport } from './pages/Groups/forms/index'
+import { Route as DotPagesGroupsLawsIndexRouteImport } from './pages/Groups/laws/index'
+import { Route as DotPagesGroupsFinesIndexRouteImport } from './pages/Groups/fines/index'
+import { Route as DotPagesGroupsEventsIndexRouteImport } from './pages/Groups/events/index'
+import { Route as DotPagesGalleryDetailsIndexRouteImport } from './pages/GalleryDetails/index'
+import { Route as DotPagesBadgesCategoryIndexRouteImport } from './pages/Badges/category/index'
+import { Route as DotPagesEventRegistrationIndexRouteImport } from './pages/EventRegistration/index'
+import { Route as DotPagesEventDetailsIndexRouteImport } from './pages/EventDetails/index'
+import { Route as DotPagesJobPostAdministrationIndexRouteImport } from './pages/JobPostAdministration/index'
+import { Route as DotPagesNewsAdministrationIndexRouteImport } from './pages/NewsAdministration/index'
+import { Route as DotPagesEventAdministrationIndexRouteImport } from './pages/EventAdministration/index'
+import { Route as DotPagesGroupsAboutIndexRouteImport } from './pages/Groups/about/index'
+import { Route as DotPagesFormFormAdminRouteImport } from './pages/Form/FormAdmin'
+import { Route as DotPagesBadgesOverviewBadgeCategoriesListRouteImport } from './pages/Badges/overview/BadgeCategoriesList'
+import { Route as DotPagesBadgesOverviewBadgesListRouteImport } from './pages/Badges/overview/BadgesList'
+import { Route as DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport } from './pages/Badges/overview/BadgesOverallLeaderboard'
+import { Route as DotPagesBadgesGetIndexRouteImport } from './pages/Badges/get/index'
+import { Route as DotPagesBadgesCategoryCategoryBadgesListRouteImport } from './pages/Badges/category/CategoryBadgesList'
+import { Route as DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport } from './pages/Badges/category/BadgesCategoryLeaderboard'
 
+const MainLayoutBadgesRouteImport = createFileRoute('/_MainLayout/badges')()
+
+const DotPagesCompanyInterestIndexRoute =
+  DotPagesCompanyInterestIndexRouteImport.update({
+    id: '/interesse',
+    path: '/interesse',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DotPagesMainLayoutRoute = DotPagesMainLayoutRouteImport.update({
   id: '/_MainLayout',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MainLayoutBadgesRoute = MainLayoutBadgesRouteImport.update({
+  id: '/badges',
+  path: '/badges',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesToddelIndexRoute = DotPagesToddelIndexRouteImport.update({
+  id: '/toddel',
+  path: '/toddel',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesFeedbackIndexRoute = DotPagesFeedbackIndexRouteImport.update({
+  id: '/tilbakemelding',
+  path: '/tilbakemelding',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesQRCodesIndexRoute = DotPagesQRCodesIndexRouteImport.update({
+  id: '/qr-koder',
+  path: '/qr-koder',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesAdmissionsIndexRoute = DotPagesAdmissionsIndexRouteImport.update({
+  id: '/opptak',
+  path: '/opptak',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesNewStudentIndexRoute = DotPagesNewStudentIndexRouteImport.update({
+  id: '/ny-student',
+  path: '/ny-student',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesShortLinksIndexRoute = DotPagesShortLinksIndexRouteImport.update({
+  id: '/linker',
+  path: '/linker',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesInterestGroupsIndexRoute =
+  DotPagesInterestGroupsIndexRouteImport.update({
+    id: '/interessegrupper',
+    path: '/interessegrupper',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesChangelogIndexRoute = DotPagesChangelogIndexRouteImport.update({
+  id: '/endringslogg',
+  path: '/endringslogg',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesCompaniesIndexRoute = DotPagesCompaniesIndexRouteImport.update({
+  id: '/bedrifter',
+  path: '/bedrifter',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesHttp404IndexRoute = DotPagesHttp404IndexRouteImport.update({
+  id: '/*',
+  path: '/*',
+  getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesLandingIndexRoute = DotPagesLandingIndexRouteImport.update({
   id: '/',
@@ -40,53 +157,672 @@ const DotRoutesAuthForgotPasswordRoute =
     path: '/glemt-passord',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
+const DotPagesBadgesIndexRoute = DotPagesBadgesIndexRouteImport.update({
+  id: '/_index',
+  getParentRoute: () => MainLayoutBadgesRoute,
+} as any)
+const DotPagesWikiIndexRoute = DotPagesWikiIndexRouteImport.update({
+  id: '/wiki/*',
+  path: '/wiki/*',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesFormIndexRoute = DotPagesFormIndexRouteImport.update({
+  id: '/sporreskjema/$id',
+  path: '/sporreskjema/$id',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesProfileIndexRoute = DotPagesProfileIndexRouteImport.update({
+  id: '/profil/{-$userId}',
+  path: '/profil/{-$userId}',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesSignUpIndexRoute = DotPagesSignUpIndexRouteImport.update({
+  id: '/skjema',
+  path: '/skjema',
+  getParentRoute: () => DotRoutesAuthNewAccountRoute,
+} as any)
+const DotPagesSignUpFeideIndexRoute =
+  DotPagesSignUpFeideIndexRouteImport.update({
+    id: '/feide',
+    path: '/feide',
+    getParentRoute: () => DotRoutesAuthNewAccountRoute,
+  } as any)
+const DotPagesBadgesDetailsIndexRoute =
+  DotPagesBadgesDetailsIndexRouteImport.update({
+    id: '/badges/$badgeId',
+    path: '/badges/$badgeId',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesStrikeAdminIndexRoute =
+  DotPagesStrikeAdminIndexRouteImport.update({
+    id: '/admin/prikker',
+    path: '/admin/prikker',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesOpptakIndexRoute = DotPagesOpptakIndexRouteImport.update({
+  id: '/admin/opptak',
+  path: '/admin/opptak',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesNewGroupAdministrationIndexRoute =
+  DotPagesNewGroupAdministrationIndexRouteImport.update({
+    id: '/admin/ny-gruppe',
+    path: '/admin/ny-gruppe',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesUserAdminIndexRoute = DotPagesUserAdminIndexRouteImport.update({
+  id: '/admin/brukere',
+  path: '/admin/brukere',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesJobPostsIndexRoute = DotPagesJobPostsIndexRouteImport.update({
+  id: '/stillingsannonser/',
+  path: '/stillingsannonser/',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesNewsIndexRoute = DotPagesNewsIndexRouteImport.update({
+  id: '/nyheter/',
+  path: '/nyheter/',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesGroupsOverviewIndexRoute =
+  DotPagesGroupsOverviewIndexRouteImport.update({
+    id: '/grupper/',
+    path: '/grupper/',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesGalleryIndexRoute = DotPagesGalleryIndexRouteImport.update({
+  id: '/galleri/',
+  path: '/galleri/',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesEventsIndexRoute = DotPagesEventsIndexRouteImport.update({
+  id: '/arrangementer/',
+  path: '/arrangementer/',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesGroupsGroupDetailsRoute =
+  DotPagesGroupsGroupDetailsRouteImport.update({
+    id: '/grupper/$slug',
+    path: '/grupper/$slug',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute =
+  DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport.update({
+    id: '/admin/bannere',
+    path: '/admin/bannere',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesJobPostDetailsIndexRoute =
+  DotPagesJobPostDetailsIndexRouteImport.update({
+    id: '/stillingsannonser/$id/{-$urlTitle}',
+    path: '/stillingsannonser/$id/{-$urlTitle}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesNewsDetailsIndexRoute =
+  DotPagesNewsDetailsIndexRouteImport.update({
+    id: '/nyheter/$id/{-$urlTitle}',
+    path: '/nyheter/$id/{-$urlTitle}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesCheatsheetIndexRoute = DotPagesCheatsheetIndexRouteImport.update({
+  id: '/kokebok/{-$studyId}/{-$classId}',
+  path: '/kokebok/{-$studyId}/{-$classId}',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesGroupsFormsIndexRoute =
+  DotPagesGroupsFormsIndexRouteImport.update({
+    id: '/sporreskjemaer',
+    path: '/sporreskjemaer',
+    getParentRoute: () => DotPagesGroupsGroupDetailsRoute,
+  } as any)
+const DotPagesGroupsLawsIndexRoute = DotPagesGroupsLawsIndexRouteImport.update({
+  id: '/lovverk',
+  path: '/lovverk',
+  getParentRoute: () => DotPagesGroupsGroupDetailsRoute,
+} as any)
+const DotPagesGroupsFinesIndexRoute =
+  DotPagesGroupsFinesIndexRouteImport.update({
+    id: '/boter',
+    path: '/boter',
+    getParentRoute: () => DotPagesGroupsGroupDetailsRoute,
+  } as any)
+const DotPagesGroupsEventsIndexRoute =
+  DotPagesGroupsEventsIndexRouteImport.update({
+    id: '/arrangementer',
+    path: '/arrangementer',
+    getParentRoute: () => DotPagesGroupsGroupDetailsRoute,
+  } as any)
+const DotPagesGalleryDetailsIndexRoute =
+  DotPagesGalleryDetailsIndexRouteImport.update({
+    id: '/galleri/$id/{-$urlTitle}',
+    path: '/galleri/$id/{-$urlTitle}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesBadgesCategoryIndexRoute =
+  DotPagesBadgesCategoryIndexRouteImport.update({
+    id: '/kategorier/$categoryId',
+    path: '/kategorier/$categoryId',
+    getParentRoute: () => MainLayoutBadgesRoute,
+  } as any)
+const DotPagesEventRegistrationIndexRoute =
+  DotPagesEventRegistrationIndexRouteImport.update({
+    id: '/arrangementer/registrering/$id',
+    path: '/arrangementer/registrering/$id',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesEventDetailsIndexRoute =
+  DotPagesEventDetailsIndexRouteImport.update({
+    id: '/arrangementer/$id/{-$urlTitle}',
+    path: '/arrangementer/$id/{-$urlTitle}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesJobPostAdministrationIndexRoute =
+  DotPagesJobPostAdministrationIndexRouteImport.update({
+    id: '/admin/stillingsannonser/{-$jobPostId}',
+    path: '/admin/stillingsannonser/{-$jobPostId}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesNewsAdministrationIndexRoute =
+  DotPagesNewsAdministrationIndexRouteImport.update({
+    id: '/admin/nyheter/{-$newsId}',
+    path: '/admin/nyheter/{-$newsId}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesEventAdministrationIndexRoute =
+  DotPagesEventAdministrationIndexRouteImport.update({
+    id: '/admin/arrangementer/{-$eventId}',
+    path: '/admin/arrangementer/{-$eventId}',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
+const DotPagesGroupsAboutIndexRoute =
+  DotPagesGroupsAboutIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DotPagesGroupsGroupDetailsRoute,
+  } as any)
+const DotPagesFormFormAdminRoute = DotPagesFormFormAdminRouteImport.update({
+  id: '/sporreskjema/admin/$id',
+  path: '/sporreskjema/admin/$id',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesBadgesOverviewBadgeCategoriesListRoute =
+  DotPagesBadgesOverviewBadgeCategoriesListRouteImport.update({
+    id: '/kategorier',
+    path: '/kategorier',
+    getParentRoute: () => DotPagesBadgesIndexRoute,
+  } as any)
+const DotPagesBadgesOverviewBadgesListRoute =
+  DotPagesBadgesOverviewBadgesListRouteImport.update({
+    id: '/alle',
+    path: '/alle',
+    getParentRoute: () => DotPagesBadgesIndexRoute,
+  } as any)
+const DotPagesBadgesOverviewBadgesOverallLeaderboardRoute =
+  DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DotPagesBadgesIndexRoute,
+  } as any)
+const DotPagesBadgesGetIndexRoute = DotPagesBadgesGetIndexRouteImport.update({
+  id: '/erverv/{-$badgeId}',
+  path: '/erverv/{-$badgeId}',
+  getParentRoute: () => DotPagesBadgesIndexRoute,
+} as any)
+const DotPagesBadgesCategoryCategoryBadgesListRoute =
+  DotPagesBadgesCategoryCategoryBadgesListRouteImport.update({
+    id: '/badges',
+    path: '/badges',
+    getParentRoute: () => DotPagesBadgesCategoryIndexRoute,
+  } as any)
+const DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute =
+  DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DotPagesBadgesCategoryIndexRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
+  '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
+  '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
+  '/*': typeof DotPagesHttp404IndexRoute
+  '/bedrifter': typeof DotPagesCompaniesIndexRoute
+  '/endringslogg': typeof DotPagesChangelogIndexRoute
+  '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
+  '/linker': typeof DotPagesShortLinksIndexRoute
+  '/ny-student': typeof DotPagesNewStudentIndexRoute
+  '/opptak': typeof DotPagesAdmissionsIndexRoute
+  '/qr-koder': typeof DotPagesQRCodesIndexRoute
+  '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
+  '/toddel': typeof DotPagesToddelIndexRoute
+  '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
+  '/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
+  '/arrangementer': typeof DotPagesEventsIndexRoute
+  '/galleri': typeof DotPagesGalleryIndexRoute
+  '/grupper': typeof DotPagesGroupsOverviewIndexRoute
+  '/nyheter': typeof DotPagesNewsIndexRoute
+  '/stillingsannonser': typeof DotPagesJobPostsIndexRoute
+  '/admin/brukere': typeof DotPagesUserAdminIndexRoute
+  '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
+  '/admin/opptak': typeof DotPagesOpptakIndexRoute
+  '/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
+  '/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
+  '/badges': typeof DotPagesBadgesIndexRouteWithChildren
+  '/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
+  '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
+  '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
+  '/sporreskjema/$id': typeof DotPagesFormIndexRoute
+  '/wiki/*': typeof DotPagesWikiIndexRoute
+  '/badges/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
+  '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
+  '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
+  '/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
+  '/grupper/$slug/': typeof DotPagesGroupsAboutIndexRoute
+  '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
+  '/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
+  '/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
+  '/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
+  '/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
+  '/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
+  '/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
+  '/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
+  '/grupper/$slug/lovverk': typeof DotPagesGroupsLawsIndexRoute
+  '/grupper/$slug/sporreskjemaer': typeof DotPagesGroupsFormsIndexRoute
+  '/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
+  '/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
+  '/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
+  '/badges/kategorier/$categoryId/': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
+  '/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
+  '/badges/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRoutesByTo {
+  '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
+  '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
+  '/*': typeof DotPagesHttp404IndexRoute
+  '/bedrifter': typeof DotPagesCompaniesIndexRoute
+  '/endringslogg': typeof DotPagesChangelogIndexRoute
+  '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
+  '/linker': typeof DotPagesShortLinksIndexRoute
+  '/ny-student': typeof DotPagesNewStudentIndexRoute
+  '/opptak': typeof DotPagesAdmissionsIndexRoute
+  '/qr-koder': typeof DotPagesQRCodesIndexRoute
+  '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
+  '/toddel': typeof DotPagesToddelIndexRoute
+  '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
+  '/arrangementer': typeof DotPagesEventsIndexRoute
+  '/galleri': typeof DotPagesGalleryIndexRoute
+  '/grupper': typeof DotPagesGroupsOverviewIndexRoute
+  '/nyheter': typeof DotPagesNewsIndexRoute
+  '/stillingsannonser': typeof DotPagesJobPostsIndexRoute
+  '/admin/brukere': typeof DotPagesUserAdminIndexRoute
+  '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
+  '/admin/opptak': typeof DotPagesOpptakIndexRoute
+  '/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
+  '/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
+  '/badges': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
+  '/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
+  '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
+  '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
+  '/sporreskjema/$id': typeof DotPagesFormIndexRoute
+  '/wiki/*': typeof DotPagesWikiIndexRoute
+  '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
+  '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
+  '/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
+  '/grupper/$slug': typeof DotPagesGroupsAboutIndexRoute
+  '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
+  '/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
+  '/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
+  '/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
+  '/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
+  '/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
+  '/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
+  '/grupper/$slug/lovverk': typeof DotPagesGroupsLawsIndexRoute
+  '/grupper/$slug/sporreskjemaer': typeof DotPagesGroupsFormsIndexRoute
+  '/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
+  '/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
+  '/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
+  '/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
+  '/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
+  '/badges/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_MainLayout': typeof DotPagesMainLayoutRouteWithChildren
+  '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/_MainLayout/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/_MainLayout/ny-bruker': typeof DotRoutesAuthNewAccountRoute
+  '/_MainLayout/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
+  '/_MainLayout/*': typeof DotPagesHttp404IndexRoute
+  '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
+  '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
+  '/_MainLayout/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
+  '/_MainLayout/linker': typeof DotPagesShortLinksIndexRoute
+  '/_MainLayout/ny-student': typeof DotPagesNewStudentIndexRoute
+  '/_MainLayout/opptak': typeof DotPagesAdmissionsIndexRoute
+  '/_MainLayout/qr-koder': typeof DotPagesQRCodesIndexRoute
+  '/_MainLayout/tilbakemelding': typeof DotPagesFeedbackIndexRoute
+  '/_MainLayout/toddel': typeof DotPagesToddelIndexRoute
+  '/_MainLayout/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
+  '/_MainLayout/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
+  '/_MainLayout/arrangementer/': typeof DotPagesEventsIndexRoute
+  '/_MainLayout/galleri/': typeof DotPagesGalleryIndexRoute
+  '/_MainLayout/grupper/': typeof DotPagesGroupsOverviewIndexRoute
+  '/_MainLayout/nyheter/': typeof DotPagesNewsIndexRoute
+  '/_MainLayout/stillingsannonser/': typeof DotPagesJobPostsIndexRoute
+  '/_MainLayout/admin/brukere': typeof DotPagesUserAdminIndexRoute
+  '/_MainLayout/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
+  '/_MainLayout/admin/opptak': typeof DotPagesOpptakIndexRoute
+  '/_MainLayout/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
+  '/_MainLayout/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
+  '/_MainLayout/badges': typeof MainLayoutBadgesRouteWithChildren
+  '/_MainLayout/badges/_index': typeof DotPagesBadgesIndexRouteWithChildren
+  '/_MainLayout/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
+  '/_MainLayout/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
+  '/_MainLayout/profil/{-$userId}': typeof DotPagesProfileIndexRoute
+  '/_MainLayout/sporreskjema/$id': typeof DotPagesFormIndexRoute
+  '/_MainLayout/wiki/*': typeof DotPagesWikiIndexRoute
+  '/_MainLayout/badges/_index/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
+  '/_MainLayout/badges/_index/alle': typeof DotPagesBadgesOverviewBadgesListRoute
+  '/_MainLayout/badges/_index/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
+  '/_MainLayout/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
+  '/_MainLayout/grupper/$slug/': typeof DotPagesGroupsAboutIndexRoute
+  '/_MainLayout/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
+  '/_MainLayout/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
+  '/_MainLayout/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
+  '/_MainLayout/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
+  '/_MainLayout/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/_MainLayout/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
+  '/_MainLayout/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
+  '/_MainLayout/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
+  '/_MainLayout/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
+  '/_MainLayout/grupper/$slug/lovverk': typeof DotPagesGroupsLawsIndexRoute
+  '/_MainLayout/grupper/$slug/sporreskjemaer': typeof DotPagesGroupsFormsIndexRoute
+  '/_MainLayout/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
+  '/_MainLayout/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
+  '/_MainLayout/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
+  '/_MainLayout/badges/kategorier/$categoryId/': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
+  '/_MainLayout/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
+  '/_MainLayout/badges/_index/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/glemt-passord' | '/logg-inn' | '/ny-bruker' | '/'
+  fullPaths:
+    | '/interesse'
+    | '/glemt-passord'
+    | '/logg-inn'
+    | '/ny-bruker'
+    | '/'
+    | '/*'
+    | '/bedrifter'
+    | '/endringslogg'
+    | '/interessegrupper'
+    | '/linker'
+    | '/ny-student'
+    | '/opptak'
+    | '/qr-koder'
+    | '/tilbakemelding'
+    | '/toddel'
+    | '/admin/bannere'
+    | '/grupper/$slug'
+    | '/arrangementer'
+    | '/galleri'
+    | '/grupper'
+    | '/nyheter'
+    | '/stillingsannonser'
+    | '/admin/brukere'
+    | '/admin/ny-gruppe'
+    | '/admin/opptak'
+    | '/admin/prikker'
+    | '/badges/$badgeId'
+    | '/badges'
+    | '/ny-bruker/feide'
+    | '/ny-bruker/skjema'
+    | '/profil/{-$userId}'
+    | '/sporreskjema/$id'
+    | '/wiki/*'
+    | '/badges/'
+    | '/badges/alle'
+    | '/badges/kategorier'
+    | '/sporreskjema/admin/$id'
+    | '/grupper/$slug/'
+    | '/admin/arrangementer/{-$eventId}'
+    | '/admin/nyheter/{-$newsId}'
+    | '/admin/stillingsannonser/{-$jobPostId}'
+    | '/arrangementer/$id/{-$urlTitle}'
+    | '/arrangementer/registrering/$id'
+    | '/badges/kategorier/$categoryId'
+    | '/galleri/$id/{-$urlTitle}'
+    | '/grupper/$slug/arrangementer'
+    | '/grupper/$slug/boter'
+    | '/grupper/$slug/lovverk'
+    | '/grupper/$slug/sporreskjemaer'
+    | '/kokebok/{-$studyId}/{-$classId}'
+    | '/nyheter/$id/{-$urlTitle}'
+    | '/stillingsannonser/$id/{-$urlTitle}'
+    | '/badges/kategorier/$categoryId/'
+    | '/badges/kategorier/$categoryId/badges'
+    | '/badges/erverv/{-$badgeId}'
   fileRoutesByTo: FileRoutesByTo
-  to: '/glemt-passord' | '/logg-inn' | '/ny-bruker' | '/'
+  to:
+    | '/interesse'
+    | '/glemt-passord'
+    | '/logg-inn'
+    | '/ny-bruker'
+    | '/'
+    | '/*'
+    | '/bedrifter'
+    | '/endringslogg'
+    | '/interessegrupper'
+    | '/linker'
+    | '/ny-student'
+    | '/opptak'
+    | '/qr-koder'
+    | '/tilbakemelding'
+    | '/toddel'
+    | '/admin/bannere'
+    | '/arrangementer'
+    | '/galleri'
+    | '/grupper'
+    | '/nyheter'
+    | '/stillingsannonser'
+    | '/admin/brukere'
+    | '/admin/ny-gruppe'
+    | '/admin/opptak'
+    | '/admin/prikker'
+    | '/badges/$badgeId'
+    | '/badges'
+    | '/ny-bruker/feide'
+    | '/ny-bruker/skjema'
+    | '/profil/{-$userId}'
+    | '/sporreskjema/$id'
+    | '/wiki/*'
+    | '/badges/alle'
+    | '/badges/kategorier'
+    | '/sporreskjema/admin/$id'
+    | '/grupper/$slug'
+    | '/admin/arrangementer/{-$eventId}'
+    | '/admin/nyheter/{-$newsId}'
+    | '/admin/stillingsannonser/{-$jobPostId}'
+    | '/arrangementer/$id/{-$urlTitle}'
+    | '/arrangementer/registrering/$id'
+    | '/galleri/$id/{-$urlTitle}'
+    | '/grupper/$slug/arrangementer'
+    | '/grupper/$slug/boter'
+    | '/grupper/$slug/lovverk'
+    | '/grupper/$slug/sporreskjemaer'
+    | '/kokebok/{-$studyId}/{-$classId}'
+    | '/nyheter/$id/{-$urlTitle}'
+    | '/stillingsannonser/$id/{-$urlTitle}'
+    | '/badges/kategorier/$categoryId'
+    | '/badges/kategorier/$categoryId/badges'
+    | '/badges/erverv/{-$badgeId}'
   id:
     | '__root__'
     | '/_MainLayout'
+    | '/interesse'
     | '/_MainLayout/glemt-passord'
     | '/_MainLayout/logg-inn'
     | '/_MainLayout/ny-bruker'
     | '/_MainLayout/'
+    | '/_MainLayout/*'
+    | '/_MainLayout/bedrifter'
+    | '/_MainLayout/endringslogg'
+    | '/_MainLayout/interessegrupper'
+    | '/_MainLayout/linker'
+    | '/_MainLayout/ny-student'
+    | '/_MainLayout/opptak'
+    | '/_MainLayout/qr-koder'
+    | '/_MainLayout/tilbakemelding'
+    | '/_MainLayout/toddel'
+    | '/_MainLayout/admin/bannere'
+    | '/_MainLayout/grupper/$slug'
+    | '/_MainLayout/arrangementer/'
+    | '/_MainLayout/galleri/'
+    | '/_MainLayout/grupper/'
+    | '/_MainLayout/nyheter/'
+    | '/_MainLayout/stillingsannonser/'
+    | '/_MainLayout/admin/brukere'
+    | '/_MainLayout/admin/ny-gruppe'
+    | '/_MainLayout/admin/opptak'
+    | '/_MainLayout/admin/prikker'
+    | '/_MainLayout/badges/$badgeId'
+    | '/_MainLayout/badges'
+    | '/_MainLayout/badges/_index'
+    | '/_MainLayout/ny-bruker/feide'
+    | '/_MainLayout/ny-bruker/skjema'
+    | '/_MainLayout/profil/{-$userId}'
+    | '/_MainLayout/sporreskjema/$id'
+    | '/_MainLayout/wiki/*'
+    | '/_MainLayout/badges/_index/'
+    | '/_MainLayout/badges/_index/alle'
+    | '/_MainLayout/badges/_index/kategorier'
+    | '/_MainLayout/sporreskjema/admin/$id'
+    | '/_MainLayout/grupper/$slug/'
+    | '/_MainLayout/admin/arrangementer/{-$eventId}'
+    | '/_MainLayout/admin/nyheter/{-$newsId}'
+    | '/_MainLayout/admin/stillingsannonser/{-$jobPostId}'
+    | '/_MainLayout/arrangementer/$id/{-$urlTitle}'
+    | '/_MainLayout/arrangementer/registrering/$id'
+    | '/_MainLayout/badges/kategorier/$categoryId'
+    | '/_MainLayout/galleri/$id/{-$urlTitle}'
+    | '/_MainLayout/grupper/$slug/arrangementer'
+    | '/_MainLayout/grupper/$slug/boter'
+    | '/_MainLayout/grupper/$slug/lovverk'
+    | '/_MainLayout/grupper/$slug/sporreskjemaer'
+    | '/_MainLayout/kokebok/{-$studyId}/{-$classId}'
+    | '/_MainLayout/nyheter/$id/{-$urlTitle}'
+    | '/_MainLayout/stillingsannonser/$id/{-$urlTitle}'
+    | '/_MainLayout/badges/kategorier/$categoryId/'
+    | '/_MainLayout/badges/kategorier/$categoryId/badges'
+    | '/_MainLayout/badges/_index/erverv/{-$badgeId}'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   DotPagesMainLayoutRoute: typeof DotPagesMainLayoutRouteWithChildren
+  DotPagesCompanyInterestIndexRoute: typeof DotPagesCompanyInterestIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/interesse': {
+      id: '/interesse'
+      path: '/interesse'
+      fullPath: '/interesse'
+      preLoaderRoute: typeof DotPagesCompanyInterestIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_MainLayout': {
       id: '/_MainLayout'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof DotPagesMainLayoutRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_MainLayout/badges': {
+      id: '/_MainLayout/badges'
+      path: '/badges'
+      fullPath: '/badges'
+      preLoaderRoute: typeof MainLayoutBadgesRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/toddel': {
+      id: '/_MainLayout/toddel'
+      path: '/toddel'
+      fullPath: '/toddel'
+      preLoaderRoute: typeof DotPagesToddelIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/tilbakemelding': {
+      id: '/_MainLayout/tilbakemelding'
+      path: '/tilbakemelding'
+      fullPath: '/tilbakemelding'
+      preLoaderRoute: typeof DotPagesFeedbackIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/qr-koder': {
+      id: '/_MainLayout/qr-koder'
+      path: '/qr-koder'
+      fullPath: '/qr-koder'
+      preLoaderRoute: typeof DotPagesQRCodesIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/opptak': {
+      id: '/_MainLayout/opptak'
+      path: '/opptak'
+      fullPath: '/opptak'
+      preLoaderRoute: typeof DotPagesAdmissionsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/ny-student': {
+      id: '/_MainLayout/ny-student'
+      path: '/ny-student'
+      fullPath: '/ny-student'
+      preLoaderRoute: typeof DotPagesNewStudentIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/linker': {
+      id: '/_MainLayout/linker'
+      path: '/linker'
+      fullPath: '/linker'
+      preLoaderRoute: typeof DotPagesShortLinksIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/interessegrupper': {
+      id: '/_MainLayout/interessegrupper'
+      path: '/interessegrupper'
+      fullPath: '/interessegrupper'
+      preLoaderRoute: typeof DotPagesInterestGroupsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/endringslogg': {
+      id: '/_MainLayout/endringslogg'
+      path: '/endringslogg'
+      fullPath: '/endringslogg'
+      preLoaderRoute: typeof DotPagesChangelogIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/bedrifter': {
+      id: '/_MainLayout/bedrifter'
+      path: '/bedrifter'
+      fullPath: '/bedrifter'
+      preLoaderRoute: typeof DotPagesCompaniesIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/*': {
+      id: '/_MainLayout/*'
+      path: '/*'
+      fullPath: '/*'
+      preLoaderRoute: typeof DotPagesHttp404IndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/': {
       id: '/_MainLayout/'
@@ -116,21 +852,465 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotRoutesAuthForgotPasswordRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
+    '/_MainLayout/badges/_index': {
+      id: '/_MainLayout/badges/_index'
+      path: '/badges'
+      fullPath: '/badges'
+      preLoaderRoute: typeof DotPagesBadgesIndexRouteImport
+      parentRoute: typeof MainLayoutBadgesRoute
+    }
+    '/_MainLayout/wiki/*': {
+      id: '/_MainLayout/wiki/*'
+      path: '/wiki/*'
+      fullPath: '/wiki/*'
+      preLoaderRoute: typeof DotPagesWikiIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/sporreskjema/$id': {
+      id: '/_MainLayout/sporreskjema/$id'
+      path: '/sporreskjema/$id'
+      fullPath: '/sporreskjema/$id'
+      preLoaderRoute: typeof DotPagesFormIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/profil/{-$userId}': {
+      id: '/_MainLayout/profil/{-$userId}'
+      path: '/profil/{-$userId}'
+      fullPath: '/profil/{-$userId}'
+      preLoaderRoute: typeof DotPagesProfileIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/ny-bruker/skjema': {
+      id: '/_MainLayout/ny-bruker/skjema'
+      path: '/skjema'
+      fullPath: '/ny-bruker/skjema'
+      preLoaderRoute: typeof DotPagesSignUpIndexRouteImport
+      parentRoute: typeof DotRoutesAuthNewAccountRoute
+    }
+    '/_MainLayout/ny-bruker/feide': {
+      id: '/_MainLayout/ny-bruker/feide'
+      path: '/feide'
+      fullPath: '/ny-bruker/feide'
+      preLoaderRoute: typeof DotPagesSignUpFeideIndexRouteImport
+      parentRoute: typeof DotRoutesAuthNewAccountRoute
+    }
+    '/_MainLayout/badges/$badgeId': {
+      id: '/_MainLayout/badges/$badgeId'
+      path: '/badges/$badgeId'
+      fullPath: '/badges/$badgeId'
+      preLoaderRoute: typeof DotPagesBadgesDetailsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/prikker': {
+      id: '/_MainLayout/admin/prikker'
+      path: '/admin/prikker'
+      fullPath: '/admin/prikker'
+      preLoaderRoute: typeof DotPagesStrikeAdminIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/opptak': {
+      id: '/_MainLayout/admin/opptak'
+      path: '/admin/opptak'
+      fullPath: '/admin/opptak'
+      preLoaderRoute: typeof DotPagesOpptakIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/ny-gruppe': {
+      id: '/_MainLayout/admin/ny-gruppe'
+      path: '/admin/ny-gruppe'
+      fullPath: '/admin/ny-gruppe'
+      preLoaderRoute: typeof DotPagesNewGroupAdministrationIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/brukere': {
+      id: '/_MainLayout/admin/brukere'
+      path: '/admin/brukere'
+      fullPath: '/admin/brukere'
+      preLoaderRoute: typeof DotPagesUserAdminIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/stillingsannonser/': {
+      id: '/_MainLayout/stillingsannonser/'
+      path: '/stillingsannonser'
+      fullPath: '/stillingsannonser'
+      preLoaderRoute: typeof DotPagesJobPostsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/nyheter/': {
+      id: '/_MainLayout/nyheter/'
+      path: '/nyheter'
+      fullPath: '/nyheter'
+      preLoaderRoute: typeof DotPagesNewsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/grupper/': {
+      id: '/_MainLayout/grupper/'
+      path: '/grupper'
+      fullPath: '/grupper'
+      preLoaderRoute: typeof DotPagesGroupsOverviewIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/galleri/': {
+      id: '/_MainLayout/galleri/'
+      path: '/galleri'
+      fullPath: '/galleri'
+      preLoaderRoute: typeof DotPagesGalleryIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/arrangementer/': {
+      id: '/_MainLayout/arrangementer/'
+      path: '/arrangementer'
+      fullPath: '/arrangementer'
+      preLoaderRoute: typeof DotPagesEventsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/grupper/$slug': {
+      id: '/_MainLayout/grupper/$slug'
+      path: '/grupper/$slug'
+      fullPath: '/grupper/$slug'
+      preLoaderRoute: typeof DotPagesGroupsGroupDetailsRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/bannere': {
+      id: '/_MainLayout/admin/bannere'
+      path: '/admin/bannere'
+      fullPath: '/admin/bannere'
+      preLoaderRoute: typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/stillingsannonser/$id/{-$urlTitle}': {
+      id: '/_MainLayout/stillingsannonser/$id/{-$urlTitle}'
+      path: '/stillingsannonser/$id/{-$urlTitle}'
+      fullPath: '/stillingsannonser/$id/{-$urlTitle}'
+      preLoaderRoute: typeof DotPagesJobPostDetailsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/nyheter/$id/{-$urlTitle}': {
+      id: '/_MainLayout/nyheter/$id/{-$urlTitle}'
+      path: '/nyheter/$id/{-$urlTitle}'
+      fullPath: '/nyheter/$id/{-$urlTitle}'
+      preLoaderRoute: typeof DotPagesNewsDetailsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/kokebok/{-$studyId}/{-$classId}': {
+      id: '/_MainLayout/kokebok/{-$studyId}/{-$classId}'
+      path: '/kokebok/{-$studyId}/{-$classId}'
+      fullPath: '/kokebok/{-$studyId}/{-$classId}'
+      preLoaderRoute: typeof DotPagesCheatsheetIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/grupper/$slug/sporreskjemaer': {
+      id: '/_MainLayout/grupper/$slug/sporreskjemaer'
+      path: '/sporreskjemaer'
+      fullPath: '/grupper/$slug/sporreskjemaer'
+      preLoaderRoute: typeof DotPagesGroupsFormsIndexRouteImport
+      parentRoute: typeof DotPagesGroupsGroupDetailsRoute
+    }
+    '/_MainLayout/grupper/$slug/lovverk': {
+      id: '/_MainLayout/grupper/$slug/lovverk'
+      path: '/lovverk'
+      fullPath: '/grupper/$slug/lovverk'
+      preLoaderRoute: typeof DotPagesGroupsLawsIndexRouteImport
+      parentRoute: typeof DotPagesGroupsGroupDetailsRoute
+    }
+    '/_MainLayout/grupper/$slug/boter': {
+      id: '/_MainLayout/grupper/$slug/boter'
+      path: '/boter'
+      fullPath: '/grupper/$slug/boter'
+      preLoaderRoute: typeof DotPagesGroupsFinesIndexRouteImport
+      parentRoute: typeof DotPagesGroupsGroupDetailsRoute
+    }
+    '/_MainLayout/grupper/$slug/arrangementer': {
+      id: '/_MainLayout/grupper/$slug/arrangementer'
+      path: '/arrangementer'
+      fullPath: '/grupper/$slug/arrangementer'
+      preLoaderRoute: typeof DotPagesGroupsEventsIndexRouteImport
+      parentRoute: typeof DotPagesGroupsGroupDetailsRoute
+    }
+    '/_MainLayout/galleri/$id/{-$urlTitle}': {
+      id: '/_MainLayout/galleri/$id/{-$urlTitle}'
+      path: '/galleri/$id/{-$urlTitle}'
+      fullPath: '/galleri/$id/{-$urlTitle}'
+      preLoaderRoute: typeof DotPagesGalleryDetailsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/badges/kategorier/$categoryId': {
+      id: '/_MainLayout/badges/kategorier/$categoryId'
+      path: '/kategorier/$categoryId'
+      fullPath: '/badges/kategorier/$categoryId'
+      preLoaderRoute: typeof DotPagesBadgesCategoryIndexRouteImport
+      parentRoute: typeof MainLayoutBadgesRoute
+    }
+    '/_MainLayout/arrangementer/registrering/$id': {
+      id: '/_MainLayout/arrangementer/registrering/$id'
+      path: '/arrangementer/registrering/$id'
+      fullPath: '/arrangementer/registrering/$id'
+      preLoaderRoute: typeof DotPagesEventRegistrationIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/arrangementer/$id/{-$urlTitle}': {
+      id: '/_MainLayout/arrangementer/$id/{-$urlTitle}'
+      path: '/arrangementer/$id/{-$urlTitle}'
+      fullPath: '/arrangementer/$id/{-$urlTitle}'
+      preLoaderRoute: typeof DotPagesEventDetailsIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/stillingsannonser/{-$jobPostId}': {
+      id: '/_MainLayout/admin/stillingsannonser/{-$jobPostId}'
+      path: '/admin/stillingsannonser/{-$jobPostId}'
+      fullPath: '/admin/stillingsannonser/{-$jobPostId}'
+      preLoaderRoute: typeof DotPagesJobPostAdministrationIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/nyheter/{-$newsId}': {
+      id: '/_MainLayout/admin/nyheter/{-$newsId}'
+      path: '/admin/nyheter/{-$newsId}'
+      fullPath: '/admin/nyheter/{-$newsId}'
+      preLoaderRoute: typeof DotPagesNewsAdministrationIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/admin/arrangementer/{-$eventId}': {
+      id: '/_MainLayout/admin/arrangementer/{-$eventId}'
+      path: '/admin/arrangementer/{-$eventId}'
+      fullPath: '/admin/arrangementer/{-$eventId}'
+      preLoaderRoute: typeof DotPagesEventAdministrationIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/grupper/$slug/': {
+      id: '/_MainLayout/grupper/$slug/'
+      path: '/'
+      fullPath: '/grupper/$slug/'
+      preLoaderRoute: typeof DotPagesGroupsAboutIndexRouteImport
+      parentRoute: typeof DotPagesGroupsGroupDetailsRoute
+    }
+    '/_MainLayout/sporreskjema/admin/$id': {
+      id: '/_MainLayout/sporreskjema/admin/$id'
+      path: '/sporreskjema/admin/$id'
+      fullPath: '/sporreskjema/admin/$id'
+      preLoaderRoute: typeof DotPagesFormFormAdminRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/badges/_index/kategorier': {
+      id: '/_MainLayout/badges/_index/kategorier'
+      path: '/kategorier'
+      fullPath: '/badges/kategorier'
+      preLoaderRoute: typeof DotPagesBadgesOverviewBadgeCategoriesListRouteImport
+      parentRoute: typeof DotPagesBadgesIndexRoute
+    }
+    '/_MainLayout/badges/_index/alle': {
+      id: '/_MainLayout/badges/_index/alle'
+      path: '/alle'
+      fullPath: '/badges/alle'
+      preLoaderRoute: typeof DotPagesBadgesOverviewBadgesListRouteImport
+      parentRoute: typeof DotPagesBadgesIndexRoute
+    }
+    '/_MainLayout/badges/_index/': {
+      id: '/_MainLayout/badges/_index/'
+      path: '/'
+      fullPath: '/badges/'
+      preLoaderRoute: typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport
+      parentRoute: typeof DotPagesBadgesIndexRoute
+    }
+    '/_MainLayout/badges/_index/erverv/{-$badgeId}': {
+      id: '/_MainLayout/badges/_index/erverv/{-$badgeId}'
+      path: '/erverv/{-$badgeId}'
+      fullPath: '/badges/erverv/{-$badgeId}'
+      preLoaderRoute: typeof DotPagesBadgesGetIndexRouteImport
+      parentRoute: typeof DotPagesBadgesIndexRoute
+    }
+    '/_MainLayout/badges/kategorier/$categoryId/badges': {
+      id: '/_MainLayout/badges/kategorier/$categoryId/badges'
+      path: '/badges'
+      fullPath: '/badges/kategorier/$categoryId/badges'
+      preLoaderRoute: typeof DotPagesBadgesCategoryCategoryBadgesListRouteImport
+      parentRoute: typeof DotPagesBadgesCategoryIndexRoute
+    }
+    '/_MainLayout/badges/kategorier/$categoryId/': {
+      id: '/_MainLayout/badges/kategorier/$categoryId/'
+      path: '/'
+      fullPath: '/badges/kategorier/$categoryId/'
+      preLoaderRoute: typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport
+      parentRoute: typeof DotPagesBadgesCategoryIndexRoute
+    }
   }
 }
+
+interface DotRoutesAuthNewAccountRouteChildren {
+  DotPagesSignUpFeideIndexRoute: typeof DotPagesSignUpFeideIndexRoute
+  DotPagesSignUpIndexRoute: typeof DotPagesSignUpIndexRoute
+}
+
+const DotRoutesAuthNewAccountRouteChildren: DotRoutesAuthNewAccountRouteChildren =
+  {
+    DotPagesSignUpFeideIndexRoute: DotPagesSignUpFeideIndexRoute,
+    DotPagesSignUpIndexRoute: DotPagesSignUpIndexRoute,
+  }
+
+const DotRoutesAuthNewAccountRouteWithChildren =
+  DotRoutesAuthNewAccountRoute._addFileChildren(
+    DotRoutesAuthNewAccountRouteChildren,
+  )
+
+interface DotPagesGroupsGroupDetailsRouteChildren {
+  DotPagesGroupsAboutIndexRoute: typeof DotPagesGroupsAboutIndexRoute
+  DotPagesGroupsEventsIndexRoute: typeof DotPagesGroupsEventsIndexRoute
+  DotPagesGroupsFinesIndexRoute: typeof DotPagesGroupsFinesIndexRoute
+  DotPagesGroupsLawsIndexRoute: typeof DotPagesGroupsLawsIndexRoute
+  DotPagesGroupsFormsIndexRoute: typeof DotPagesGroupsFormsIndexRoute
+}
+
+const DotPagesGroupsGroupDetailsRouteChildren: DotPagesGroupsGroupDetailsRouteChildren =
+  {
+    DotPagesGroupsAboutIndexRoute: DotPagesGroupsAboutIndexRoute,
+    DotPagesGroupsEventsIndexRoute: DotPagesGroupsEventsIndexRoute,
+    DotPagesGroupsFinesIndexRoute: DotPagesGroupsFinesIndexRoute,
+    DotPagesGroupsLawsIndexRoute: DotPagesGroupsLawsIndexRoute,
+    DotPagesGroupsFormsIndexRoute: DotPagesGroupsFormsIndexRoute,
+  }
+
+const DotPagesGroupsGroupDetailsRouteWithChildren =
+  DotPagesGroupsGroupDetailsRoute._addFileChildren(
+    DotPagesGroupsGroupDetailsRouteChildren,
+  )
+
+interface DotPagesBadgesIndexRouteChildren {
+  DotPagesBadgesOverviewBadgesOverallLeaderboardRoute: typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
+  DotPagesBadgesOverviewBadgesListRoute: typeof DotPagesBadgesOverviewBadgesListRoute
+  DotPagesBadgesOverviewBadgeCategoriesListRoute: typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
+  DotPagesBadgesGetIndexRoute: typeof DotPagesBadgesGetIndexRoute
+}
+
+const DotPagesBadgesIndexRouteChildren: DotPagesBadgesIndexRouteChildren = {
+  DotPagesBadgesOverviewBadgesOverallLeaderboardRoute:
+    DotPagesBadgesOverviewBadgesOverallLeaderboardRoute,
+  DotPagesBadgesOverviewBadgesListRoute: DotPagesBadgesOverviewBadgesListRoute,
+  DotPagesBadgesOverviewBadgeCategoriesListRoute:
+    DotPagesBadgesOverviewBadgeCategoriesListRoute,
+  DotPagesBadgesGetIndexRoute: DotPagesBadgesGetIndexRoute,
+}
+
+const DotPagesBadgesIndexRouteWithChildren =
+  DotPagesBadgesIndexRoute._addFileChildren(DotPagesBadgesIndexRouteChildren)
+
+interface DotPagesBadgesCategoryIndexRouteChildren {
+  DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute: typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
+  DotPagesBadgesCategoryCategoryBadgesListRoute: typeof DotPagesBadgesCategoryCategoryBadgesListRoute
+}
+
+const DotPagesBadgesCategoryIndexRouteChildren: DotPagesBadgesCategoryIndexRouteChildren =
+  {
+    DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute:
+      DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute,
+    DotPagesBadgesCategoryCategoryBadgesListRoute:
+      DotPagesBadgesCategoryCategoryBadgesListRoute,
+  }
+
+const DotPagesBadgesCategoryIndexRouteWithChildren =
+  DotPagesBadgesCategoryIndexRoute._addFileChildren(
+    DotPagesBadgesCategoryIndexRouteChildren,
+  )
+
+interface MainLayoutBadgesRouteChildren {
+  DotPagesBadgesIndexRoute: typeof DotPagesBadgesIndexRouteWithChildren
+  DotPagesBadgesCategoryIndexRoute: typeof DotPagesBadgesCategoryIndexRouteWithChildren
+}
+
+const MainLayoutBadgesRouteChildren: MainLayoutBadgesRouteChildren = {
+  DotPagesBadgesIndexRoute: DotPagesBadgesIndexRouteWithChildren,
+  DotPagesBadgesCategoryIndexRoute:
+    DotPagesBadgesCategoryIndexRouteWithChildren,
+}
+
+const MainLayoutBadgesRouteWithChildren =
+  MainLayoutBadgesRoute._addFileChildren(MainLayoutBadgesRouteChildren)
 
 interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthForgotPasswordRoute: typeof DotRoutesAuthForgotPasswordRoute
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
-  DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRoute
+  DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRouteWithChildren
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
+  DotPagesHttp404IndexRoute: typeof DotPagesHttp404IndexRoute
+  DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
+  DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
+  DotPagesInterestGroupsIndexRoute: typeof DotPagesInterestGroupsIndexRoute
+  DotPagesShortLinksIndexRoute: typeof DotPagesShortLinksIndexRoute
+  DotPagesNewStudentIndexRoute: typeof DotPagesNewStudentIndexRoute
+  DotPagesAdmissionsIndexRoute: typeof DotPagesAdmissionsIndexRoute
+  DotPagesQRCodesIndexRoute: typeof DotPagesQRCodesIndexRoute
+  DotPagesFeedbackIndexRoute: typeof DotPagesFeedbackIndexRoute
+  DotPagesToddelIndexRoute: typeof DotPagesToddelIndexRoute
+  DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute: typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
+  DotPagesGroupsGroupDetailsRoute: typeof DotPagesGroupsGroupDetailsRouteWithChildren
+  DotPagesEventsIndexRoute: typeof DotPagesEventsIndexRoute
+  DotPagesGalleryIndexRoute: typeof DotPagesGalleryIndexRoute
+  DotPagesGroupsOverviewIndexRoute: typeof DotPagesGroupsOverviewIndexRoute
+  DotPagesNewsIndexRoute: typeof DotPagesNewsIndexRoute
+  DotPagesJobPostsIndexRoute: typeof DotPagesJobPostsIndexRoute
+  DotPagesUserAdminIndexRoute: typeof DotPagesUserAdminIndexRoute
+  DotPagesNewGroupAdministrationIndexRoute: typeof DotPagesNewGroupAdministrationIndexRoute
+  DotPagesOpptakIndexRoute: typeof DotPagesOpptakIndexRoute
+  DotPagesStrikeAdminIndexRoute: typeof DotPagesStrikeAdminIndexRoute
+  DotPagesBadgesDetailsIndexRoute: typeof DotPagesBadgesDetailsIndexRoute
+  MainLayoutBadgesRoute: typeof MainLayoutBadgesRouteWithChildren
+  DotPagesProfileIndexRoute: typeof DotPagesProfileIndexRoute
+  DotPagesFormIndexRoute: typeof DotPagesFormIndexRoute
+  DotPagesWikiIndexRoute: typeof DotPagesWikiIndexRoute
+  DotPagesFormFormAdminRoute: typeof DotPagesFormFormAdminRoute
+  DotPagesEventAdministrationIndexRoute: typeof DotPagesEventAdministrationIndexRoute
+  DotPagesNewsAdministrationIndexRoute: typeof DotPagesNewsAdministrationIndexRoute
+  DotPagesJobPostAdministrationIndexRoute: typeof DotPagesJobPostAdministrationIndexRoute
+  DotPagesEventDetailsIndexRoute: typeof DotPagesEventDetailsIndexRoute
+  DotPagesEventRegistrationIndexRoute: typeof DotPagesEventRegistrationIndexRoute
+  DotPagesGalleryDetailsIndexRoute: typeof DotPagesGalleryDetailsIndexRoute
+  DotPagesCheatsheetIndexRoute: typeof DotPagesCheatsheetIndexRoute
+  DotPagesNewsDetailsIndexRoute: typeof DotPagesNewsDetailsIndexRoute
+  DotPagesJobPostDetailsIndexRoute: typeof DotPagesJobPostDetailsIndexRoute
 }
 
 const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthForgotPasswordRoute: DotRoutesAuthForgotPasswordRoute,
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
-  DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRoute,
+  DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRouteWithChildren,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
+  DotPagesHttp404IndexRoute: DotPagesHttp404IndexRoute,
+  DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
+  DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
+  DotPagesInterestGroupsIndexRoute: DotPagesInterestGroupsIndexRoute,
+  DotPagesShortLinksIndexRoute: DotPagesShortLinksIndexRoute,
+  DotPagesNewStudentIndexRoute: DotPagesNewStudentIndexRoute,
+  DotPagesAdmissionsIndexRoute: DotPagesAdmissionsIndexRoute,
+  DotPagesQRCodesIndexRoute: DotPagesQRCodesIndexRoute,
+  DotPagesFeedbackIndexRoute: DotPagesFeedbackIndexRoute,
+  DotPagesToddelIndexRoute: DotPagesToddelIndexRoute,
+  DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute:
+    DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute,
+  DotPagesGroupsGroupDetailsRoute: DotPagesGroupsGroupDetailsRouteWithChildren,
+  DotPagesEventsIndexRoute: DotPagesEventsIndexRoute,
+  DotPagesGalleryIndexRoute: DotPagesGalleryIndexRoute,
+  DotPagesGroupsOverviewIndexRoute: DotPagesGroupsOverviewIndexRoute,
+  DotPagesNewsIndexRoute: DotPagesNewsIndexRoute,
+  DotPagesJobPostsIndexRoute: DotPagesJobPostsIndexRoute,
+  DotPagesUserAdminIndexRoute: DotPagesUserAdminIndexRoute,
+  DotPagesNewGroupAdministrationIndexRoute:
+    DotPagesNewGroupAdministrationIndexRoute,
+  DotPagesOpptakIndexRoute: DotPagesOpptakIndexRoute,
+  DotPagesStrikeAdminIndexRoute: DotPagesStrikeAdminIndexRoute,
+  DotPagesBadgesDetailsIndexRoute: DotPagesBadgesDetailsIndexRoute,
+  MainLayoutBadgesRoute: MainLayoutBadgesRouteWithChildren,
+  DotPagesProfileIndexRoute: DotPagesProfileIndexRoute,
+  DotPagesFormIndexRoute: DotPagesFormIndexRoute,
+  DotPagesWikiIndexRoute: DotPagesWikiIndexRoute,
+  DotPagesFormFormAdminRoute: DotPagesFormFormAdminRoute,
+  DotPagesEventAdministrationIndexRoute: DotPagesEventAdministrationIndexRoute,
+  DotPagesNewsAdministrationIndexRoute: DotPagesNewsAdministrationIndexRoute,
+  DotPagesJobPostAdministrationIndexRoute:
+    DotPagesJobPostAdministrationIndexRoute,
+  DotPagesEventDetailsIndexRoute: DotPagesEventDetailsIndexRoute,
+  DotPagesEventRegistrationIndexRoute: DotPagesEventRegistrationIndexRoute,
+  DotPagesGalleryDetailsIndexRoute: DotPagesGalleryDetailsIndexRoute,
+  DotPagesCheatsheetIndexRoute: DotPagesCheatsheetIndexRoute,
+  DotPagesNewsDetailsIndexRoute: DotPagesNewsDetailsIndexRoute,
+  DotPagesJobPostDetailsIndexRoute: DotPagesJobPostDetailsIndexRoute,
 }
 
 const DotPagesMainLayoutRouteWithChildren =
@@ -138,6 +1318,7 @@ const DotPagesMainLayoutRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   DotPagesMainLayoutRoute: DotPagesMainLayoutRouteWithChildren,
+  DotPagesCompanyInterestIndexRoute: DotPagesCompanyInterestIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button, PaginateButton } from '~/components/ui/button';
@@ -6,10 +7,8 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { usePublicEventRegistrations } from '~/hooks/Event';
 import { useUser } from '~/hooks/User';
 import type { Event } from '~/types';
-import URLS from '~/URLS';
 import { Users } from 'lucide-react';
 import { Fragment, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 export type EventPublicRegistrationsListProps = {
   eventId: Event['id'];
@@ -45,7 +44,8 @@ const EventPublicRegistrationsList = ({ eventId }: EventPublicRegistrationsListP
                   {registration.user_info ? (
                     <Link
                       className='w-full p-2 rounded-md border flex items-center space-x-2 text-black dark:text-white hover:bg-secondary'
-                      to={`${URLS.profile}${registration.user_info.user_id}/`}>
+                      to='/profil/{-$userId}'
+                      params={{ userId: registration.user_info.user_id }}>
                       <Avatar className='mr-4'>
                         <AvatarImage alt={registration.user_info.first_name} src={registration.user_info.image} />
                         <AvatarFallback>{registration.user_info.first_name[0] + registration.user_info.last_name[0]}</AvatarFallback>

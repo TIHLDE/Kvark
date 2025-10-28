@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -18,11 +19,12 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { Route } from './+types';
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/tilbakemelding')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: Feedback,
+});
 
 type Filters = {
   search?: string;
@@ -67,7 +69,7 @@ const bugFormSchema = z.object({
     }),
 });
 
-export default function Feedback() {
+function Feedback() {
   const [openIdea, setOpenIdea] = useState(false);
   const [openBug, setOpenBug] = useState(false);
   const getInitialFilters = useCallback((): Filters => {

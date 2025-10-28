@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { PaginateButton } from '~/components/ui/button';
@@ -6,10 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useBadgesOverallLeaderboard } from '~/hooks/Badge';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
-import URLS from '~/URLS';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
 import { z } from 'zod';
 
 export type BadgesLeaderboard = {
@@ -111,7 +110,8 @@ export const BadgesLeaderboard = ({ filters }: BadgesLeaderboard) => {
               <Link
                 className='flex items-center justify-between space-x-4 p-2 border hover:bg-muted rounded-lg w-full text-black dark:text-white'
                 key={index}
-                to={`${URLS.profile}${entry.user.user_id}/`}>
+                to='/profil/{-$userId}'
+                params={{ userId: entry.user.user_id }}>
                 <div className='flex items-center space-x-2'>
                   <Avatar>
                     <AvatarImage alt={entry.user.first_name} src={entry.user.image} />

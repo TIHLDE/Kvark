@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -15,7 +16,6 @@ import type { UserCreate } from '~/types';
 import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -56,7 +56,11 @@ const formSchema = z
     error: 'Passordene må være like',
   });
 
-const SignUp = () => {
+export const Route = createFileRoute('/_MainLayout/ny-bruker/skjema')({
+  component: SignUp,
+});
+
+function SignUp() {
   const { run } = useConfetti();
   const { event } = useAnalytics();
   const { data: studies } = useStudyGroups();
@@ -95,7 +99,7 @@ const SignUp = () => {
         run();
         event('signup', 'auth', `Signed up`);
         setLogInRedirectURL(undefined);
-        navigate(redirectURL || URLS.login);
+        navigate({ to: redirectURL ?? URLS.login });
       },
       onError: (e) => {
         Object.keys(e.detail).forEach((key: string) => {
@@ -314,6 +318,4 @@ const SignUp = () => {
       </Card>
     </Page>
   );
-};
-
-export default SignUp;
+}

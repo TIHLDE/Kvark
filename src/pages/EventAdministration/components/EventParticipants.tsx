@@ -12,9 +12,9 @@ import EventStatistics from '~/pages/EventAdministration/components/EventStatist
 import Participant from '~/pages/EventAdministration/components/Participant';
 import type { Event } from '~/types';
 import { Copy, Info } from 'lucide-react';
-import { useEffect, useMemo } from 'react';
+import { inferParserType, parseAsString, useQueryStates } from 'nuqs';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -32,18 +32,35 @@ const formSchema = z.object({
   emails: z.boolean(),
 });
 
+const eventRegistrationFilter = {
+  has_attended: parseAsString.withDefault(''),
+  year: parseAsString.withDefault(''),
+  study: parseAsString.withDefault(''),
+  has_allergy: parseAsString.withDefault(''),
+  search: parseAsString.withDefault(''),
+  has_paid: parseAsString.withDefault(''),
+  allow_photo: parseAsString.withDefault(''),
+};
+
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
-  const [searchParams] = useSearchParams();
-  const { data, hasNextPage, isFetching, isLoading, fetchNextPage, refetch } = useEventRegistrations(eventId, {
-    is_on_wait: onWait,
-    ...(searchParams.has('has_attended') ? { has_attended: searchParams.get('has_attended') } : {}),
-    ...(searchParams.has('year') && !onWait ? { year: searchParams.get('year') } : {}),
-    ...(searchParams.has('study') && !onWait ? { study: searchParams.get('study') } : {}),
-    ...(searchParams.has('has_allergy') && !onWait ? { has_allergy: searchParams.get('has_allergy') } : {}),
-    ...(searchParams.has('search') && !onWait ? { search: searchParams.get('search') } : {}),
-    ...(searchParams.has('has_paid') && !onWait ? { has_paid: searchParams.get('has_paid') } : {}),
-    ...(searchParams.has('allow_photo') && !onWait ? { allow_photo: searchParams.get('allow_photo') } : {}),
-  });
+  const [queryFilters] = useQueryStates(eventRegistrationFilter);
+  const filters = useMemo(() => {
+    const { has_attended, ...rest } = queryFilters;
+
+    const values = {
+      is_on_wait: onWait,
+      has_attended,
+      ...(!onWait ? rest : {}),
+    };
+
+    return Object.fromEntries(Object.entries(values).filter(([, value]) => Boolean(value) || (typeof value === 'string' && value === 'false'))) as Partial<
+      inferParserType<typeof eventRegistrationFilter>
+    > & {
+      is_on_wait: boolean;
+    };
+  }, [queryFilters, onWait]);
+
+  const { data, hasNextPage, isFetching, isLoading, fetchNextPage } = useEventRegistrations(eventId, filters);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,10 +68,6 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
   });
 
   const registrations = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-
-  useEffect(() => {
-    refetch();
-  }, [searchParams]);
 
   let sortedRegistrations = registrations;
 

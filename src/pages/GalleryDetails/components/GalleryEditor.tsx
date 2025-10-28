@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
 import { FormImageUpload } from '~/components/inputs/Upload';
@@ -9,10 +10,8 @@ import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useDeleteGallery, useGalleryById, useUpdateGallery } from '~/hooks/Gallery';
 import type { Gallery } from '~/types';
-import URLS from '~/URLS';
 import { Pencil } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -53,7 +52,7 @@ const GalleryEditor = ({ id }: GalleryEditorProps) => {
     deleteGallery.mutate(null, {
       onSuccess: () => {
         toast.error('Galleriet ble slettet');
-        navigate(URLS.gallery);
+        navigate({ to: '/galleri' });
       },
       onError: (e) => {
         toast.error(e.detail);

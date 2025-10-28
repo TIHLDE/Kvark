@@ -9,6 +9,8 @@ import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 
+import { ExternalLink } from '../ui/external-link';
+
 // import SNAPCHAT from '~/assets/icons/snapchat.svg';
 // import TWITTER from '~/assets/icons/twitter.svg';
 // import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
@@ -48,7 +50,7 @@ const Footer = () => {
             </div>
           ))}
           <h1 className='text-center'>
-            <Link to={URLS.contactInfo}>Kontakt oss</Link>
+            <ExternalLink href={URLS.external.wiki.CONTACT_US}>Kontakt oss</ExternalLink>
           </h1>
         </div>
 

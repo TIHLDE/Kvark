@@ -1,3 +1,4 @@
+import { createFileRoute, linkOptions, useNavigate } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent } from '~/components/ui/card';
@@ -7,25 +8,23 @@ import { useCheatsheet } from '~/hooks/Cheatsheet';
 import { useInterval } from '~/hooks/Utils';
 import Files from '~/pages/Cheatsheet/components/Files';
 import { CheatsheetStudy } from '~/types/Enums';
-import URLS from '~/URLS';
 import { getUserStudyShort } from '~/utils';
 import { getDay, getHours } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 
-import { Route } from './+types';
-
-export async function clientLoader({ request, params }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-
-  return {
+export const Route = createFileRoute('/_MainLayout/kokebok/{-$studyId}/{-$classId}')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  loader: ({ params }) => ({
     studyId: params.studyId,
     classId: params.classId,
-  };
-}
+  }),
+  component: Cheatsheet,
+});
 
-export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
-  const { studyId, classId } = loaderData;
+function Cheatsheet() {
+  const { studyId, classId } = Route.useLoaderData();
   const navigate = useNavigate();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
@@ -75,7 +74,7 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     const study = getStudy();
     const studyClass = getClass();
     if (!study || !studyClass || !isURLValid()) {
-      navigate(`${URLS.cheatsheet}${getUserStudyShort(1)}/1/`, { replace: true });
+      navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: getUserStudyShort(1), classId: '1' }, replace: true }));
     }
   }, [getStudy, getClass, isURLValid, search]);
 
@@ -84,22 +83,22 @@ export default function Cheetsheet({ loaderData }: Route.ComponentProps) {
     setSearch('');
     if (newStudy !== getStudy() && newStudy === CheatsheetStudy.DIGTRANS) {
       if (![4, 5].includes(Number(classId))) {
-        navigate(`${URLS.cheatsheet}${newStudy}/4/`);
+        navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: newStudy, classId: '4' } }));
       } else {
-        navigate(`${URLS.cheatsheet}${newStudy}/${classId}/`);
+        navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: newStudy, classId: classId } }));
       }
     } else if (newStudy !== getStudy()) {
       if (![1, 2, 3].includes(Number(classId))) {
-        navigate(`${URLS.cheatsheet}${newStudy}/1/`);
+        navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: newStudy, classId: '1' } }));
       } else {
-        navigate(`${URLS.cheatsheet}${newStudy}/${classId}/`);
+        navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: newStudy, classId: classId } }));
       }
     }
   };
 
   const setClassChoice = (newClass: number) => {
     if (newClass !== getClass()) {
-      navigate(`${URLS.cheatsheet}${studyId}/${newClass}/`);
+      navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}', params: { studyId: studyId, classId: newClass.toString() } }));
     }
   };
 
