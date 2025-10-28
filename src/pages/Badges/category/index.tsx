@@ -1,29 +1,20 @@
+import { createFileRoute, Link, LinkOptions, Outlet } from '@tanstack/react-router';
+import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { useBadgeCategory } from '~/hooks/Badge';
 import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
-import { href, Link, Outlet } from 'react-router';
 
-import { Route } from './+types';
+export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId')({
+  component: BadgeCategory,
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+});
 
-export function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return {
-    categoryId: params.categoryId,
-  };
-}
-
-export default function BadgeCategory({ loaderData }: Route.ComponentProps) {
-  const { categoryId } = loaderData;
+function BadgeCategory() {
+  const { categoryId } = Route.useParams();
   const { data } = useBadgeCategory(categoryId);
-
-  const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
-    <Link
-      className={`flex items-center space-x-2 p-2 ${location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}
-      to={to}>
-      {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
-      <h1>{label}</h1>
-    </Link>
-  );
 
   return (
     <Page className='max-w-5xl mx-auto pt-40'>
@@ -36,12 +27,22 @@ export default function BadgeCategory({ loaderData }: Route.ComponentProps) {
         </CardHeader>
         <CardContent>
           <div className='flex items-center space-x-4'>
-            <TabLink Icon={BarChart2} label='Ledertavle' to={href('/badges/kategorier/:categoryId', { categoryId })} />
-            <TabLink Icon={Trophy} label='Offentlige badges' to={href('/badges/kategorier/:categoryId/badges', { categoryId })} />
+            <TabLink Icon={BarChart2} label='Ledertavle' to='/badges/kategorier/$categoryId' params={{ categoryId }} />
+            <TabLink Icon={Trophy} label='Offentlige badges' to='/badges/kategorier/$categoryId/badges' params={{ categoryId }} />
           </div>
           <Outlet />
         </CardContent>
       </Card>
     </Page>
+  );
+}
+function TabLink({ label, Icon, ...linkOpts }: LinkOptions & { label: string; Icon?: LucideIcon }) {
+  return (
+    <Link
+      {...linkOpts}
+      className={`flex items-center space-x-2 p-2 ${location.pathname === linkOpts.href ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}>
+      {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
+      <h1>{label}</h1>
+    </Link>
   );
 }

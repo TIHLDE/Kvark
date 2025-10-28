@@ -9,7 +9,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 const navigationLinks = [
   { name: 'Hjem', path: linkOptions({ to: '/' }) },
-  { name: 'Profil', path: linkOptions({ to: '/profil' }) },
+  { name: 'Profil', path: linkOptions({ to: '/profil/{-$userId}' }) },
   { name: 'Arrangementer', path: linkOptions({ to: '/arrangementer' }) },
   { name: 'Nyheter', path: linkOptions({ to: '/nyheter' }) },
   { name: 'Stillingsannonser', path: linkOptions({ to: '/stillingsannonser' }) },
@@ -19,12 +19,12 @@ const navigationLinks = [
 ];
 
 const externalLinks = [
-  { name: 'Wiki', path: URLS.wiki },
-  { name: 'GitHub', path: URLS.github },
-  { name: 'Fondet', path: URLS.fondet },
-  { name: 'Kontres', path: URLS.kontRes },
-  { name: 'Pythons Herrer', path: URLS.pythons },
-  { name: 'Pythons Damer', path: URLS.pythonsLadies },
+  { name: 'Wiki', path: URLS.external.wiki.wiki },
+  { name: 'GitHub', path: URLS.external.github },
+  { name: 'Fondet', path: URLS.external.fondet },
+  { name: 'Kontres', path: URLS.external.kontRes },
+  { name: 'Pythons Herrer', path: URLS.external.pythons },
+  { name: 'Pythons Damer', path: URLS.external.pythonsLadies },
 ];
 
 export default function ShortCutMenu() {
@@ -126,7 +126,7 @@ function MembershipOptions({ closeMenu }: { closeMenu: () => void }) {
             value={'group-' + group.name}
             keywords={[group.name, 'gruppe', 'groups']}
             onSelect={() => {
-              navigate(linkOptions({ to: '/grupper/:slug', param: { slug: group.id } }));
+              navigate(linkOptions({ to: '/grupper/$slug', params: { slug: group.id } }));
               closeMenu();
             }}>
             {group.name}
@@ -147,7 +147,7 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
       {
         apps: [PermissionApp.EVENT],
         title: 'Arrangementer',
-        path: linkOptions({ to: '/admin/arrangementer/:eventId?' }),
+        path: linkOptions({ to: '/admin/arrangementer/{-$eventId}' }),
       },
       {
         apps: [PermissionApp.GROUP],
@@ -157,7 +157,7 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
       {
         apps: [PermissionApp.JOBPOST],
         title: 'Stillingsannonser',
-        path: linkOptions({ to: '/admin/stillingsannonser/:jobPostId?' }),
+        path: linkOptions({ to: '/admin/stillingsannonser/{-$jobPostId}' }),
       },
       {
         apps: [PermissionApp.USER],
@@ -167,7 +167,7 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
       {
         apps: [PermissionApp.NEWS],
         title: 'Nyheter',
-        path: linkOptions({ to: '/admin/nyheter/:newsId?' }),
+        path: linkOptions({ to: '/admin/nyheter/{-$newsId}' }),
       },
       {
         apps: [PermissionApp.STRIKE],
@@ -224,7 +224,7 @@ function ToolOptions({ closeMenu }: { closeMenu: () => void }) {
       </CommandItem>
       <CommandItem
         onSelect={() => {
-          navigate(linkOptions({ to: '/kokebok/:studyId?/:classId?' }));
+          navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }));
           closeMenu();
         }}>
         Kokebok

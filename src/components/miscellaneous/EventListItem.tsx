@@ -51,8 +51,8 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
   return (
     <Link
       className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150 ${getBorderColor()}`}
-      params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}
-      to='/arrangementer/:id/:urlTitle?'>
+      to='/arrangementer/$id/{-$urlTitle}'
+      params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}>
       <AspectRatioImg alt={event.image_alt || event.title} className={cn('rounded-l-sm', width)} src={event.image} />
 
       <div className='space-y-1 py-2 w-full contain-inline-size'>

@@ -103,7 +103,7 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
               </div>
 
               {isAuthenticated && (
-                <Link onClick={() => setMenuOpen(false)} to='/profil'>
+                <Link onClick={() => setMenuOpen(false)} to='/profil/{-$userId}'>
                   Min profil
                 </Link>
               )}

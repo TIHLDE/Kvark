@@ -73,32 +73,14 @@ export default function App() {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
-      <head>
-        <meta charSet='utf-8' />
-        <meta content='width=device-width, initial-scale=1' name='viewport' />
-        <meta content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no' name='viewport' />
-
-        {/* TODO: Convert the meta tags to the links export */}
-        <link href='/browser-icons/android-icon-192x192.png' rel='icon' sizes='192x192' type='image/png' />
-        <link href='/browser-icons/favicon-32x32.png' rel='icon' sizes='32x32' type='image/png' />
-        <link href='/browser-icons/favicon-96x96.png' rel='icon' sizes='96x96' type='image/png' />
-        <link href='/browser-icons/favicon-16x16.png' rel='icon' sizes='16x16' type='image/png' />
-        <link href='/manifest.json' rel='manifest' />
-        <meta content='#ffffff' name='msapplication-TileColor' />
-        <meta content='/browser-icons/ms-icon-144x144.png' name='msapplication-TileImage' />
-      </head>
-      <body>
-        <PostHogProvider
-          apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
-          options={{
-            api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-          }}>
-          <Analytics />
-          {children}
-        </PostHogProvider>
-      </body>
-    </html>
+    <PostHogProvider
+      apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
+      options={{
+        api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
+      }}>
+      <Analytics />
+      {children}
+    </PostHogProvider>
   );
 }
 
@@ -107,31 +89,31 @@ export function HydrateFallback() {
   return null;
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = 'Oops!';
-  let details = 'An unexpected error occurred.';
-  let stack: string | undefined;
+// export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+//   let message = 'Oops!';
+//   let details = 'An unexpected error occurred.';
+//   let stack: string | undefined;
 
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? '404' : 'Error';
-    details = error.status === 404 ? 'The requested page could not be found.' : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
+//   if (isRouteErrorResponse(error)) {
+//     message = error.status === 404 ? '404' : 'Error';
+//     details = error.status === 404 ? 'The requested page could not be found.' : error.statusText || details;
+//   } else if (import.meta.env.DEV && error && error instanceof Error) {
+//     details = error.message;
+//     stack = error.stack;
+//   }
 
-  return (
-    <main className='pt-16 p-4 container mx-auto'>
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className='w-full p-4 overflow-x-auto'>
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
-  );
-}
+//   return (
+//     <main className='pt-16 p-4 container mx-auto'>
+//       <h1>{message}</h1>
+//       <p>{details}</p>
+//       {stack && (
+//         <pre className='w-full p-4 overflow-x-auto'>
+//           <code>{stack}</code>
+//         </pre>
+//       )}
+//     </main>
+//   );
+// }
 
 (() => {
   if (typeof window !== 'object') {

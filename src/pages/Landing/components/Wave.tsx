@@ -3,7 +3,6 @@ import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { Button } from '~/components/ui/button';
 import { useIsAuthenticated } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
-import URLS from '~/URLS';
 import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
 import { LogIn, Plus, User } from 'lucide-react';
 
@@ -25,7 +24,7 @@ const Wave = () => {
           <div className='flex items-center space-x-4 justify-center mt-4'>
             {isAuthenticated ? (
               <Button asChild className='text-black dark:text-white' onClick={() => analytics('profile')} variant='outline'>
-                <Link to={URLS.profile}>
+                <Link to='/profil/{-$userId}'>
                   <User className='mr-2 w-5 h-5 stroke-[1.5px]' />
                   Min profil
                 </Link>
@@ -33,13 +32,13 @@ const Wave = () => {
             ) : (
               <>
                 <Button asChild className='text-black dark:text-white' onClick={() => analytics('profile')} variant='outline'>
-                  <Link to={URLS.profile}>
+                  <Link to='/profil/{-$userId}'>
                     <LogIn className='mr-2 w-5 h-5 stroke-[1.5px]' />
                     Logg inn
                   </Link>
                 </Button>
                 <Button asChild className='text-black dark:text-white' onClick={() => analytics('profile')} variant='ghost'>
-                  <Link to={URLS.signup}>
+                  <Link to='/ny-bruker'>
                     <Plus className='mr-2 w-5 h-5 stroke-[1.5px]' />
                     Opprett bruker
                   </Link>

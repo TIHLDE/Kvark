@@ -157,10 +157,10 @@ export function userHasWritePermission(permissions: Record<string, Permissions>,
  * @returns auth object if authenticated
  * @throws redirect to login page if not authenticated
  */
-export async function authClientWithRedirect(request: Request) {
+export async function authClientWithRedirect(url: string) {
   const auth = await authClient();
   if (!auth) {
-    throw redirect(createLoginRedirectUrl(request));
+    throw redirect(createLoginRedirectUrl(url));
   }
   return auth;
 }
@@ -170,11 +170,11 @@ export async function authClientWithRedirect(request: Request) {
  * @param request the current request object
  * @returns URL string to redirect to the login page
  */
-export function createLoginRedirectUrl(request: Request) {
+export function createLoginRedirectUrl(url: string) {
   return linkOptions({
     to: '/logg-inn',
     search: {
-      redirectTo: new URL(request.url).pathname,
+      redirectTo: url,
     },
   });
 }

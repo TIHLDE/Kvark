@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -5,7 +6,11 @@ import { PaginateButton } from '~/components/ui/button';
 import { useNews } from '~/hooks/News';
 import { useMemo } from 'react';
 
-const News = () => {
+export const Route = createFileRoute('/_MainLayout/nyheter/')({
+  component: News,
+});
+
+function News() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useNews();
   const news = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -29,6 +34,4 @@ const News = () => {
       </div>
     </Page>
   );
-};
-
-export default News;
+}

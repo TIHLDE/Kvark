@@ -1,8 +1,7 @@
+import { Link } from '@tanstack/react-router';
 import { useEventById } from '~/hooks/Event';
-import URLS from '~/URLS';
 import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Link } from 'react-router';
 
 import { Skeleton } from '../../../components/ui/skeleton';
 
@@ -61,7 +60,10 @@ const EventsCalendarPopover = ({ id }: EventsCalendarPopoverProps) => {
           )}
         </>
       )}
-      <Link className='underline text-blue-500 dark:text-indigo-300' to={`${URLS.events}${data.id}/${urlEncode(data.title)}/`}>
+      <Link
+        className='underline text-blue-500 dark:text-indigo-300'
+        to='/arrangementer/$id/{-$urlTitle}'
+        params={{ id: data.id.toString(), urlTitle: urlEncode(data.title) }}>
         Til arrangement
       </Link>
     </div>

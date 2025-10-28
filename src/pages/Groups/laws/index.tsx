@@ -1,3 +1,4 @@
+import { createFileRoute, useParams } from '@tanstack/react-router';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Expandable from '~/components/ui/expandable';
@@ -6,10 +7,13 @@ import { useUser } from '~/hooks/User';
 import AddLawDialog from '~/pages/Groups/laws/AddLawDialog';
 import LawItem from '~/pages/Groups/laws/LawItem';
 import { Scale } from 'lucide-react';
-import { useParams } from 'react-router';
 
-const GroupLaws = () => {
-  const { slug } = useParams<'slug'>();
+export const Route = createFileRoute('/_MainLayout/grupper/$slug/lovverk')({
+  component: GroupLaws,
+});
+
+function GroupLaws() {
+  const { slug } = useParams({ strict: false });
   const { data: user } = useUser();
   const { data: group } = useGroup(slug || '-');
   const { data: laws } = useGroupLaws(slug || '-');
@@ -38,6 +42,4 @@ const GroupLaws = () => {
       </div>
     </>
   );
-};
-
-export default GroupLaws;
+}

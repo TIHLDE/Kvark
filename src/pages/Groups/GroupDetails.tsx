@@ -1,3 +1,4 @@
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
 import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
@@ -8,44 +9,43 @@ import { getGroupQueryOptions } from '~/hooks/Group';
 import { cn } from '~/lib/utils';
 import { getQueryClient } from '~/queryClient';
 import { FormGroupValues } from '~/types';
+import { GroupType } from '~/types/Enums';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
-import { href, Link, Outlet } from 'react-router';
 
-import type { Route } from './+types/GroupDetails';
 import GroupAdmin from './components/GroupAdmin';
 import AddFineDialog from './fines/AddFineDialog';
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const auth = await authClient();
-  const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
+export const Route = createFileRoute('/_MainLayout/grupper/$slug')({
+  loader: async ({ params }) => {
+    const auth = await authClient();
+    const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
 
-  return {
-    group,
-    hasWriteAcccess: Boolean(group.permissions.write),
-    isMemberOfGroup: Boolean(group.viewer_is_member),
-    isFinesActive: Boolean(group.fines_activated),
-    isAuthenticated: Boolean(auth),
-  };
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return (
+    return {
+      group,
+      hasWriteAcccess: Boolean(group.permissions.write),
+      isMemberOfGroup: Boolean(group.viewer_is_member),
+      isFinesActive: Boolean(group.fines_activated),
+      isAuthenticated: Boolean(auth),
+    };
+  },
+  errorComponent: ({ error }) => (
     <Page className='max-w-6xl mx-auto'>
       <Card>
         <CardHeader>
           <div className='flex items-center space-x-4'>
-            <GoBackButton url='/grupper' />
+            <GoBackButton to='/grupper' />
             <h1 className='text-xl font-bold'>Kunne ikke finne gruppen</h1>
             <pre>{JSON.stringify(error, null, 4)}</pre>
           </div>
         </CardHeader>
       </Card>
     </Page>
-  );
-}
+  ),
+  component: GroupPage,
+});
 
-export default function GroupPage({ loaderData }: Route.ComponentProps) {
-  const { group, hasWriteAcccess, isAuthenticated, isFinesActive, isMemberOfGroup } = loaderData;
+function GroupPage() {
+  const { group, hasWriteAcccess, isAuthenticated, isFinesActive, isMemberOfGroup } = Route.useLoaderData();
 
   const showFinesAndLaws = isFinesActive && (isMemberOfGroup || hasWriteAcccess);
   const showForms = isAuthenticated;
@@ -66,7 +66,7 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
 
           <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
             <div className='flex items-center space-x-4'>
-              <GoBackButton url={href(group.type === 'INTERESTGROUP' ? '/interessegrupper' : '/grupper')} />
+              <GoBackButton to={group.type === GroupType.INTERESTGROUP ? '/interessegrupper' : '/grupper'} />
               <div className='flex items-center space-x-2'>
                 <AspectRatioImg alt={group.image_alt ?? ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={group.image ?? ''} />
                 <h1 className='text-3xl md:text-5xl font-bold'>{group.name}</h1>
