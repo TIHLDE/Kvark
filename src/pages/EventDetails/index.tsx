@@ -26,14 +26,17 @@ export const Route = createFileRoute('/_MainLayout/arrangementer/$id/{-$urlTitle
       throw redirect({ to: '/arrangementer' });
     }
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { property: 'og:title', content: loaderData?.event?.title },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: typeof window !== 'undefined' ? window.location.href : '' },
-      { property: 'og:image', content: loaderData?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    console.log('Head update', loaderData);
+    return {
+      meta: [
+        { property: 'og:title', content: loaderData?.event?.title },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: typeof window !== 'undefined' ? window.location.href : '' },
+        { property: 'og:image', content: loaderData?.event?.image ?? 'https://tihlde.org' + TIHLDELOGO },
+      ],
+    };
+  },
   component: EventDetails,
 });
 

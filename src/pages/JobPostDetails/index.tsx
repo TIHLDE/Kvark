@@ -1,7 +1,7 @@
 import { createFileRoute, useParams } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { jobPostByIdQuery, useJobPostById } from '~/hooks/JobPost';
-import Http404 from '~/pages/Http404';
 import JobPostRenderer, { JobPostRendererLoading } from '~/pages/JobPostDetails/components/JobPostRenderer';
 import { getQueryClient } from '~/queryClient';
 

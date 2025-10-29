@@ -3,13 +3,13 @@ import { createFileRoute, Link, useParams, useRouter } from '@tanstack/react-rou
 import { authClientWithRedirect } from '~/api/auth';
 import FormView from '~/components/forms/FormView';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from '~/hooks/Form';
 import { useAnalytics } from '~/hooks/Utils';
-import Http404 from '~/pages/Http404';
 import type { SelectFieldSubmission, Submission, TextFieldSubmission } from '~/types';
 import { EventFormType, FormResourceType } from '~/types/Enums';
 import URLS from '~/URLS';
