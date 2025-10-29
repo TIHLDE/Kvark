@@ -46,7 +46,7 @@ export const Route = createRootRouteWithContext<{
       { name: 'description', content: metaData.description },
       { property: 'og:url', content: metaData.url },
       { property: 'og:type', content: 'website' },
-      { property: 'og:title', conent: metaData.title },
+      { property: 'og:title', content: metaData.title },
       { property: 'og:description', content: metaData.description },
       { property: 'og:image', content: metaData.image },
 

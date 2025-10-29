@@ -27,7 +27,6 @@ export const Route = createFileRoute('/_MainLayout/arrangementer/$id/{-$urlTitle
     }
   },
   head: ({ loaderData }) => {
-    console.log('Head update', loaderData);
     return {
       meta: [
         { property: 'og:title', content: loaderData?.event?.title },
