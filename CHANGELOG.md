@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2025.05.05
 
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
