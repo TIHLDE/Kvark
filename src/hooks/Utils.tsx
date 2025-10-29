@@ -1,5 +1,5 @@
-import va from '@vercel/analytics';
 import { getCookie, setCookie } from '~/api/cookie';
+import posthogJs from 'posthog-js';
 import { useCallback, useEffect, useMemo, useRef, useState, type EffectCallback } from 'react';
 import { toast } from 'sonner';
 
@@ -126,5 +126,5 @@ export const useAnalytics = () => {
 };
 
 export function analyticsEvent(action: string, category: string, label: string) {
-  va.track(category, { action, label });
+  posthogJs.capture(category, { action, label });
 }

@@ -1,8 +1,7 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRouter, RouterProvider } from '@tanstack/react-router';
-import { inject } from '@vercel/analytics';
 import API from '~/api/api';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
+import { getQueryClient, ReactQueryProvider } from '~/queryClient';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import ReactDOM from 'react-dom/client';
@@ -11,13 +10,13 @@ import { routeTree } from './routeTree.gen';
 
 import './assets/css/index.css';
 
-const queryClient = new QueryClient();
+import { ThemeProvider } from './hooks/Theme';
 
 // Set up a Router instance
 const router = createRouter({
   routeTree,
   context: {
-    queryClient,
+    queryClient: getQueryClient(),
   },
   defaultPreload: 'intent',
   // Since we're using React Query, we don't want loader calls to ever be stale
@@ -33,24 +32,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-const rootElement = document.getElementById('app')!;
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <PostHogProvider
-      apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
-      options={{
-        api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-      }}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-      ,
-    </PostHogProvider>,
-  );
-}
-
 (() => {
   if (typeof window !== 'object') {
     return;
@@ -62,19 +43,31 @@ if (!rootElement.innerHTML) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).__INDEX_ASCII_ART__ = true;
 
-  inject();
-
   // Initialize PostHog
-  if (import.meta.env.VITE_POSTHOG_API_KEY) {
-    posthog.init(import.meta.env.VITE_POSTHOG_API_KEY, {
-      api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-      loaded: (posthog) => {
-        if (import.meta.env.DEV) {
-          // Disable capturing in development
-          posthog.opt_out_capturing();
-        }
-      },
-    });
+
+  posthog.init(import.meta.env.VITE_POSTHOG_API_KEY ?? 'fake token', {
+    defaults: '2025-05-24',
+    api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
+    loaded: (posthog) => {
+      if (import.meta.env.DEV) {
+        // Disable capturing in development
+        posthog.opt_out_capturing();
+      }
+    },
+    debug: import.meta.env.DEV,
+  });
+
+  if (import.meta.env.DEV) {
+    (async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).tihldeDev = {
+        analyticsEvent: (await import('~/hooks/Utils')).analyticsEvent,
+        getQueryClient,
+        API: (await import('~/api/api')).default,
+        URLS: (await import('~/URLS')).default,
+        posthog,
+      };
+    })();
   }
 
   // eslint-disable-next-line no-console
@@ -109,3 +102,16 @@ if (!rootElement.innerHTML) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).badge = rickroll;
 })();
+
+const rootElement = document.getElementById('app')!;
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+    <PostHogProvider client={posthog}>
+      <ReactQueryProvider>
+        <RouterProvider router={router} />
+      </ReactQueryProvider>
+    </PostHogProvider>
+  </ThemeProvider>,
+);

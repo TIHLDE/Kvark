@@ -44,6 +44,7 @@
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-query-devtools": "^5.90.2",
     "@tanstack/react-router": "^1.132.27",
+    "@tanstack/react-router-devtools": "^1.133.35",
     "@tanstack/virtual-file-routes": "^1.132.21",
     "@uploadthing/react": "^7.3.3",
     "@vercel/analytics": "1.5.0",

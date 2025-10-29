@@ -22,7 +22,6 @@ import { Route as DotPagesShortLinksIndexRouteImport } from './pages/ShortLinks/
 import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/InterestGroups/index'
 import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
-import { Route as DotPagesHttp404IndexRouteImport } from './pages/Http404/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
 import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-account'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
@@ -129,11 +128,6 @@ const DotPagesChangelogIndexRoute = DotPagesChangelogIndexRouteImport.update({
 const DotPagesCompaniesIndexRoute = DotPagesCompaniesIndexRouteImport.update({
   id: '/bedrifter',
   path: '/bedrifter',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
-const DotPagesHttp404IndexRoute = DotPagesHttp404IndexRouteImport.update({
-  id: '/*',
-  path: '/*',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesLandingIndexRoute = DotPagesLandingIndexRouteImport.update({
@@ -388,7 +382,6 @@ export interface FileRoutesByFullPath {
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
-  '/*': typeof DotPagesHttp404IndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -445,7 +438,6 @@ export interface FileRoutesByTo {
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
-  '/*': typeof DotPagesHttp404IndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -501,7 +493,6 @@ export interface FileRoutesById {
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
   '/_MainLayout/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
-  '/_MainLayout/*': typeof DotPagesHttp404IndexRoute
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
   '/_MainLayout/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -561,7 +552,6 @@ export interface FileRouteTypes {
     | '/logg-inn'
     | '/ny-bruker'
     | '/'
-    | '/*'
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
@@ -618,7 +608,6 @@ export interface FileRouteTypes {
     | '/logg-inn'
     | '/ny-bruker'
     | '/'
-    | '/*'
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
@@ -673,7 +662,6 @@ export interface FileRouteTypes {
     | '/_MainLayout/logg-inn'
     | '/_MainLayout/ny-bruker'
     | '/_MainLayout/'
-    | '/_MainLayout/*'
     | '/_MainLayout/bedrifter'
     | '/_MainLayout/endringslogg'
     | '/_MainLayout/interessegrupper'
@@ -815,13 +803,6 @@ declare module '@tanstack/react-router' {
       path: '/bedrifter'
       fullPath: '/bedrifter'
       preLoaderRoute: typeof DotPagesCompaniesIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
-    '/_MainLayout/*': {
-      id: '/_MainLayout/*'
-      path: '/*'
-      fullPath: '/*'
-      preLoaderRoute: typeof DotPagesHttp404IndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/': {
@@ -1229,7 +1210,6 @@ interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
   DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRouteWithChildren
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
-  DotPagesHttp404IndexRoute: typeof DotPagesHttp404IndexRoute
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
   DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
   DotPagesInterestGroupsIndexRoute: typeof DotPagesInterestGroupsIndexRoute
@@ -1272,7 +1252,6 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
   DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRouteWithChildren,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
-  DotPagesHttp404IndexRoute: DotPagesHttp404IndexRoute,
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
   DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
   DotPagesInterestGroupsIndexRoute: DotPagesInterestGroupsIndexRoute,

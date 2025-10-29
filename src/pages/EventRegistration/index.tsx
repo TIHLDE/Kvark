@@ -5,6 +5,7 @@ import AppleAppStoreBadge from '~/assets/img/apple-appstore-badge.svg';
 import GooglePlayBadge from '~/assets/img/google-play-badge.svg';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Checkbox } from '~/components/ui/checkbox';
@@ -14,7 +15,6 @@ import { Label } from '~/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from '~/hooks/Event';
 import { useDebounce } from '~/hooks/Utils';
-import Http404 from '~/pages/Http404';
 import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
@@ -122,7 +122,11 @@ function EventRegistration() {
     );
 
   if (isError || (event && !event.sign_up)) {
-    return <Http404 />;
+    return (
+      <Page>
+        <Http404 />
+      </Page>
+    );
   }
 
   return (

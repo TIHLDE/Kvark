@@ -1,34 +1,15 @@
-import { inject } from '@vercel/analytics';
-import { Analytics } from '@vercel/analytics/react';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
-
 import '~/assets/css/index.css';
 
-import { createRootRoute, Outlet } from '@tanstack/react-router';
-import API from '~/api/api';
+import { QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { createRootRouteWithContext, HeadContent, Outlet } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
-import { SHOW_NEW_STUDENT_INFO } from '~/constant';
+import Http404 from '~/components/shells/Http404';
+import { Toaster } from '~/components/ui/sonner';
+import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 
 const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
-
-export const links = () => [
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  },
-  ...appleSizes.map((size) => ({
-    rel: 'apple-touch-icon',
-    sizes: size,
-    href: `/browser-icons/apple-icon-${size}.png`,
-  })),
-];
 
 const metaData = {
   url: 'https://tihlde.org',
@@ -38,25 +19,46 @@ const metaData = {
     'Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling ved NTNU',
 };
 
-export const meta = () => [
-  { title: 'TIHLDE' },
-  { name: 'description', content: metaData.description },
-  { property: 'og:url', content: metaData.url },
-  { property: 'og:type', content: 'website' },
-  { property: 'og:title', conent: metaData.title },
-  { property: 'og:description', content: metaData.description },
-  { property: 'og:image', content: metaData.image },
-
-  { property: 'twitter:url', content: metaData.url },
-  { property: 'twitter:card', content: 'summary_large_image' },
-  { property: 'twitter:title', content: metaData.title },
-  { property: 'twitter:description', content: metaData.description },
-  { property: 'twitter:image', content: metaData.image },
-];
-
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+}>()({
   loader: clientLoader,
+  head: () => ({
+    links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+      },
+      ...appleSizes.map((size) => ({
+        rel: 'apple-touch-icon',
+        sizes: size,
+        href: `/browser-icons/apple-icon-${size}.png`,
+      })),
+    ],
+    meta: [
+      { title: 'TIHLDE' },
+      { name: 'description', content: metaData.description },
+      { property: 'og:url', content: metaData.url },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', conent: metaData.title },
+      { property: 'og:description', content: metaData.description },
+      { property: 'og:image', content: metaData.image },
+
+      { property: 'twitter:url', content: metaData.url },
+      { property: 'twitter:card', content: 'summary_large_image' },
+      { property: 'twitter:title', content: metaData.title },
+      { property: 'twitter:description', content: metaData.description },
+      { property: 'twitter:image', content: metaData.image },
+    ],
+  }),
   component: App,
+  notFoundComponent: () => <Http404 />,
 });
 
 async function clientLoader() {
@@ -65,28 +67,14 @@ async function clientLoader() {
 
 export default function App() {
   return (
-    <Layout>
+    <NuqsAdapter>
+      <HeadContent />
       <Outlet />
-    </Layout>
+      <Toaster />
+      <TanStackRouterDevtools initialIsOpen={false} position='bottom-left' />
+      <ReactQueryDevtools initialIsOpen={false} position='bottom' />
+    </NuqsAdapter>
   );
-}
-
-export function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <PostHogProvider
-      apiKey={import.meta.env.VITE_POSTHOG_API_KEY}
-      options={{
-        api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-      }}>
-      <Analytics />
-      {children}
-    </PostHogProvider>
-  );
-}
-
-// TODO: Add skeleton rendering for hydration fallback
-export function HydrateFallback() {
-  return null;
 }
 
 // export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -114,62 +102,3 @@ export function HydrateFallback() {
 //     </main>
 //   );
 // }
-
-(() => {
-  if (typeof window !== 'object') {
-    return;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((window as any).__INDEX_ASCII_ART__) {
-    return;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).__INDEX_ASCII_ART__ = true;
-
-  inject();
-
-  // Initialize PostHog
-  if (import.meta.env.VITE_POSTHOG_API_KEY) {
-    posthog.init(import.meta.env.VITE_POSTHOG_API_KEY, {
-      api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-      loaded: (posthog) => {
-        if (import.meta.env.DEV) {
-          // Disable capturing in development
-          posthog.opt_out_capturing();
-        }
-      },
-    });
-  }
-
-  // eslint-disable-next-line no-console
-  console.log(
-    `%c
-            ██╗███╗   ██╗██████╗ ███████╗██╗  ██╗
-            ██║████╗  ██║██╔══██╗██╔════╝╚██╗██╔╝
-  Laget av  ██║██╔██╗ ██║██║  ██║█████╗   ╚███╔╝
-            ██║██║╚██╗██║██║  ██║██╔══╝   ██╔██╗
-            ██║██║ ╚████║██████╔╝███████╗██╔╝ ██╗
-            ╚═╝╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝`,
-    'font-size: 1rem; color: #ff9400;',
-  );
-  // eslint-disable-next-line no-console
-  console.log(
-    `%cSnoker du rundt? Det liker vi. Vi i Index ser alltid etter nye medlemmer. ${
-      SHOW_NEW_STUDENT_INFO ? 'Søk om å bli med da vel! https://s.tihlde.org/bli-med-i-index' : ''
-    }`,
-    'font-weight: bold; font-size: 1rem;color: #ff9400;',
-  );
-  // eslint-disable-next-line no-console
-  console.log(
-    'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
-    'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
-    '',
-  );
-  const rickroll = async () => {
-    const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
-    API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
-    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-  };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).badge = rickroll;
-})();

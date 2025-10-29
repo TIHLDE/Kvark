@@ -101,8 +101,5 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/ny-bruker/skjema', './pages/SignUp/index.tsx'),
     route('/ny-bruker/feide', './pages/SignUpFeide/index.tsx'),
     route('/endringslogg', './pages/Changelog/index.tsx'),
-
-    // IMPORTANT! Keep this at the bottom
-    route('*', './pages/Http404/index.tsx'),
   ]),
 ]);
