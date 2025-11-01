@@ -47,6 +47,7 @@ const DateTimePicker = <TFormValues extends FieldValues>({ form, name, label, re
                   onDateChange?.(e);
                 }}
                 selected={field.value}
+                reverseYears
               />
               <div className='p-3 border-t border-border'>
                 <TimePickerDisplay date={field.value} setDate={field.onChange} />
