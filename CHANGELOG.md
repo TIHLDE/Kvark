@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
 - 🦟 **Event Kort** Fikset slik at arrangement kort ikke overflyter til ny linje på hovedsiden
