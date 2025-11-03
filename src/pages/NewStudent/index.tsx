@@ -174,8 +174,9 @@ import Timeline from './Components/timeline';
 
 const NewStudent = () => {
   return (
-    <div className='space-y-8 pt-6'>
-      <div className='mt-4'>
+    <div className='space-y-8 pt-20'>
+      <Timeline />
+      <div className='mt-4 pt-4 '>
         <GCard
           tittel='Fadderuke påmelding'
           beskrivelse='Fadderuka er en gyllen mulighet til å bli kjent med medstudenter og med linjeforeningen. Fadderuka varer fra uka før skolestart til en uke inn i semesteret. Meld deg på her for å få plass!'
@@ -185,7 +186,6 @@ const NewStudent = () => {
       <div className='ml-2 md:ml-4'>
         <GKnapp tekst='Klikk for betalingsmuligheter' onClick={() => console.log('Knapp klikket!')} />
       </div>
-      <Timeline />
     </div>
   );
 };
