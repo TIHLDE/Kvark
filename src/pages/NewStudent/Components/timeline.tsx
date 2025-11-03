@@ -6,7 +6,7 @@ const Timeline: React.FC = () => {
   const [currentStage, setCurrentStage] = useState(1);
 
   const stages = [
-    { id: 1, title: 'Påmelding og betaling', description: 'Alt du trenger er ovenfor!' },
+    { id: 1, title: 'Påmelding og betaling', description: 'Alt du trenger er under!' },
     {
       id: 2,
       title: 'Eksamen og semesteravgift',
