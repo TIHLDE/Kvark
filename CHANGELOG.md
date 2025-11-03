@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- ⚡ **Annonser** Endret på "stillingsannonser" lenke og "stillinger-" titler og knapper til å kun være "annonser"
 - 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.

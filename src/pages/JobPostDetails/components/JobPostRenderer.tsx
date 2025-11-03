@@ -53,7 +53,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
               info={data.class_start === data.class_end ? data.class_start + '.' : data.class_start + '. - ' + data.class_end + '.'}
               title='Årstrinn: '
             />
-            <DetailContent info={getJobpostType(data.job_type)} title='Stillingstype: ' />
+            <DetailContent info={getJobpostType(data.job_type)} title='Annonsetype: ' />
             <DetailContent info={data.location} title='Sted: ' />
           </CardContent>
         </Card>
