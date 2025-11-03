@@ -4,10 +4,26 @@ const Timeline: React.FC = () => {
   const [currentStage, setCurrentStage] = useState(1);
 
   const stages = [
-    { id: 1, title: 'Steg 1, påmelding og betaling' },
-    { id: 2, title: 'Steg 2, Påmelding eksamen og betaling semesteravgift' },
-    { id: 3, title: 'Steg 3, Få en oversikt over klassen og timeplanen fremover' },
-    { id: 4, title: 'Steg 4, Stalk dine nye klassekamerater, og gå videre til Tihldes egne fadderuke side!' },
+    {
+      id: 1,
+      title: 'Steg 1, påmelding og betaling',
+      description: 'Alt du trenger er ovenfor!',
+    },
+    {
+      id: 2,
+      title: 'Steg 2, Påmelding eksamen og betaling semesteravgift',
+      description: 'https://fsweb.no/studentweb/login.jsf?inst=FSNTNU',
+    },
+    {
+      id: 3,
+      title: 'Steg 3, Få en oversikt over klassen og timeplanen fremover',
+      description: 'Link kommer etterhvert',
+    },
+    {
+      id: 4,
+      title: 'Steg 4, Stalk dine nye klassekamerater, og gå videre til Tihldes egne fadderuke side!',
+      description: 'Link kommer for klasseliste og fadderuke',
+    },
   ];
 
   const handleNext = () => {
@@ -36,7 +52,17 @@ const Timeline: React.FC = () => {
                   : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm'
               }`}>
               <h3 className='text-lg font-semibold'>{stage.title}</h3>
-              <p className='mt-1 text-slate-600 dark:text-slate-300'>To be continued eller no</p>
+              {typeof stage.description === 'string' && /^https?:\/\//.test(stage.description) ? (
+                <a
+                  href={stage.description}
+                  target='_blank'
+                  rel='noreferrer'
+                  className='mt-1 inline-block text-sky-700 hover:text-sky-800 underline dark:text-sky-300 dark:hover:text-sky-200'>
+                  Klikk her
+                </a>
+              ) : (
+                <p className='mt-1 text-slate-600 dark:text-slate-300'>{stage.description}</p>
+              )}
             </div>
           );
         })}
