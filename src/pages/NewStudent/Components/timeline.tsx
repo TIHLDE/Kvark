@@ -59,13 +59,13 @@ const Timeline: React.FC = () => {
 
       <div className='flex items-center gap-3'>
         <button
-          onClick={() => setCurrentStage((prev) => Math.max(1, prev - 1))}
+          onClick={() => handleStageClick(Math.max(1, currentStage - 1))}
           disabled={currentStage === 1}
           className='inline-flex items-center rounded-md bg-slate-100 hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 py-2 text-sm font-medium'>
           Tilbake
         </button>
         <button
-          onClick={() => setCurrentStage((prev) => Math.min(stages.length, prev + 1))}
+          onClick={() => handleStageClick(Math.min(stages.length, currentStage + 1))}
           disabled={currentStage === stages.length}
           className='inline-flex items-center rounded-md bg-sky-600 text-white hover:bg-sky-700 disabled:opacity-50 px-3 py-2 text-sm font-medium'>
           Neste steg
