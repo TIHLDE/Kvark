@@ -133,7 +133,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
   return (
     <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
       <div>
-        <h1 className='text-3xl md:text-5xl font-bold'>Stillingsannonser</h1>
+        <h1 className='text-3xl md:text-5xl font-bold'>Annonser</h1>
         <p className='text-muted-foreground mt-2'>Finn relevante jobber for studenter</p>
       </div>
 
@@ -217,7 +217,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
           {/* Results count */}
           <div className='flex justify-between items-center mb-4'>
             <h2 className='text-lg font-medium'>
-              {initialJobs.count} {initialJobs.count === 1 ? 'stilling' : 'stillinger'} funnet
+              {initialJobs.count} {initialJobs.count === 1 ? 'annonse' : 'annonser'} funnet
             </h2>
           </div>
 
@@ -227,7 +227,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
               allJobs.map((jobPost) => <JobPostListItem jobPost={jobPost} key={jobPost.id} />)
             ) : !isLoading ? (
               <div className='text-center py-12 bg-muted/30 rounded-lg'>
-                <h3 className='text-xl font-medium mb-2'>Ingen stillinger funnet</h3>
+                <h3 className='text-xl font-medium mb-2'>Ingen annonser funnet</h3>
                 <p className='text-muted-foreground'>Prøv å justere filtrene dine for å se flere resultater</p>
               </div>
             ) : null}
@@ -275,7 +275,7 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
       {/* Search input */}
       <div className='space-y-2'>
         <Label className='text-sm font-medium' htmlFor='search-input'>
-          Søk etter stillinger
+          Søk etter annonser
         </Label>
         <div className='flex gap-2'>
           <Input

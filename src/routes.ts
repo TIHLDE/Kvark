@@ -54,7 +54,7 @@ export default [
     ]),
 
     //
-    ...prefix('stillingsannonser', [
+    ...prefix('annonser', [
       index('./pages/JobPosts/index.tsx'),
       //
       route(':id/:urlTitle?', './pages/JobPostDetails/index.tsx'),
@@ -84,7 +84,7 @@ export default [
       // WTF why is this in the components folder?
       route('bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
       route('ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
-      route('stillingsannonser/:jobPostId?', './pages/JobPostAdministration/index.tsx'),
+      route('annonser/:jobPostId?', './pages/JobPostAdministration/index.tsx'),
       route('arrangementer/:eventId?', './pages/EventAdministration/index.tsx'),
       route('nyheter/:newsId?', './pages/NewsAdministration/index.tsx'),
       route('brukere', './pages/UserAdmin/index.tsx'),

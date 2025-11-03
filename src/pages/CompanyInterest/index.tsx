@@ -30,7 +30,7 @@ const interestOptions = [
   { value: 'kurs', label: 'Kurs' },
   { value: 'insta_takeover', label: 'Instagram Takeover' },
   { value: 'tihldex', label: 'TIHLDEx (Bedriftsekrusjon til Oslo H26)' },
-  { value: 'stillingsannonse', label: 'Stillingsannonse' },
+  { value: 'annonse', label: 'Annonse' },
 ];
 
 export default function CompanyInterest() {

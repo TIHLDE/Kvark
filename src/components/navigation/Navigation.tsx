@@ -59,7 +59,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
       ...(SHOW_NEW_STUDENT_INFO ? [{ text: 'Ny student', to: URLS.newStudent, type: 'link' } as NavigationItem] : []),
       { text: 'Arrangementer', to: URLS.events, type: 'link' },
       { text: 'Nyheter', to: URLS.news, type: 'link' },
-      { text: 'Stillinger', to: URLS.jobposts, type: 'link' },
+      { text: 'Annonser', to: URLS.jobposts, type: 'link' },
       isAuthenticated
         ? {
             items: [

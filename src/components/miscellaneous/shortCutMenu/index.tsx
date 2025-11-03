@@ -12,7 +12,7 @@ const navigationLinks = [
   { name: 'Profil', path: href('/profil/:userId?') },
   { name: 'Arrangementer', path: href('/arrangementer') },
   { name: 'Nyheter', path: href('/nyheter') },
-  { name: 'Stillingsannonser', path: href('/stillingsannonser') },
+  { name: 'Annonser', path: href('/annonser') },
   { name: 'Grupper', path: href('/grupper') },
   { name: 'Galleri', path: href('/galleri') },
   { name: 'Bugs', path: href('/tilbakemelding') },
@@ -156,8 +156,8 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
       },
       {
         apps: [PermissionApp.JOBPOST],
-        title: 'Stillingsannonser',
-        path: href('/admin/stillingsannonser/:jobPostId?'),
+        title: 'Annonser',
+        path: href('/admin/annonser/:jobPostId?'),
       },
       {
         apps: [PermissionApp.USER],
