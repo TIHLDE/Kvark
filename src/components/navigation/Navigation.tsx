@@ -75,7 +75,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
             text: 'For medlemmer',
             type: 'dropdown',
           }
-        : { text: 'For bedrifter', to: URLS.company, type: 'link' },
+        : { text: 'For bedrifter', to: URLS.company, type: 'link', external: true },
     ],
     [isAuthenticated],
   );
