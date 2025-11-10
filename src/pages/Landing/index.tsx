@@ -18,8 +18,12 @@ export default function Landing() {
       <Wave />
       <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
         <div className='max-w-5xl w-full mx-auto py-4 space-y-8 px-4'>
-          <NewStudentBox />
-          <InfoBanner />
+          <div className='flex justify-end -mt-8 md:-mt-12'>
+            <div className='w-full md:w-1/2 space-y-2'>
+              <InfoBanner />
+              <NewStudentBox />
+            </div>
+          </div>
           <StoriesView />
         </div>
       </div>
