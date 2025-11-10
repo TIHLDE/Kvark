@@ -90,15 +90,15 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/opptak', './pages/Opptak/index.tsx'),
     ]),
 
-    // route('/logg-inn', './pages/LogIn/index.tsx'),
-    // route('/glemt-passord', './pages/ForgotPassword/index.tsx'),
-    // route('/ny-bruker', './pages/SignUpOptions/index.tsx'),
     route('/logg-inn', './routes/auth/login.tsx'),
     route('/glemt-passord', './routes/auth/forgot-password.tsx'),
-    route('/ny-bruker', './routes/auth/new-account.tsx'),
 
-    route('/ny-bruker/skjema', './pages/SignUp/index.tsx'),
-    route('/ny-bruker/feide', './pages/SignUpFeide/index.tsx'),
+    route('ny-bruker', [
+      index('./routes/auth/new-account.tsx'),
+      route('/skjema', './pages/SignUp/index.tsx'),
+      route('/feide', './pages/SignUpFeide/index.tsx'),
+      //
+    ]),
     route('/endringslogg', './pages/Changelog/index.tsx'),
   ]),
 ]);

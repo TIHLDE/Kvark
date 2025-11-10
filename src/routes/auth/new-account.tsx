@@ -8,7 +8,7 @@ import Expandable from '~/components/ui/expandable';
 import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI } from '~/constant';
 import { Info } from 'lucide-react';
 
-export const Route = createFileRoute('/_MainLayout/ny-bruker')({
+export const Route = createFileRoute('/_MainLayout/ny-bruker/')({
   component: SignUpOptions,
 });
 

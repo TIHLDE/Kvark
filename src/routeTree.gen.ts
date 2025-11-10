@@ -23,7 +23,6 @@ import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/Interes
 import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
-import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-account'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
 import { Route as DotRoutesAuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as DotPagesBadgesIndexRouteImport } from './pages/Badges/index'
@@ -43,6 +42,7 @@ import { Route as DotPagesGalleryIndexRouteImport } from './pages/Gallery/index'
 import { Route as DotPagesEventsIndexRouteImport } from './pages/Events/index'
 import { Route as DotPagesGroupsGroupDetailsRouteImport } from './pages/Groups/GroupDetails'
 import { Route as DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport } from './components/miscellaneous/InfoBanner/InfoBannerAdmin'
+import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-account'
 import { Route as DotPagesJobPostDetailsIndexRouteImport } from './pages/JobPostDetails/index'
 import { Route as DotPagesNewsDetailsIndexRouteImport } from './pages/NewsDetails/index'
 import { Route as DotPagesCheatsheetIndexRouteImport } from './pages/Cheatsheet/index'
@@ -134,11 +134,6 @@ const DotPagesLandingIndexRoute = DotPagesLandingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotRoutesAuthNewAccountRoute = DotRoutesAuthNewAccountRouteImport.update({
-  id: '/ny-bruker',
-  path: '/ny-bruker',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
 const DotRoutesAuthLoginRoute = DotRoutesAuthLoginRouteImport.update({
   id: '/logg-inn',
   path: '/logg-inn',
@@ -165,15 +160,15 @@ const DotPagesProfileIndexRoute = DotPagesProfileIndexRouteImport.update({
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesSignUpIndexRoute = DotPagesSignUpIndexRouteImport.update({
-  id: '/skjema',
-  path: '/skjema',
-  getParentRoute: () => DotRoutesAuthNewAccountRoute,
+  id: '/ny-bruker/skjema',
+  path: '/ny-bruker/skjema',
+  getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesSignUpFeideIndexRoute =
   DotPagesSignUpFeideIndexRouteImport.update({
-    id: '/feide',
-    path: '/feide',
-    getParentRoute: () => DotRoutesAuthNewAccountRoute,
+    id: '/ny-bruker/feide',
+    path: '/ny-bruker/feide',
+    getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
 const DotPagesBadgesDetailsIndexRoute =
   DotPagesBadgesDetailsIndexRouteImport.update({
@@ -241,6 +236,11 @@ const DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute =
     path: '/admin/bannere',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
+const DotRoutesAuthNewAccountRoute = DotRoutesAuthNewAccountRouteImport.update({
+  id: '/ny-bruker/',
+  path: '/ny-bruker/',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
 const DotPagesJobPostDetailsIndexRoute =
   DotPagesJobPostDetailsIndexRouteImport.update({
     id: '/stillingsannonser/$id/{-$urlTitle}',
@@ -374,7 +374,6 @@ export interface FileRoutesByFullPath {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -385,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
+  '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
   '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   '/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
   '/arrangementer': typeof DotPagesEventsIndexRoute
@@ -429,7 +429,6 @@ export interface FileRoutesByTo {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/': typeof DotPagesLandingIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -440,6 +439,7 @@ export interface FileRoutesByTo {
   '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
+  '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
   '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   '/arrangementer': typeof DotPagesEventsIndexRoute
   '/galleri': typeof DotPagesGalleryIndexRoute
@@ -483,7 +483,6 @@ export interface FileRoutesById {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/_MainLayout/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
-  '/_MainLayout/ny-bruker': typeof DotRoutesAuthNewAccountRouteWithChildren
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -494,6 +493,7 @@ export interface FileRoutesById {
   '/_MainLayout/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/_MainLayout/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/_MainLayout/toddel': typeof DotPagesToddelIndexRoute
+  '/_MainLayout/ny-bruker/': typeof DotRoutesAuthNewAccountRoute
   '/_MainLayout/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   '/_MainLayout/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
   '/_MainLayout/arrangementer/': typeof DotPagesEventsIndexRoute
@@ -541,7 +541,6 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/glemt-passord'
     | '/logg-inn'
-    | '/ny-bruker'
     | '/'
     | '/bedrifter'
     | '/endringslogg'
@@ -552,6 +551,7 @@ export interface FileRouteTypes {
     | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
+    | '/ny-bruker'
     | '/admin/bannere'
     | '/grupper/$slug'
     | '/arrangementer'
@@ -596,7 +596,6 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/glemt-passord'
     | '/logg-inn'
-    | '/ny-bruker'
     | '/'
     | '/bedrifter'
     | '/endringslogg'
@@ -607,6 +606,7 @@ export interface FileRouteTypes {
     | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
+    | '/ny-bruker'
     | '/admin/bannere'
     | '/arrangementer'
     | '/galleri'
@@ -649,7 +649,6 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/_MainLayout/glemt-passord'
     | '/_MainLayout/logg-inn'
-    | '/_MainLayout/ny-bruker'
     | '/_MainLayout/'
     | '/_MainLayout/bedrifter'
     | '/_MainLayout/endringslogg'
@@ -660,6 +659,7 @@ export interface FileRouteTypes {
     | '/_MainLayout/qr-koder'
     | '/_MainLayout/tilbakemelding'
     | '/_MainLayout/toddel'
+    | '/_MainLayout/ny-bruker/'
     | '/_MainLayout/admin/bannere'
     | '/_MainLayout/grupper/$slug'
     | '/_MainLayout/arrangementer/'
@@ -800,13 +800,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotPagesLandingIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
-    '/_MainLayout/ny-bruker': {
-      id: '/_MainLayout/ny-bruker'
-      path: '/ny-bruker'
-      fullPath: '/ny-bruker'
-      preLoaderRoute: typeof DotRoutesAuthNewAccountRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
     '/_MainLayout/logg-inn': {
       id: '/_MainLayout/logg-inn'
       path: '/logg-inn'
@@ -844,17 +837,17 @@ declare module '@tanstack/react-router' {
     }
     '/_MainLayout/ny-bruker/skjema': {
       id: '/_MainLayout/ny-bruker/skjema'
-      path: '/skjema'
+      path: '/ny-bruker/skjema'
       fullPath: '/ny-bruker/skjema'
       preLoaderRoute: typeof DotPagesSignUpIndexRouteImport
-      parentRoute: typeof DotRoutesAuthNewAccountRoute
+      parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/ny-bruker/feide': {
       id: '/_MainLayout/ny-bruker/feide'
-      path: '/feide'
+      path: '/ny-bruker/feide'
       fullPath: '/ny-bruker/feide'
       preLoaderRoute: typeof DotPagesSignUpFeideIndexRouteImport
-      parentRoute: typeof DotRoutesAuthNewAccountRoute
+      parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/badges/$badgeId': {
       id: '/_MainLayout/badges/$badgeId'
@@ -938,6 +931,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/bannere'
       fullPath: '/admin/bannere'
       preLoaderRoute: typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/ny-bruker/': {
+      id: '/_MainLayout/ny-bruker/'
+      path: '/ny-bruker'
+      fullPath: '/ny-bruker'
+      preLoaderRoute: typeof DotRoutesAuthNewAccountRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/stillingsannonser/$id/{-$urlTitle}': {
@@ -1097,22 +1097,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface DotRoutesAuthNewAccountRouteChildren {
-  DotPagesSignUpFeideIndexRoute: typeof DotPagesSignUpFeideIndexRoute
-  DotPagesSignUpIndexRoute: typeof DotPagesSignUpIndexRoute
-}
-
-const DotRoutesAuthNewAccountRouteChildren: DotRoutesAuthNewAccountRouteChildren =
-  {
-    DotPagesSignUpFeideIndexRoute: DotPagesSignUpFeideIndexRoute,
-    DotPagesSignUpIndexRoute: DotPagesSignUpIndexRoute,
-  }
-
-const DotRoutesAuthNewAccountRouteWithChildren =
-  DotRoutesAuthNewAccountRoute._addFileChildren(
-    DotRoutesAuthNewAccountRouteChildren,
-  )
-
 interface DotPagesGroupsGroupDetailsRouteChildren {
   DotPagesGroupsAboutIndexRoute: typeof DotPagesGroupsAboutIndexRoute
   DotPagesGroupsEventsIndexRoute: typeof DotPagesGroupsEventsIndexRoute
@@ -1189,7 +1173,6 @@ const MainLayoutBadgesRouteWithChildren =
 interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthForgotPasswordRoute: typeof DotRoutesAuthForgotPasswordRoute
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
-  DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRouteWithChildren
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
   DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
@@ -1200,6 +1183,7 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesQRCodesIndexRoute: typeof DotPagesQRCodesIndexRoute
   DotPagesFeedbackIndexRoute: typeof DotPagesFeedbackIndexRoute
   DotPagesToddelIndexRoute: typeof DotPagesToddelIndexRoute
+  DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRoute
   DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute: typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   DotPagesGroupsGroupDetailsRoute: typeof DotPagesGroupsGroupDetailsRouteWithChildren
   DotPagesEventsIndexRoute: typeof DotPagesEventsIndexRoute
@@ -1213,6 +1197,8 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesStrikeAdminIndexRoute: typeof DotPagesStrikeAdminIndexRoute
   DotPagesBadgesDetailsIndexRoute: typeof DotPagesBadgesDetailsIndexRoute
   MainLayoutBadgesRoute: typeof MainLayoutBadgesRouteWithChildren
+  DotPagesSignUpFeideIndexRoute: typeof DotPagesSignUpFeideIndexRoute
+  DotPagesSignUpIndexRoute: typeof DotPagesSignUpIndexRoute
   DotPagesProfileIndexRoute: typeof DotPagesProfileIndexRoute
   DotPagesFormIndexRoute: typeof DotPagesFormIndexRoute
   DotPagesFormFormAdminRoute: typeof DotPagesFormFormAdminRoute
@@ -1230,7 +1216,6 @@ interface DotPagesMainLayoutRouteChildren {
 const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthForgotPasswordRoute: DotRoutesAuthForgotPasswordRoute,
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
-  DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRouteWithChildren,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
   DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
@@ -1241,6 +1226,7 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotPagesQRCodesIndexRoute: DotPagesQRCodesIndexRoute,
   DotPagesFeedbackIndexRoute: DotPagesFeedbackIndexRoute,
   DotPagesToddelIndexRoute: DotPagesToddelIndexRoute,
+  DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRoute,
   DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute:
     DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute,
   DotPagesGroupsGroupDetailsRoute: DotPagesGroupsGroupDetailsRouteWithChildren,
@@ -1256,6 +1242,8 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotPagesStrikeAdminIndexRoute: DotPagesStrikeAdminIndexRoute,
   DotPagesBadgesDetailsIndexRoute: DotPagesBadgesDetailsIndexRoute,
   MainLayoutBadgesRoute: MainLayoutBadgesRouteWithChildren,
+  DotPagesSignUpFeideIndexRoute: DotPagesSignUpFeideIndexRoute,
+  DotPagesSignUpIndexRoute: DotPagesSignUpIndexRoute,
   DotPagesProfileIndexRoute: DotPagesProfileIndexRoute,
   DotPagesFormIndexRoute: DotPagesFormIndexRoute,
   DotPagesFormFormAdminRoute: DotPagesFormFormAdminRoute,
