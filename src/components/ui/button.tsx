@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '~/lib/utils'
 import { ArrowLeft, Loader2 } from 'lucide-react'
 import { forwardRef } from 'react'
-import { Link } from 'react-router'
+import { Link, LinkOptions } from '@tanstack/react-router'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
@@ -81,11 +81,8 @@ const PaginateButton = ({
   );
 };
 
-type GoBackButton = {
-  url: string;
-};
 
-const GoBackButton = ({ url }: GoBackButton) => {
+const GoBackButton = (linkOptions: LinkOptions) => {
   return (
     <Button
       asChild
@@ -93,7 +90,7 @@ const GoBackButton = ({ url }: GoBackButton) => {
       variant='ghost'
       size='icon'
     >
-      <Link to={url}>
+      <Link {...linkOptions}>
         <ArrowLeft className='w-6 h-6' />
       </Link>
     </Button>

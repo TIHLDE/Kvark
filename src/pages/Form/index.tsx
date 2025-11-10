@@ -1,30 +1,31 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, Link, useParams, useRouter } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import FormView from '~/components/forms/FormView';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useCreateSubmission, useFormById, validateSubmissionInput, validateSubmissionTextInput } from '~/hooks/Form';
 import { useAnalytics } from '~/hooks/Utils';
-import Http404 from '~/pages/Http404';
 import type { SelectFieldSubmission, Submission, TextFieldSubmission } from '~/types';
 import { EventFormType, FormResourceType } from '~/types/Enums';
 import URLS from '~/URLS';
-import { formatDate } from '~/utils';
+import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/sporreskjema/$id')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: FormPage,
+});
 
 const formSchema = z.object({
   answers: z.array(
@@ -38,10 +39,10 @@ const formSchema = z.object({
   ),
 });
 
-export default function FormPage() {
-  const navigate = useNavigate();
+function FormPage() {
+  const router = useRouter();
   const { event: GAEvent } = useAnalytics();
-  const { id } = useParams<'id'>();
+  const { id } = useParams({ strict: false });
   const { data: form, isError } = useFormById(id || '-');
   const createSubmission = useCreateSubmission(id || '-');
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,9 @@ export default function FormPage() {
         {form?.resource_type === FormResourceType.EVENT_FORM && (
           <>
             {`Arrangøren av `}
-            <Link to={`${URLS.events}${form.event.id}/`}>{`"${form.event.title}"`}</Link>
+            <Link to='/arrangementer/$id/{-$urlTitle}' params={{ id: form.event.id.toString(), urlTitle: urlEncode(form.event.title) }}>
+              {`"${form.event.title}"`}
+            </Link>
             {`, som ble holdt ${formatDate(parseISO(form.event.start_date)).toLowerCase()} på ${
               form.event.location
             },  ønsker at du svarer på følgende spørsmål:`}
@@ -108,7 +111,8 @@ export default function FormPage() {
       onSuccess: () => {
         toast.success('Innsendingen var vellykket');
         GAEvent('submitted', 'forms', `Submitted submission for form: ${form.title}`);
-        navigate(-1);
+
+        router.history.go(-1);
       },
       onError: (e) => {
         toast.error(e.detail);
@@ -156,7 +160,7 @@ export default function FormPage() {
                       <Link to={URLS.landing}>Gå til forsiden</Link>
                     </Button>
                     <Button asChild className='w-full text-black dark:text-white' variant='outline'>
-                      <Link to={URLS.profile}>Gå til profilen din</Link>
+                      <Link to='/profil/{-$userId}'>Gå til profilen din</Link>
                     </Button>
                   </div>
                 </>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useNavigate } from '@tanstack/react-router';
 import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Badge } from '~/components/ui/badge';
@@ -20,7 +21,6 @@ import { argsToParams } from '~/utils';
 import { FilterX, Search, SlidersHorizontal } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { z } from 'zod';
 
 type Filters = {
@@ -65,19 +65,19 @@ const EventsDefaultView = () => {
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
+    // TODO(TS-Router): THIS NEEDS to be FIXED
     form.setValue('category', '');
     form.setValue('search', '');
     form.setValue('expired', false);
     form.setValue('user_favorite', false);
     form.setValue('open_for_sign_up', false);
     setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
-    navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
+    navigate({ href: `${location.pathname}${argsToParams({ expired: false })}`, replace: true });
   };
 
   const search = (values: z.infer<typeof formSchema>) => {
     event('search', 'events', JSON.stringify(values));
     setFilters(values);
-    navigate(`${location.pathname}${argsToParams(values)}`, { replace: true });
     if (!isDesktop) setSearchFormExpanded((prev) => !prev);
   };
 

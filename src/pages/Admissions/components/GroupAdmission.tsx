@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
@@ -8,7 +9,6 @@ import type { GroupForm, GroupList } from '~/types';
 import URLS from '~/URLS';
 import { ArrowRight, LoaderCircle, Lock } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 type GroupAdmissionProps = {
   group: GroupList;
@@ -73,7 +73,11 @@ const GroupAdmission = ({ group, disabled }: GroupAdmissionProps) => {
                   {isDisabled(filteredForms[0]) ? (
                     <p>Søkt</p>
                   ) : (
-                    <Link to={`${URLS.form}${filteredForms[0].id}`}>
+                    <Link
+                      to='/sporreskjema/$id'
+                      params={{
+                        id: filteredForms[0].id,
+                      }}>
                       Søk nå <ArrowRight className='h-4 stroke-[1.5px]' />
                     </Link>
                   )}

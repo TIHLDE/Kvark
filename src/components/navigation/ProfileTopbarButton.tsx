@@ -1,12 +1,10 @@
+import { Link, linkOptions } from '@tanstack/react-router';
 import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
 import TopbarNotifications from '~/components/navigation/TopbarNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { useOptionalAuth } from '~/hooks/auth';
 // import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
-import { createPath, createSearchParams, href, Link } from 'react-router';
-
-import NavLink from '../ui/navlink';
 
 const ProfileTopbarButton = () => {
   const { auth } = useOptionalAuth();
@@ -20,14 +18,14 @@ const ProfileTopbarButton = () => {
       {Boolean(auth) && (
         <>
           <TopbarNotifications />
-          <Link className='bug-button' to={href('/tilbakemelding')}>
+          <Link className='bug-button' to='/tilbakemelding'>
             <Bug className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[2px]' />
           </Link>
         </>
       )}
       <ThemeSettings />
       {auth?.user ? (
-        <NavLink to='/profil/:userId?'>
+        <Link to='/profil/{-$userId}'>
           <Avatar>
             <AvatarImage alt={auth.user.firstName} src={auth.user.image ?? ''} />
             <AvatarFallback>
@@ -35,14 +33,14 @@ const ProfileTopbarButton = () => {
               {auth.user.lastName.charAt(0)}
             </AvatarFallback>
           </Avatar>
-        </NavLink>
+        </Link>
       ) : (
         <Link
-          to={createPath({
-            pathname: href('/logg-inn'),
-            search: createSearchParams({
+          {...linkOptions({
+            to: '/logg-inn',
+            search: {
               redirectTo: location.pathname,
-            }).toString(),
+            },
           })}>
           <UserRoundIcon className='dark:text-white w-[1.2rem] h-[1.2rem] stroke-[1.5px]' />
         </Link>

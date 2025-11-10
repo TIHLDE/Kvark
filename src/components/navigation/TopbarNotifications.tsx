@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Drawer, DrawerContent, DrawerTrigger } from '~/components/ui/drawer';
@@ -14,7 +15,6 @@ import { getTimeSince } from '~/utils';
 import { parseISO } from 'date-fns';
 import { Bell, BellRing, SquareArrowOutUpRight, X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 type NotificationItemProps = {
   notification: Notification;

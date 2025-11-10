@@ -1,3 +1,4 @@
+import { linkOptions, useNavigate } from '@tanstack/react-router';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '~/components/ui/command';
 import { useOptionalAuth } from '~/hooks/auth';
 import { useLogout } from '~/hooks/User';
@@ -5,26 +6,25 @@ import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { LogOutIcon } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
-import { href, useNavigate } from 'react-router';
 
 const navigationLinks = [
-  { name: 'Hjem', path: href('/') },
-  { name: 'Profil', path: href('/profil/:userId?') },
-  { name: 'Arrangementer', path: href('/arrangementer') },
-  { name: 'Nyheter', path: href('/nyheter') },
-  { name: 'Stillingsannonser', path: href('/stillingsannonser') },
-  { name: 'Grupper', path: href('/grupper') },
-  { name: 'Galleri', path: href('/galleri') },
-  { name: 'Bugs', path: href('/tilbakemelding') },
+  { name: 'Hjem', path: linkOptions({ to: '/' }) },
+  { name: 'Profil', path: linkOptions({ to: '/profil/{-$userId}' }) },
+  { name: 'Arrangementer', path: linkOptions({ to: '/arrangementer' }) },
+  { name: 'Nyheter', path: linkOptions({ to: '/nyheter' }) },
+  { name: 'Stillingsannonser', path: linkOptions({ to: '/stillingsannonser' }) },
+  { name: 'Grupper', path: linkOptions({ to: '/grupper' }) },
+  { name: 'Galleri', path: linkOptions({ to: '/galleri' }) },
+  { name: 'Bugs', path: linkOptions({ to: '/tilbakemelding' }) },
 ];
 
 const externalLinks = [
-  { name: 'Wiki', path: URLS.wiki },
-  { name: 'GitHub', path: URLS.github },
-  { name: 'Fondet', path: URLS.fondet },
-  { name: 'Kontres', path: URLS.kontRes },
-  { name: 'Pythons Herrer', path: URLS.pythons },
-  { name: 'Pythons Damer', path: URLS.pythonsLadies },
+  { name: 'Wiki', path: URLS.external.wiki.wiki },
+  { name: 'GitHub', path: URLS.external.github },
+  { name: 'Fondet', path: URLS.external.fondet },
+  { name: 'Kontres', path: URLS.external.kontRes },
+  { name: 'Pythons Herrer', path: URLS.external.pythons },
+  { name: 'Pythons Damer', path: URLS.external.pythonsLadies },
 ];
 
 export default function ShortCutMenu() {
@@ -126,7 +126,7 @@ function MembershipOptions({ closeMenu }: { closeMenu: () => void }) {
             value={'group-' + group.name}
             keywords={[group.name, 'gruppe', 'groups']}
             onSelect={() => {
-              navigate(href('/grupper/:slug', { slug: group.id }));
+              navigate(linkOptions({ to: '/grupper/$slug', params: { slug: group.id } }));
               closeMenu();
             }}>
             {group.name}
@@ -147,37 +147,37 @@ function AdminOptions({ closeMenu }: { closeMenu: () => void }) {
       {
         apps: [PermissionApp.EVENT],
         title: 'Arrangementer',
-        path: href('/admin/arrangementer/:eventId?'),
+        path: linkOptions({ to: '/admin/arrangementer/{-$eventId}' }),
       },
       {
         apps: [PermissionApp.GROUP],
         title: 'Grupper',
-        path: href('/grupper'),
+        path: linkOptions({ to: '/grupper' }),
       },
       {
         apps: [PermissionApp.JOBPOST],
         title: 'Stillingsannonser',
-        path: href('/admin/stillingsannonser/:jobPostId?'),
+        path: linkOptions({ to: '/admin/stillingsannonser/{-$jobPostId}' }),
       },
       {
         apps: [PermissionApp.USER],
         title: 'Medlemmer',
-        path: href('/admin/brukere'),
+        path: linkOptions({ to: '/admin/brukere' }),
       },
       {
         apps: [PermissionApp.NEWS],
         title: 'Nyheter',
-        path: href('/admin/nyheter/:newsId?'),
+        path: linkOptions({ to: '/admin/nyheter/{-$newsId}' }),
       },
       {
         apps: [PermissionApp.STRIKE],
         title: 'Prikker',
-        path: href('/admin/prikker'),
+        path: linkOptions({ to: '/admin/prikker' }),
       },
       {
         apps: [PermissionApp.BANNERS],
         title: 'Bannere',
-        path: href('/admin/bannere'),
+        path: linkOptions({ to: '/admin/bannere' }),
       },
     ].filter(({ apps: requiredApps }) => requiredApps.every((app) => auth.permissions[app]?.write === true || auth.permissions[app]?.write_all === true));
   }, [auth]);
@@ -210,21 +210,21 @@ function ToolOptions({ closeMenu }: { closeMenu: () => void }) {
     <CommandGroup heading='Verktøy'>
       <CommandItem
         onSelect={() => {
-          navigate(href('/linker'));
+          navigate(linkOptions({ to: '/linker' }));
           closeMenu();
         }}>
         Link forkorter
       </CommandItem>
       <CommandItem
         onSelect={() => {
-          navigate(href('/qr-koder'));
+          navigate(linkOptions({ to: '/qr-koder' }));
           closeMenu();
         }}>
         QR-Generator
       </CommandItem>
       <CommandItem
         onSelect={() => {
-          navigate(href('/kokebok/:studyId?/:classId?'));
+          navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }));
           closeMenu();
         }}>
         Kokebok

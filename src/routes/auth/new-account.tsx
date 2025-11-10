@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
 import FEIDE_ICON from '~/assets/icons/feide.svg';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import Page from '~/components/navigation/Page';
@@ -5,9 +6,11 @@ import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import Expandable from '~/components/ui/expandable';
 import { FEIDE_AUTH_STATE, FEIDE_AUTH_URL, FEIDE_CLIENT_ID, FEIDE_REDIRECT_URI } from '~/constant';
-import URLS from '~/URLS';
 import { Info } from 'lucide-react';
-import { Link } from 'react-router';
+
+export const Route = createFileRoute('/_MainLayout/ny-bruker/')({
+  component: SignUpOptions,
+});
 
 const ExternalLink = ({ text, href }: { text: string; href: string }) => {
   return (
@@ -17,7 +20,7 @@ const ExternalLink = ({ text, href }: { text: string; href: string }) => {
   );
 };
 
-const SignUpOptions = () => {
+function SignUpOptions() {
   const createFeideSession = () => {
     const url = `${FEIDE_AUTH_URL}?client_id=${FEIDE_CLIENT_ID}&response_type=code&redirect_uri=${FEIDE_REDIRECT_URI}&scope=openid&state=${FEIDE_AUTH_STATE}`;
 
@@ -67,7 +70,7 @@ const SignUpOptions = () => {
               Feide
             </Button>
             <Button asChild className='w-full' size='lg' variant='outline'>
-              <Link to={URLS.signupForm}>
+              <Link to='/ny-bruker/skjema'>
                 <TihldeLogo className='m-0 w-6 h-6 mr-2' size='small' />
                 Manuelt
               </Link>
@@ -77,6 +80,4 @@ const SignUpOptions = () => {
       </Card>
     </Page>
   );
-};
-
-export default SignUpOptions;
+}

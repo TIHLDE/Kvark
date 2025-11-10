@@ -1,6 +1,8 @@
+import { createFileRoute, redirect, useParams } from '@tanstack/react-router';
 import { authClient, createLoginRedirectUrl } from '~/api/auth';
 import { QRButton } from '~/components/miscellaneous/QRButton';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
@@ -9,7 +11,6 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { useHavePermission, useLogout, useUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
-import Http404 from '~/pages/Http404';
 import ProfileAdmin from '~/pages/Profile/components/ProfileAdmin';
 import ProfileBadges from '~/pages/Profile/components/ProfileBadges';
 import ProfileEvents from '~/pages/Profile/components/ProfileEvents';
@@ -33,21 +34,22 @@ import {
   UsersIcon,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { redirect, useParams } from 'react-router';
 
-import { Route } from './+types';
 import EditBioButton from './components/BioEditor/EditBioButton';
 
-export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
-  const auth = await authClient();
-  // If trying to access your own profile without being logged in, redirect to login page
-  if (!params.userId && !auth) {
-    return redirect(createLoginRedirectUrl(request));
-  }
-}
+export const Route = createFileRoute('/_MainLayout/profil/{-$userId}')({
+  async beforeLoad({ params, location }) {
+    const auth = await authClient();
+    // If trying to access your own profile without being logged in, redirect to login page
+    if (!params.userId && !auth) {
+      throw redirect(createLoginRedirectUrl(location.href));
+    }
+  },
+  component: Profile,
+});
 
-const Profile = () => {
-  const { userId } = useParams();
+function Profile() {
+  const { userId } = useParams({ strict: false });
   const { data: user, isError } = useUser(userId);
   const { event } = useAnalytics();
   const logout = useLogout();
@@ -182,8 +184,8 @@ const Profile = () => {
         </div>
         <div className='col-span-4'>
           {tab === eventTab.label && <ProfileEvents />}
-          {tab === badgesTab.label && <ProfileBadges />}
-          {tab === groupsTab.label && <ProfileGroups />}
+          {tab === badgesTab.label && <ProfileBadges userId={userId} />}
+          {tab === groupsTab.label && <ProfileGroups userId={userId} />}
           {tab === formsTab.label && <ProfileForms />}
           {tab === strikesTab.label && <ProfileStrikes />}
           {tab === settingsTab.label && user && <ProfileSettings user={user} />}
@@ -192,6 +194,6 @@ const Profile = () => {
       </div>
     </Page>
   );
-};
+}
 
 export default Profile;

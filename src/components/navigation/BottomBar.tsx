@@ -1,3 +1,4 @@
+import { Link, LinkOptions, linkOptions } from '@tanstack/react-router';
 import Logo from '~/components/miscellaneous/TihldeLogo';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
@@ -7,14 +8,11 @@ import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
 import { useState } from 'react';
-import { href, Link } from 'react-router';
-
-import NavLink from '../ui/navlink';
 
 type Item = {
   icon: React.ReactNode;
   text: string;
-  to: string;
+  to: LinkOptions;
 };
 
 export type BottomBarProps = {
@@ -30,22 +28,22 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
     {
       icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
-      to: href('/'),
+      to: linkOptions({ to: '/' }),
     },
     {
       icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
-      to: href('/arrangementer'),
+      to: linkOptions({ to: '/arrangementer' }),
     },
     {
       icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Nyheter',
-      to: href('/nyheter'),
+      to: linkOptions({ to: '/nyheter' }),
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Stillinger',
-      to: href('/stillingsannonser'),
+      to: linkOptions({ to: '/stillingsannonser' }),
     },
   ];
 
@@ -57,7 +55,7 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
       )}>
       <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
-          <Link className='text-center' key={index} to={action.to}>
+          <Link key={index} {...action.to} className='text-center'>
             {action.icon}
             <p className='text-xs'>{action.text}</p>
           </Link>
@@ -105,15 +103,15 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
               </div>
 
               {isAuthenticated && (
-                <NavLink onClick={() => setMenuOpen(false)} to='/profil/:userId?'>
+                <Link onClick={() => setMenuOpen(false)} to='/profil/{-$userId}'>
                   Min profil
-                </NavLink>
+                </Link>
               )}
 
               {!isAuthenticated && (
-                <NavLink onClick={() => setMenuOpen(false)} to='/logg-inn'>
+                <Link onClick={() => setMenuOpen(false)} to='/logg-inn'>
                   Logg inn
-                </NavLink>
+                </Link>
               )}
             </Accordion>
           </DrawerContent>
