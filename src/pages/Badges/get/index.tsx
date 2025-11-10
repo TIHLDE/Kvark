@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_MainLayout/badges/_index/erverv/{-$badgeId}')({
-  component: BadgesGet,
   async beforeLoad({ location }) {
     await authClientWithRedirect(location.href);
   },
+  component: BadgesGet,
 });
 
 export default function BadgesGet() {

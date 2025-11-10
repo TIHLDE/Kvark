@@ -27,7 +27,6 @@ import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-a
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
 import { Route as DotRoutesAuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as DotPagesBadgesIndexRouteImport } from './pages/Badges/index'
-import { Route as DotPagesWikiIndexRouteImport } from './pages/Wiki/index'
 import { Route as DotPagesFormIndexRouteImport } from './pages/Form/index'
 import { Route as DotPagesProfileIndexRouteImport } from './pages/Profile/index'
 import { Route as DotPagesSignUpIndexRouteImport } from './pages/SignUp/index'
@@ -154,11 +153,6 @@ const DotRoutesAuthForgotPasswordRoute =
 const DotPagesBadgesIndexRoute = DotPagesBadgesIndexRouteImport.update({
   id: '/_index',
   getParentRoute: () => MainLayoutBadgesRoute,
-} as any)
-const DotPagesWikiIndexRoute = DotPagesWikiIndexRouteImport.update({
-  id: '/wiki/*',
-  path: '/wiki/*',
-  getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesFormIndexRoute = DotPagesFormIndexRouteImport.update({
   id: '/sporreskjema/$id',
@@ -408,7 +402,6 @@ export interface FileRoutesByFullPath {
   '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/wiki/*': typeof DotPagesWikiIndexRoute
   '/badges/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
   '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
   '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
@@ -463,7 +456,6 @@ export interface FileRoutesByTo {
   '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/wiki/*': typeof DotPagesWikiIndexRoute
   '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
   '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
   '/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
@@ -520,7 +512,6 @@ export interface FileRoutesById {
   '/_MainLayout/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/_MainLayout/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/_MainLayout/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/_MainLayout/wiki/*': typeof DotPagesWikiIndexRoute
   '/_MainLayout/badges/_index/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
   '/_MainLayout/badges/_index/alle': typeof DotPagesBadgesOverviewBadgesListRoute
   '/_MainLayout/badges/_index/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
@@ -578,7 +569,6 @@ export interface FileRouteTypes {
     | '/ny-bruker/skjema'
     | '/profil/{-$userId}'
     | '/sporreskjema/$id'
-    | '/wiki/*'
     | '/badges/'
     | '/badges/alle'
     | '/badges/kategorier'
@@ -633,7 +623,6 @@ export interface FileRouteTypes {
     | '/ny-bruker/skjema'
     | '/profil/{-$userId}'
     | '/sporreskjema/$id'
-    | '/wiki/*'
     | '/badges/alle'
     | '/badges/kategorier'
     | '/sporreskjema/admin/$id'
@@ -689,7 +678,6 @@ export interface FileRouteTypes {
     | '/_MainLayout/ny-bruker/skjema'
     | '/_MainLayout/profil/{-$userId}'
     | '/_MainLayout/sporreskjema/$id'
-    | '/_MainLayout/wiki/*'
     | '/_MainLayout/badges/_index/'
     | '/_MainLayout/badges/_index/alle'
     | '/_MainLayout/badges/_index/kategorier'
@@ -839,13 +827,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/badges'
       preLoaderRoute: typeof DotPagesBadgesIndexRouteImport
       parentRoute: typeof MainLayoutBadgesRoute
-    }
-    '/_MainLayout/wiki/*': {
-      id: '/_MainLayout/wiki/*'
-      path: '/wiki/*'
-      fullPath: '/wiki/*'
-      preLoaderRoute: typeof DotPagesWikiIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/sporreskjema/$id': {
       id: '/_MainLayout/sporreskjema/$id'
@@ -1234,7 +1215,6 @@ interface DotPagesMainLayoutRouteChildren {
   MainLayoutBadgesRoute: typeof MainLayoutBadgesRouteWithChildren
   DotPagesProfileIndexRoute: typeof DotPagesProfileIndexRoute
   DotPagesFormIndexRoute: typeof DotPagesFormIndexRoute
-  DotPagesWikiIndexRoute: typeof DotPagesWikiIndexRoute
   DotPagesFormFormAdminRoute: typeof DotPagesFormFormAdminRoute
   DotPagesEventAdministrationIndexRoute: typeof DotPagesEventAdministrationIndexRoute
   DotPagesNewsAdministrationIndexRoute: typeof DotPagesNewsAdministrationIndexRoute
@@ -1278,7 +1258,6 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   MainLayoutBadgesRoute: MainLayoutBadgesRouteWithChildren,
   DotPagesProfileIndexRoute: DotPagesProfileIndexRoute,
   DotPagesFormIndexRoute: DotPagesFormIndexRoute,
-  DotPagesWikiIndexRoute: DotPagesWikiIndexRoute,
   DotPagesFormFormAdminRoute: DotPagesFormFormAdminRoute,
   DotPagesEventAdministrationIndexRoute: DotPagesEventAdministrationIndexRoute,
   DotPagesNewsAdministrationIndexRoute: DotPagesNewsAdministrationIndexRoute,

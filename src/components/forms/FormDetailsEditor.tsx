@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import FormInput from '~/components/inputs/Input';
 import { FormDetailSwitch } from '~/components/inputs/Switch';
 import FormTextarea from '~/components/inputs/Textarea';
@@ -25,14 +25,14 @@ export type FormDetailsEditorProps = {
 
 const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) => {
   const deleteForm = useDeleteForm(form.id);
-  const navigateTo = useNavigate();
+  const router = useRouter();
 
   const deleteFormHandler = () =>
     deleteForm.mutate(undefined, {
       onSuccess: () => {
         toast.success('Skjema ble slettet');
         if (navigate) {
-          navigateTo({});
+          router.history.go(-1);
         }
       },
       onError: (e) => {

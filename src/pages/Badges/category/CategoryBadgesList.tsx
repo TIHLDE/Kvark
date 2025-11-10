@@ -9,10 +9,10 @@ import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
 export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId/badges')({
-  component: CategoryBadgesList,
   async beforeLoad({ location }) {
     await authClientWithRedirect(location.href);
   },
+  component: CategoryBadgesList,
 });
 
 function CategoryBadgesList() {

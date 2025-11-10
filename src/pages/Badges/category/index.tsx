@@ -6,10 +6,10 @@ import { useBadgeCategory } from '~/hooks/Badge';
 import { BarChart2, LucideIcon, Trophy } from 'lucide-react';
 
 export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId')({
-  component: BadgeCategory,
   async beforeLoad({ location }) {
     await authClientWithRedirect(location.href);
   },
+  component: BadgeCategory,
 });
 
 function BadgeCategory() {

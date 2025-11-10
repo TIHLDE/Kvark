@@ -23,7 +23,19 @@ export const Route = createFileRoute('/_MainLayout/admin/bannere')({
       throw redirect({ to: '/' });
     }
   },
-  component: InfoBannerAdmin,
+  component: () => (
+    <Page className='max-w-5xl w-full mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Banner admin</CardTitle>
+          <CardDescription>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <InfoBannerAdmin />
+        </CardContent>
+      </Card>
+    </Page>
+  ),
 });
 
 type Filters = {
@@ -99,21 +111,3 @@ function InfoBannerAdmin() {
     </div>
   );
 }
-
-const CreateInfoBannerAdminDialog = () => {
-  return (
-    <Page className='max-w-5xl w-full mx-auto'>
-      <Card>
-        <CardHeader>
-          <CardTitle>Banner admin</CardTitle>
-          <CardDescription>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <InfoBannerAdmin />
-        </CardContent>
-      </Card>
-    </Page>
-  );
-};
-
-export default CreateInfoBannerAdminDialog;
