@@ -81,7 +81,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.39.1",
     "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
     "@posthog/cli": "^0.4.8",
     "@tanstack/router-plugin": "^1.132.27",
