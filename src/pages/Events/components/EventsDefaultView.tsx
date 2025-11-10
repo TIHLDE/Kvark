@@ -72,7 +72,7 @@ const EventsDefaultView = () => {
     form.setValue('user_favorite', false);
     form.setValue('open_for_sign_up', false);
     setFilters({ expired: false, open_for_sign_up: false, user_favorite: false });
-    navigate({ to: `${location.pathname}${argsToParams({ expired: false })}` });
+    navigate({ href: `${location.pathname}${argsToParams({ expired: false })}`, replace: true });
   };
 
   const search = (values: z.infer<typeof formSchema>) => {

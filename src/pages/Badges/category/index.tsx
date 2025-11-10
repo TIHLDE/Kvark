@@ -40,7 +40,8 @@ function TabLink({ label, Icon, ...linkOpts }: LinkOptions & { label: string; Ic
   return (
     <Link
       {...linkOpts}
-      className={`flex items-center space-x-2 p-2 ${location.pathname === linkOpts.href ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground'}`}>
+      activeOptions={{ exact: true }}
+      className={`flex items-center space-x-2 p-2 text-muted-foreground [&.active]:text-black dark:[&.active]:text-white! [&.active]:border-b [&.active]:border-primary`}>
       {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
       <h1>{label}</h1>
     </Link>

@@ -17,7 +17,9 @@ function Layout() {
 }
 
 function Skeleton() {
-  <Navigation>
-    <ShortCutMenu />
-  </Navigation>;
+  return (
+    <Navigation>
+      <ShortCutMenu />
+    </Navigation>
+  );
 }
