@@ -14,7 +14,7 @@ type FetchProps = {
   file?: File | File[] | Blob;
 };
 
-export const IFetch = async <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {
@@ -22,10 +22,7 @@ export const IFetch = async <T extends unknown>({ method, url, data = {}, withAu
   }
 
   if (withAuth) {
-    const token = await getCookie(ACCESS_TOKEN);
-    if (token) {
-      headers.append(TOKEN_HEADER_NAME, token);
-    }
+    headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
   }
 
   return fetch(request(method, urlAddress, headers, data, file)).then((response) => {

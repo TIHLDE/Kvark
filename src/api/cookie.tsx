@@ -1,34 +1,20 @@
+import { createIsomorphicFn } from '@tanstack/react-start';
+import { deleteCookie as tsr_deleteCookie, getCookie as tsr_getCookie, setCookie as tsr_setCookie } from '@tanstack/react-start/server';
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-export async function getCookie(key: string): Promise<string | undefined> {
-  if (import.meta.env.SSR) {
-    const { getCookie: tsr_getCookie } = await import('@tanstack/react-start/server');
-    return tsr_getCookie(key);
-  }
+const DEFAULT_DURATION = 3600 * 24000 * 30;
+const cookieOptions = (duration: number) => ({ path: '/', expires: new Date(Date.now() + duration) });
 
-  return cookies.get(key);
-}
+export const getCookie: (key: string) => string | undefined = createIsomorphicFn()
+  .client((key: string) => cookies.get(key))
+  .server((key: string) => tsr_getCookie(key));
 
-export async function setCookie(key: string, value: string, duration = 3600 * 24000 * 30) {
-  const cookieOptions = {
-    path: '/',
-    expires: new Date(Date.now() + duration),
-  } as const;
+export const setCookie: (key: string, value: string, duration?: number) => void = createIsomorphicFn()
+  .client((key: string, value: string, duration = DEFAULT_DURATION) => cookies.set(key, value, cookieOptions(duration)))
+  .server((key: string, value: string, duration = DEFAULT_DURATION) => tsr_setCookie(key, value, cookieOptions(duration)));
 
-  if (import.meta.env.SSR) {
-    const { setCookie: tsr_setCookie } = await import('@tanstack/react-start/server');
-    return tsr_setCookie(key, value, cookieOptions);
-  }
-
-  cookies.set(key, value, cookieOptions);
-}
-
-export async function removeCookie(key: string) {
-  if (import.meta.env.SSR) {
-    const { setCookie: tsr_setCookie } = await import('@tanstack/react-start/server');
-    return tsr_setCookie(key, '', { path: '/', expires: new Date(0) });
-  }
-  cookies.remove(key, { path: '/' });
-}
+export const removeCookie: (key: string) => void = createIsomorphicFn()
+  .client((key: string) => cookies.remove(key))
+  .server((key: string) => tsr_deleteCookie(key));

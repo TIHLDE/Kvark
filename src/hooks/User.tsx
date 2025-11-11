@@ -60,7 +60,8 @@ export const useUser = (userId?: User['user_id'], options: { enabled?: boolean }
 
   useEffect(() => {
     if (query.isError && !userId) {
-      logOut().then(() => window.location.reload());
+      logOut();
+      window.location.reload();
     }
   }, [query.isError, userId, logOut]);
 
@@ -173,8 +174,8 @@ export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestRespo
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ username, password }) => API.authenticate(username, password),
-    onSuccess: async (data) => {
-      await setCookie(ACCESS_TOKEN, data.token);
+    onSuccess: (data) => {
+      setCookie(ACCESS_TOKEN, data.token);
       queryClient.removeQueries();
       queryClient.prefetchQuery({ queryKey: [USER_QUERY_KEY], queryFn: () => API.getUserData() });
     },
@@ -189,8 +190,8 @@ export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestR
 export const useLogout = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  return async () => {
-    await removeCookie(ACCESS_TOKEN);
+  return () => {
+    removeCookie(ACCESS_TOKEN);
     queryClient.removeQueries();
     navigate({ to: '/' });
   };

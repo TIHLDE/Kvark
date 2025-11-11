@@ -42,7 +42,7 @@ export const authQueryOptions = queryOptions({
   queryKey: ['auth'],
   staleTime: 1000 * 60 * 2, // 2 minutes we want to check this frequently
   async queryFn() {
-    const token = await getCookie(ACCESS_TOKEN);
+    const token = getCookie(ACCESS_TOKEN);
 
     if (!token) {
       return null; // Not allowed to set undefiened in the cache
@@ -82,7 +82,7 @@ export const authQueryOptions = queryOptions({
  * @returns auth object with user and permissions
  */
 export async function authClient() {
-  const token = await getCookie(ACCESS_TOKEN);
+  const token = getCookie(ACCESS_TOKEN);
   if (!token) {
     return undefined;
   }
@@ -114,7 +114,7 @@ export async function loginUser(username: string, password: string) {
     throw { detail: 'Noe er galt' } satisfies RequestResponse;
   }
 
-  await setCookie(ACCESS_TOKEN, token);
+  setCookie(ACCESS_TOKEN, token);
   getQueryClient().removeQueries();
   const auth = await authClient();
   if (!auth) {

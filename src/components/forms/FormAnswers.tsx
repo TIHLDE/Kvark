@@ -56,7 +56,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     try {
       const headers = new Headers();
       headers.append('Accept', 'text/csv');
-      headers.append(TOKEN_HEADER_NAME, (await getCookie(ACCESS_TOKEN)) ?? '');
+      headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
       const response = await fetch(`${TIHLDE_API_URL}${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/download/`, {
         headers,
         method: 'GET',
