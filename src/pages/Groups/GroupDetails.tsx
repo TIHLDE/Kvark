@@ -6,8 +6,8 @@ import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { getGroupQueryOptions } from '~/hooks/Group';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import { cn } from '~/lib/utils';
-import { getQueryClient } from '~/queryClient';
 import { FormGroupValues } from '~/types';
 import { GroupType } from '~/types/Enums';
 import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
@@ -16,6 +16,7 @@ import GroupAdmin from './components/GroupAdmin';
 import AddFineDialog from './fines/AddFineDialog';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug')({
+  ssr: false,
   loader: async ({ params }) => {
     const auth = await authClient();
     const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));

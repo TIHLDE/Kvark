@@ -25,8 +25,10 @@ function SignUpFeide() {
     try {
       const user = await API.feideAuthenticate(code);
       setCreatedUser(user.detail as unknown as User);
-    } catch (error) {
-      setFeideError(error.detail || 'En feil oppstod under autentisering, vennligst prøv igjen.');
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error != null) {
+        setFeideError((error as { detail?: string }).detail || 'En feil oppstod under autentisering, vennligst prøv igjen.');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 import CreateToddelDialog from './components/CreateToddelDialog';
 
 export const Route = createFileRoute('/_MainLayout/toddel')({
+  ssr: false,
   component: ToddelPage,
 });
 

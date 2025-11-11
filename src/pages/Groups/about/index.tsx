@@ -3,9 +3,9 @@ import { authClient, userHasWritePermission } from '~/api/auth';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
 import { getGroupQueryOptions } from '~/hooks/Group';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
-import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 
 import GroupStatistics from '../components/GroupStatistics';

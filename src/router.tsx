@@ -1,34 +1,50 @@
-import { createRouter, RouterProvider } from '@tanstack/react-router';
+import { createRouter } from '@tanstack/react-router';
+import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
 import API from '~/api/api';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
-import { getQueryClient, ReactQueryProvider } from '~/queryClient';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
-import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '~/hooks/Theme';
+import { PostHogProvider } from '~/integrations/posthog';
+import * as TanstackQuery from '~/integrations/tanstack-query';
 
 import { routeTree } from './routeTree.gen';
 
 import './assets/css/index.css';
 
-import { ThemeProvider } from './hooks/Theme';
+export function getRouter() {
+  const queryContext = TanstackQuery.getContext();
 
-// Set up a Router instance
-const router = createRouter({
-  routeTree,
-  context: {
-    queryClient: getQueryClient(),
-  },
-  defaultPreload: 'intent',
-  // Since we're using React Query, we don't want loader calls to ever be stale
-  // This will ensure that the loader is always called when the route is preloaded or visited
-  defaultPreloadStaleTime: 0,
-  scrollRestoration: true,
-});
+  // Set up a Router instance
+  const router = createRouter({
+    routeTree,
+    context: { ...queryContext },
+    defaultPreload: 'intent',
+    // Since we're using React Query, we don't want loader calls to ever be stale
+    // This will ensure that the loader is always called when the route is preloaded or visited
+    defaultPreloadStaleTime: 0,
+    scrollRestoration: true,
+    Wrap: (props: { children: React.ReactNode }) => {
+      return (
+        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+          <PostHogProvider>
+            <TanstackQuery.Provider {...queryContext}>{props.children}</TanstackQuery.Provider>
+          </PostHogProvider>
+        </ThemeProvider>
+      );
+    },
+  });
+
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient: queryContext.queryClient,
+  });
+
+  return router;
+}
 
 // Register things for typesafety
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router;
+    router: ReturnType<typeof getRouter>;
   }
 }
 
@@ -43,29 +59,15 @@ declare module '@tanstack/react-router' {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).__INDEX_ASCII_ART__ = true;
 
-  // Initialize PostHog
-
-  posthog.init(import.meta.env.VITE_POSTHOG_API_KEY ?? 'fake token', {
-    defaults: '2025-05-24',
-    api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
-    loaded: (posthog) => {
-      if (import.meta.env.DEV) {
-        // Disable capturing in development
-        posthog.opt_out_capturing();
-      }
-    },
-    debug: import.meta.env.DEV,
-  });
-
   if (import.meta.env.DEV) {
     (async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).tihldeDev = {
         analyticsEvent: (await import('~/hooks/Utils')).analyticsEvent,
-        getQueryClient,
+        getQueryClient: TanstackQuery.getQueryClient,
         API: (await import('~/api/api')).default,
         URLS: (await import('~/URLS')).default,
-        posthog,
+        posthog: (await import('posthog-js')).default,
       };
     })();
   }
@@ -102,16 +104,3 @@ declare module '@tanstack/react-router' {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).badge = rickroll;
 })();
-
-const rootElement = document.getElementById('app')!;
-
-const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-    <PostHogProvider client={posthog}>
-      <ReactQueryProvider>
-        <RouterProvider router={router} />
-      </ReactQueryProvider>
-    </PostHogProvider>
-  </ThemeProvider>,
-);

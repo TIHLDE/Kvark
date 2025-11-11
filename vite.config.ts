@@ -1,18 +1,23 @@
 import tailwindcss from '@tailwindcss/vite';
-import { tanstackRouter } from '@tanstack/router-plugin/vite';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
+import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
-    tailwindcss(),
-    tsconfigPaths(),
-    tanstackRouter({
-      target: 'react',
-      virtualRouteConfig: './src/routes.ts',
-      routesDirectory: './src',
+    tsconfigPaths({
+      projects: ['./tsconfig.json'],
     }),
+    tanstackStart({
+      router: {
+        routesDirectory: '',
+        virtualRouteConfig: './src/routes.ts',
+      },
+    }),
+    nitro(),
+    tailwindcss(),
     react(),
   ],
   build: {

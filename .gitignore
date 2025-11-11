@@ -38,6 +38,8 @@ debug.log
 .react-router/
 build/
 dist/
+.output/
+.tanstack/
 
 # Vercel
 /.vercel/

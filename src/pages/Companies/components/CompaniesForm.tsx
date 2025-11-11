@@ -70,7 +70,13 @@ const CompaniesForm = () => {
       toast.success(response.detail);
       form.reset();
     } catch (e) {
-      form.setError('bedrift', { message: e.detail || 'Noe gikk galt' });
+      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+        toast.error(e.detail);
+        form.setError('bedrift', { message: e.detail });
+      } else {
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+        form.setError('bedrift', { message: 'Noe gikk galt' });
+      }
     } finally {
       setIsLoading(false);
     }

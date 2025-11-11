@@ -1,6 +1,6 @@
 import { getCookie } from '~/api/cookie';
 import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
-import type { RequestResponse } from '~/types';
+import { RequestErrorResponse, type RequestResponse } from '~/types';
 import { argsToParams } from '~/utils';
 
 type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -14,7 +14,7 @@ type FetchProps = {
   file?: File | File[] | Blob;
 };
 
-export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = async <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {
@@ -22,7 +22,10 @@ export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = t
   }
 
   if (withAuth) {
-    headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
+    const token = await getCookie(ACCESS_TOKEN);
+    if (token) {
+      headers.append(TOKEN_HEADER_NAME, token);
+    }
   }
 
   return fetch(request(method, urlAddress, headers, data, file)).then((response) => {
@@ -33,7 +36,7 @@ export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = t
           throw responseData;
         });
       } else {
-        throw { detail: response.statusText } as RequestResponse;
+        throw new RequestErrorResponse(response.statusText);
       }
     }
     return response.json().then((responseData: T) => responseData);

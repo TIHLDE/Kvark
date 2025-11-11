@@ -3,8 +3,8 @@ import Page from '~/components/navigation/Page';
 import Http404 from '~/components/shells/Http404';
 import { galleryByIdQuery, useGalleryById } from '~/hooks/Gallery';
 import { HavePermission } from '~/hooks/User';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import GalleryRenderer, { GalleryRendererLoading } from '~/pages/GalleryDetails/components/GalleryRenderer';
-import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 
 import GalleryEditorDialog from './components/GalleryEditor';

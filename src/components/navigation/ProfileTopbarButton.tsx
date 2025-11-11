@@ -1,13 +1,13 @@
-import { Link, linkOptions } from '@tanstack/react-router';
+import { Link, linkOptions, useLocation } from '@tanstack/react-router';
 import ThemeSettings from '~/components/miscellaneous/ThemeSettings';
 import TopbarNotifications from '~/components/navigation/TopbarNotifications';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
 import { useOptionalAuth } from '~/hooks/auth';
-// import { useAnalytics } from '~/hooks/Utils';
 import { Bug, UserRoundIcon } from 'lucide-react';
 
 const ProfileTopbarButton = () => {
   const { auth } = useOptionalAuth();
+  const location = useLocation();
 
   // TODO: Add analytics back
   // const { event } = useAnalytics();

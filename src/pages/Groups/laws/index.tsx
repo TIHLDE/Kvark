@@ -9,6 +9,7 @@ import LawItem from '~/pages/Groups/laws/LawItem';
 import { Scale } from 'lucide-react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/lovverk')({
+  ssr: false,
   component: GroupLaws,
 });
 

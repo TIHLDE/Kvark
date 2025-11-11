@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
 import { SHOW_FADDERUKA_INFO, SHOW_NEW_STUDENT_INFO } from '~/constant';
 import { useIsAuthenticated, useUser } from '~/hooks/User';
-import { useAnalytics, usePersistedState } from '~/hooks/Utils';
+import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { getYear } from 'date-fns';
 import { ArrowRight, ArrowUpRightFromSquare } from 'lucide-react';
@@ -12,7 +12,6 @@ const NewStudentBox = () => {
   const { event } = useAnalytics();
   const { data: user, isLoading } = useUser();
   const isAuthenticated = useIsAuthenticated();
-  const [shouldShowBox, setShouldShowBox] = usePersistedState('ShowNewStudentBox', true, 1000 * 3600 * 24 * 60);
   const HEADER = {
     NEW_STUDENT: 'Nye studenter',
     OLD_STUDENT: 'Velkommen tilbake',
@@ -38,14 +37,10 @@ const NewStudentBox = () => {
     }
   }, [user, isAuthenticated]);
 
-  if (!SHOW_NEW_STUDENT_INFO || header === '' || !shouldShowBox || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {
+  if (!SHOW_NEW_STUDENT_INFO || header === '' || (isAuthenticated && SHOW_NEW_STUDENT_INFO && !SHOW_FADDERUKA_INFO)) {
     return null;
   }
 
-  const hideBox = () => {
-    setShouldShowBox(false);
-    event('hide-box', 'new-student', 'Hide new student box on landing page');
-  };
   const fadderukaSignupAnalytics = () => event('signup-fadderuka-from-box', 'new-student', 'Clicked on link to signup for fadderuka');
 
   return (
@@ -70,11 +65,11 @@ const NewStudentBox = () => {
           )}
         </div>
       )}
-      {isAuthenticated && (
+      {/* {isAuthenticated && (
         <Button className='w-full' onClick={hideBox} variant='outline'>
           Ikke vis igjen
         </Button>
-      )}
+      )} */}
     </div>
   );
 };

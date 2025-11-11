@@ -103,7 +103,11 @@ function FormPage() {
       validateSubmissionTextInput(data, form);
       validateSubmissionInput(data, form);
     } catch (e) {
-      submitForm.setError(e.message, { message: 'Du må velge ett eller flere alternativ' });
+      if (typeof e === 'object' && e != null && 'message' in e && typeof e.message === 'string') {
+        toast.error(e.message);
+      } else {
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+      }
       setIsLoading(false);
       return;
     }

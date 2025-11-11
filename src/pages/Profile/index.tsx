@@ -38,6 +38,7 @@ import { useEffect, useState } from 'react';
 import EditBioButton from './components/BioEditor/EditBioButton';
 
 export const Route = createFileRoute('/_MainLayout/profil/{-$userId}')({
+  ssr: false,
   async beforeLoad({ params, location }) {
     const auth = await authClient();
     // If trying to access your own profile without being logged in, redirect to login page

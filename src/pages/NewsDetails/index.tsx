@@ -3,8 +3,8 @@ import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
 import Http404 from '~/components/shells/Http404';
 import { newsByIdQuery, useNewsById } from '~/hooks/News';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import NewsRenderer, { NewsRendererLoading } from '~/pages/NewsDetails/components/NewsRenderer';
-import { getQueryClient } from '~/queryClient';
 
 export const Route = createFileRoute('/_MainLayout/nyheter/$id/{-$urlTitle}')({
   loader: async ({ params }) => {

@@ -1,4 +1,3 @@
-import { getCookie, setCookie } from '~/api/cookie';
 import posthogJs from 'posthog-js';
 import { useCallback, useEffect, useMemo, useRef, useState, type EffectCallback } from 'react';
 import { toast } from 'sonner';
@@ -83,32 +82,6 @@ export const useShare = (shareData: globalThis.ShareData, fallbackSnackbar?: str
   };
 
   return { share, hasShared };
-};
-
-/**
- * Persist state by using cookies
- * @param key Cookie-key
- * @param defaultValue Default value of state
- * @param duration How long the cookie should live, default 24h
- */
-export const usePersistedState = <T extends unknown>(key: string, defaultValue: T, duration = 3600 * 24000) => {
-  const COOKIE_KEY = `TIHLDE-${key}`;
-  const [state, setState] = useState<T>(() => {
-    try {
-      if (getCookie(COOKIE_KEY)) {
-        return JSON.parse(getCookie(COOKIE_KEY) as string) as unknown as T;
-      }
-      return defaultValue;
-    } catch {
-      return defaultValue;
-    }
-  });
-
-  useEffect(() => {
-    setCookie(COOKIE_KEY, JSON.stringify(state), duration);
-  }, [COOKIE_KEY, state, duration]);
-
-  return [state, setState] as const;
 };
 
 export const useAnalytics = () => {

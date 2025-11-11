@@ -1,32 +1,29 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    "target": "ES2022",
     "jsx": "react-jsx",
-    "outDir": "./build",
-    // "types": ["vite/client", "vite-plugin-svgr/client", "node"],
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+
+    /* Linting */
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "useUnknownInCatchVariables": false,
-    // New Options react-router v7
-    "rootDirs": ["."],
+    "noUncheckedSideEffectImports": true,
     "paths": {
       "~/*": ["./src/*"],
       "*": ["./src/*"]
     },
-    // Make this true once we have want to make imports more explicit
-    "verbatimModuleSyntax": false
+    "allowJs": false
   },
-  "include": ["**/*", "**/.server/**/*", "**/.client/**/*"]
+  "include": ["**/*.ts", "**/*.tsx", "eslint.config.js", "vite.config.ts"]
 }

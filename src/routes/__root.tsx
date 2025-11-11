@@ -1,13 +1,15 @@
-import '~/assets/css/index.css';
+/// <reference types="vite/client" />
 
-import { QueryClient } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createRootRouteWithContext, HeadContent, Outlet } from '@tanstack/react-router';
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
+import appCss from '~/assets/css/index.css?url';
 import Http404 from '~/components/shells/Http404';
 import { Toaster } from '~/components/ui/sonner';
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
+import * as React from 'react';
 
 const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
 
@@ -35,6 +37,7 @@ export const Route = createRootRouteWithContext<{
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
       },
+      { rel: 'stylesheet', href: appCss },
       ...appleSizes.map((size) => ({
         rel: 'apple-touch-icon',
         sizes: size,
@@ -42,6 +45,9 @@ export const Route = createRootRouteWithContext<{
       })),
     ],
     meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+
       { title: 'TIHLDE' },
       { name: 'description', content: metaData.description },
       { property: 'og:url', content: metaData.url },
@@ -57,23 +63,43 @@ export const Route = createRootRouteWithContext<{
       { property: 'twitter:image', content: metaData.image },
     ],
   }),
-  component: App,
-  notFoundComponent: () => <Http404 />,
+  component: RootComponent,
+  errorComponent: () => <RootDocument></RootDocument>,
+  notFoundComponent: () => (
+    <RootDocument>
+      <Http404 />
+    </RootDocument>
+  ),
 });
 
 async function clientLoader() {
   await authClient();
 }
 
-export default function App() {
+function RootDocument({ children }: React.PropsWithChildren) {
   return (
-    <NuqsAdapter>
-      <HeadContent />
-      <Outlet />
-      <Toaster />
-      <TanStackRouterDevtools initialIsOpen={false} position='bottom-left' />
-      <ReactQueryDevtools initialIsOpen={false} position='bottom' />
-    </NuqsAdapter>
+    <html>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        {children}
+        <Toaster />
+        <TanStackRouterDevtools initialIsOpen={false} position='bottom-left' />
+        <ReactQueryDevtools initialIsOpen={false} position='bottom' />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+function RootComponent() {
+  return (
+    <RootDocument>
+      <NuqsAdapter>
+        <Outlet />
+      </NuqsAdapter>
+    </RootDocument>
   );
 }
 
