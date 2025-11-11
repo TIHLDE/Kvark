@@ -3,18 +3,17 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
 import Page from '~/components/navigation/Page';
 import { eventByIdQuery } from '~/hooks/Event';
-import { getQueryClient } from '~/integrations/tanstack-query';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';
 
 export const Route = createFileRoute('/_MainLayout/arrangementer/$id/{-$urlTitle}')({
-  loader: async ({ params }) => {
+  loader: async ({ params, context }) => {
     const eventId = Number(params.id);
     if (Number.isNaN(eventId) || eventId < 0) {
       throw redirect({ to: '/arrangementer' });
     }
 
     try {
-      const event = await getQueryClient().ensureQueryData(eventByIdQuery(eventId));
+      const event = await context.queryClient.ensureQueryData(eventByIdQuery(eventId));
       if (!event) {
         throw redirect({ to: '/arrangementer' });
       }

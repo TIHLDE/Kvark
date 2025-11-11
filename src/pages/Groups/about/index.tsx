@@ -3,7 +3,6 @@ import { authClient, userHasWritePermission } from '~/api/auth';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
 import { getGroupQueryOptions } from '~/hooks/Group';
-import { getQueryClient } from '~/integrations/tanstack-query';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
 import { PermissionApp } from '~/types/Enums';
@@ -11,9 +10,9 @@ import { PermissionApp } from '~/types/Enums';
 import GroupStatistics from '../components/GroupStatistics';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/')({
-  loader: async ({ params }) => {
+  loader: async ({ params, context }) => {
     const auth = await authClient();
-    const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
+    const group = await context.queryClient.ensureQueryData(getGroupQueryOptions(params.slug));
     return {
       group,
       isAuthenticated: Boolean(auth),

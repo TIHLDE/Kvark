@@ -25,5 +25,5 @@
     },
     "allowJs": false
   },
-  "include": ["**/*.ts", "**/*.tsx", "eslint.config.js", "vite.config.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts"]
 }

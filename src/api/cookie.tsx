@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
-const DEFAULT_DURATION = 3600 * 24000 * 30;
+const DEFAULT_DURATION = 3600 * 24 * 30;
 const cookieOptions = (duration: number) => ({ path: '/', expires: new Date(Date.now() + duration) });
 
 export const getCookie: (key: string) => string | undefined = createIsomorphicFn()

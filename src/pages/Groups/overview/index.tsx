@@ -3,7 +3,6 @@ import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { getGroupsQueryOptions } from '~/hooks/Group';
-import { getQueryClient } from '~/integrations/tanstack-query';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
 import type { GroupList } from '~/types';
 import { GroupType } from '~/types/Enums';
@@ -26,8 +25,8 @@ function getGroupsOverview(groups: GroupList[]) {
 }
 
 export const Route = createFileRoute('/_MainLayout/grupper/')({
-  async loader() {
-    const groups = await getQueryClient().ensureQueryData(getGroupsQueryOptions());
+  async loader({ context }) {
+    const groups = await context.queryClient.ensureQueryData(getGroupsQueryOptions());
     return getGroupsOverview(groups);
   },
   component: GroupsOverview,

@@ -6,7 +6,6 @@ import { GoBackButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { getGroupQueryOptions } from '~/hooks/Group';
-import { getQueryClient } from '~/integrations/tanstack-query';
 import { cn } from '~/lib/utils';
 import { FormGroupValues } from '~/types';
 import { GroupType } from '~/types/Enums';
@@ -17,9 +16,9 @@ import AddFineDialog from './fines/AddFineDialog';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug')({
   ssr: false,
-  loader: async ({ params }) => {
+  loader: async ({ params, context }) => {
     const auth = await authClient();
-    const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
+    const group = await context.queryClient.ensureQueryData(getGroupQueryOptions(params.slug));
 
     return {
       group,

@@ -64,7 +64,19 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   component: RootComponent,
-  errorComponent: () => <RootDocument></RootDocument>,
+  errorComponent: ({ error }) => (
+    <RootDocument>
+      <div className='container mx-auto p-4 pt-16'>
+        <h1 className='text-2xl font-bold'>Something went wrong</h1>
+        <p className='mt-2'>An unexpected error occurred. Please try again later.</p>
+        {import.meta.env.DEV && error instanceof Error && (
+          <pre className='mt-4 p-4 bg-gray-100 rounded overflow-x-auto'>
+            <code>{error.stack}</code>
+          </pre>
+        )}
+      </div>
+    </RootDocument>
+  ),
   notFoundComponent: () => (
     <RootDocument>
       <Http404 />

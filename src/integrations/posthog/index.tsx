@@ -6,7 +6,7 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    posthog.init(import.meta.env.VITE_POSTHOG_API_KEY ?? 'fake token', {
+    posthog.init(import.meta.env.VITE_POSTHOG_API_KEY, {
       defaults: '2025-05-24',
       api_host: import.meta.env.VITE_POSTHOG_HOST || 'https://app.posthog.com',
       loaded: (posthog) => {
