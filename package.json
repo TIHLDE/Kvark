@@ -86,7 +86,7 @@
   "devDependencies": {
     "@eslint/js": "^9.37.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
-    "@posthog/cli": "^0.4.8",
+    "@posthog/cli": "^0.5.10",
     "@tanstack/router-plugin": "^1.132.27",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^22.15.29",
@@ -112,7 +112,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "optionalDependencies": {
-    "@posthog/cli": "^0.4.8"
+    "@posthog/cli": "^0.5.10"
   },
   "engines": {
     "node": ">=22"
