@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import { linkOptions, redirect } from '@tanstack/react-router';
 import { ACCESS_TOKEN } from '~/constant';
-import { getQueryClient } from '~/queryClient';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import { Permissions, RequestResponse, User } from '~/types';
 import { MembershipType, PermissionApp } from '~/types/Enums';
 import { z } from 'zod';

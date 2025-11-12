@@ -3,11 +3,10 @@ import Page from '~/components/navigation/Page';
 import Http404 from '~/components/shells/Http404';
 import { jobPostByIdQuery, useJobPostById } from '~/hooks/JobPost';
 import JobPostRenderer, { JobPostRendererLoading } from '~/pages/JobPostDetails/components/JobPostRenderer';
-import { getQueryClient } from '~/queryClient';
 
 export const Route = createFileRoute('/_MainLayout/stillingsannonser/$id/{-$urlTitle}')({
-  loader: async ({ params }) => {
-    const jobPost = await getQueryClient().ensureQueryData(jobPostByIdQuery(Number(params.id)));
+  loader: async ({ params, context }) => {
+    const jobPost = await context.queryClient.ensureQueryData(jobPostByIdQuery(Number(params.id)));
     return {
       jobPost,
     };

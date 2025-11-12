@@ -4,16 +4,15 @@ import Http404 from '~/components/shells/Http404';
 import { galleryByIdQuery, useGalleryById } from '~/hooks/Gallery';
 import { HavePermission } from '~/hooks/User';
 import GalleryRenderer, { GalleryRendererLoading } from '~/pages/GalleryDetails/components/GalleryRenderer';
-import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 
 import GalleryEditorDialog from './components/GalleryEditor';
 import PictureUpload from './components/PictureUpload';
 
 export const Route = createFileRoute('/_MainLayout/galleri/$id/{-$urlTitle}')({
-  loader: async ({ params }) => {
+  loader: async ({ params, context }) => {
     try {
-      const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
+      const gallery = await context.queryClient.ensureQueryData(galleryByIdQuery(params.id));
       if (!gallery) {
         throw redirect({ to: '/galleri' });
       }

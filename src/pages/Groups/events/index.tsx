@@ -8,6 +8,7 @@ import { useUserPermissions } from '~/hooks/User';
 import { useMemo } from 'react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/arrangementer')({
+  ssr: false,
   component: GroupEvents,
 });
 

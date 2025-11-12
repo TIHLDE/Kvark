@@ -4,11 +4,10 @@ import Page from '~/components/navigation/Page';
 import Http404 from '~/components/shells/Http404';
 import { newsByIdQuery, useNewsById } from '~/hooks/News';
 import NewsRenderer, { NewsRendererLoading } from '~/pages/NewsDetails/components/NewsRenderer';
-import { getQueryClient } from '~/queryClient';
 
 export const Route = createFileRoute('/_MainLayout/nyheter/$id/{-$urlTitle}')({
-  loader: async ({ params }) => {
-    const news = await getQueryClient().ensureQueryData(newsByIdQuery(Number(params.id)));
+  loader: async ({ params, context }) => {
+    const news = await context.queryClient.ensureQueryData(newsByIdQuery(Number(params.id)));
 
     return {
       news,

@@ -26,8 +26,12 @@ export function getQueryClient() {
   }
 }
 
-export function ReactQueryProvider(props: React.PropsWithChildren) {
-  const queryClient = getQueryClient();
+export function getContext() {
+  return {
+    queryClient: getQueryClient(),
+  };
+}
 
-  return <QueryClientProvider client={queryClient}>{props.children}</QueryClientProvider>;
+export function Provider({ children, queryClient }: React.PropsWithChildren<{ queryClient: QueryClient }>) {
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

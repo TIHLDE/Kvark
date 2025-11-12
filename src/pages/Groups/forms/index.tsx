@@ -11,6 +11,7 @@ import type { GroupForm } from '~/types';
 import { ArrowRight, CircleHelp, Eye, Infinity as InfinityIcon, Info, LockOpen, Settings, Users } from 'lucide-react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/sporreskjemaer')({
+  ssr: false,
   component: GroupForms,
 });
 
