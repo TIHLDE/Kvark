@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2025.05.05
 
 - 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
