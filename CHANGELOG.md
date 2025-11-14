@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- 🦟 **Botknapp instant** Gjort funksjonaliteten til markeringen på godkjent knapp på bøter instant
 - 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten. 
 - ⚡ **Index Bug Popup** Fjernet index rydder opp popup-en.
