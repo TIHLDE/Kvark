@@ -26,7 +26,7 @@ const Footer = () => {
   const someAnalytics = (some: string) => event('open', 'social-media', `Click on: ${some}`);
 
   return (
-    <div className='pt-6 pb-32 md:py-20 px-12 md:px-40 bg-transparent text-black dark:text-white border-t space-y-12'>
+    <div className='pt-6 pb-32 md:py-20 px-12 md:px-40 bg-white dark:bg-transparent text-black dark:text-white border-t space-y-12'>
       <div className='flex flex-col space-y-12 lg:space-y-0 lg:flex-row md:justify-between'>
         <div className='order-last lg:order-first space-y-4 lg:w-[250px]'>
           <div className='space-y-1'>
@@ -45,13 +45,15 @@ const Footer = () => {
 
         <div className='space-y-12 lg:max-w-sm w-full'>
           <div className='space-y-4'>
-            <a className='mx-auto' href='https://www.dnv.no/' rel='noopener noreferrer' target='_blank'>
-              <img
-                alt='Sponsor'
-                className='w-60 md:w-72 mx-auto'
-                loading='lazy'
-                src='https://cdn.onedesign.dnv.com/onedesigncdn/3.7.0/images/DNV_logo_RGB.svg'
-              />
+            <a className='mx-auto flex justify-center' href='https://www.dnv.no/' rel='noopener noreferrer' target='_blank'>
+              <div className='dark:bg-white p-2 w-fit rounded-md'>
+                <img
+                  alt='Sponsor'
+                  className='w-60 md:w-72 mx-auto'
+                  loading='lazy'
+                  src='https://cdn.onedesign.dnv.com/onedesigncdn/3.7.0/images/DNV_logo_RGB.svg'
+                />
+              </div>
             </a>
             <h1 className='mt-5 text-lg text-center'>Hovedsamarbeidspartner</h1>
           </div>
