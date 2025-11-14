@@ -1,45 +1,35 @@
-import DISCORD from '~/assets/icons/discord.svg';
-import FACEBOOK from '~/assets/icons/facebook.svg';
-import INSTAGRAM from '~/assets/icons/instagram.svg';
-import NOTION from '~/assets/icons/notion.svg';
-import VERCEL from '~/assets/icons/vercel.svg';
 import NITO from '~/assets/img/nito.svg';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
 import URLS from '~/URLS';
 import { href, Link } from 'react-router';
 
-// import SNAPCHAT from '~/assets/icons/snapchat.svg';
-// import TWITTER from '~/assets/icons/twitter.svg';
-// import MAINSPONSOR from '~/assets/img/mainSponsor.svg';
+import { DiscordIcon, FacebookIcon, InstagramIcon, NotionIcon } from '../icons';
+
+const mediaList = [
+  { Icon: FacebookIcon, link: 'https://www.facebook.com/tihlde/' },
+  { Icon: InstagramIcon, link: 'https://www.instagram.com/tihlde/' },
+  { Icon: NotionIcon, link: 'https://www.notion.so/tihlde/invite/442710f897b596ecd4f8e078cb25fcf76045125a' },
+  { Icon: DiscordIcon, link: 'https://discord.gg/HNt5XQdyxy' },
+];
+
+const attributes = [
+  { key: 'e-post', value: 'hs@tihlde.org' },
+  { key: 'lokasjon', value: 'c/o IDI NTNU' },
+  { key: 'organisasjonsnummer', value: '989 684 183' },
+];
 
 const Footer = () => {
   const { event } = useAnalytics();
 
-  const mediaList = [
-    { img: FACEBOOK, link: 'https://www.facebook.com/tihlde/' },
-    { img: INSTAGRAM, link: 'https://www.instagram.com/tihlde/' },
-    //{ img: TWITTER, link: 'https://twitter.com/tihlde' },
-    //{ img: SNAPCHAT, link: 'https://www.snapchat.com/add/tihldesnap' },
-    { img: NOTION, link: 'https://www.notion.so/tihlde/invite/442710f897b596ecd4f8e078cb25fcf76045125a' },
-    { img: DISCORD, link: 'https://discord.gg/HNt5XQdyxy' },
-  ];
-
-  const attributes = [
-    { key: 'e-post', value: 'hs@tihlde.org' },
-    { key: 'lokasjon', value: 'c/o IDI NTNU' },
-    { key: 'organisasjonsnummer', value: '989 684 183' },
-  ];
-
   const someAnalytics = (some: string) => event('open', 'social-media', `Click on: ${some}`);
 
   return (
-    <div className='pt-6 pb-32 md:py-20 px-12 md:px-40 bg-[#011830] text-white border-t space-y-12'>
+    <div className='pt-6 pb-32 md:py-20 px-12 md:px-40 bg-transparent text-black dark:text-white border-t space-y-12'>
       <div className='flex flex-col space-y-12 lg:space-y-0 lg:flex-row md:justify-between'>
         <div className='order-last lg:order-first space-y-4 lg:w-[250px]'>
           <div className='space-y-1'>
             <h1 className='text-3xl font-semibold text-center'>Kontakt</h1>
-            <Separator className='bg-white' />
           </div>
           {attributes.map((attribute, index) => (
             <div className='text-center' key={index}>
@@ -53,19 +43,24 @@ const Footer = () => {
         </div>
 
         <div className='space-y-12 lg:max-w-sm w-full'>
-          {/*<div className='space-y-4'>
-            <a className='mx-auto' href='https://www.lysekonsern.no/' rel='noopener noreferrer' target='_blank'>
-              <img alt='Sponsor' className='w-60 md:w-72 mx-auto' loading='lazy' src={MAINSPONSOR} />
+          <div className='space-y-4'>
+            <a className='mx-auto' href='https://www.dnv.no/' rel='noopener noreferrer' target='_blank'>
+              <img
+                alt='Sponsor'
+                className='w-60 md:w-72 mx-auto'
+                loading='lazy'
+                src='https://cdn.onedesign.dnv.com/onedesigncdn/3.7.0/images/DNV_logo_RGB.svg'
+              />
             </a>
-            <h1 className='text-sm text-center'>Hovedsamarbeidspartner</h1>
-          </div>*/}
+            <h1 className='mt-5 text-lg text-center'>Hovedsamarbeidspartner</h1>
+          </div>
 
           <div className='space-y-4'>
-            {/*<Separator className='bg-white' />*/}
-            <div className='grid grid-cols-2 place-items-center gap-y-6 lg:flex lg:mt-32 lg:items-center'>
+            <Separator className='bg-black dark:bg-white' />
+            <div className='grid grid-cols-2 place-items-center gap-y-6 lg:flex lg:items-center'>
               {mediaList.map((media, index) => (
                 <a className='mx-8' href={media.link} key={index} onClick={() => someAnalytics(media.link)} rel='noopener noreferrer' target='_blank'>
-                  <img alt='SoMe' className='w-8' loading='lazy' src={media.img} />
+                  <media.Icon className='size-8 dark:fill-white' />
                 </a>
               ))}
             </div>
@@ -75,20 +70,19 @@ const Footer = () => {
         <div className='lg:w-[250px] pb-12 lg:pb-0'>
           <div className='space-y-1 mb-4'>
             <h1 className='text-3xl font-semibold text-center'>Samarbeid</h1>
-            <Separator className='bg-white' />
           </div>
-          <a href='https://vercel.com/?utm_source=kvark&utm_campaign=oss' rel='noopener noreferrer' target='_blank'>
-            <img alt='Vercel' className='mx-auto' loading='lazy' src={VERCEL} width={150} />
-          </a>
           <a href='https://www.nito.no/' rel='noopener noreferrer' target='_blank'>
-            <img alt='NITO' className='w-20 md:w-28 mx-auto mt-4' loading='lazy' src={NITO} width={150} />
+            <img alt='NITO' className='w-28 md:w-28 mx-auto mt-4' loading='lazy' src={NITO} width={250} />
           </a>
         </div>
       </div>
 
       <div>
         <h1 className='text-center'>
-          Feil på siden? <Link to={href('/tilbakemelding')}>Rapporter til Index</Link>
+          Feil på siden?{' '}
+          <Link className='text-blue-500' to={href('/tilbakemelding')}>
+            Rapporter til Index
+          </Link>
         </h1>
       </div>
     </div>
