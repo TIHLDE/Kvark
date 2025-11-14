@@ -48,7 +48,7 @@ const Footer = () => {
             <a className='mx-auto' href='https://www.dnv.no/' rel='noopener noreferrer' target='_blank'>
               <img
                 alt='Sponsor'
-                className='w-60 md:w-72 mx-auto'
+                className='w-60 md:w-72 mx-auto bg-white p-1'
                 loading='lazy'
                 src='https://cdn.onedesign.dnv.com/onedesigncdn/3.7.0/images/DNV_logo_RGB.svg'
               />
