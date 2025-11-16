@@ -196,5 +196,3 @@ function Profile() {
     </Page>
   );
 }
-
-export default Profile;

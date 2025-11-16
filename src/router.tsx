@@ -24,7 +24,7 @@ export function getRouter() {
     scrollRestoration: true,
     Wrap: (props: { children: React.ReactNode }) => {
       return (
-        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+        <ThemeProvider>
           <PostHogProvider>
             <TanstackQuery.Provider {...queryContext}>{props.children}</TanstackQuery.Provider>
           </PostHogProvider>

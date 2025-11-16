@@ -8,6 +8,7 @@ import { authClient } from '~/api/auth';
 import appCss from '~/assets/css/index.css?url';
 import Http404 from '~/components/shells/Http404';
 import { Toaster } from '~/components/ui/sonner';
+import { useTheme } from '~/hooks/Theme';
 import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 import * as React from 'react';
 
@@ -89,8 +90,9 @@ async function clientLoader() {
 }
 
 function RootDocument({ children }: React.PropsWithChildren) {
+  const { theme } = useTheme();
   return (
-    <html>
+    <html className={theme}>
       <head>
         <HeadContent />
       </head>
