@@ -1,4 +1,4 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
-  "framework": "vite"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nitro"
 }
