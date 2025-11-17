@@ -48,6 +48,10 @@ const Fines = () => {
   } = useGroupUsersFines(slug || '-', finesFilter, { enabled: tab === 'users' });
   const userFines = useMemo(() => (userFinesData ? userFinesData.pages.map((page) => page.results).flat() : []), [userFinesData]);
 
+  const hallOfShameFines = useMemo(() => fines.filter((fine) => fine.starred), [fines]);
+
+  const hallOfShameIsLoading = isLoading;
+
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
 
   if (!slug || !group) {
@@ -149,6 +153,16 @@ const Fines = () => {
             ))}
           </div>
           {userFinesHasNextPage && <PaginateButton className='w-full mt-4' isLoading={userFinesIsFetching} nextPage={userFinesFetchNextPage} />}
+        </TabsContent>
+        <TabsContent value='hallofshame'>
+          {!hallOfShameIsLoading && !hallOfShameFines.length && (
+            <NotFoundIndicator header='Ingen legendariske bøter lagt til enda' subtitle='Marker bøter med stjernen for å legge til i Hall of Shame' />
+          )}
+          <div className='space-y-2'>
+            {hallOfShameFines.map((fine) => (
+              <FineItem fine={fine} groupSlug={group.slug} isAdmin={isAdmin} key={fine.id} />
+            ))}
+          </div>
         </TabsContent>
       </Tabs>
     </div>

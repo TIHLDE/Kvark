@@ -1,7 +1,7 @@
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
-import { useUpdateGroupFine } from '~/hooks/Group';
+import { useUpdateGroupFine, useUpdateGroupFineStarred } from '~/hooks/Group';
 import { useUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
@@ -28,6 +28,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   const { data: user } = useUser();
   const { event } = useAnalytics();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
+
+  const updateStar = useUpdateGroupFineStarred(groupSlug, fine.id);
 
   const toggleApproved = () => {
     event('update', 'fines', `Approved a single fine`);
@@ -61,7 +63,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
 
   const toggleStar = () => {
     event('update', 'fines', 'Starred a fine');
-    updateFine.mutate(
+    updateStar.mutate(
       { starred: !fine.starred },
       {
         onSuccess: () => {
