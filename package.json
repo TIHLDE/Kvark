@@ -14,7 +14,8 @@
     "pre-commit": "lint-staged",
     "format": "prettier --write src",
     "prepare": "husky",
-    "knip": "knip"
+    "knip": "knip",
+    "photon-api": "openapi-ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
@@ -76,6 +77,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@hey-api/openapi-ts": "0.87.5",
     "@ianvs/prettier-plugin-sort-imports": "^4.5.1",
     "@types/canvas-confetti": "^1.6.4",
     "@types/node": "^22.18.0",

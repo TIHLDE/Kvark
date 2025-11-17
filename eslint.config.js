@@ -7,7 +7,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
   files: ['**/*.{js,ts,jsx,tsx}'],
-  ignores: ['**/dist/**', '**/node_modules/**', '**/src/components/ui/**/*', '**/src/lib/utils.ts', '**/src/routeTree.gen.ts'],
+  ignores: ['**/dist/**', '**/node_modules/**', '**/src/components/ui/**/*', '**/src/lib/utils.ts', '**/src/routeTree.gen.ts', '**/src/client/**'],
   extends: [
     eslint.configs.recommended,
     tseslint.configs.recommended,
