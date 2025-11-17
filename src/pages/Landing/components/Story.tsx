@@ -36,19 +36,19 @@ const Story = ({ items }: StoryProps) => {
       if (instanceOfEvent(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.events}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.events}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Arr.',
         });
       } else if (instanceOfJobPost(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.jobposts}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Ann.',
         });
       } else if (instanceOfNews(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.news}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Nyh.',
         });
       }
