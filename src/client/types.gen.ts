@@ -46,7 +46,7 @@ export type GetApiApiKeysResponses = {
     /**
      * When the key was last used
      */
-    lastUsedAt: string | null;
+    lastUsedAt: Date | null;
     /**
      * Array of permissions granted to this API key
      */
@@ -60,11 +60,11 @@ export type GetApiApiKeysResponses = {
     /**
      * When the key was created
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * When the key was last updated
      */
-    updatedAt: string;
+    updatedAt: Date;
   }>;
 };
 
@@ -131,7 +131,7 @@ export type PostApiApiKeysResponses = {
     /**
      * When the key was last used
      */
-    lastUsedAt: string | null;
+    lastUsedAt: Date | null;
     /**
      * Array of permissions granted to this API key
      */
@@ -145,11 +145,11 @@ export type PostApiApiKeysResponses = {
     /**
      * When the key was created
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * When the key was last updated
      */
-    updatedAt: string;
+    updatedAt: Date;
     /**
      * The full API key - ONLY returned on creation and regeneration. Cannot be retrieved again.
      */
@@ -247,7 +247,7 @@ export type GetApiApiKeysIdResponses = {
     /**
      * When the key was last used
      */
-    lastUsedAt: string | null;
+    lastUsedAt: Date | null;
     /**
      * Array of permissions granted to this API key
      */
@@ -261,11 +261,11 @@ export type GetApiApiKeysIdResponses = {
     /**
      * When the key was created
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * When the key was last updated
      */
-    updatedAt: string;
+    updatedAt: Date;
   };
 };
 
@@ -341,7 +341,7 @@ export type PatchApiApiKeysIdResponses = {
     /**
      * When the key was last used
      */
-    lastUsedAt: string | null;
+    lastUsedAt: Date | null;
     /**
      * Array of permissions granted to this API key
      */
@@ -355,11 +355,11 @@ export type PatchApiApiKeysIdResponses = {
     /**
      * When the key was created
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * When the key was last updated
      */
-    updatedAt: string;
+    updatedAt: Date;
   };
 };
 
@@ -416,7 +416,7 @@ export type PostApiApiKeysIdRegenerateResponses = {
     /**
      * When the key was last used
      */
-    lastUsedAt: string | null;
+    lastUsedAt: Date | null;
     /**
      * Array of permissions granted to this API key
      */
@@ -430,11 +430,11 @@ export type PostApiApiKeysIdRegenerateResponses = {
     /**
      * When the key was created
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * When the key was last updated
      */
-    updatedAt: string;
+    updatedAt: Date;
     /**
      * The full API key - ONLY returned on creation and regeneration. Cannot be retrieved again.
      */
@@ -492,7 +492,7 @@ export type PostApiApiKeysValidateResponses = {
       /**
        * When the key was last used
        */
-      lastUsedAt: string | null;
+      lastUsedAt: Date | null;
       /**
        * Array of permissions granted to this API key
        */
@@ -506,11 +506,11 @@ export type PostApiApiKeysValidateResponses = {
       /**
        * When the key was created
        */
-      createdAt: string;
+      createdAt: Date;
       /**
        * When the key was last updated
        */
-      updatedAt: string;
+      updatedAt: Date;
     };
   };
 };
@@ -635,11 +635,11 @@ export type GetApiEventResponses = {
     /**
      * Event start time (ISO 8601)
      */
-    startTime: string;
+    startTime: Date;
     /**
      * Event end time (ISO 8601)
      */
-    endTime: string;
+    endTime: Date;
     /**
      * Event organizer (nullable)
      */
@@ -668,11 +668,11 @@ export type GetApiEventResponses = {
     /**
      * Event creation time (ISO 8601)
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * Event update time (ISO 8601)
      */
-    updatedAt: string;
+    updatedAt: Date;
     /**
      * Event category
      */
@@ -720,23 +720,23 @@ export type PostApiEventData = {
     /**
      * When the event starts
      */
-    start: string;
+    start: Date;
     /**
      * When the event ends
      */
-    end: string;
+    end: Date;
     /**
      * Timestamp for when registrations open. If null, open immediately.
      */
-    registrationStart: string | null;
+    registrationStart: Date | null;
     /**
      * When the registration for the event ends. After this time, users cannot sign up.
      */
-    registrationEnd: string;
+    registrationEnd: Date;
     /**
      * Deadline timestamp for when users cannot cancel anymore. After this, no-shows may receive strikes.
      */
-    cancellationDeadline: string | null;
+    cancellationDeadline: Date | null;
     /**
      * Maximum number of participants allowed. If null, no capacity limit.
      */
@@ -847,23 +847,23 @@ export type PutApiEventIdData = {
     /**
      * When the event starts
      */
-    start?: string;
+    start?: Date;
     /**
      * When the event ends
      */
-    end?: string;
+    end?: Date;
     /**
      * Timestamp for when registrations open. If null, open immediately.
      */
-    registrationStart?: string | null;
+    registrationStart?: Date | null;
     /**
      * When the registration for the event ends. After this time, users cannot sign up.
      */
-    registrationEnd?: string;
+    registrationEnd?: Date;
     /**
      * Deadline timestamp for when users cannot cancel anymore. After this, no-shows may receive strikes.
      */
-    cancellationDeadline?: string | null;
+    cancellationDeadline?: Date | null;
     /**
      * Maximum number of participants allowed. If null, no capacity limit.
      */
@@ -1029,7 +1029,7 @@ export type GetApiEventFavoriteResponses = {
     /**
      * When you added this event to your favorites
      */
-    createdAt: string;
+    createdAt: Date;
   }>;
 };
 
@@ -1808,11 +1808,11 @@ export type GetApiNotificationResponses = {
     /**
      * Notification creation time (ISO 8601)
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * Notification update time (ISO 8601)
      */
-    updatedAt: string;
+    updatedAt: Date;
   }>;
 };
 
@@ -1893,7 +1893,7 @@ export type PatchApiNotificationIdReadResponses = {
     /**
      * Notification update time (ISO 8601)
      */
-    updatedAt: string;
+    updatedAt: Date;
   };
 };
 
@@ -2949,7 +2949,7 @@ export type PostApiJobsData = {
     /**
      * Application deadline
      */
-    deadline?: string;
+    deadline?: Date;
     /**
      * Whether hiring is ongoing
      */
@@ -3063,7 +3063,7 @@ export type PatchApiJobsIdData = {
     body?: string;
     company?: string;
     location?: string;
-    deadline?: string | null;
+    deadline?: Date | null;
     isContinuouslyHiring?: boolean;
     jobType?: 'full_time' | 'part_time' | 'summer_job' | 'other';
     email?: string | null;

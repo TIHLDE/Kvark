@@ -7,5 +7,11 @@ export default defineConfig({
     format: 'prettier',
     lint: 'eslint',
   },
-  plugins: ['@tanstack/react-query'],
+  plugins: [
+    '@tanstack/react-query',
+    {
+      dates: true,
+      name: '@hey-api/transformers',
+    },
+  ],
 });
