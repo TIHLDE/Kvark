@@ -4,12 +4,15 @@ import { NavigationItem } from '~/components/navigation/Navigation';
 import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
 import {
   NavigationMenu,
+  NavigationMenuArrow,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuListItem,
+  NavigationMenuPopup,
+  NavigationMenuPositioner,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from '~/components/ui/navigation-menu';
 import { cn } from '~/lib/utils';
 import URLS from '~/URLS';
@@ -23,15 +26,10 @@ const TopBarItem = (props: NavigationItem) => {
 
     return (
       <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <Link
-            className={cn(
-              'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
-              selected && 'dark:text-white text-muted-foreground font-bold',
-            )}
-            to={props.to}>
-            {props.text}
-          </Link>
+        <NavigationMenuLink
+          render={<Link to={props.to} />}
+          className={cn(navigationMenuTriggerStyle(), selected && 'dark:text-white text-muted-foreground font-bold')}>
+          {props.text}
         </NavigationMenuLink>
       </NavigationMenuItem>
     );
@@ -43,9 +41,10 @@ const TopBarItem = (props: NavigationItem) => {
       <NavigationMenuContent>
         <ul className='grid gap-3 p-6 grid-cols-2 lg:grid-cols-3 md:w-[400px] lg:w-[600px]'>
           {props.items.map((item, index) => (
-            <NavigationMenuListItem href={item.to} key={index} title={item.title}>
-              {item.text}
-            </NavigationMenuListItem>
+            <NavigationMenuLink closeOnClick key={index} render={<Link to={item.to} />}>
+              <div className='text-sm leading-none font-medium'>{item.title}</div>
+              <p className='text-muted-foreground line-clamp-2 text-sm leading-snug'>{item.text}</p>
+            </NavigationMenuLink>
           ))}
         </ul>
       </NavigationMenuContent>
@@ -86,6 +85,11 @@ const Topbar = ({ items }: TopbarProps) => {
                 <TopBarItem key={i} {...item} />
               ))}
             </NavigationMenuList>
+            <NavigationMenuPositioner>
+              <NavigationMenuPopup>
+                <NavigationMenuArrow />
+              </NavigationMenuPopup>
+            </NavigationMenuPositioner>
           </NavigationMenu>
           <div className='flex justify-end'>
             <ProfileTopbarButton />
