@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_MainLayout')({
         <h1 className='text-2xl font-bold'>Something went wrong</h1>
         <p className='mt-2'>An unexpected error occurred. Please try again later.</p>
         {import.meta.env.DEV && error instanceof Error && (
-          <pre className='mt-4 p-4 bg-gray-100 rounded overflow-x-auto'>
+          <pre className='mt-4 p-4 bg-muted rounded overflow-x-auto'>
             <code>{error.stack}</code>
           </pre>
         )}
