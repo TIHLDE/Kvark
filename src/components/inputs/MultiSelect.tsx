@@ -53,7 +53,6 @@ const MultiSelect = ({ onChange, options, setSearch, placeholder = 'Velg bruker.
 
   useEffect(() => {
     onChange?.(selected);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
   return (
