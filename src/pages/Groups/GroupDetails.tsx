@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import { createFileRoute, Link, linkOptions, Outlet } from '@tanstack/react-router';
 import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
@@ -9,7 +9,7 @@ import { getGroupQueryOptions } from '~/hooks/Group';
 import { cn } from '~/lib/utils';
 import { FormGroupValues } from '~/types';
 import { GroupType } from '~/types/Enums';
-import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
+import { CalendarRange, CircleDollarSign, CircleHelp, Info, Scale } from 'lucide-react';
 
 import GroupAdmin from './components/GroupAdmin';
 import AddFineDialog from './fines/AddFineDialog';
@@ -51,11 +51,11 @@ function GroupPage() {
   const showForms = isAuthenticated;
 
   const tabs = [
-    { label: 'Om', to: `/grupper/${group.slug}`, icon: Info },
-    { label: 'Arrangementer', to: `/grupper/${group.slug}/arrangementer`, icon: CalendarRange },
-    { label: 'Bøter', to: `/grupper/${group.slug}/boter`, icon: CircleDollarSign, hidden: !showFinesAndLaws },
-    { label: 'Lovverk', to: `/grupper/${group.slug}/lovverk`, icon: Scale, hidden: !showFinesAndLaws },
-    { label: 'Spørreskjemaer', to: `/grupper/${group.slug}/sporreskjemaer`, icon: CircleHelp, hidden: !showForms },
+    { label: 'Om', link: linkOptions({ to: '/grupper/$slug', params: { slug: group.slug } }), icon: Info },
+    { label: 'Arrangementer', link: linkOptions({ to: '/grupper/$slug/arrangementer', params: { slug: group.slug } }), icon: CalendarRange },
+    { label: 'Bøter', link: linkOptions({ to: '/grupper/$slug/boter', params: { slug: group.slug } }), icon: CircleDollarSign, hidden: !showFinesAndLaws },
+    { label: 'Lovverk', link: linkOptions({ to: '/grupper/$slug/lovverk', params: { slug: group.slug } }), icon: Scale, hidden: !showFinesAndLaws },
+    { label: 'Spørreskjemaer', link: linkOptions({ to: '/grupper/$slug/sporreskjemaer', params: { slug: group.slug } }), icon: CircleHelp, hidden: !showForms },
   ];
 
   return (
@@ -78,7 +78,26 @@ function GroupPage() {
         </CardHeader>
         <CardContent>
           <ScrollArea className='w-full whitespace-nowrap p-0'>
-            <div className='flex w-max space-x-4'>{tabs.map((tab) => !tab.hidden && <TabLink key={tab.label} {...tab} Icon={tab.icon} />)}</div>
+            <div className='flex w-max space-x-4'>
+              {tabs
+                .filter((tab) => !tab.hidden)
+                .map((tab) => (
+                  <Link
+                    {...tab.link}
+                    key={tab.label}
+                    activeOptions={{ exact: true }}
+                    activeProps={{
+                      className: 'active',
+                    }}
+                    className={cn(
+                      'flex items-center space-x-2 p-2 text-muted-foreground',
+                      '[&.active]:text-black [&.active]:dark:text-white [&.active]:border-b [&.active]:border-primary',
+                    )}>
+                    {tab.icon && <tab.icon className='w-5 h-5 stroke-[1.5px]' />}
+                    <h1>{tab.label}</h1>
+                  </Link>
+                ))}
+            </div>
             <ScrollBar orientation='horizontal' />
           </ScrollArea>
           <Outlet />
@@ -87,12 +106,3 @@ function GroupPage() {
     </Page>
   );
 }
-
-const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
-  <Link
-    className={cn('flex items-center space-x-2 p-2', location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground')}
-    to={to}>
-    {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
-    <h1>{label}</h1>
-  </Link>
-);
