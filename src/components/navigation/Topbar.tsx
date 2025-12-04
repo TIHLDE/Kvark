@@ -1,4 +1,4 @@
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
 import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
@@ -12,25 +12,36 @@ import {
   NavigationMenuPopup,
   NavigationMenuPositioner,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from '~/components/ui/navigation-menu';
 import { cn } from '~/lib/utils';
 import URLS from '~/URLS';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { ExternalLink } from '../ui/external-link';
 
 const TopBarItem = (props: NavigationItem) => {
-  const location = useLocation();
-
+  if (props.hidden === true) {
+    return <React.Fragment />;
+  }
   if (props.type === 'link') {
-    const selected = location.pathname === props.to;
+    const linkRender =
+      props.link.type === 'internal' ? (
+        <Link
+          activeProps={{
+            ['data-active']: true,
+          }}
+          activeOptions={{
+            exact: false,
+          }}
+          {...props.link.options}
+        />
+      ) : (
+        <ExternalLink href={props.link.href} />
+      );
 
     return (
       <NavigationMenuItem>
-        <NavigationMenuLink
-          render={<Link to={props.to} />}
-          className={cn(navigationMenuTriggerStyle(), selected && 'dark:text-white text-muted-foreground font-bold')}>
-          {props.text}
-        </NavigationMenuLink>
+        <NavigationMenuLink render={linkRender}>{props.text}</NavigationMenuLink>
       </NavigationMenuItem>
     );
   }
@@ -40,12 +51,32 @@ const TopBarItem = (props: NavigationItem) => {
       <NavigationMenuTrigger>{props.text}</NavigationMenuTrigger>
       <NavigationMenuContent>
         <ul className='grid gap-3 p-6 grid-cols-2 lg:grid-cols-3 md:w-[400px] lg:w-[600px]'>
-          {props.items.map((item, index) => (
-            <NavigationMenuLink closeOnClick key={index} render={<Link to={item.to} />}>
-              <div className='text-sm leading-none font-medium'>{item.title}</div>
-              <p className='text-muted-foreground line-clamp-2 text-sm leading-snug'>{item.text}</p>
-            </NavigationMenuLink>
-          ))}
+          {props.items.map((item, index) => {
+            if (item.hidden === true) {
+              return <React.Fragment key={index} />;
+            }
+
+            const linkRender =
+              item.link.type === 'internal' ? (
+                <Link
+                  activeProps={{
+                    ['data-active']: true,
+                  }}
+                  activeOptions={{
+                    exact: false,
+                  }}
+                  {...item.link.options}
+                />
+              ) : (
+                <ExternalLink href={item.link.href} />
+              );
+            return (
+              <NavigationMenuLink closeOnClick key={index} render={linkRender}>
+                <div className='text-sm leading-none font-medium'>{item.title}</div>
+                <p className='text-muted-foreground line-clamp-2 text-sm leading-snug'>{item.text}</p>
+              </NavigationMenuLink>
+            );
+          })}
         </ul>
       </NavigationMenuContent>
     </NavigationMenuItem>

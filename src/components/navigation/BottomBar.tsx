@@ -7,7 +7,9 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+
+import { ExternalLink } from '../ui/external-link';
 
 type Item = {
   icon: React.ReactNode;
@@ -76,30 +78,48 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
             </DrawerHeader>
             <Accordion className='px-8 space-y-4 mb-32 text-xl' collapsible type='single'>
               <div className='space-y-4 pb-4'>
-                {items.map((item, index) => (
-                  <div key={index}>
-                    {item.type === 'link' && (
-                      <Link onClick={() => setMenuOpen(false)} to={item.to}>
-                        {item.text}
-                      </Link>
-                    )}
+                {items.map((item, index) => {
+                  if (item.hidden === true) {
+                    return <React.Fragment key={index} />;
+                  }
+                  return (
+                    <div key={index}>
+                      {item.type === 'link' && item.link.type === 'internal' && (
+                        <Link {...item.link.options} onClick={() => setMenuOpen(false)}>
+                          {item.text}
+                        </Link>
+                      )}
+                      {item.type === 'link' && item.link.type === 'external' && <ExternalLink href={item.link.href}>{item.text}</ExternalLink>}
 
-                    {item.type === 'dropdown' && (
-                      <AccordionItem className='border-none' value={index.toString()}>
-                        <AccordionTrigger className='py-0 data-[state=open]:pb-2'>{item.text}</AccordionTrigger>
-                        <AccordionContent>
-                          <div className='space-y-2 px-2 text-lg'>
-                            {item.items.map((subItem, subIndex) => (
-                              <Link className='block' key={subIndex} onClick={() => setMenuOpen(false)} to={subItem.to}>
-                                {subItem.title}
-                              </Link>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    )}
-                  </div>
-                ))}
+                      {item.type === 'dropdown' && (
+                        <AccordionItem className='border-none' value={index.toString()}>
+                          <AccordionTrigger className='py-0 data-[state=open]:pb-2'>{item.text}</AccordionTrigger>
+                          <AccordionContent>
+                            <div className='space-y-2 px-2 text-lg'>
+                              {item.items.map((subItem, subIndex) => {
+                                if (subItem.hidden === true) {
+                                  return <React.Fragment key={subIndex} />;
+                                }
+                                if (subItem.link.type === 'external') {
+                                  return (
+                                    <ExternalLink className='block' key={subIndex} href={subItem.link.href}>
+                                      {subItem.title}
+                                    </ExternalLink>
+                                  );
+                                }
+                                return (
+                                  <Link {...subItem.link.options} className='block' key={subIndex} onClick={() => setMenuOpen(false)}>
+                                    {subItem.title}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {isAuthenticated && (
