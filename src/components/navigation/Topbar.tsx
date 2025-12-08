@@ -1,38 +1,47 @@
-import { Link, useLocation } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
 import ProfileTopbarButton from '~/components/navigation/ProfileTopbarButton';
 import {
   NavigationMenu,
+  NavigationMenuArrow,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuListItem,
+  NavigationMenuPopup,
+  NavigationMenuPositioner,
   NavigationMenuTrigger,
 } from '~/components/ui/navigation-menu';
 import { cn } from '~/lib/utils';
 import URLS from '~/URLS';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { ExternalLink } from '../ui/external-link';
 
 const TopBarItem = (props: NavigationItem) => {
-  const location = useLocation();
-
+  if (props.hidden === true) {
+    return <React.Fragment />;
+  }
   if (props.type === 'link') {
-    const selected = location.pathname === props.to;
+    const linkRender =
+      props.link.type === 'internal' ? (
+        <Link
+          activeProps={{
+            ['data-active']: true,
+          }}
+          activeOptions={{
+            exact: false,
+          }}
+          {...props.link.options}
+        />
+      ) : (
+        <ExternalLink href={props.link.href} />
+      );
 
     return (
       <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <Link
-            className={cn(
-              'group inline-flex w-max items-center justify-center rounded-md text-sm font-medium transition-colors dark:text-white/80 dark:hover:text-white disabled:pointer-events-none disabled:opacity-50 data-[state=open]:text-white/80',
-              selected && 'dark:text-white text-muted-foreground font-bold',
-            )}
-            to={props.to}>
-            {props.text}
-          </Link>
-        </NavigationMenuLink>
+        <NavigationMenuLink render={linkRender}>{props.text}</NavigationMenuLink>
       </NavigationMenuItem>
     );
   }
@@ -42,11 +51,32 @@ const TopBarItem = (props: NavigationItem) => {
       <NavigationMenuTrigger>{props.text}</NavigationMenuTrigger>
       <NavigationMenuContent>
         <ul className='grid gap-3 p-6 grid-cols-2 lg:grid-cols-3 md:w-[400px] lg:w-[600px]'>
-          {props.items.map((item, index) => (
-            <NavigationMenuListItem href={item.to} key={index} title={item.title}>
-              {item.text}
-            </NavigationMenuListItem>
-          ))}
+          {props.items.map((item, index) => {
+            if (item.hidden === true) {
+              return <React.Fragment key={index} />;
+            }
+
+            const linkRender =
+              item.link.type === 'internal' ? (
+                <Link
+                  activeProps={{
+                    ['data-active']: true,
+                  }}
+                  activeOptions={{
+                    exact: false,
+                  }}
+                  {...item.link.options}
+                />
+              ) : (
+                <ExternalLink href={item.link.href} />
+              );
+            return (
+              <NavigationMenuLink closeOnClick key={index} render={linkRender}>
+                <div className='text-sm leading-none font-medium'>{item.title}</div>
+                <p className='text-muted-foreground line-clamp-2 text-sm leading-snug'>{item.text}</p>
+              </NavigationMenuLink>
+            );
+          })}
         </ul>
       </NavigationMenuContent>
     </NavigationMenuItem>
@@ -86,6 +116,11 @@ const Topbar = ({ items }: TopbarProps) => {
                 <TopBarItem key={i} {...item} />
               ))}
             </NavigationMenuList>
+            <NavigationMenuPositioner>
+              <NavigationMenuPopup>
+                <NavigationMenuArrow />
+              </NavigationMenuPopup>
+            </NavigationMenuPositioner>
           </NavigationMenu>
           <div className='flex justify-end'>
             <ProfileTopbarButton />

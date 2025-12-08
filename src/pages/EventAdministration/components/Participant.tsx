@@ -6,7 +6,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { Label } from '~/components/ui/label';
 import { Separator } from '~/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipPositioner, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 import { useEventById, useUpdateEventRegistration } from '~/hooks/Event';
 import { useUserStrikes } from '~/hooks/User';
 import { cn } from '~/lib/utils';
@@ -118,9 +118,11 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                   <TooltipTrigger>
                     <HandCoins className={cn('w-5 h-5 stroke-[1.5px]', registration.has_paid_order ? 'text-emerald-700' : 'text-red-700')} />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
-                  </TooltipContent>
+                  <TooltipPositioner>
+                    <TooltipContent>
+                      <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
+                    </TooltipContent>
+                  </TooltipPositioner>
                 </Tooltip>
               </TooltipProvider>
             )}
@@ -130,9 +132,11 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                   <TooltipTrigger>
                     <BadgeCheck className='w-5 h-5 stroke-[1.5px] text-emerald-700' />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Deltager har ankommet</p>
-                  </TooltipContent>
+                  <TooltipPositioner>
+                    <TooltipContent>
+                      <p>Deltager har ankommet</p>
+                    </TooltipContent>
+                  </TooltipPositioner>
                 </Tooltip>
               </TooltipProvider>
             )}

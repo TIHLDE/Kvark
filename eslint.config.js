@@ -35,6 +35,7 @@ export default tseslint.config({
     // React Rules
     'react/prop-types': 'off', // Remove this in the future
     'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'off',
     // Built-in Rules
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'guard-for-in': 'off',

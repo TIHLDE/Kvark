@@ -47,7 +47,6 @@ function QrScan({ onScan }: QrScanProps) {
       return;
     }
     onScan(scanned);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scanned]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
