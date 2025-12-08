@@ -57,7 +57,7 @@
     "lucide-react": "^0.555.0",
     "nitro": "3.0.1-alpha.1",
     "nuqs": "^2.7.2",
-    "posthog-js": "^1.273.1",
+    "posthog-js": "^1.302.2",
     "qr-scanner": "^1.4.2",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.1",
