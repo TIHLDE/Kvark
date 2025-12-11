@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, Link, stripSearchParams, useNavigate } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -9,7 +9,6 @@ import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useConfetti } from '~/hooks/Confetti';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
-import { useRedirectUrl } from '~/hooks/Misc';
 import { useCreateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { UserCreate } from '~/types';
@@ -58,6 +57,16 @@ const formSchema = z
 
 export const Route = createFileRoute('/_MainLayout/ny-bruker/skjema')({
   component: SignUp,
+  validateSearch: z.object({
+    redirectTo: z.string().min(1).default('/').catch('/'),
+  }),
+  search: {
+    middlewares: [
+      stripSearchParams({
+        redirectTo: '/',
+      }),
+    ],
+  },
 });
 
 function SignUp() {
@@ -67,7 +76,7 @@ function SignUp() {
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const [redirectURL, setLogInRedirectURL] = useRedirectUrl();
+  const { redirectTo } = Route.useSearch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -98,8 +107,7 @@ function SignUp() {
       onSuccess: () => {
         run();
         event('signup', 'auth', `Signed up`);
-        setLogInRedirectURL(undefined);
-        navigate({ to: redirectURL ?? URLS.login });
+        navigate({ href: redirectTo });
       },
       onError: (e) => {
         Object.keys(e.detail).forEach((key: string) => {

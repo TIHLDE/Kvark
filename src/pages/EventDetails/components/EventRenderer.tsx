@@ -25,7 +25,6 @@ import {
   useUpdateEventRegistration,
 } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
-import { useRedirectUrl } from '~/hooks/Misc';
 import { useUser } from '~/hooks/User';
 import { useAnalytics, useInterval } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
@@ -52,7 +51,6 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   const { data: user } = useUser();
   const { data: registration } = useEventRegistration(data.id, preview || !user ? '' : user.user_id);
   const deleteRegistration = useDeleteEventRegistration(data.id);
-  const [, setLogInRedirectURL] = useRedirectUrl();
   const startDate = parseISO(data.start_date);
   const endDate = parseISO(data.end_date);
   const strikesDelayedRegistrationHours = user ? getStrikesDelayedRegistrationHours(user.number_of_strikes) : 0;
@@ -271,7 +269,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
     if (!user) {
       return isFuture(endRegistrationDate) ? (
         <Button className='w-full' size='lg' variant='default'>
-          <Link onClick={() => setLogInRedirectURL(window.location.pathname)} to={URLS.login}>
+          <Link to={URLS.login} search={{ redirectTo: window.location.pathname }}>
             Logg inn for å melde deg på
           </Link>
         </Button>

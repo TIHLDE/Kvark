@@ -8,9 +8,8 @@ import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } 
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
-import { useClearCheckedFines } from '~/pages/Groups/fines/FinesContext';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/boter')({
   component: Fines,
@@ -36,9 +35,6 @@ function Fines() {
 
   const [tab, setTab] = useState<string>('all');
   const [finesFilter, setFinesFilter] = useState<{ approved?: boolean; payed?: boolean }>({ payed: false });
-  const clearCheckedFines = useClearCheckedFines();
-
-  useEffect(() => clearCheckedFines(), [tab]);
 
   const { data: statistics } = useGroupFinesStatistics(slug || '-');
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useGroupFines(slug || '-', finesFilter, { enabled: tab === 'all' });
