@@ -67,6 +67,14 @@ export interface RequestResponse {
   detail: string;
 }
 
+export class RequestErrorResponse extends Error {
+  detail: string;
+  constructor(detail: string) {
+    super(detail);
+    this.detail = detail;
+  }
+}
+
 export interface ShortLink {
   name: string;
   url: string;

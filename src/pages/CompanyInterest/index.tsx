@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute } from '@tanstack/react-router';
 import API from '~/api/api';
 import { Checkbox } from '~/components/ui/checkbox';
 import { useAnalytics } from '~/hooks/Utils';
@@ -33,7 +34,11 @@ const interestOptions = [
   { value: 'stillingsannonse', label: 'Stillingsannonse' },
 ];
 
-export default function CompanyInterest() {
+export const Route = createFileRoute('/interesse')({
+  component: CompanyInterest,
+});
+
+function CompanyInterest() {
   const { event } = useAnalytics();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -70,7 +75,13 @@ export default function CompanyInterest() {
       toast.success(response.detail);
       form.reset();
     } catch (e) {
-      form.setError('bedrift', { message: e.detail || 'Noe gikk galt' });
+      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+        toast.error(e.detail);
+        form.setError('bedrift', { message: e.detail || 'Noe gikk galt' });
+      } else {
+        form.setError('bedrift', { message: `Det oppstod en feil: ${String(e)}` });
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+      }
     } finally {
       setIsLoading(false);
     }

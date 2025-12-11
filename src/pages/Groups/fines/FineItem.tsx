@@ -9,6 +9,7 @@ import type { Group, GroupFine, UserBase } from '~/types';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { Check, HandCoins, Star } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import DeleteFine from './DeleteFine';
@@ -28,11 +29,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   const { data: user } = useUser();
   const { event } = useAnalytics();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
+  const [approved, setApproved] = useState(fine.approved);
 
   const updateStar = useUpdateGroupFineStarred(groupSlug, fine.id);
 
   const toggleApproved = () => {
     event('update', 'fines', `Approved a single fine`);
+
+    setApproved(!fine.approved);
+
     updateFine.mutate(
       { approved: !fine.approved },
       {
@@ -41,6 +46,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
         },
         onError: (e) => {
           toast.error(e.detail);
+          setApproved(fine.approved);
         },
       },
     );
@@ -81,7 +87,7 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   const Title = (
     <div className='flex items-center space-x-1'>
       <h1>{hideUserInfo ? fine.description : `${fine.user.first_name} ${fine.user.last_name}`}</h1>
-      <Check className={cn('w-4 h-4 stroke-[1.5px]', fine.approved ? 'text-emerald-500' : 'text-red-500')} />
+      <Check className={cn('w-4 h-4 stroke-[1.5px]', approved ? 'text-emerald-500' : 'text-red-500')} />
       <HandCoins className={cn('w-4 h-4 stroke-[1.5px]', fine.payed ? 'text-emerald-500' : 'text-red-500')} />
     </div>
   );
@@ -96,10 +102,10 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
           <div
             className={cn(
               'flex items-center space-x-1 px-2 py-1 rounded-md border text-sm',
-              fine.approved ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
+              approved ? 'text-emerald-500 border-emerald-500' : 'text-red-500 border-red-500',
             )}>
             <Check className='w-4 h-4' />
-            <span>{fine.approved ? 'Godkjent' : 'Ikke godkjent'}</span>
+            <span>{approved ? 'Godkjent' : 'Ikke godkjent'}</span>
           </div>
 
           <div
@@ -149,9 +155,9 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
 
         {isAdmin && (
           <div className='grid md:grid-cols-2 gap-4'>
-            <Button className='w-full' onClick={toggleApproved} variant={fine.approved ? 'destructive' : 'default'}>
+            <Button className='w-full' onClick={toggleApproved} variant={approved ? 'destructive' : 'default'}>
               <Check className='w-5 h-5 mr-2' />
-              Merk som {fine.approved ? 'ikke godkjent' : 'godkjent'}
+              Merk som {approved ? 'ikke godkjent' : 'godkjent'}
             </Button>
             <Button className='w-full' onClick={togglePayed} variant={fine.payed ? 'destructive' : 'default'}>
               <HandCoins className='w-5 h-5 mr-2' />

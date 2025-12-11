@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import FormInput from '~/components/inputs/Input';
 import { FormSelect } from '~/components/inputs/Select';
@@ -9,11 +10,8 @@ import { useCreateGroup } from '~/hooks/Group';
 import type { GroupCreate } from '~/types';
 import { GroupType, PermissionApp } from '~/types/Enums';
 import { useForm } from 'react-hook-form';
-import { href, redirect } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
-
-import { Route } from './+types';
 
 const schema = z.object({
   name: z.string({
@@ -27,15 +25,18 @@ const schema = z.object({
   }),
 });
 
-export async function clientLoader({ request }: Route.ClientActionArgs) {
-  const auth = await authClientWithRedirect(request);
+export const Route = createFileRoute('/_MainLayout/admin/ny-gruppe')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
 
-  if (!userHasWritePermission(auth.permissions, PermissionApp.GROUP)) {
-    return redirect(href('/'));
-  }
-}
+    if (!userHasWritePermission(auth.permissions, PermissionApp.GROUP)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  component: NewGroupAdministration,
+});
 
-export default function NewGroupAdministration() {
+function NewGroupAdministration() {
   const createGroup = useCreateGroup();
 
   const form = useForm<z.infer<typeof schema>>({

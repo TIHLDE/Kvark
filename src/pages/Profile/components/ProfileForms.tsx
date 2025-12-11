@@ -1,14 +1,13 @@
+import { Link } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { Skeleton } from '~/components/ui/skeleton';
 import { useUserForms } from '~/hooks/User';
 import { EventFormType, FormResourceType } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { ArrowRight } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 const ProfileForms = () => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useUserForms({ unanswered: true });
@@ -27,7 +26,8 @@ const ProfileForms = () => {
             <Link
               className='w-full flex items-center justify-between p-4 rounded-md border bg-card text-black dark:text-white'
               key={index}
-              to={`${URLS.form}${form.id}/`}>
+              to='/sporreskjema/$id'
+              params={{ id: form.id }}>
               <div className='space-y-2'>
                 <h1>
                   {form.resource_type === FormResourceType.EVENT_FORM

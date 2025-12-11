@@ -1,3 +1,5 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { authClientWithRedirect } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { PaginateButton } from '~/components/ui/button';
@@ -6,16 +8,15 @@ import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
-import { Route } from './+types';
+export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId/badges')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: CategoryBadgesList,
+});
 
-export function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return {
-    categoryId: params.categoryId,
-  };
-}
-
-export default function CategoryBadgesList({ loaderData }: Route.ComponentProps) {
-  const { categoryId } = loaderData;
+function CategoryBadgesList() {
+  const { categoryId } = Route.useParams();
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges({ badge_category: categoryId });
   const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 

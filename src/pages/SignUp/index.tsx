@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, Link, stripSearchParams, useNavigate } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -8,14 +9,12 @@ import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { useConfetti } from '~/hooks/Confetti';
 import { useStudyGroups, useStudyyearGroups } from '~/hooks/Group';
-import { useRedirectUrl } from '~/hooks/Misc';
 import { useCreateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { UserCreate } from '~/types';
 import URLS from '~/URLS';
 import { Info } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -56,14 +55,28 @@ const formSchema = z
     error: 'Passordene må være like',
   });
 
-const SignUp = () => {
+export const Route = createFileRoute('/_MainLayout/ny-bruker/skjema')({
+  component: SignUp,
+  validateSearch: z.object({
+    redirectTo: z.string().min(1).default('/').catch('/'),
+  }),
+  search: {
+    middlewares: [
+      stripSearchParams({
+        redirectTo: '/',
+      }),
+    ],
+  },
+});
+
+function SignUp() {
   const { run } = useConfetti();
   const { event } = useAnalytics();
   const { data: studies } = useStudyGroups();
   const { data: studyyears } = useStudyyearGroups();
   const navigate = useNavigate();
   const createUser = useCreateUser();
-  const [redirectURL, setLogInRedirectURL] = useRedirectUrl();
+  const { redirectTo } = Route.useSearch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,8 +107,7 @@ const SignUp = () => {
       onSuccess: () => {
         run();
         event('signup', 'auth', `Signed up`);
-        setLogInRedirectURL(undefined);
-        navigate(redirectURL || URLS.login);
+        navigate({ href: redirectTo });
       },
       onError: (e) => {
         Object.keys(e.detail).forEach((key: string) => {
@@ -314,6 +326,4 @@ const SignUp = () => {
       </Card>
     </Page>
   );
-};
-
-export default SignUp;
+}

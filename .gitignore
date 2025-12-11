@@ -34,9 +34,12 @@ package-lock.json
 .eslintcache
 debug.log
 
-# React Router
-/.react-router/
-/build/
+# Vite
+.react-router/
+build/
+dist/
+.output/
+.tanstack/
 
 # Vercel
 /.vercel/

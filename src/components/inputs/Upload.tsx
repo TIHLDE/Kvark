@@ -82,7 +82,7 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
     setImageFile(undefined);
   };
 
-  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropComplete = useCallback((_croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
@@ -100,7 +100,11 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
         }
       }
     } catch (e) {
-      toast.error(e.detail);
+      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+        toast.error(e.detail);
+      } else {
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+      }
     }
   };
 
@@ -111,7 +115,11 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
       await uploadFile(file);
       toast.success('Bilde lastet opp');
     } catch (e) {
-      toast.error(e.detail);
+      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+        toast.error(e.detail);
+      } else {
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+      }
     }
     closeDialog();
   };
@@ -132,7 +140,11 @@ export const FormImageUpload = <TFormValues extends FieldValues>({ form, name, l
       form.setValue(name, data.url);
       toast.success('Bilde ble lastet opp');
     } catch (e) {
-      toast.error(e.detail);
+      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+        toast.error(e.detail);
+      } else {
+        toast.error(`Det oppstod en feil: ${String(e)}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -236,7 +248,11 @@ export const FormFileUpload = <TFormValues extends FieldValues>({ form, name, la
         form.setValue(name, data.url);
         toast.success('Filen ble opplastet');
       } catch (e) {
-        toast.error(e.detail || 'Det oppstod en feil');
+        if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
+          toast.error(e.detail);
+        } else {
+          toast.error(`Det oppstod en feil: ${String(e)}`);
+        }
       }
       setIsLoading(false);
     }

@@ -5,12 +5,13 @@ import { FormDetailSwitch } from '~/components/inputs/Switch';
 import FormTextarea from '~/components/inputs/Textarea';
 import { FormImageUpload } from '~/components/inputs/Upload';
 import { Button } from '~/components/ui/button';
+import { ExternalLink } from '~/components/ui/external-link';
 import { Form } from '~/components/ui/form';
 import { useUpdateUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { User } from '~/types';
+import URLS from '~/URLS';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -108,7 +109,7 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
         <FormTextarea
           description={
             <>
-              <span className='font-bold'>Ikke</span> skriv tulleallergier, eller &quot;ingen&quot;pn. Dine allergier vises til bedrifter/arrangører ved
+              <span className='font-bold'>Ikke</span> skriv tulleallergier, eller &quot;ingen&quot;. Dine allergier vises til bedrifter/arrangører ved
               arrangementer
             </>
           }
@@ -126,9 +127,9 @@ export const UserSettings = ({ isAdmin, user }: UserSettingsProps) => {
 
         <FormDetailSwitch
           description={
-            <Link className='text-primary' to='/wiki/arrangementsregler/'>
+            <ExternalLink className='text-primary' href={URLS.external.wiki.EVENT_RULES}>
               Arrangementreglene
-            </Link>
+            </ExternalLink>
           }
           form={form}
           label='Aksepterer arrangementreglene'

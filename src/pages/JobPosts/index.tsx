@@ -1,6 +1,7 @@
 'use client';
 
-import API from '~/api/api';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
@@ -11,14 +12,11 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Separator } from '~/components/ui/separator';
-import { analyticsEvent, useDebounce } from '~/hooks/Utils';
-import { deepEqual } from '~/utils';
+import { jobPostsQuery } from '~/hooks/JobPost';
+import { useDebounce } from '~/hooks/Utils';
 import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { createLoader, createSerializer, parseAsArrayOf, parseAsString, useQueryStates, type inferParserType } from 'nuqs';
-import { useEffect, useState } from 'react';
-import { useFetcher } from 'react-router';
-
-import type { Route } from './+types';
+import { parseAsArrayOf, parseAsString, useQueryStates, type inferParserType } from 'nuqs';
+import { useState } from 'react';
 
 const urlParamFilters = {
   search: parseAsString.withDefault(''),
@@ -26,85 +24,24 @@ const urlParamFilters = {
   job_type: parseAsString.withDefault(''),
 };
 
-const loadUrlParams = createLoader(urlParamFilters);
-const urlParamsSerializer = createSerializer(urlParamFilters);
+export const Route = createFileRoute('/_MainLayout/stillingsannonser/')({
+  loaderDeps: ({ search }) => search,
+  component: JobPosts,
+});
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const filters = loadUrlParams(request);
-  let page = Number(new URL(request.url).searchParams.get('page') ?? '1');
-  page = Number.isNaN(page) ? 1 : page;
-
-  const jobs = await API.getJobPosts({ ...filters, page });
-  return { jobs, filters, page };
-}
-
-export default function JobPosts({ loaderData }: Route.ComponentProps) {
-  const { jobs: initialJobs, page } = loaderData;
-  const [allJobs, setAllJobs] = useState(initialJobs.results);
-  const [hasNext, setHasNext] = useState(Boolean(initialJobs.next));
-  const [lastFilters, setLastFilters] = useState(loaderData.filters);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetcher = useFetcher<typeof loaderData>();
-
+function JobPosts() {
   const [queryFilters, setQueryFilters] = useQueryStates(urlParamFilters);
 
   const debouncedSearch = useDebounce(queryFilters.search, 500);
-
-  useEffect(() => {
-    const params: inferParserType<typeof urlParamFilters> = {
-      classes: queryFilters.classes,
-      job_type: queryFilters.job_type,
+  const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    jobPostsQuery({
+      ...queryFilters,
       search: debouncedSearch,
-    };
+    }),
+  );
 
-    if (deepEqual(lastFilters, params)) {
-      return;
-    }
-
-    analyticsEvent('search', 'jobposts', JSON.stringify(params));
-
-    const searchParams = new URLSearchParams(urlParamsSerializer(params));
-    searchParams.set('page', '1');
-
-    fetcher.load(`?${searchParams.toString()}`);
-  }, [debouncedSearch, queryFilters.classes, queryFilters.job_type, lastFilters]);
-
-  useEffect(() => {
-    setIsLoading(fetcher.state !== 'idle');
-
-    if (fetcher.state !== 'idle') {
-      return;
-    }
-
-    const data = fetcher.data;
-    if (!data) {
-      return;
-    }
-
-    setLastFilters(data.filters);
-    setHasNext(Boolean(data.jobs.next));
-
-    if (data.page === 1) {
-      setAllJobs(data.jobs.results);
-    } else {
-      setAllJobs((prev) => [...prev, ...data.jobs.results]);
-    }
-  }, [fetcher]);
-
-  function fetchNewPage(params?: inferParserType<typeof urlParamFilters>) {
-    const searchParams = new URLSearchParams(urlParamsSerializer(params ?? queryFilters));
-    searchParams.set('page', '1');
-
-    fetcher.load(`?${searchParams.toString()}`);
-  }
-
-  function fetchNextPage() {
-    const searchParams = new URLSearchParams(urlParamsSerializer(queryFilters));
-    searchParams.set('page', String(page + 1));
-
-    fetcher.load(`?${searchParams.toString()}`);
-  }
+  const jobs = data?.pages.flatMap((page) => page.results) ?? [];
+  const jobCount = jobs.length;
 
   function resetFilters() {
     setQueryFilters({
@@ -162,7 +99,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
               </div>
             </div>
             <CollapsibleContent className='lg:block'>
-              <SearchForm isSearching={isLoading} queryFilters={queryFilters} search={fetchNewPage} setQueryFilters={setQueryFilters} />
+              <SearchForm isSearching={isLoading} queryFilters={queryFilters} search={() => {}} setQueryFilters={setQueryFilters} />
             </CollapsibleContent>
           </Collapsible>
         </div>
@@ -217,14 +154,14 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
           {/* Results count */}
           <div className='flex justify-between items-center mb-4'>
             <h2 className='text-lg font-medium'>
-              {initialJobs.count} {initialJobs.count === 1 ? 'stilling' : 'stillinger'} funnet
+              {jobCount} {jobCount === 1 ? 'stilling' : 'stillinger'} funnet
             </h2>
           </div>
 
           {/* Job listings */}
           <div className='space-y-4'>
-            {allJobs.length > 0 ? (
-              allJobs.map((jobPost) => <JobPostListItem jobPost={jobPost} key={jobPost.id} />)
+            {jobs.length > 0 ? (
+              jobs.map((jobPost) => <JobPostListItem jobPost={jobPost} key={jobPost.id} />)
             ) : !isLoading ? (
               <div className='text-center py-12 bg-muted/30 rounded-lg'>
                 <h3 className='text-xl font-medium mb-2'>Ingen stillinger funnet</h3>
@@ -239,7 +176,7 @@ export default function JobPosts({ loaderData }: Route.ComponentProps) {
               </div>
             )}
 
-            {hasNext && <PaginateButton className='w-full mt-6' isLoading={isLoading} nextPage={fetchNextPage} />}
+            {hasNextPage && <PaginateButton className='w-full mt-6' isLoading={isLoading} nextPage={fetchNextPage} />}
           </div>
         </div>
       </div>

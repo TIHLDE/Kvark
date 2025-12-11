@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from '@tanstack/react-router';
 import FormInput from '~/components/inputs/Input';
 import { FormDetailSwitch } from '~/components/inputs/Switch';
 import FormTextarea from '~/components/inputs/Textarea';
@@ -14,7 +15,6 @@ import { FormResourceType } from '~/types/Enums';
 import { removeIdsFromFields } from '~/utils';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -25,14 +25,14 @@ export type FormDetailsEditorProps = {
 
 const DeleteFormButton = ({ form, navigate = false }: FormDetailsEditorProps) => {
   const deleteForm = useDeleteForm(form.id);
-  const navigateTo = useNavigate();
+  const router = useRouter();
 
   const deleteFormHandler = () =>
     deleteForm.mutate(undefined, {
       onSuccess: () => {
         toast.success('Skjema ble slettet');
         if (navigate) {
-          navigateTo(-1);
+          router.history.go(-1);
         }
       },
       onError: (e) => {

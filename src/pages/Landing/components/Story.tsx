@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -5,7 +6,6 @@ import type { EventList, JobPost, News } from '~/types';
 import URLS from '~/URLS';
 import { urlEncode } from '~/utils';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 
 export type StoryItem = {
   link: string;
@@ -36,19 +36,19 @@ const Story = ({ items }: StoryProps) => {
       if (instanceOfEvent(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.events}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.events}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Arr.',
         });
       } else if (instanceOfJobPost(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.jobposts}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.jobposts}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Ann.',
         });
       } else if (instanceOfNews(item)) {
         newItems.push({
           ...newItem,
-          link: `${URLS.news}${item.id}/${urlEncode(item.title)}/`,
+          link: `${URLS.news}/${item.id}/${urlEncode(item.title)}/`,
           typeText: 'Nyh.',
         });
       }

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 import API from '~/api/api';
 import { authClientWithRedirect } from '~/api/auth';
 import Page from '~/components/navigation/Page';
@@ -12,9 +13,12 @@ import { Calendar, Download, FileText, Users } from 'lucide-react';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
-export async function clientLoader({ request }: { request: Request }) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/admin/opptak')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: Opptak,
+});
 
 interface ApplicantSubmission {
   user: UserSubmission['user'];
@@ -27,7 +31,7 @@ interface ApplicantSubmission {
   totalSubmissions: number;
 }
 
-const Opptak = () => {
+function Opptak() {
   const { SUB_GROUPS, isLoading: groupsLoading } = useGroupsByType({ overview: true });
 
   const groupSlugs = useMemo(() => SUB_GROUPS.map((g) => g.slug), [SUB_GROUPS]);
@@ -326,6 +330,4 @@ const Opptak = () => {
       </div>
     </Page>
   );
-};
-
-export default Opptak;
+}

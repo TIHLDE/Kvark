@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
@@ -9,11 +10,9 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { HavePermission, useUser } from '~/hooks/User';
 import type { News } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { PencilIcon } from 'lucide-react';
-import { Link } from 'react-router';
 
 export type NewsRendererProps = {
   data: News;
@@ -35,7 +34,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
           {data.creator && (
             <h1>
               Skrevet av{' '}
-              <Link className='underline' to={`${URLS.profile}${data.creator.user_id}/`}>
+              <Link className='underline' to='/profil/{-$userId}' params={{ userId: data.creator.user_id }}>
                 {data.creator.first_name} {data.creator.last_name}
               </Link>
             </h1>
@@ -55,7 +54,7 @@ const NewsRenderer = ({ data, preview = false }: NewsRendererProps) => {
               <HavePermission apps={[PermissionApp.NEWS]}>
                 <Button className='w-full flex items-center space-x-2' size='lg' variant='outline'>
                   <PencilIcon className='w-4 h-4 md:w-5 md:h-5 stroke-[1.5px]' />
-                  <Link className='text-sm md:text-md' to={`${URLS.newsAdmin}${data.id}/`}>
+                  <Link className='text-sm md:text-md' to='/admin/nyheter/{-$newsId}' params={{ newsId: data.id.toString() }}>
                     Endre nyhet
                   </Link>
                 </Button>

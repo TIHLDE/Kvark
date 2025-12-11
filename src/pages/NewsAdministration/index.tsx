@@ -1,32 +1,38 @@
+import { createFileRoute, Link, linkOptions, redirect, useNavigate, useParams } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import NewsEditor from '~/pages/NewsAdministration/components/NewsEditor';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { ChevronRight, Plus } from 'lucide-react';
-import { href, Link, redirect, useNavigate, useParams } from 'react-router';
 
-import { Route } from './+types';
 import NewsList from './components/NewsList';
 
-export async function clientLoader({ request }: Route.ClientActionArgs) {
-  const auth = await authClientWithRedirect(request);
+export const Route = createFileRoute('/_MainLayout/admin/nyheter/{-$newsId}')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
 
-  if (!userHasWritePermission(auth.permissions, PermissionApp.NEWS)) {
-    return redirect(href('/'));
-  }
-}
+    if (!userHasWritePermission(auth.permissions, PermissionApp.NEWS)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  component: NewsAdministration,
+});
 
-const NewsAdministration = () => {
+function NewsAdministration() {
   const navigate = useNavigate();
-  const { newsId } = useParams();
+  const { newsId } = useParams({ strict: false });
 
   const goToNews = (newNews: number | null) => {
     if (newNews) {
-      navigate(`${URLS.news}${newNews}/`);
+      navigate(
+        linkOptions({
+          to: '/nyheter/$id/{-$urlTitle}',
+          params: { id: newNews.toString() },
+        }),
+      );
     } else {
-      navigate(URLS.newsAdmin);
+      navigate(linkOptions({ to: '/admin/nyheter/{-$newsId}' }));
     }
   };
 
@@ -42,13 +48,13 @@ const NewsAdministration = () => {
             {newsId && (
               <>
                 <Button asChild size='icon' variant='outline'>
-                  <Link to={URLS.newsAdmin}>
+                  <Link to='/admin/nyheter/{-$newsId}'>
                     <Plus className='w-5 h-5 stroke-[1.5px]' />
                   </Link>
                 </Button>
 
                 <Button asChild className='p-0' variant='link'>
-                  <Link to={`${URLS.news}${newsId}/`}>
+                  <Link to='/admin/nyheter/{-$newsId}' params={{ newsId: newsId.toString() }}>
                     Se nyhet
                     <ChevronRight className='ml-1 w-5 h-5 stroke-[1.5px]' />
                   </Link>
@@ -62,6 +68,4 @@ const NewsAdministration = () => {
       </div>
     </Page>
   );
-};
-
-export default NewsAdministration;
+}

@@ -1,7 +1,7 @@
 import GitHub from '~/assets/icons/github.svg';
 import { PaginateButton } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipPositioner, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import type { Cheatsheet } from '~/types';
 import { CheatsheetType } from '~/types/Enums';
@@ -65,9 +65,11 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                           <TooltipTrigger>
                             <ShieldCheck />
                           </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Laget av NTNU</p>
-                          </TooltipContent>
+                          <TooltipPositioner>
+                            <TooltipContent>
+                              <p>Laget av NTNU</p>
+                            </TooltipContent>
+                          </TooltipPositioner>
                         </Tooltip>
                       </TooltipProvider>
                     )}
@@ -82,9 +84,11 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                         <TooltipTrigger>
                           <ShieldCheck />
                         </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Laget av NTNU</p>
-                        </TooltipContent>
+                        <TooltipPositioner>
+                          <TooltipContent>
+                            <p>Laget av NTNU</p>
+                          </TooltipContent>
+                        </TooltipPositioner>
                       </Tooltip>
                     </TooltipProvider>
                   )}

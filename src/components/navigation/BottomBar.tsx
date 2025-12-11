@@ -1,3 +1,4 @@
+import { Link, LinkOptions, linkOptions } from '@tanstack/react-router';
 import Logo from '~/components/miscellaneous/TihldeLogo';
 import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
@@ -6,15 +7,14 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
-import { useState } from 'react';
-import { href, Link } from 'react-router';
+import React, { useState } from 'react';
 
-import NavLink from '../ui/navlink';
+import { ExternalLink } from '../ui/external-link';
 
 type Item = {
   icon: React.ReactNode;
   text: string;
-  to: string;
+  to: LinkOptions;
 };
 
 export type BottomBarProps = {
@@ -30,22 +30,22 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
     {
       icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
-      to: href('/'),
+      to: linkOptions({ to: '/' }),
     },
     {
       icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
-      to: href('/arrangementer'),
+      to: linkOptions({ to: '/arrangementer' }),
     },
     {
       icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Nyheter',
-      to: href('/nyheter'),
+      to: linkOptions({ to: '/nyheter' }),
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Stillinger',
-      to: href('/stillingsannonser'),
+      to: linkOptions({ to: '/stillingsannonser' }),
     },
   ];
 
@@ -57,7 +57,7 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
       )}>
       <div className='flex items-center justify-between px-8 py-2'>
         {actions.map((action, index) => (
-          <Link className='text-center' key={index} to={action.to}>
+          <Link key={index} {...action.to} className='text-center'>
             {action.icon}
             <p className='text-xs'>{action.text}</p>
           </Link>
@@ -78,42 +78,60 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
             </DrawerHeader>
             <Accordion className='px-8 space-y-4 mb-32 text-xl' collapsible type='single'>
               <div className='space-y-4 pb-4'>
-                {items.map((item, index) => (
-                  <div key={index}>
-                    {item.type === 'link' && (
-                      <Link onClick={() => setMenuOpen(false)} to={item.to}>
-                        {item.text}
-                      </Link>
-                    )}
+                {items.map((item, index) => {
+                  if (item.hidden === true) {
+                    return <React.Fragment key={index} />;
+                  }
+                  return (
+                    <div key={index}>
+                      {item.type === 'link' && item.link.type === 'internal' && (
+                        <Link {...item.link.options} onClick={() => setMenuOpen(false)}>
+                          {item.text}
+                        </Link>
+                      )}
+                      {item.type === 'link' && item.link.type === 'external' && <ExternalLink href={item.link.href}>{item.text}</ExternalLink>}
 
-                    {item.type === 'dropdown' && (
-                      <AccordionItem className='border-none' value={index.toString()}>
-                        <AccordionTrigger className='py-0 data-[state=open]:pb-2'>{item.text}</AccordionTrigger>
-                        <AccordionContent>
-                          <div className='space-y-2 px-2 text-lg'>
-                            {item.items.map((subItem, subIndex) => (
-                              <Link className='block' key={subIndex} onClick={() => setMenuOpen(false)} to={subItem.to}>
-                                {subItem.title}
-                              </Link>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    )}
-                  </div>
-                ))}
+                      {item.type === 'dropdown' && (
+                        <AccordionItem className='border-none' value={index.toString()}>
+                          <AccordionTrigger className='py-0 data-[state=open]:pb-2'>{item.text}</AccordionTrigger>
+                          <AccordionContent>
+                            <div className='space-y-2 px-2 text-lg'>
+                              {item.items.map((subItem, subIndex) => {
+                                if (subItem.hidden === true) {
+                                  return <React.Fragment key={subIndex} />;
+                                }
+                                if (subItem.link.type === 'external') {
+                                  return (
+                                    <ExternalLink className='block' key={subIndex} href={subItem.link.href}>
+                                      {subItem.title}
+                                    </ExternalLink>
+                                  );
+                                }
+                                return (
+                                  <Link {...subItem.link.options} className='block' key={subIndex} onClick={() => setMenuOpen(false)}>
+                                    {subItem.title}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {isAuthenticated && (
-                <NavLink onClick={() => setMenuOpen(false)} to='/profil/:userId?'>
+                <Link onClick={() => setMenuOpen(false)} to='/profil/{-$userId}'>
                   Min profil
-                </NavLink>
+                </Link>
               )}
 
               {!isAuthenticated && (
-                <NavLink onClick={() => setMenuOpen(false)} to='/logg-inn'>
+                <Link onClick={() => setMenuOpen(false)} to='/logg-inn'>
                   Logg inn
-                </NavLink>
+                </Link>
               )}
             </Accordion>
           </DrawerContent>

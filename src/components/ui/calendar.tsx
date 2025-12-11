@@ -8,6 +8,10 @@ import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { cn } from "~/lib/utils"
 import { Button, buttonVariants } from "~/components/ui/button"
+import { getYear, startOfMonth } from "date-fns"
+import { useMemo } from "react"
+
+const EXTRA_YEARS = 2;
 
 function Calendar({
   className,
@@ -17,15 +21,28 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  endMonth,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }) {
   const defaultClassNames = getDefaultClassNames()
 
+  const newEndMonth = useMemo(() => {
+    if (endMonth) {
+      return endMonth;
+    }
+    
+    if (captionLayout === 'dropdown' || captionLayout === 'dropdown-years' ) {
+      return startOfMonth(new Date(getYear(new Date()) + EXTRA_YEARS, 11))
+    }
+    return undefined;
+  }, [endMonth,captionLayout])
+
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      endMonth={newEndMonth}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
         String.raw`[.rdp-button\_next>svg]:**:rtl:rotate-180`,
