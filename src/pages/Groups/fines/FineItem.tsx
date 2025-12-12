@@ -22,7 +22,6 @@ export type FineItemProps = {
   isAdmin?: boolean;
   hideUserInfo?: boolean;
   fineUser?: UserBase;
-  starred?: boolean;
 };
 
 const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItemProps) => {
@@ -116,16 +115,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
             <HandCoins className='w-4 h-4' />
             <span>{fine.payed ? 'Betalt' : 'Ikke betalt'}</span>
           </div>
-          <button
+          <Button
             onClick={toggleStar}
+            variant='ghost'
             className={cn(
-              'ml-auto flex items-center px-2 py-1 rounded-md border text-sm transition',
-              fine.starred
-                ? 'text-yellow-500 border-yellow-50 hover:bg-yellow-100'
-                : 'text-gray-400 border-gray-300 hover:text-yellow-500 hover:border-yellow-500',
+              'ml-auto',
+              fine.starred ? 'text-yellow-500 hover:text-yellow-500 [&>svg]:fill-yellow-500' : 'text-muted-foreground hover:text-yellow-500',
             )}>
-            <Star className={cn('w-4 h-4', fine.starred && 'fill-yellow-500')} />
-          </button>
+            <Star className='w-4 h-4' />
+          </Button>
         </div>
 
         <div>

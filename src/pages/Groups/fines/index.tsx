@@ -1,15 +1,17 @@
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { createFileRoute, useParams } from '@tanstack/react-router';
+import LoadingSpinnner from '~/components/miscellaneous/LoadingSpinner';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from '~/hooks/Group';
+import { groupFineQueryOptions, useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from '~/hooks/Group';
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
-import { useMemo, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/boter')({
   component: Fines,
@@ -47,10 +49,6 @@ function Fines() {
     fetchNextPage: userFinesFetchNextPage,
   } = useGroupUsersFines(slug || '-', finesFilter, { enabled: tab === 'users' });
   const userFines = useMemo(() => (userFinesData ? userFinesData.pages.map((page) => page.results).flat() : []), [userFinesData]);
-
-  const hallOfShameFines = useMemo(() => fines.filter((fine) => fine.starred), [fines]);
-
-  const hallOfShameIsLoading = isLoading;
 
   const isAdmin = (Boolean(user) && group?.fines_admin?.user_id === user?.user_id) || group?.permissions.write;
 
@@ -155,17 +153,34 @@ function Fines() {
           {userFinesHasNextPage && <PaginateButton className='w-full mt-4' isLoading={userFinesIsFetching} nextPage={userFinesFetchNextPage} />}
         </TabsContent>
         <TabsContent value='hallofshame'>
-          {!hallOfShameIsLoading && !hallOfShameFines.length && (
-            <NotFoundIndicator header='Ingen legendariske bøter lagt til enda' subtitle='Marker bøter med stjernen for å legge til i Hall of Shame' />
-          )}
-          <div className='space-y-2'>
-            {hallOfShameFines.map((fine) => (
-              <FineItem fine={fine} groupSlug={group.slug} isAdmin={isAdmin} key={fine.id} />
-            ))}
-          </div>
+          <Suspense fallback={<LoadingSpinnner text='Laster inn bøter...' />}>
+            <HallOfShameTab groupSlug={group.slug} isAdmin={isAdmin} />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function HallOfShameTab({ groupSlug, isAdmin }: { groupSlug: string; isAdmin?: boolean }) {
+  const { data } = useSuspenseInfiniteQuery({
+    ...groupFineQueryOptions(groupSlug, {
+      starred: true,
+    }),
+    select: ({ pages }) => pages.flatMap((page) => page.results),
+  });
+
+  return (
+    <>
+      {!data.length && (
+        <NotFoundIndicator header='Ingen legendariske bøter lagt til enda' subtitle='Marker bøter med stjernen for å legge til i Hall of Shame' />
+      )}
+      <div className='space-y-2'>
+        {data.map((fine) => (
+          <FineItem fine={fine} groupSlug={groupSlug} isAdmin={isAdmin} key={fine.id} />
+        ))}
+      </div>
+    </>
   );
 }
 
