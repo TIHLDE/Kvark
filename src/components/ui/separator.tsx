@@ -1,4 +1,4 @@
-import { Separator as SeparatorPrimitive } from '@base-ui-components/react/separator';
+import { Separator as SeparatorPrimitive } from '@base-ui/react/separator';
 import { cn } from '~/lib/utils';
 
 function Separator({ className, ...props }: SeparatorPrimitive.Props) {
@@ -6,7 +6,7 @@ function Separator({ className, ...props }: SeparatorPrimitive.Props) {
   return (
     <SeparatorPrimitive
     {...props}
-      className={cn('shrink-0 bg-border', isHorizontal ? 'h-px w-full' : 'h-full w-px', className)}  
+      className={cn('shrink-0 bg-border', isHorizontal ? 'h-px w-full' : 'h-full w-px', className)}
     />
   );
 }

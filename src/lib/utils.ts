@@ -1,4 +1,4 @@
-import type { useRender } from "@base-ui-components/react"
+import type { useRender } from "@base-ui/react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 

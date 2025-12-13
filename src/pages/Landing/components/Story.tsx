@@ -65,7 +65,7 @@ const Story = ({ items }: StoryProps) => {
       <div className='space-y-2 max-w-[110px] w-full'>
         <Link className='relative block' to={item.link}>
           <AspectRatioImg alt={item.title} src={item.image} />
-          <div className='absolute bottom-0.5 left-0.5 p-1 rounded-sm bg-card text-white bg-opacity-70'>
+          <div className='absolute bottom-0.5 left-0.5 p-1 rounded-sm bg-card bg-opacity-70'>
             <p className='text-[8px]'>{item.typeText}</p>
           </div>
         </Link>

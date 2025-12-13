@@ -11,7 +11,7 @@ import {
 import { cn } from "~/lib/utils"
 import { Label } from "~/components/ui/label"
 import { createContext, forwardRef, useContext, useId } from "react"
-import { useRender } from "@base-ui-components/react/use-render"
+import { useRender } from "@base-ui/react/use-render"
 const Form = FormProvider
 
 type FormFieldContextValue<
