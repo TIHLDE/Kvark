@@ -85,7 +85,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
           { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', link: { type: 'internal', options: linkOptions({ to: '/endringslogg' }) } },
         ],
       },
-      { type: 'link', text: 'For Bedrifter', link: { type: 'internal', options: linkOptions({ to: '/bedrifter' }) }, hidden: isAuthenticated },
+      { type: 'link', text: 'For Bedrifter', link: { type: 'external', href: URLS.external.company }, hidden: isAuthenticated },
     ],
     [isAuthenticated],
   );
