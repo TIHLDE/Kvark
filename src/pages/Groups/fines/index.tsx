@@ -1,15 +1,17 @@
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { createFileRoute, useParams } from '@tanstack/react-router';
+import LoadingSpinnner from '~/components/miscellaneous/LoadingSpinner';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from '~/hooks/Group';
+import { groupFineQueryOptions, useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } from '~/hooks/Group';
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
-import { useMemo, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 
 export const Route = createFileRoute('/_MainLayout/grupper/$slug/boter')({
   component: Fines,
@@ -89,14 +91,15 @@ function Fines() {
         </CardContent>
       </Card>
 
-      <Tabs className='w-full space-y-6' defaultValue='all' onValueChange={setTab} value={tab}>
-        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
+      <Tabs className='space-y-4  mt-3' defaultValue='all' onValueChange={setTab} value={tab}>
+        <div className='space-y-4 lg:space-y-0 lg:flex lg:items-end lg:justify-between gap-x-4'>
           <TabsList>
             <TabsTrigger value='all'>Alle bøter</TabsTrigger>
             <TabsTrigger value='users'>Bøter per medlem</TabsTrigger>
+            <TabsTrigger value='hallofshame'> Hall of Shame</TabsTrigger>
           </TabsList>
 
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-center space-x-1 mt-1'>
             <Select
               defaultValue='none'
               onValueChange={(value) => setFinesFilter((prev) => ({ ...prev, approved: value === 'true' ? true : value === 'false' ? false : undefined }))}>
@@ -149,8 +152,35 @@ function Fines() {
           </div>
           {userFinesHasNextPage && <PaginateButton className='w-full mt-4' isLoading={userFinesIsFetching} nextPage={userFinesFetchNextPage} />}
         </TabsContent>
+        <TabsContent value='hallofshame'>
+          <Suspense fallback={<LoadingSpinnner text='Laster inn bøter...' />}>
+            <HallOfShameTab groupSlug={group.slug} isAdmin={isAdmin} />
+          </Suspense>
+        </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+function HallOfShameTab({ groupSlug, isAdmin }: { groupSlug: string; isAdmin?: boolean }) {
+  const { data } = useSuspenseInfiniteQuery({
+    ...groupFineQueryOptions(groupSlug, {
+      starred: true,
+    }),
+    select: ({ pages }) => pages.flatMap((page) => page.results),
+  });
+
+  return (
+    <>
+      {!data.length && (
+        <NotFoundIndicator header='Ingen legendariske bøter lagt til enda' subtitle='Marker bøter med stjernen for å legge til i Hall of Shame' />
+      )}
+      <div className='space-y-2'>
+        {data.map((fine) => (
+          <FineItem fine={fine} groupSlug={groupSlug} isAdmin={isAdmin} key={fine.id} />
+        ))}
+      </div>
+    </>
   );
 }
 

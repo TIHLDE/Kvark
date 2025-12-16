@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import type {
   Group,
@@ -10,6 +10,7 @@ import type {
   GroupFineCreate,
   GroupFineDefenseMutate,
   GroupFineMutate,
+  GroupFineStarredMutate,
   GroupLaw,
   GroupLawMutate,
   GroupMutate,
@@ -127,12 +128,17 @@ export const useDeleteGroupLaw = (groupSlug: Group['slug'], lawId: GroupLaw['id'
   });
 };
 
-export const useGroupFines = (groupSlug: Group['slug'], filters?: any, options: { enabled?: boolean } = {}) =>
-  useInfiniteQuery<PaginationResponse<GroupFine>, RequestResponse>({
+export const groupFineQueryOptions = (groupSlug: Group['slug'], filters?: any) =>
+  infiniteQueryOptions({
     queryKey: GROUPS_QUERY_KEYS.fines.list(groupSlug, filters),
     queryFn: ({ pageParam }) => API.getGroupFines(groupSlug, { ...filters, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
+  });
+
+export const useGroupFines = (groupSlug: Group['slug'], filters?: any, options: { enabled?: boolean } = {}) =>
+  useInfiniteQuery({
+    ...groupFineQueryOptions(groupSlug, filters),
     ...options,
   });
 
@@ -189,6 +195,18 @@ export const useUpdateGroupFineDefense = (
 
   return useMutation({
     mutationFn: (data) => API.updateGroupFineDefense(groupSlug, fineId, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: GROUPS_QUERY_KEYS.fines.all(groupSlug) }),
+  });
+};
+
+export const useUpdateGroupFineStarred = (
+  groupSlug: Group['slug'],
+  fineId: GroupFine['id'],
+): UseMutationResult<GroupFine, RequestResponse, GroupFineStarredMutate, unknown> => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => API.updateGroupFineStarred(groupSlug, fineId, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: GROUPS_QUERY_KEYS.fines.all(groupSlug) }),
   });
 };
