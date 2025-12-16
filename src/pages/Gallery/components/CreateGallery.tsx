@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
 import FormInput from '~/components/inputs/Input';
 import FormTextarea from '~/components/inputs/Textarea';
 import { FormImageUpload } from '~/components/inputs/Upload';
@@ -7,9 +8,9 @@ import { Form } from '~/components/ui/form';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useCreateGallery } from '~/hooks/Gallery';
+import { urlEncode } from '~/utils';
 import { Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -49,7 +50,13 @@ const CreateGallery = () => {
     createGallery.mutate(data, {
       onSuccess: (data) => {
         toast.success('Galleriet ble lagt til');
-        navigate(`/galleri/${data.id}`);
+        navigate({
+          to: `/galleri/$id/{-$urlTitle}`,
+          params: {
+            id: data.id,
+            urlTitle: urlEncode(data.title),
+          },
+        });
       },
       onError: (e) => {
         toast.error(e.detail);

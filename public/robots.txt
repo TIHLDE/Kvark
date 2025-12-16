@@ -1,3 +1,13 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /toddel
+Disallow: /profil/*
+Disallow: /grupper/*
+Disallow: /admin/*
+Disallow: /badges/*
+Disallow: /galleri/*
+Disallow: /kokebok/*
+Disallow: /qr-koder
+Disallow: /linker
+Disallow: /tilbakemelding
+Allow: /grupper$

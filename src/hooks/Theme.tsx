@@ -1,67 +1,41 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { getCookie, setCookie } from '~/api/cookie';
+import { createContext, use, useCallback, useState } from 'react';
+import { z } from 'zod';
 
-export type Theme = 'dark' | 'light' | 'system';
+const UserThemeSchema = z.enum(['light', 'dark']).catch('light');
 
-type ThemeProviderProps = {
-  children: ReactNode;
-  defaultTheme?: Theme;
-  storageKey?: string;
+export type UserTheme = z.infer<typeof UserThemeSchema>;
+
+const themeStorageKey = 'ui-theme';
+
+type ThemeContextProps = {
+  theme: UserTheme;
+  setTheme: (theme: UserTheme) => void;
 };
 
-type ThemeProviderState = {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-};
+function getResolvedTheme(theme: unknown): UserTheme {
+  const validatedTheme = UserThemeSchema.parse(theme);
+  return validatedTheme;
+}
 
-const initialState: ThemeProviderState = {
-  theme: 'system',
-  setTheme: () => null,
-};
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+export function ThemeProvider({ children }: React.PropsWithChildren) {
+  const [theme, setThemeState] = useState<UserTheme>(() => getResolvedTheme(getCookie(themeStorageKey)));
 
-export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 'vite-ui-theme', ...props }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => defaultTheme);
-  useEffect(() => {
-    setTheme(localStorage.getItem(storageKey) as Theme);
-  }, [setTheme]);
+  const setTheme = useCallback((newTheme: UserTheme) => {
+    const validatedTheme = UserThemeSchema.parse(newTheme);
+    setCookie(themeStorageKey, validatedTheme);
+    setThemeState(validatedTheme);
+  }, []);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-
-    root.classList.remove('light', 'dark');
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-      root.classList.add(systemTheme);
-      return;
-    }
-
-    root.classList.add(theme);
-  }, [theme]);
-
-  const value = {
-    theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
-    },
-  };
-
-  return (
-    <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
-    </ThemeProviderContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext);
-
-  if (context === undefined) {
+  const context = use(ThemeContext);
+  if (!context) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-
   return context;
 };

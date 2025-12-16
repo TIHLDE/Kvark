@@ -1,3 +1,4 @@
+import { createFileRoute, useParams } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -7,10 +8,12 @@ import { useGroup, useGroupFines, useGroupFinesStatistics, useGroupUsersFines } 
 import { useMemberships } from '~/hooks/Membership';
 import { useUser } from '~/hooks/User';
 import FineItem from '~/pages/Groups/fines/FineItem';
-import { useClearCheckedFines } from '~/pages/Groups/fines/FinesContext';
 import UserFineItem from '~/pages/Groups/fines/UserFineItem';
-import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { useMemo, useState } from 'react';
+
+export const Route = createFileRoute('/_MainLayout/grupper/$slug/boter')({
+  component: Fines,
+});
 
 const PAYED_STATES = [
   { value: true, label: 'Betalt' },
@@ -24,17 +27,14 @@ const APPROVED_STATES = [
   { value: undefined, label: 'Alle' },
 ];
 
-const Fines = () => {
-  const { slug } = useParams<'slug'>();
+function Fines() {
+  const { slug } = useParams({ strict: false });
   const { data: user } = useUser();
   const { data: group } = useGroup(slug || '-');
   const { data: members } = useMemberships(slug || '-');
 
   const [tab, setTab] = useState<string>('all');
   const [finesFilter, setFinesFilter] = useState<{ approved?: boolean; payed?: boolean }>({ payed: false });
-  const clearCheckedFines = useClearCheckedFines();
-
-  useEffect(() => clearCheckedFines(), [tab]);
 
   const { data: statistics } = useGroupFinesStatistics(slug || '-');
   const { data, isLoading, hasNextPage, isFetching, fetchNextPage } = useGroupFines(slug || '-', finesFilter, { enabled: tab === 'all' });
@@ -152,6 +152,6 @@ const Fines = () => {
       </Tabs>
     </div>
   );
-};
+}
 
 export default Fines;

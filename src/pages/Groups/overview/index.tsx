@@ -1,20 +1,15 @@
-import API from '~/api/api';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { useIsAuthenticated } from '~/hooks/User';
+import { getGroupsQueryOptions } from '~/hooks/Group';
 import GroupItem from '~/pages/Groups/overview/GroupItem';
 import type { GroupList } from '~/types';
 import { GroupType } from '~/types/Enums';
 import URLS from '~/URLS';
 import React from 'react';
-import { Link } from 'react-router';
 
-import type { Route } from './+types/index';
-
-async function getGroupsOverview() {
-  const groups = await API.getGroups({ overview: true });
-
+function getGroupsOverview(groups: GroupList[]) {
   const BOARD_GROUPS = groups.filter((group) => group.type === GroupType.BOARD) ?? [];
   const SUB_GROUPS = groups.filter((group) => group.type === GroupType.SUBGROUP) ?? [];
   const COMMITTEES = groups.filter((group) => group.type === GroupType.COMMITTEE) ?? [];
@@ -29,34 +24,24 @@ async function getGroupsOverview() {
   };
 }
 
-let OverviewCache: { expire: Date; data: Awaited<ReturnType<typeof getGroupsOverview>> } | undefined;
+export const Route = createFileRoute('/_MainLayout/grupper/')({
+  async loader({ context }) {
+    const groups = await context.queryClient.ensureQueryData(getGroupsQueryOptions());
+    return getGroupsOverview(groups);
+  },
+  component: GroupsOverview,
+});
 
-export async function clientLoader() {
-  if (OverviewCache && OverviewCache.expire > new Date()) {
-    return Promise.resolve(OverviewCache.data);
-  }
-
-  const groups = await getGroupsOverview();
-  OverviewCache = { expire: new Date(Date.now() + 60 * 1000 * 60), data: groups };
-
-  return groups;
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return <h1 className='text-center text-muted-foreground mt-4'>{(error as { detail: string }).detail}</h1>;
-}
-
-export default function GripsOverview({ loaderData }: Route.ComponentProps) {
-  const isAuthenticated = useIsAuthenticated();
+function GroupsOverview() {
   return (
     <LocalLayout>
-      <Overview groups={loaderData} isAuthenticated={isAuthenticated} />
+      <Overview />
     </LocalLayout>
   );
 }
 
-function Overview({ groups }: { isAuthenticated: boolean; groups: Awaited<ReturnType<typeof getGroupsOverview>> }) {
-  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES } = groups;
+function Overview() {
+  const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES } = Route.useLoaderData();
   type CollectionProps = {
     groups: Array<GroupList>;
     title: string;

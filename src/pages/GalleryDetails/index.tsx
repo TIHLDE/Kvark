@@ -1,51 +1,42 @@
+import { createFileRoute, redirect, useParams } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { galleryByIdQuery, useGalleryById } from '~/hooks/Gallery';
 import { HavePermission } from '~/hooks/User';
 import GalleryRenderer, { GalleryRendererLoading } from '~/pages/GalleryDetails/components/GalleryRenderer';
-import Http404 from '~/pages/Http404';
-import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
-import { useEffect } from 'react';
-import { href, redirect, useNavigate, useParams } from 'react-router';
 
-import { Route } from './+types';
 import GalleryEditorDialog from './components/GalleryEditor';
 import PictureUpload from './components/PictureUpload';
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  try {
-    const gallery = await getQueryClient().ensureQueryData(galleryByIdQuery(params.id));
-    if (!gallery) {
-      throw redirect(href('/galleri'));
+export const Route = createFileRoute('/_MainLayout/galleri/$id/{-$urlTitle}')({
+  loader: async ({ params, context }) => {
+    try {
+      const gallery = await context.queryClient.ensureQueryData(galleryByIdQuery(params.id));
+      if (!gallery) {
+        throw redirect({ to: '/galleri' });
+      }
+      return {
+        gallery,
+      };
+    } catch {
+      throw redirect({ to: '/galleri' });
     }
-    return {
-      gallery,
-    };
-  } catch {
-    throw redirect(href('/galleri'));
-  }
-}
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      { property: 'og:title', content: loaderData?.gallery.title },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: typeof window !== 'undefined' ? window.location.href : '' },
+      { property: 'og:image', content: loaderData?.gallery.image },
+    ],
+  }),
+  component: GalleryDetails,
+});
 
-export const meta: Route.MetaFunction = ({ loaderData }) => {
-  return [
-    { property: 'og:title', content: loaderData?.gallery.title },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: window.location.href },
-    { property: 'og:image', content: loaderData?.gallery.image },
-  ];
-};
-
-const GalleryDetails = () => {
-  const { id } = useParams<'id'>();
+function GalleryDetails() {
+  const { id } = useParams({ strict: false });
   const { data, isError } = useGalleryById(String(id));
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (data) {
-      navigate(`${URLS.gallery}${id}/`, { replace: true });
-    }
-  }, [id, data, navigate]);
 
   if (isError) {
     return <Http404 />;
@@ -74,6 +65,4 @@ const GalleryDetails = () => {
       {data ? <GalleryRenderer id={data.id} /> : <GalleryRendererLoading />}
     </Page>
   );
-};
-
-export default GalleryDetails;
+}

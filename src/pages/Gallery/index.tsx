@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import GalleryListItem, { GalleryListItemLoading } from '~/components/miscellaneous/GalleryListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -9,7 +10,11 @@ import { useMemo } from 'react';
 
 import CreateGallery from './components/CreateGallery';
 
-export default function Galleries() {
+export const Route = createFileRoute('/_MainLayout/galleri/')({
+  component: Galleries,
+});
+
+function Galleries() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
   const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 

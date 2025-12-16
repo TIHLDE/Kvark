@@ -1,3 +1,4 @@
+import { linkOptions, LinkOptions } from '@tanstack/react-router';
 import BottomBar from '~/components/navigation/BottomBar';
 import Footer from '~/components/navigation/Footer';
 import Topbar from '~/components/navigation/Topbar';
@@ -22,23 +23,30 @@ export type NavigationProps = {
   children?: ReactNode;
 };
 
-export type NavigationItem =
-  | {
-      text: string;
-      to: string;
-      external?: boolean;
-      type: 'link';
-    }
-  | {
-      items: {
-        external?: boolean;
-        text: string;
-        to: string;
-        title: string;
-      }[];
-      text: string;
-      type: 'dropdown';
-    };
+type BaseNavigationItem = {
+  text: string;
+  hidden?: boolean;
+};
+
+type NavigationLinkItem = BaseNavigationItem & {
+  type: 'link';
+  link:
+    | {
+        type: 'internal';
+        options: LinkOptions;
+      }
+    | {
+        type: 'external';
+        href: string;
+      };
+};
+
+type NavigationDropdownItem = BaseNavigationItem & {
+  type: 'dropdown';
+  items: Array<Omit<NavigationLinkItem, 'type'> & { title: string }>;
+};
+
+export type NavigationItem = NavigationLinkItem | NavigationDropdownItem;
 
 const NavigationContent = ({ children }: NavigationProps) => {
   const isAuthenticated = useIsAuthenticated();
@@ -46,36 +54,38 @@ const NavigationContent = ({ children }: NavigationProps) => {
   const items = useMemo<Array<NavigationItem>>(
     () => [
       {
-        items: [
-          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', to: URLS.wiki },
-          { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', to: URLS.toddel },
-          { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', to: URLS.groups.index },
-          { title: 'Interessegrupper', text: 'Se alle interessegrupper', to: URLS.groups.interest },
-          { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', to: URLS.fondet, external: true },
-        ],
-        text: 'Generelt',
         type: 'dropdown',
+        text: 'Generelt',
+        items: [
+          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', link: { type: 'external', href: URLS.external.wiki.wiki } },
+          { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', link: { type: 'internal', options: linkOptions({ to: '/toddel' }) } },
+          { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', link: { type: 'internal', options: linkOptions({ to: '/grupper' }) } },
+          { title: 'Interessegrupper', text: 'Se alle interessegrupper', link: { type: 'internal', options: linkOptions({ to: '/interessegrupper' }) } },
+          { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', link: { type: 'external', href: URLS.external.fondet } },
+        ],
       },
-      ...(SHOW_NEW_STUDENT_INFO ? [{ text: 'Ny student', to: URLS.newStudent, type: 'link' } as NavigationItem] : []),
-      { text: 'Arrangementer', to: URLS.events, type: 'link' },
-      { text: 'Nyheter', to: URLS.news, type: 'link' },
-      { text: 'Stillinger', to: URLS.jobposts, type: 'link' },
-      isAuthenticated
-        ? {
-            items: [
-              { title: 'Opptak', text: 'Søk verv hos TIHLDE', to: URLS.admissions },
-              { title: 'Kokebok', text: 'Få hjelp til dine øvinger', to: URLS.cheatsheet },
-              { title: 'Link-forkorter', text: 'Forkort linker til å peke mot TIHLDE', to: URLS.shortLinks },
-              { title: 'QR koder', text: 'Generer dine egne QR koder', to: URLS.qrCodes },
-              { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', to: URLS.badges.index },
-              { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', to: URLS.gallery },
-              { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', to: URLS.kontRes, external: true },
-              { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', to: URLS.changelog },
-            ],
-            text: 'For medlemmer',
-            type: 'dropdown',
-          }
-        : { text: 'For bedrifter', to: URLS.company, type: 'link', external: true },
+
+      { type: 'link', text: 'Ny student', hidden: !SHOW_NEW_STUDENT_INFO, link: { type: 'internal', options: linkOptions({ to: '/ny-student' }) } },
+      { type: 'link', text: 'Arrangementer', link: { type: 'internal', options: linkOptions({ to: '/arrangementer' }) } },
+      { type: 'link', text: 'Nyheter', link: { type: 'internal', options: linkOptions({ to: '/nyheter' }) } },
+      { type: 'link', text: 'Stillinger', link: { type: 'internal', options: linkOptions({ to: '/stillingsannonser' }) } },
+
+      {
+        type: 'dropdown',
+        text: 'For Medlemmer',
+        hidden: !isAuthenticated,
+        items: [
+          { title: 'Opptak', text: 'Søk verv hos TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/opptak' }) } },
+          { title: 'Kokebok', text: 'Få hjelp til dine øvinger', link: { type: 'internal', options: linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }) } },
+          { title: 'Link-forkorter', text: 'Forkort linker til å peke mot TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/linker' }) } },
+          { title: 'QR koder', text: 'Generer dine egne QR koder', link: { type: 'internal', options: linkOptions({ to: '/qr-koder' }) } },
+          { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', link: { type: 'internal', options: linkOptions({ to: '/badges' }) } },
+          { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', link: { type: 'internal', options: linkOptions({ to: '/galleri' }) } },
+          { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', link: { type: 'external', href: URLS.external.kontRes } },
+          { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', link: { type: 'internal', options: linkOptions({ to: '/endringslogg' }) } },
+        ],
+      },
+      { type: 'link', text: 'For Bedrifter', link: { type: 'external', href: URLS.external.company }, hidden: isAuthenticated },
     ],
     [isAuthenticated],
   );

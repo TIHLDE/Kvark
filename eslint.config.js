@@ -7,7 +7,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
   files: ['**/*.{js,ts,jsx,tsx}'],
-  ignores: ['**/dist/**', '**/node_modules/**', '**/src/components/ui/**/*', '**/src/lib/utils.ts'],
+  ignores: ['**/dist/**', '**/node_modules/**', '**/src/components/ui/**/*', '**/src/lib/utils.ts', '**/src/routeTree.gen.ts'],
   extends: [
     eslint.configs.recommended,
     tseslint.configs.recommended,
@@ -35,6 +35,7 @@ export default tseslint.config({
     // React Rules
     'react/prop-types': 'off', // Remove this in the future
     'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'off',
     // Built-in Rules
     eqeqeq: ['error', 'always', { null: 'ignore' }],
     'guard-for-in': 'off',

@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
 import API from '~/api/api';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -7,10 +8,13 @@ import type { User } from '~/types';
 import URLS from '~/URLS';
 import { ArrowRight, LoaderCircle, ShieldAlert } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
 
-const SignUpFeide = () => {
-  const location = useLocation();
+export const Route = createFileRoute('/_MainLayout/ny-bruker/feide')({
+  component: SignUpFeide,
+});
+
+function SignUpFeide() {
+  const search = Route.useSearch();
   const [queryError, setQueryError] = useState<string>();
   const [feideError, setFeideError] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,17 +25,18 @@ const SignUpFeide = () => {
     try {
       const user = await API.feideAuthenticate(code);
       setCreatedUser(user.detail as unknown as User);
-    } catch (error) {
-      setFeideError(error.detail || 'En feil oppstod under autentisering, vennligst prøv igjen.');
+    } catch (error: unknown) {
+      if (typeof error === 'object' && error != null) {
+        setFeideError((error as { detail?: string }).detail || 'En feil oppstod under autentisering, vennligst prøv igjen.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const code = queryParams.get('code');
-    const state = queryParams.get('state');
+    const code = (search as { code?: string }).code;
+    const state = (search as { state?: string }).state;
 
     if (!code || !state || state !== FEIDE_AUTH_STATE) {
       setQueryError('Mangler påkrevde parametere, vennligst prøv igjen.');
@@ -39,7 +44,7 @@ const SignUpFeide = () => {
     }
 
     createUser(code);
-  }, [location]);
+  }, [search]);
 
   return (
     <Page>
@@ -101,6 +106,4 @@ const SignUpFeide = () => {
       </div>
     </Page>
   );
-};
-
-export default SignUpFeide;
+}

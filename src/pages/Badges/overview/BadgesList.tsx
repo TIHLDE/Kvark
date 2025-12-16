@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { PaginateButton } from '~/components/ui/button';
@@ -6,7 +7,11 @@ import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
-export const BadgesList = () => {
+export const Route = createFileRoute('/_MainLayout/badges/_index/alle')({
+  component: BadgesList,
+});
+
+export function BadgesList() {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useBadges();
   const badges = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
 
@@ -33,6 +38,4 @@ export const BadgesList = () => {
       {hasNextPage && <PaginateButton className='w-full mt-4' isLoading={isFetching} nextPage={fetchNextPage} />}
     </div>
   );
-};
-
-export default BadgesList;
+}

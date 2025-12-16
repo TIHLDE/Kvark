@@ -1,42 +1,45 @@
 import { CheckedState } from '@radix-ui/react-checkbox';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import AppleAppStoreBadge from '~/assets/img/apple-appstore-badge.svg';
 import GooglePlayBadge from '~/assets/img/google-play-badge.svg';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Checkbox } from '~/components/ui/checkbox';
+import { ExternalLink } from '~/components/ui/external-link';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { useEventById, useEventRegistrations, useUpdateEventRegistration } from '~/hooks/Event';
 import { useDebounce } from '~/hooks/Utils';
-import Http404 from '~/pages/Http404';
 import type { Registration } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import { MOBILE_APP } from '~/URLS';
+import URLS from '~/URLS';
 import { ListChecks, QrCode } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { href, redirect, useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { Route } from './+types';
 import { useScanner } from './hooks';
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const auth = await authClientWithRedirect(request);
-  if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
-    // TODO: Display an unauthorized page
-    return redirect(href('/arrangementer'));
-  }
-}
+export const Route = createFileRoute('/_MainLayout/arrangementer/registrering/$id')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
+    if (!userHasWritePermission(auth.permissions, PermissionApp.EVENT)) {
+      // TODO: Display an unauthorized page
+      throw redirect({ to: '/arrangementer' });
+    }
+  },
+  component: EventRegistration,
+});
 
 type QrScanProps = {
   onScan: (userId: string) => Promise<Registration>;
 };
 
-const QrScan = ({ onScan }: QrScanProps) => {
+function QrScan({ onScan }: QrScanProps) {
   const [scanned, setScanned] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -44,7 +47,6 @@ const QrScan = ({ onScan }: QrScanProps) => {
       return;
     }
     onScan(scanned);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scanned]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -60,14 +62,14 @@ const QrScan = ({ onScan }: QrScanProps) => {
   });
 
   return <video className='object-cover aspect-square w-full h-[400px]' ref={videoRef} />;
-};
+}
 
 export type ParticipantCardProps = {
   user: Registration;
   updateAttendedStatus: (username: string, attendedStatus: boolean) => void;
 };
 
-const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) => {
+function ParticipantCard({ user, updateAttendedStatus }: ParticipantCardProps) {
   const [checkedState, setCheckedState] = useState(user.has_attended);
 
   const onCheck = async (checked: CheckedState) => {
@@ -90,10 +92,10 @@ const ParticipantCard = ({ user, updateAttendedStatus }: ParticipantCardProps) =
       </div>
     </div>
   );
-};
+}
 
-const EventRegistration = () => {
-  const { id } = useParams();
+function EventRegistration() {
+  const { id } = Route.useParams();
   const { data: event, isError } = useEventById(Number(id));
   const [search, setSearch] = useState('');
   const debouncedSearch = useDebounce(search, 500);
@@ -119,7 +121,11 @@ const EventRegistration = () => {
     );
 
   if (isError || (event && !event.sign_up)) {
-    return <Http404 />;
+    return (
+      <Page>
+        <Http404 />
+      </Page>
+    );
   }
 
   return (
@@ -165,12 +171,12 @@ const EventRegistration = () => {
                     <strong className='text-foreground'>TIHLDE appen</strong>. Bytt over for en bedre opplevelse!
                   </p>
                   <div>
-                    <a href={MOBILE_APP.iOS} target='_blank' rel='noopener noreferrer'>
+                    <ExternalLink href={URLS.external.mobileApp.iOS}>
                       <img src={AppleAppStoreBadge} alt='Last ned iPhone-appen' className='inline-block w-auto h-12' />
-                    </a>{' '}
-                    <a href={MOBILE_APP.Android} target='_blank' rel='noopener noreferrer'>
+                    </ExternalLink>{' '}
+                    <ExternalLink href={URLS.external.mobileApp.Android}>
                       <img src={GooglePlayBadge} alt='Last ned Android-appen' className='inline-block w-auto h-12' />
-                    </a>
+                    </ExternalLink>
                   </div>
                 </div>
                 <QrScan onScan={async (userId) => updateAttendedStatus(userId, true)} />
@@ -181,6 +187,4 @@ const EventRegistration = () => {
       </Card>
     </Page>
   );
-};
-
-export default EventRegistration;
+}

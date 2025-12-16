@@ -1,6 +1,6 @@
 import { getCookie } from '~/api/cookie';
 import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
-import type { RequestResponse } from '~/types';
+import { RequestErrorResponse, type RequestResponse } from '~/types';
 import { argsToParams } from '~/utils';
 
 type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -33,7 +33,7 @@ export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = t
           throw responseData;
         });
       } else {
-        throw { detail: response.statusText } as RequestResponse;
+        throw new RequestErrorResponse(response.statusText);
       }
     }
     return response.json().then((responseData: T) => responseData);

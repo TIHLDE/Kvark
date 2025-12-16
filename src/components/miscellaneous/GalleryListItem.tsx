@@ -1,17 +1,16 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
 import type { Gallery } from '~/types';
 import { urlEncode } from '~/utils';
 
-import NavLink from '../ui/navlink';
-
 export type GalleryListItemProps = {
   gallery: Gallery;
 };
 
 const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
-  <NavLink params={{ id: gallery.id, urlTitle: urlEncode(gallery.title) }} to='/galleri/:id/:urlTitle?'>
+  <Link to='/galleri/$id/{-$urlTitle}' params={{ id: gallery.id, urlTitle: urlEncode(gallery.title) }}>
     <Card className='h-[1/6]'>
       <CardHeader>
         <CardTitle className='text-black dark:text-white'>{gallery.title}</CardTitle>
@@ -21,7 +20,7 @@ const GalleryListItem = ({ gallery }: GalleryListItemProps) => (
         <AspectRatioImg alt={gallery.image_alt || gallery.title} className='rounded-md' src={gallery.image} />
       </CardContent>
     </Card>
-  </NavLink>
+  </Link>
 );
 
 export default GalleryListItem;
