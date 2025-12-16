@@ -29,7 +29,6 @@ const URLS = {
   },
   feedback: '/tilbakemelding',
   cheatsheet: '/kokebok',
-  company: '/bedrifter',
   events: '/arrangementer',
   eventRegister: 'registrering',
   forgotPassword: '/glemt-passord',
