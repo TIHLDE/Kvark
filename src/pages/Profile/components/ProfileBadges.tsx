@@ -1,7 +1,8 @@
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { PaginateButton } from '~/components/ui/button';
 import { useUserBadges } from '~/hooks/User';
-import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
+// TODO: Possibly move to global components
+import BadgeItem, { BadgeItemLoading } from '~/routes/badges/components/BadgeItem';
 import { useMemo } from 'react';
 
 const ProfileBadges = ({ userId }: { userId: string | undefined }) => {

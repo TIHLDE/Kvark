@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
+import { infiniteQueryOptions, useInfiniteQuery, useMutation, useQuery, useQueryClient, type UseMutationResult } from '@tanstack/react-query';
 import API from '~/api/api';
 import { USER_BADGES_QUERY_KEY } from '~/hooks/User';
 import type { Badge, BadgeCategory, BadgeLeaderboard, BadgesOverallLeaderboard, PaginationResponse, RequestResponse } from '~/types';
@@ -18,6 +18,14 @@ export const BADGES_QUERY_KEYS = {
     leaderboard: (badgeId: Badge['id'], filters?: any) => [...BADGES_QUERY_KEYS.badge.detail(badgeId), 'leaderboard', filters],
   },
 } as const;
+
+export const badgeCategoryQueryOptions = (filters?: any) =>
+  infiniteQueryOptions({
+    queryKey: BADGES_QUERY_KEYS.categories.list(filters),
+    queryFn: ({ pageParam }) => API.getBadgeCategories({ ...filters, page: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
 
 export const useBadge = (badgeId: Badge['id']) =>
   useQuery({
@@ -45,13 +53,7 @@ export const useCreateBadge = (): UseMutationResult<RequestResponse, RequestResp
   });
 };
 
-export const useBadgeCategories = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<BadgeCategory>, RequestResponse>({
-    queryKey: BADGES_QUERY_KEYS.categories.list(filters),
-    queryFn: ({ pageParam }) => API.getBadgeCategories({ ...filters, page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
+export const useBadgeCategories = (filters?: any) => useInfiniteQuery(badgeCategoryQueryOptions(filters));
 
 export const useBadgeLeaderboard = (badgeId: Badge['id'], filters?: any) =>
   useInfiniteQuery<PaginationResponse<BadgeLeaderboard>, RequestResponse>({

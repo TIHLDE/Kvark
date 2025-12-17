@@ -3,11 +3,12 @@ import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { PaginateButton } from '~/components/ui/button';
 import { useBadges } from '~/hooks/Badge';
-import BadgeItem, { BadgeItemLoading } from '~/pages/Badges/components/BadgeItem';
 import { Info } from 'lucide-react';
 import { useMemo } from 'react';
 
-export const Route = createFileRoute('/_MainLayout/badges/_index/alle')({
+import BadgeItem, { BadgeItemLoading } from './components/BadgeItem';
+
+export const Route = createFileRoute('/_MainLayout/badges/_layout/alle')({
   component: BadgesList,
 });
 

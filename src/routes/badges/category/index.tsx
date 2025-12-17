@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
-import BadgesLeaderboard from '~/pages/Badges/BadgesLeaderboard';
+
+import BadgesLeaderboard from '../components/BadgesLeaderboard';
 
 export const Route = createFileRoute('/_MainLayout/badges/kategorier/$categoryId/')({
   async beforeLoad({ location }) {

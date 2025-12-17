@@ -6,7 +6,7 @@ import { useCreateBadge } from '~/hooks/Badge';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/_MainLayout/badges/_index/erverv/{-$badgeId}')({
+export const Route = createFileRoute('/_MainLayout/badges/_layout/erverv/{-$badgeId}')({
   async beforeLoad({ location }) {
     await authClientWithRedirect(location.href);
   },

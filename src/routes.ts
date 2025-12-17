@@ -38,18 +38,18 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/interessegrupper', './pages/InterestGroups/index.tsx'),
 
     route('/badges', [
-      layout('./pages/Badges/index.tsx', [
-        index('./pages/Badges/overview/BadgesOverallLeaderboard.tsx'),
-        route('/kategorier', './pages/Badges/overview/BadgeCategoriesList.tsx'),
-        route('/alle', './pages/Badges/overview/BadgesList.tsx'),
-        route('/erverv/{-$badgeId}', './pages/Badges/get/index.tsx'),
+      layout('./routes/badges/layout.tsx', [
+        index('./routes/badges/index.tsx'),
+        route('/kategorier', './routes/badges/category.tsx'),
+        route('/alle', './routes/badges/all.tsx'),
+        route('/erverv/{-$badgeId}', './routes/badges/claim.tsx'),
       ]),
-      route('/kategorier/$categoryId', './pages/Badges/category/index.tsx', [
-        index('./pages/Badges/category/BadgesCategoryLeaderboard.tsx'),
+      route('/kategorier/$categoryId', './routes/badges/category/layout.tsx', [
+        index('./routes/badges/category/index.tsx'),
         //
-        route('/badges', './pages/Badges/category/CategoryBadgesList.tsx'),
+        route('/badges', './routes/badges/category/badges.tsx'),
       ]),
-      route('/$badgeId', './pages/Badges/details/index.tsx'),
+      route('/$badgeId', './routes/badges/badge.$badgeId.tsx'),
     ]),
 
     //
