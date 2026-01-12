@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import Page from '~/components/navigation/Page';
@@ -11,11 +12,9 @@ import URLS from '~/URLS';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
 import QRCodeItem from './components/QRCodeItem';
 
 const formSchema = z.object({
@@ -31,11 +30,14 @@ const formSchema = z.object({
     }),
 });
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/qr-koder')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: QRCodes,
+});
 
-const QRCodes = () => {
+function QRCodes() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -56,7 +58,7 @@ const QRCodes = () => {
       onSuccess: () => {
         toast.success('QR koden ble opprettet');
         form.reset();
-        navigate(URLS.qrCodes);
+        navigate({ to: URLS.qrCodes });
         setIsOpen(false);
       },
       onError: (e) => {
@@ -145,6 +147,4 @@ const QRCodes = () => {
       </div>
     </Page>
   );
-};
-
-export default QRCodes;
+}

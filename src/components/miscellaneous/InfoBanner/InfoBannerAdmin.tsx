@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { PaginateButton } from '~/components/ui/button';
@@ -10,11 +11,32 @@ import { useInfoBanners } from '~/hooks/InfoBanner';
 import { PermissionApp } from '~/types/Enums';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { href, redirect } from 'react-router';
 import { z } from 'zod';
 
-import { Route } from './+types/InfoBannerAdmin';
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
+
+export const Route = createFileRoute('/_MainLayout/admin/bannere')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
+
+    if (!userHasWritePermission(auth.permissions, PermissionApp.BANNERS)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  component: () => (
+    <Page className='max-w-5xl w-full mx-auto'>
+      <Card>
+        <CardHeader>
+          <CardTitle>Banner admin</CardTitle>
+          <CardDescription>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <InfoBannerAdmin />
+        </CardContent>
+      </Card>
+    </Page>
+  ),
+});
 
 type Filters = {
   is_visible: boolean;
@@ -25,14 +47,6 @@ const formSchema = z.object({
   is_visible: z.boolean(),
   is_expired: z.boolean(),
 });
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const auth = await authClientWithRedirect(request);
-
-  if (!userHasWritePermission(auth.permissions, PermissionApp.BANNERS)) {
-    return redirect(href('/'));
-  }
-}
 
 function InfoBannerAdmin() {
   const [filters, setFilters] = useState<Filters>({ is_visible: false, is_expired: false });
@@ -97,21 +111,3 @@ function InfoBannerAdmin() {
     </div>
   );
 }
-
-const CreateInfoBannerAdminDialog = () => {
-  return (
-    <Page className='max-w-5xl w-full mx-auto'>
-      <Card>
-        <CardHeader>
-          <CardTitle>Banner admin</CardTitle>
-          <CardDescription>Bannere brukes for å gi en felles informasjon til alle som besøker nettsiden.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <InfoBannerAdmin />
-        </CardContent>
-      </Card>
-    </Page>
-  );
-};
-
-export default CreateInfoBannerAdminDialog;

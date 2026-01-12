@@ -1,25 +1,26 @@
+import { createFileRoute, redirect, useParams } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import FormAdminComponent from '~/components/forms/FormAdmin';
 import Page from '~/components/navigation/Page';
+import Http404 from '~/components/shells/Http404';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 import { useFormById } from '~/hooks/Form';
-import Http404 from '~/pages/Http404';
 import { EventFormType, FormResourceType, PermissionApp } from '~/types/Enums';
 import { useMemo } from 'react';
-import { href, redirect, useParams } from 'react-router';
 
-import { Route } from './+types/FormAdmin';
+export const Route = createFileRoute('/_MainLayout/sporreskjema/admin/$id')({
+  async beforeLoad({ location }) {
+    const auth = await authClientWithRedirect(location.href);
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const auth = await authClientWithRedirect(request);
+    if (!userHasWritePermission(auth.permissions, PermissionApp.GROUPFORM)) {
+      throw redirect({ to: '/' });
+    }
+  },
+  component: FormPage,
+});
 
-  if (!userHasWritePermission(auth.permissions, PermissionApp.GROUPFORM)) {
-    return redirect(href('/'));
-  }
-}
-
-export default function FormPage() {
-  const { id } = useParams<'id'>();
+function FormPage() {
+  const { id } = useParams({ strict: false });
   const { data: form, isError } = useFormById(id || '-');
 
   const title = useMemo(

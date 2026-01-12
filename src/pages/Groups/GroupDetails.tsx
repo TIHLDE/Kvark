@@ -1,3 +1,4 @@
+import { createFileRoute, Link, linkOptions, Outlet } from '@tanstack/react-router';
 import { authClient } from '~/api/auth';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import Page from '~/components/navigation/Page';
@@ -6,56 +7,55 @@ import { Card, CardContent, CardHeader } from '~/components/ui/card';
 import { ScrollArea, ScrollBar } from '~/components/ui/scroll-area';
 import { getGroupQueryOptions } from '~/hooks/Group';
 import { cn } from '~/lib/utils';
-import { getQueryClient } from '~/queryClient';
 import { FormGroupValues } from '~/types';
-import { CalendarRange, CircleDollarSign, CircleHelp, Info, LucideIcon, Scale } from 'lucide-react';
-import { href, Link, Outlet } from 'react-router';
+import { GroupType } from '~/types/Enums';
+import { CalendarRange, CircleDollarSign, CircleHelp, Info, Scale } from 'lucide-react';
 
-import type { Route } from './+types/GroupDetails';
 import GroupAdmin from './components/GroupAdmin';
 import AddFineDialog from './fines/AddFineDialog';
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const auth = await authClient();
-  const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
+export const Route = createFileRoute('/_MainLayout/grupper/$slug')({
+  ssr: false,
+  loader: async ({ params, context }) => {
+    const auth = await authClient();
+    const group = await context.queryClient.ensureQueryData(getGroupQueryOptions(params.slug));
 
-  return {
-    group,
-    hasWriteAcccess: Boolean(group.permissions.write),
-    isMemberOfGroup: Boolean(group.viewer_is_member),
-    isFinesActive: Boolean(group.fines_activated),
-    isAuthenticated: Boolean(auth),
-  };
-}
-
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  return (
+    return {
+      group,
+      hasWriteAcccess: Boolean(group.permissions.write),
+      isMemberOfGroup: Boolean(group.viewer_is_member),
+      isFinesActive: Boolean(group.fines_activated),
+      isAuthenticated: Boolean(auth),
+    };
+  },
+  errorComponent: ({ error }) => (
     <Page className='max-w-6xl mx-auto'>
       <Card>
         <CardHeader>
           <div className='flex items-center space-x-4'>
-            <GoBackButton url='/grupper' />
+            <GoBackButton to='/grupper' />
             <h1 className='text-xl font-bold'>Kunne ikke finne gruppen</h1>
             <pre>{JSON.stringify(error, null, 4)}</pre>
           </div>
         </CardHeader>
       </Card>
     </Page>
-  );
-}
+  ),
+  component: GroupPage,
+});
 
-export default function GroupPage({ loaderData }: Route.ComponentProps) {
-  const { group, hasWriteAcccess, isAuthenticated, isFinesActive, isMemberOfGroup } = loaderData;
+function GroupPage() {
+  const { group, hasWriteAcccess, isAuthenticated, isFinesActive, isMemberOfGroup } = Route.useLoaderData();
 
   const showFinesAndLaws = isFinesActive && (isMemberOfGroup || hasWriteAcccess);
   const showForms = isAuthenticated;
 
   const tabs = [
-    { label: 'Om', to: `/grupper/${group.slug}`, icon: Info },
-    { label: 'Arrangementer', to: `/grupper/${group.slug}/arrangementer`, icon: CalendarRange },
-    { label: 'Bøter', to: `/grupper/${group.slug}/boter`, icon: CircleDollarSign, hidden: !showFinesAndLaws },
-    { label: 'Lovverk', to: `/grupper/${group.slug}/lovverk`, icon: Scale, hidden: !showFinesAndLaws },
-    { label: 'Spørreskjemaer', to: `/grupper/${group.slug}/sporreskjemaer`, icon: CircleHelp, hidden: !showForms },
+    { label: 'Om', link: linkOptions({ to: '/grupper/$slug', params: { slug: group.slug } }), icon: Info },
+    { label: 'Arrangementer', link: linkOptions({ to: '/grupper/$slug/arrangementer', params: { slug: group.slug } }), icon: CalendarRange },
+    { label: 'Bøter', link: linkOptions({ to: '/grupper/$slug/boter', params: { slug: group.slug } }), icon: CircleDollarSign, hidden: !showFinesAndLaws },
+    { label: 'Lovverk', link: linkOptions({ to: '/grupper/$slug/lovverk', params: { slug: group.slug } }), icon: Scale, hidden: !showFinesAndLaws },
+    { label: 'Spørreskjemaer', link: linkOptions({ to: '/grupper/$slug/sporreskjemaer', params: { slug: group.slug } }), icon: CircleHelp, hidden: !showForms },
   ];
 
   return (
@@ -66,7 +66,7 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
 
           <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
             <div className='flex items-center space-x-4'>
-              <GoBackButton url={href('/grupper')} />
+              <GoBackButton to={group.type === GroupType.INTERESTGROUP ? '/interessegrupper' : '/grupper'} />
               <div className='flex items-center space-x-2'>
                 <AspectRatioImg alt={group.image_alt ?? ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={group.image ?? ''} />
                 <h1 className='text-3xl md:text-5xl font-bold'>{group.name}</h1>
@@ -78,7 +78,26 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
         </CardHeader>
         <CardContent>
           <ScrollArea className='w-full whitespace-nowrap p-0'>
-            <div className='flex w-max space-x-4'>{tabs.map((tab) => !tab.hidden && <TabLink key={tab.label} {...tab} Icon={tab.icon} />)}</div>
+            <div className='flex w-max space-x-4'>
+              {tabs
+                .filter((tab) => !tab.hidden)
+                .map((tab) => (
+                  <Link
+                    {...tab.link}
+                    key={tab.label}
+                    activeOptions={{ exact: true }}
+                    activeProps={{
+                      className: 'active',
+                    }}
+                    className={cn(
+                      'flex items-center space-x-2 p-2 text-muted-foreground',
+                      '[&.active]:text-black [&.active]:dark:text-white [&.active]:border-b [&.active]:border-primary',
+                    )}>
+                    {tab.icon && <tab.icon className='w-5 h-5 stroke-[1.5px]' />}
+                    <h1>{tab.label}</h1>
+                  </Link>
+                ))}
+            </div>
             <ScrollBar orientation='horizontal' />
           </ScrollArea>
           <Outlet />
@@ -87,12 +106,3 @@ export default function GroupPage({ loaderData }: Route.ComponentProps) {
     </Page>
   );
 }
-
-const TabLink = ({ to, label, Icon }: { to: string; label: string; Icon?: LucideIcon }) => (
-  <Link
-    className={cn('flex items-center space-x-2 p-2', location.pathname === to ? 'text-black dark:text-white border-b border-primary' : 'text-muted-foreground')}
-    to={to}>
-    {Icon && <Icon className='w-5 h-5 stroke-[1.5px]' />}
-    <h1>{label}</h1>
-  </Link>
-);

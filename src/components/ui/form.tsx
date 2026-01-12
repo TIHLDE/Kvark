@@ -1,5 +1,4 @@
 import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   type ControllerProps,
@@ -12,6 +11,7 @@ import {
 import { cn } from "~/lib/utils"
 import { Label } from "~/components/ui/label"
 import { createContext, forwardRef, useContext, useId } from "react"
+import { useRender } from "@base-ui/react/use-render"
 const Form = FormProvider
 
 type FormFieldContextValue<
@@ -101,28 +101,27 @@ const FormLabel = forwardRef<
 })
 FormLabel.displayName = "FormLabel"
 
-const FormControl = forwardRef<
-  React.ElementRef<typeof Slot>,
-  React.ComponentPropsWithoutRef<typeof Slot>
->(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
 
-  return (
-    <Slot
-      ref={ref}
-      id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
-      aria-invalid={!!error}
-      {...props}
-    />
-  )
-})
-FormControl.displayName = "FormControl"
+function FormControl({
+  children = <div />,
+}: {
+  children?: useRender.RenderProp | React.ReactNode;
+}) {
+  const { formItemId, error, formDescriptionId, formMessageId } =
+    useFormField();
 
+  return useRender({
+    render: children as useRender.RenderProp,
+    props: {
+      "data-slot": "field-control",
+      id: formItemId,
+      "aria-describedby": !error
+        ? `${formDescriptionId}`
+        : `${formDescriptionId} ${formMessageId}`,
+      "aria-invalid": !!error,
+    },
+  });
+}
 const FormDescription = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>

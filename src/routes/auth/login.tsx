@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { loginUser } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -8,12 +9,14 @@ import { Input } from '~/components/ui/input';
 import { analyticsEvent } from '~/hooks/Utils';
 import { RequestResponse } from '~/types';
 import URLS from '~/URLS';
-import { useEffect } from 'react';
+import { parseAsString, useQueryState } from 'nuqs';
 import { useForm } from 'react-hook-form';
-import { Link, redirect, useSubmit } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { Route } from './+types';
+export const Route = createFileRoute('/_MainLayout/logg-inn')({
+  component: LoginPage,
+});
 
 const formSchema = z.object({
   username: z.string().min(1, {
@@ -24,33 +27,9 @@ const formSchema = z.object({
   }),
 });
 
-export async function clientAction({ request }: Route.ClientActionArgs) {
-  const redirectUrl = new URL(request.url)?.searchParams?.get('redirectTo') ?? '/';
-  const result = formSchema.safeParse(await request.json());
-  if (!result.success) {
-    return {
-      success: false,
-      errors: result.error.flatten().fieldErrors,
-    } as const;
-  }
-
-  const { username, password } = result.data;
-  try {
-    await loginUser(username, password);
-    analyticsEvent('login', 'auth', 'Logged inn');
-    return redirect(redirectUrl);
-  } catch (e) {
-    return {
-      success: false,
-      errors: {
-        username: (e as RequestResponse).detail ?? 'Noe gikk galt',
-      },
-    } as const;
-  }
-}
-
-export default function LoginPage({ actionData }: Route.ComponentProps) {
-  const submit = useSubmit();
+function LoginPage() {
+  const [redirectTo] = useQueryState('redirectTo', parseAsString.withDefault(''));
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,14 +39,17 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
     },
   });
 
-  useEffect(() => {
-    if (actionData?.success === false) {
-      for (const [key, value] of Object.entries(actionData.errors)) {
-        form.setError(key as keyof z.infer<typeof formSchema>, { message: value });
-      }
+  async function login({ username, password }: z.infer<typeof formSchema>) {
+    const redirectUrl = redirectTo || '/';
+
+    try {
+      await loginUser(username, password);
+      analyticsEvent('login', 'auth', 'Logged inn');
+      navigate({ to: redirectUrl });
+    } catch (e) {
+      toast.error('Kunne ikke logge inn: ' + (e as RequestResponse).detail);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionData]);
+  }
 
   return (
     <Page>
@@ -78,7 +60,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className='space-y-6' onSubmit={form.handleSubmit((v) => submit(v, { method: 'POST', encType: 'application/json' }))}>
+            <form className='space-y-6' onSubmit={form.handleSubmit(login)}>
               <FormField
                 control={form.control}
                 name='username'
@@ -88,7 +70,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
                       Brukernavn <span className='text-red-300'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder='Skriv her...' {...field} />
+                      <Input placeholder='Skriv her...' autoComplete='username' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -104,7 +86,7 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
                       Passord <span className='text-red-300'>*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder='Skriv her...' type='password' {...field} />
+                      <Input placeholder='Skriv her...' type='password' autoComplete='current-password' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

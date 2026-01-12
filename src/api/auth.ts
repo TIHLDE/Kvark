@@ -1,9 +1,9 @@
 import { queryOptions } from '@tanstack/react-query';
+import { linkOptions, redirect } from '@tanstack/react-router';
 import { ACCESS_TOKEN } from '~/constant';
-import { getQueryClient } from '~/queryClient';
+import { getQueryClient } from '~/integrations/tanstack-query';
 import { Permissions, RequestResponse, User } from '~/types';
 import { MembershipType, PermissionApp } from '~/types/Enums';
-import { createPath, createSearchParams, href, redirect } from 'react-router';
 import { z } from 'zod';
 
 import API from './api';
@@ -157,11 +157,10 @@ export function userHasWritePermission(permissions: Record<string, Permissions>,
  * @returns auth object if authenticated
  * @throws redirect to login page if not authenticated
  */
-export async function authClientWithRedirect(request: Request) {
+export async function authClientWithRedirect(url: string) {
   const auth = await authClient();
   if (!auth) {
-    const path = createLoginRedirectUrl(request);
-    throw redirect(path);
+    throw redirect(createLoginRedirectUrl(url));
   }
   return auth;
 }
@@ -171,11 +170,11 @@ export async function authClientWithRedirect(request: Request) {
  * @param request the current request object
  * @returns URL string to redirect to the login page
  */
-export function createLoginRedirectUrl(request: Request) {
-  return createPath({
-    pathname: href('/logg-inn'),
-    search: createSearchParams({
-      redirectTo: new URL(request.url).pathname,
-    }).toString(),
-  }).toString();
+export function createLoginRedirectUrl(url: string) {
+  return linkOptions({
+    to: '/logg-inn',
+    search: {
+      redirectTo: url,
+    },
+  });
 }

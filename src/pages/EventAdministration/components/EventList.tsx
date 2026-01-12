@@ -1,14 +1,13 @@
+import { Link } from '@tanstack/react-router';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import { useEvents } from '~/hooks/Event';
 import type { EventList as Event } from '~/types';
-import URLS from '~/URLS';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
 import { ChevronRight, List } from 'lucide-react';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { Link } from 'react-router';
 
 const EventList = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -58,7 +57,11 @@ type ListItemProps = {
 const ListItem = ({ item, setOpen }: ListItemProps) => {
   return (
     <Button asChild className='block w-full rounded-md border h-auto text-black dark:text-white' variant='outline'>
-      <Link className='flex items-center justify-between' onClick={() => setOpen(false)} to={`${URLS.eventAdmin}${item.id}/`}>
+      <Link
+        to='/admin/arrangementer/{-$eventId}'
+        params={{ eventId: item.id.toString() }}
+        className='flex items-center justify-between'
+        onClick={() => setOpen(false)}>
         <div>
           <h1 className='text-lg'>{item.title}</h1>
           <p className='text-muted-foreground'>{formatDate(parseISO(item.start_date))}</p>

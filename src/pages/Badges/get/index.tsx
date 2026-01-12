@@ -1,19 +1,20 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { useCreateBadge } from '~/hooks/Badge';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { Route } from './+types';
-
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  await authClientWithRedirect(request);
-}
+export const Route = createFileRoute('/_MainLayout/badges/_index/erverv/{-$badgeId}')({
+  async beforeLoad({ location }) {
+    await authClientWithRedirect(location.href);
+  },
+  component: BadgesGet,
+});
 
 export default function BadgesGet() {
-  const { badgeId } = useParams();
+  const { badgeId } = Route.useParams();
   const [flag, setFlag] = useState<string>(badgeId ? badgeId : '');
   const createUserBadge = useCreateBadge();
 

@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import DetailContent from '~/components/miscellaneous/DetailContent';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
@@ -9,11 +10,9 @@ import { HavePermission } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import type { JobPost } from '~/types';
 import { PermissionApp } from '~/types/Enums';
-import URLS from '~/URLS';
 import { formatDate, getJobpostType } from '~/utils';
 import { parseISO } from 'date-fns';
 import { PencilIcon } from 'lucide-react';
-import { Link } from 'react-router';
 
 export type JobPostRendererProps = {
   data: JobPost;
@@ -80,7 +79,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           {!preview && (
             <HavePermission apps={[PermissionApp.JOBPOST]}>
               <Button asChild className='w-full text-black dark:text-white' variant='outline'>
-                <Link to={`${URLS.jobpostsAdmin}${data.id}/`}>
+                <Link to='/admin/stillingsannonser/{-$jobPostId}' params={{ jobPostId: data.id.toString() }}>
                   <PencilIcon className='mr-2 w-5 h-5 stroke-[1.5px]' />
                   Endre annonse
                 </Link>

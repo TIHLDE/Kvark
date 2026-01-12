@@ -1,27 +1,29 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { authClient, userHasWritePermission } from '~/api/auth';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Separator } from '~/components/ui/separator';
 import { getGroupQueryOptions } from '~/hooks/Group';
 import MembersCard from '~/pages/Groups/about/MembersCard';
 import MembersHistoryCard from '~/pages/Groups/about/MembersHistoryCard';
-import { getQueryClient } from '~/queryClient';
 import { PermissionApp } from '~/types/Enums';
 
 import GroupStatistics from '../components/GroupStatistics';
-import type { Route } from './+types/index';
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const auth = await authClient();
-  const group = await getQueryClient().ensureQueryData(getGroupQueryOptions(params.slug));
-  return {
-    group,
-    isAuthenticated: Boolean(auth),
-    isAdmin: userHasWritePermission(auth?.permissions ?? {}, PermissionApp.GROUP),
-  };
-}
+export const Route = createFileRoute('/_MainLayout/grupper/$slug/')({
+  loader: async ({ params, context }) => {
+    const auth = await authClient();
+    const group = await context.queryClient.ensureQueryData(getGroupQueryOptions(params.slug));
+    return {
+      group,
+      isAuthenticated: Boolean(auth),
+      isAdmin: userHasWritePermission(auth?.permissions ?? {}, PermissionApp.GROUP),
+    };
+  },
+  component: GroupInfo,
+});
 
-export default function GroupInfo({ loaderData }: Route.ComponentProps) {
-  const { group, isAuthenticated, isAdmin } = loaderData;
+function GroupInfo() {
+  const { group, isAuthenticated, isAdmin } = Route.useLoaderData();
 
   return (
     <>
