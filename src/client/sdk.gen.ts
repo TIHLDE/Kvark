@@ -3,200 +3,200 @@
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
 import type {
-  DeleteApiApiKeysIdData,
-  DeleteApiApiKeysIdErrors,
-  DeleteApiApiKeysIdResponses,
-  DeleteApiEventEventIdData,
-  DeleteApiEventEventIdErrors,
-  DeleteApiEventEventIdRegistrationData,
-  DeleteApiEventEventIdRegistrationResponses,
-  DeleteApiEventEventIdResponses,
-  DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData,
-  DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonErrors,
-  DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonResponses,
-  DeleteApiFormsIdData,
-  DeleteApiFormsIdErrors,
-  DeleteApiFormsIdResponses,
-  DeleteApiGroupsGroupSlugFinesFineIdData,
-  DeleteApiGroupsGroupSlugFinesFineIdErrors,
-  DeleteApiGroupsGroupSlugFinesFineIdResponses,
-  DeleteApiGroupsGroupSlugMembersUserIdData,
-  DeleteApiGroupsGroupSlugMembersUserIdErrors,
-  DeleteApiGroupsGroupSlugMembersUserIdResponses,
-  DeleteApiGroupsSlugData,
-  DeleteApiGroupsSlugErrors,
-  DeleteApiGroupsSlugResponses,
-  DeleteApiJobsIdData,
-  DeleteApiJobsIdErrors,
-  DeleteApiJobsIdResponses,
-  DeleteApiNewsIdData,
-  DeleteApiNewsIdErrors,
-  DeleteApiNewsIdReactionsData,
-  DeleteApiNewsIdReactionsErrors,
-  DeleteApiNewsIdReactionsResponses,
-  DeleteApiNewsIdResponses,
-  DeleteApiNotificationIdData,
-  DeleteApiNotificationIdErrors,
-  DeleteApiNotificationIdResponses,
-  GetApiApiKeysData,
-  GetApiApiKeysErrors,
-  GetApiApiKeysIdData,
-  GetApiApiKeysIdErrors,
-  GetApiApiKeysIdResponses,
-  GetApiApiKeysResponses,
-  GetApiEventData,
-  GetApiEventEventIdFormsData,
-  GetApiEventEventIdFormsErrors,
-  GetApiEventEventIdFormsResponses,
-  GetApiEventEventIdFormsTypeData,
-  GetApiEventEventIdFormsTypeErrors,
-  GetApiEventEventIdFormsTypeResponses,
-  GetApiEventEventIdRegistrationData,
-  GetApiEventEventIdRegistrationResponses,
-  GetApiEventFavoriteData,
-  GetApiEventFavoriteResponses,
-  GetApiEventResponses,
-  GetApiFormsData,
-  GetApiFormsFormIdSubmissionsData,
-  GetApiFormsFormIdSubmissionsDownloadData,
-  GetApiFormsFormIdSubmissionsDownloadErrors,
-  GetApiFormsFormIdSubmissionsDownloadResponses,
-  GetApiFormsFormIdSubmissionsErrors,
-  GetApiFormsFormIdSubmissionsIdData,
-  GetApiFormsFormIdSubmissionsIdErrors,
-  GetApiFormsFormIdSubmissionsIdResponses,
-  GetApiFormsFormIdSubmissionsResponses,
-  GetApiFormsIdData,
-  GetApiFormsIdErrors,
-  GetApiFormsIdResponses,
-  GetApiFormsIdStatisticsData,
-  GetApiFormsIdStatisticsErrors,
-  GetApiFormsIdStatisticsResponses,
-  GetApiFormsResponses,
-  GetApiGroupsData,
-  GetApiGroupsGroupSlugFinesData,
-  GetApiGroupsGroupSlugFinesErrors,
-  GetApiGroupsGroupSlugFinesFineIdData,
-  GetApiGroupsGroupSlugFinesFineIdErrors,
-  GetApiGroupsGroupSlugFinesFineIdResponses,
-  GetApiGroupsGroupSlugFinesResponses,
-  GetApiGroupsGroupSlugMembersData,
-  GetApiGroupsGroupSlugMembersErrors,
-  GetApiGroupsGroupSlugMembersResponses,
-  GetApiGroupsResponses,
-  GetApiGroupsSlugData,
-  GetApiGroupsSlugErrors,
-  GetApiGroupsSlugFormsData,
-  GetApiGroupsSlugFormsErrors,
-  GetApiGroupsSlugFormsResponses,
-  GetApiGroupsSlugResponses,
-  GetApiJobsData,
-  GetApiJobsIdData,
-  GetApiJobsIdErrors,
-  GetApiJobsIdResponses,
-  GetApiJobsResponses,
-  GetApiNewsData,
-  GetApiNewsIdData,
-  GetApiNewsIdErrors,
-  GetApiNewsIdResponses,
-  GetApiNewsResponses,
-  GetApiNotificationData,
-  GetApiNotificationErrors,
-  GetApiNotificationResponses,
-  GetApiUserAllergyData,
-  GetApiUserAllergyResponses,
-  GetApiUserMeSettingsData,
-  GetApiUserMeSettingsErrors,
-  GetApiUserMeSettingsResponses,
-  PatchApiApiKeysIdData,
-  PatchApiApiKeysIdErrors,
-  PatchApiApiKeysIdResponses,
-  PatchApiFormsIdData,
-  PatchApiFormsIdErrors,
-  PatchApiFormsIdResponses,
-  PatchApiGroupsGroupSlugFinesFineIdData,
-  PatchApiGroupsGroupSlugFinesFineIdErrors,
-  PatchApiGroupsGroupSlugFinesFineIdResponses,
-  PatchApiGroupsGroupSlugMembersUserIdData,
-  PatchApiGroupsGroupSlugMembersUserIdErrors,
-  PatchApiGroupsGroupSlugMembersUserIdResponses,
-  PatchApiGroupsSlugData,
-  PatchApiGroupsSlugErrors,
-  PatchApiGroupsSlugResponses,
-  PatchApiJobsIdData,
-  PatchApiJobsIdErrors,
-  PatchApiJobsIdResponses,
-  PatchApiNewsIdData,
-  PatchApiNewsIdErrors,
-  PatchApiNewsIdResponses,
-  PatchApiNotificationIdReadData,
-  PatchApiNotificationIdReadErrors,
-  PatchApiNotificationIdReadResponses,
-  PatchApiUserMeSettingsData,
-  PatchApiUserMeSettingsErrors,
-  PatchApiUserMeSettingsResponses,
-  PostApiApiKeysData,
-  PostApiApiKeysErrors,
-  PostApiApiKeysIdRegenerateData,
-  PostApiApiKeysIdRegenerateErrors,
-  PostApiApiKeysIdRegenerateResponses,
-  PostApiApiKeysResponses,
-  PostApiApiKeysValidateData,
-  PostApiApiKeysValidateResponses,
-  PostApiEmailSendData,
-  PostApiEmailSendErrors,
-  PostApiEmailSendResponses,
-  PostApiEventData,
-  PostApiEventErrors,
-  PostApiEventEventIdFormsData,
-  PostApiEventEventIdFormsErrors,
-  PostApiEventEventIdFormsResponses,
-  PostApiEventEventIdPaymentData,
-  PostApiEventEventIdPaymentErrors,
-  PostApiEventEventIdPaymentResponses,
-  PostApiEventEventIdRegistrationData,
-  PostApiEventEventIdRegistrationErrors,
-  PostApiEventEventIdRegistrationResponses,
-  PostApiEventPaymentWebhookData,
-  PostApiEventPaymentWebhookErrors,
-  PostApiEventPaymentWebhookResponses,
-  PostApiEventResponses,
-  PostApiFormsData,
-  PostApiFormsErrors,
-  PostApiFormsFormIdSubmissionsData,
-  PostApiFormsFormIdSubmissionsErrors,
-  PostApiFormsFormIdSubmissionsResponses,
-  PostApiFormsResponses,
-  PostApiGroupsData,
-  PostApiGroupsErrors,
-  PostApiGroupsGroupSlugFinesData,
-  PostApiGroupsGroupSlugFinesErrors,
-  PostApiGroupsGroupSlugFinesResponses,
-  PostApiGroupsGroupSlugMembersData,
-  PostApiGroupsGroupSlugMembersErrors,
-  PostApiGroupsGroupSlugMembersResponses,
-  PostApiGroupsResponses,
-  PostApiGroupsSlugFormsData,
-  PostApiGroupsSlugFormsErrors,
-  PostApiGroupsSlugFormsResponses,
-  PostApiJobsData,
-  PostApiJobsErrors,
-  PostApiJobsResponses,
-  PostApiNewsData,
-  PostApiNewsErrors,
-  PostApiNewsIdReactionsData,
-  PostApiNewsIdReactionsErrors,
-  PostApiNewsIdReactionsResponses,
-  PostApiNewsResponses,
-  PostApiUserMeSettingsData,
-  PostApiUserMeSettingsErrors,
-  PostApiUserMeSettingsResponses,
-  PutApiEventFavoriteIdData,
-  PutApiEventFavoriteIdErrors,
-  PutApiEventFavoriteIdResponses,
-  PutApiEventIdData,
-  PutApiEventIdErrors,
-  PutApiEventIdResponses,
+  AddGroupMemberData,
+  AddGroupMemberErrors,
+  AddGroupMemberResponses,
+  CreateApiKeyData,
+  CreateApiKeyErrors,
+  CreateApiKeyResponses,
+  CreateEventData,
+  CreateEventErrors,
+  CreateEventFormData,
+  CreateEventFormErrors,
+  CreateEventFormResponses,
+  CreateEventPaymentData,
+  CreateEventPaymentErrors,
+  CreateEventPaymentResponses,
+  CreateEventRegistrationData,
+  CreateEventRegistrationErrors,
+  CreateEventRegistrationResponses,
+  CreateEventResponses,
+  CreateFineData,
+  CreateFineErrors,
+  CreateFineResponses,
+  CreateFormData,
+  CreateFormErrors,
+  CreateFormResponses,
+  CreateFormSubmissionData,
+  CreateFormSubmissionErrors,
+  CreateFormSubmissionResponses,
+  CreateGroupData,
+  CreateGroupErrors,
+  CreateGroupFormData,
+  CreateGroupFormErrors,
+  CreateGroupFormResponses,
+  CreateGroupResponses,
+  CreateJobData,
+  CreateJobErrors,
+  CreateJobResponses,
+  CreateNewsData,
+  CreateNewsErrors,
+  CreateNewsReactionData,
+  CreateNewsReactionErrors,
+  CreateNewsReactionResponses,
+  CreateNewsResponses,
+  DeleteApiKeyData,
+  DeleteApiKeyErrors,
+  DeleteApiKeyResponses,
+  DeleteEventData,
+  DeleteEventErrors,
+  DeleteEventRegistrationData,
+  DeleteEventRegistrationResponses,
+  DeleteEventResponses,
+  DeleteFineData,
+  DeleteFineErrors,
+  DeleteFineResponses,
+  DeleteFormData,
+  DeleteFormErrors,
+  DeleteFormResponses,
+  DeleteFormSubmissionData,
+  DeleteFormSubmissionErrors,
+  DeleteFormSubmissionResponses,
+  DeleteGroupData,
+  DeleteGroupErrors,
+  DeleteGroupResponses,
+  DeleteJobData,
+  DeleteJobErrors,
+  DeleteJobResponses,
+  DeleteNewsData,
+  DeleteNewsErrors,
+  DeleteNewsReactionData,
+  DeleteNewsReactionErrors,
+  DeleteNewsReactionResponses,
+  DeleteNewsResponses,
+  DeleteNotificationData,
+  DeleteNotificationErrors,
+  DeleteNotificationResponses,
+  DownloadFormSubmissionsData,
+  DownloadFormSubmissionsErrors,
+  DownloadFormSubmissionsResponses,
+  GetApiKeyData,
+  GetApiKeyErrors,
+  GetApiKeyResponses,
+  GetEventFormData,
+  GetEventFormErrors,
+  GetEventFormResponses,
+  GetFavoriteEventsData,
+  GetFavoriteEventsResponses,
+  GetFineData,
+  GetFineErrors,
+  GetFineResponses,
+  GetFormData,
+  GetFormErrors,
+  GetFormResponses,
+  GetFormStatisticsData,
+  GetFormStatisticsErrors,
+  GetFormStatisticsResponses,
+  GetFormSubmissionData,
+  GetFormSubmissionErrors,
+  GetFormSubmissionResponses,
+  GetGroupData,
+  GetGroupErrors,
+  GetGroupResponses,
+  GetJobData,
+  GetJobErrors,
+  GetJobResponses,
+  GetNewsData,
+  GetNewsErrors,
+  GetNewsResponses,
+  GetUserSettingsData,
+  GetUserSettingsErrors,
+  GetUserSettingsResponses,
+  HandlePaymentWebhookData,
+  HandlePaymentWebhookErrors,
+  HandlePaymentWebhookResponses,
+  ListAllergiesData,
+  ListAllergiesResponses,
+  ListApiKeysData,
+  ListApiKeysErrors,
+  ListApiKeysResponses,
+  ListEventFormsData,
+  ListEventFormsErrors,
+  ListEventFormsResponses,
+  ListEventRegistrationsData,
+  ListEventRegistrationsResponses,
+  ListEventsData,
+  ListEventsResponses,
+  ListFinesData,
+  ListFinesErrors,
+  ListFinesResponses,
+  ListFormsData,
+  ListFormsResponses,
+  ListFormSubmissionsData,
+  ListFormSubmissionsErrors,
+  ListFormSubmissionsResponses,
+  ListGroupFormsData,
+  ListGroupFormsErrors,
+  ListGroupFormsResponses,
+  ListGroupMembersData,
+  ListGroupMembersErrors,
+  ListGroupMembersResponses,
+  ListGroupsData,
+  ListGroupsResponses,
+  ListJobsData,
+  ListJobsResponses,
+  ListNewsData,
+  ListNewsResponses,
+  ListNotificationsData,
+  ListNotificationsErrors,
+  ListNotificationsResponses,
+  MarkNotificationReadData,
+  MarkNotificationReadErrors,
+  MarkNotificationReadResponses,
+  OnboardUserData,
+  OnboardUserErrors,
+  OnboardUserResponses,
+  RegenerateApiKeyData,
+  RegenerateApiKeyErrors,
+  RegenerateApiKeyResponses,
+  RemoveGroupMemberData,
+  RemoveGroupMemberErrors,
+  RemoveGroupMemberResponses,
+  SendCustomEmailData,
+  SendCustomEmailErrors,
+  SendCustomEmailResponses,
+  UpdateApiKeyData,
+  UpdateApiKeyErrors,
+  UpdateApiKeyResponses,
+  UpdateEventData,
+  UpdateEventErrors,
+  UpdateEventFavoriteData,
+  UpdateEventFavoriteErrors,
+  UpdateEventFavoriteResponses,
+  UpdateEventResponses,
+  UpdateFineData,
+  UpdateFineErrors,
+  UpdateFineResponses,
+  UpdateFormData,
+  UpdateFormErrors,
+  UpdateFormResponses,
+  UpdateGroupData,
+  UpdateGroupErrors,
+  UpdateGroupMemberRoleData,
+  UpdateGroupMemberRoleErrors,
+  UpdateGroupMemberRoleResponses,
+  UpdateGroupResponses,
+  UpdateJobData,
+  UpdateJobErrors,
+  UpdateJobResponses,
+  UpdateNewsData,
+  UpdateNewsErrors,
+  UpdateNewsResponses,
+  UpdateUserSettingsData,
+  UpdateUserSettingsErrors,
+  UpdateUserSettingsResponses,
+  ValidateApiKeyData,
+  ValidateApiKeyResponses,
 } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
@@ -218,8 +218,8 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  *
  * Get a list of all API keys. Does not include the full key values. Requires 'api-keys:view' permission.
  */
-export const getApiApiKeys = <ThrowOnError extends boolean = false>(options?: Options<GetApiApiKeysData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiApiKeysResponses, GetApiApiKeysErrors, ThrowOnError>({
+export const listApiKeys = <ThrowOnError extends boolean = false>(options?: Options<ListApiKeysData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListApiKeysResponses, ListApiKeysErrors, ThrowOnError>({
     url: '/api/api-keys',
     ...options,
   });
@@ -230,8 +230,8 @@ export const getApiApiKeys = <ThrowOnError extends boolean = false>(options?: Op
  *
  * Create a new API key. The full key is returned only once and cannot be retrieved again. Requires 'api-keys:create' permission.
  */
-export const postApiApiKeys = <ThrowOnError extends boolean = false>(options?: Options<PostApiApiKeysData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiApiKeysResponses, PostApiApiKeysErrors, ThrowOnError>({
+export const createApiKey = <ThrowOnError extends boolean = false>(options?: Options<CreateApiKeyData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateApiKeyResponses, CreateApiKeyErrors, ThrowOnError>({
     url: '/api/api-keys',
     ...options,
     headers: {
@@ -246,8 +246,8 @@ export const postApiApiKeys = <ThrowOnError extends boolean = false>(options?: O
  *
  * Delete an API key. This action is irreversible. Requires 'api-keys:delete' permission.
  */
-export const deleteApiApiKeysId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiApiKeysIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiApiKeysIdResponses, DeleteApiApiKeysIdErrors, ThrowOnError>({
+export const deleteApiKey = <ThrowOnError extends boolean = false>(options: Options<DeleteApiKeyData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteApiKeyResponses, DeleteApiKeyErrors, ThrowOnError>({
     url: '/api/api-keys/{id}',
     ...options,
   });
@@ -258,8 +258,8 @@ export const deleteApiApiKeysId = <ThrowOnError extends boolean = false>(options
  *
  * Get a single API key by ID. Does not include the full key value. Requires 'api-keys:view' permission.
  */
-export const getApiApiKeysId = <ThrowOnError extends boolean = false>(options: Options<GetApiApiKeysIdData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiApiKeysIdResponses, GetApiApiKeysIdErrors, ThrowOnError>({
+export const getApiKey = <ThrowOnError extends boolean = false>(options: Options<GetApiKeyData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetApiKeyResponses, GetApiKeyErrors, ThrowOnError>({
     url: '/api/api-keys/{id}',
     ...options,
   });
@@ -270,8 +270,8 @@ export const getApiApiKeysId = <ThrowOnError extends boolean = false>(options: O
  *
  * Update an API key's metadata (name, description, permissions, metadata). Cannot update the key itself - use regenerate for that. Requires 'api-keys:update' permission.
  */
-export const patchApiApiKeysId = <ThrowOnError extends boolean = false>(options: Options<PatchApiApiKeysIdData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiApiKeysIdResponses, PatchApiApiKeysIdErrors, ThrowOnError>({
+export const updateApiKey = <ThrowOnError extends boolean = false>(options: Options<UpdateApiKeyData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateApiKeyResponses, UpdateApiKeyErrors, ThrowOnError>({
     url: '/api/api-keys/{id}',
     ...options,
     headers: {
@@ -286,8 +286,8 @@ export const patchApiApiKeysId = <ThrowOnError extends boolean = false>(options:
  *
  * Generate a new key value for an existing API key. The old key will be invalidated. The new full key is returned only once and cannot be retrieved again. Requires 'api-keys:update' permission.
  */
-export const postApiApiKeysIdRegenerate = <ThrowOnError extends boolean = false>(options: Options<PostApiApiKeysIdRegenerateData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiApiKeysIdRegenerateResponses, PostApiApiKeysIdRegenerateErrors, ThrowOnError>({
+export const regenerateApiKey = <ThrowOnError extends boolean = false>(options: Options<RegenerateApiKeyData, ThrowOnError>) => {
+  return (options.client ?? client).post<RegenerateApiKeyResponses, RegenerateApiKeyErrors, ThrowOnError>({
     url: '/api/api-keys/{id}/regenerate',
     ...options,
   });
@@ -298,8 +298,8 @@ export const postApiApiKeysIdRegenerate = <ThrowOnError extends boolean = false>
  *
  * Check if an API key is valid and return its details. This is a public endpoint that does not require authentication. Updates the lastUsedAt timestamp if the key is valid.
  */
-export const postApiApiKeysValidate = <ThrowOnError extends boolean = false>(options?: Options<PostApiApiKeysValidateData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiApiKeysValidateResponses, unknown, ThrowOnError>({
+export const validateApiKey = <ThrowOnError extends boolean = false>(options?: Options<ValidateApiKeyData, ThrowOnError>) => {
+  return (options?.client ?? client).post<ValidateApiKeyResponses, unknown, ThrowOnError>({
     url: '/api/api-keys/validate',
     ...options,
     headers: {
@@ -314,8 +314,8 @@ export const postApiApiKeysValidate = <ThrowOnError extends boolean = false>(opt
  *
  * Send a custom email with structured content blocks. Requires API key authentication via Bearer token.
  */
-export const postApiEmailSend = <ThrowOnError extends boolean = false>(options?: Options<PostApiEmailSendData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiEmailSendResponses, PostApiEmailSendErrors, ThrowOnError>({
+export const sendCustomEmail = <ThrowOnError extends boolean = false>(options?: Options<SendCustomEmailData, ThrowOnError>) => {
+  return (options?.client ?? client).post<SendCustomEmailResponses, SendCustomEmailErrors, ThrowOnError>({
     url: '/api/email/send',
     ...options,
     headers: {
@@ -328,8 +328,8 @@ export const postApiEmailSend = <ThrowOnError extends boolean = false>(options?:
 /**
  * List events
  */
-export const getApiEvent = <ThrowOnError extends boolean = false>(options?: Options<GetApiEventData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiEventResponses, unknown, ThrowOnError>({
+export const listEvents = <ThrowOnError extends boolean = false>(options?: Options<ListEventsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListEventsResponses, unknown, ThrowOnError>({
     url: '/api/event',
     ...options,
   });
@@ -340,8 +340,8 @@ export const getApiEvent = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Create a new event. Requires 'events:create' permission.
  */
-export const postApiEvent = <ThrowOnError extends boolean = false>(options?: Options<PostApiEventData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiEventResponses, PostApiEventErrors, ThrowOnError>({
+export const createEvent = <ThrowOnError extends boolean = false>(options?: Options<CreateEventData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateEventResponses, CreateEventErrors, ThrowOnError>({
     url: '/api/event',
     ...options,
     headers: {
@@ -356,8 +356,8 @@ export const postApiEvent = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Update an event by its ID. Event creators can update their own events. Users with 'events:update' or 'events:manage' permission can update any event.
  */
-export const putApiEventId = <ThrowOnError extends boolean = false>(options: Options<PutApiEventIdData, ThrowOnError>) => {
-  return (options.client ?? client).put<PutApiEventIdResponses, PutApiEventIdErrors, ThrowOnError>({
+export const updateEvent = <ThrowOnError extends boolean = false>(options: Options<UpdateEventData, ThrowOnError>) => {
+  return (options.client ?? client).put<UpdateEventResponses, UpdateEventErrors, ThrowOnError>({
     url: '/api/event/{id}',
     ...options,
     headers: {
@@ -372,8 +372,8 @@ export const putApiEventId = <ThrowOnError extends boolean = false>(options: Opt
  *
  * Delete an event by its ID. Event creators can delete their own events. Users with 'events:delete' permission can delete any event. This action is irreversible and will remove all associated data, including registrations and feedback.
  */
-export const deleteApiEventEventId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiEventEventIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiEventEventIdResponses, DeleteApiEventEventIdErrors, ThrowOnError>({
+export const deleteEvent = <ThrowOnError extends boolean = false>(options: Options<DeleteEventData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteEventResponses, DeleteEventErrors, ThrowOnError>({
     url: '/api/event/{eventId}',
     ...options,
   });
@@ -382,8 +382,8 @@ export const deleteApiEventEventId = <ThrowOnError extends boolean = false>(opti
 /**
  * Update event favorite
  */
-export const putApiEventFavoriteId = <ThrowOnError extends boolean = false>(options: Options<PutApiEventFavoriteIdData, ThrowOnError>) => {
-  return (options.client ?? client).put<PutApiEventFavoriteIdResponses, PutApiEventFavoriteIdErrors, ThrowOnError>({
+export const updateEventFavorite = <ThrowOnError extends boolean = false>(options: Options<UpdateEventFavoriteData, ThrowOnError>) => {
+  return (options.client ?? client).put<UpdateEventFavoriteResponses, UpdateEventFavoriteErrors, ThrowOnError>({
     url: '/api/event/favorite/{id}',
     ...options,
     headers: {
@@ -395,9 +395,11 @@ export const putApiEventFavoriteId = <ThrowOnError extends boolean = false>(opti
 
 /**
  * Get all my favorite events
+ *
+ * Retrieve a list of all events you have marked as favorite.
  */
-export const getApiEventFavorite = <ThrowOnError extends boolean = false>(options?: Options<GetApiEventFavoriteData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiEventFavoriteResponses, unknown, ThrowOnError>({
+export const getFavoriteEvents = <ThrowOnError extends boolean = false>(options?: Options<GetFavoriteEventsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<GetFavoriteEventsResponses, unknown, ThrowOnError>({
     url: '/api/event/favorite',
     ...options,
   });
@@ -406,10 +408,8 @@ export const getApiEventFavorite = <ThrowOnError extends boolean = false>(option
 /**
  * Unregister from event
  */
-export const deleteApiEventEventIdRegistration = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteApiEventEventIdRegistrationData, ThrowOnError>,
-) => {
-  return (options.client ?? client).delete<DeleteApiEventEventIdRegistrationResponses, unknown, ThrowOnError>({
+export const deleteEventRegistration = <ThrowOnError extends boolean = false>(options: Options<DeleteEventRegistrationData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteEventRegistrationResponses, unknown, ThrowOnError>({
     url: '/api/event/{eventId}/registration',
     ...options,
   });
@@ -418,8 +418,8 @@ export const deleteApiEventEventIdRegistration = <ThrowOnError extends boolean =
 /**
  * Get event registrations
  */
-export const getApiEventEventIdRegistration = <ThrowOnError extends boolean = false>(options: Options<GetApiEventEventIdRegistrationData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiEventEventIdRegistrationResponses, unknown, ThrowOnError>({
+export const listEventRegistrations = <ThrowOnError extends boolean = false>(options: Options<ListEventRegistrationsData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListEventRegistrationsResponses, unknown, ThrowOnError>({
     url: '/api/event/{eventId}/registration',
     ...options,
   });
@@ -428,8 +428,8 @@ export const getApiEventEventIdRegistration = <ThrowOnError extends boolean = fa
 /**
  * Register to an event
  */
-export const postApiEventEventIdRegistration = <ThrowOnError extends boolean = false>(options: Options<PostApiEventEventIdRegistrationData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiEventEventIdRegistrationResponses, PostApiEventEventIdRegistrationErrors, ThrowOnError>({
+export const createEventRegistration = <ThrowOnError extends boolean = false>(options: Options<CreateEventRegistrationData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateEventRegistrationResponses, CreateEventRegistrationErrors, ThrowOnError>({
     url: '/api/event/{eventId}/registration',
     ...options,
   });
@@ -440,8 +440,8 @@ export const postApiEventEventIdRegistration = <ThrowOnError extends boolean = f
  *
  * Initiates a Vipps payment for an event registration. User must have a registered status for the event.
  */
-export const postApiEventEventIdPayment = <ThrowOnError extends boolean = false>(options: Options<PostApiEventEventIdPaymentData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiEventEventIdPaymentResponses, PostApiEventEventIdPaymentErrors, ThrowOnError>({
+export const createEventPayment = <ThrowOnError extends boolean = false>(options: Options<CreateEventPaymentData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateEventPaymentResponses, CreateEventPaymentErrors, ThrowOnError>({
     url: '/api/event/{eventId}/payment',
     ...options,
     headers: {
@@ -456,8 +456,8 @@ export const postApiEventEventIdPayment = <ThrowOnError extends boolean = false>
  *
  * Webhook endpoint for Vipps to notify about payment status changes. Updates payment record based on Vipps payment state.
  */
-export const postApiEventPaymentWebhook = <ThrowOnError extends boolean = false>(options?: Options<PostApiEventPaymentWebhookData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiEventPaymentWebhookResponses, PostApiEventPaymentWebhookErrors, ThrowOnError>({
+export const handlePaymentWebhook = <ThrowOnError extends boolean = false>(options?: Options<HandlePaymentWebhookData, ThrowOnError>) => {
+  return (options?.client ?? client).post<HandlePaymentWebhookResponses, HandlePaymentWebhookErrors, ThrowOnError>({
     url: '/api/event/payment/webhook',
     ...options,
   });
@@ -468,8 +468,8 @@ export const postApiEventPaymentWebhook = <ThrowOnError extends boolean = false>
  *
  * Get all forms (survey and evaluation) for an event
  */
-export const getApiEventEventIdForms = <ThrowOnError extends boolean = false>(options: Options<GetApiEventEventIdFormsData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiEventEventIdFormsResponses, GetApiEventEventIdFormsErrors, ThrowOnError>({
+export const listEventForms = <ThrowOnError extends boolean = false>(options: Options<ListEventFormsData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListEventFormsResponses, ListEventFormsErrors, ThrowOnError>({
     url: '/api/event/{eventId}/forms',
     ...options,
   });
@@ -480,8 +480,8 @@ export const getApiEventEventIdForms = <ThrowOnError extends boolean = false>(op
  *
  * Create a survey or evaluation form for an event. Requires event write permission.
  */
-export const postApiEventEventIdForms = <ThrowOnError extends boolean = false>(options: Options<PostApiEventEventIdFormsData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiEventEventIdFormsResponses, PostApiEventEventIdFormsErrors, ThrowOnError>({
+export const createEventForm = <ThrowOnError extends boolean = false>(options: Options<CreateEventFormData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateEventFormResponses, CreateEventFormErrors, ThrowOnError>({
     url: '/api/event/{eventId}/forms',
     ...options,
     headers: {
@@ -496,8 +496,8 @@ export const postApiEventEventIdForms = <ThrowOnError extends boolean = false>(o
  *
  * Get a specific form (survey or evaluation) for an event with all fields and options
  */
-export const getApiEventEventIdFormsType = <ThrowOnError extends boolean = false>(options: Options<GetApiEventEventIdFormsTypeData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiEventEventIdFormsTypeResponses, GetApiEventEventIdFormsTypeErrors, ThrowOnError>({
+export const getEventForm = <ThrowOnError extends boolean = false>(options: Options<GetEventFormData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetEventFormResponses, GetEventFormErrors, ThrowOnError>({
     url: '/api/event/{eventId}/forms/{type}',
     ...options,
   });
@@ -508,8 +508,8 @@ export const getApiEventEventIdFormsType = <ThrowOnError extends boolean = false
  *
  * List all form templates by default. Use ?all=true to include all forms. Returns template forms by default.
  */
-export const getApiForms = <ThrowOnError extends boolean = false>(options?: Options<GetApiFormsData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiFormsResponses, unknown, ThrowOnError>({
+export const listForms = <ThrowOnError extends boolean = false>(options?: Options<ListFormsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListFormsResponses, unknown, ThrowOnError>({
     url: '/api/forms',
     ...options,
   });
@@ -520,8 +520,8 @@ export const getApiForms = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Create a new base form template. Requires 'forms:create' permission.
  */
-export const postApiForms = <ThrowOnError extends boolean = false>(options?: Options<PostApiFormsData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiFormsResponses, PostApiFormsErrors, ThrowOnError>({
+export const createForm = <ThrowOnError extends boolean = false>(options?: Options<CreateFormData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateFormResponses, CreateFormErrors, ThrowOnError>({
     url: '/api/forms',
     ...options,
     headers: {
@@ -536,8 +536,8 @@ export const postApiForms = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Delete a form and all associated data. Requires permission to manage the form.
  */
-export const deleteApiFormsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiFormsIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiFormsIdResponses, DeleteApiFormsIdErrors, ThrowOnError>({
+export const deleteForm = <ThrowOnError extends boolean = false>(options: Options<DeleteFormData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteFormResponses, DeleteFormErrors, ThrowOnError>({
     url: '/api/forms/{id}',
     ...options,
   });
@@ -548,8 +548,8 @@ export const deleteApiFormsId = <ThrowOnError extends boolean = false>(options: 
  *
  * Get a form by ID with all fields and options
  */
-export const getApiFormsId = <ThrowOnError extends boolean = false>(options: Options<GetApiFormsIdData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiFormsIdResponses, GetApiFormsIdErrors, ThrowOnError>({
+export const getForm = <ThrowOnError extends boolean = false>(options: Options<GetFormData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({
     url: '/api/forms/{id}',
     ...options,
   });
@@ -560,8 +560,8 @@ export const getApiFormsId = <ThrowOnError extends boolean = false>(options: Opt
  *
  * Update a form. Requires permission to manage the form.
  */
-export const patchApiFormsId = <ThrowOnError extends boolean = false>(options: Options<PatchApiFormsIdData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiFormsIdResponses, PatchApiFormsIdErrors, ThrowOnError>({
+export const updateForm = <ThrowOnError extends boolean = false>(options: Options<UpdateFormData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateFormResponses, UpdateFormErrors, ThrowOnError>({
     url: '/api/forms/{id}',
     ...options,
     headers: {
@@ -576,8 +576,8 @@ export const patchApiFormsId = <ThrowOnError extends boolean = false>(options: O
  *
  * Get aggregated statistics for a form. Requires permission to manage the form.
  */
-export const getApiFormsIdStatistics = <ThrowOnError extends boolean = false>(options: Options<GetApiFormsIdStatisticsData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiFormsIdStatisticsResponses, GetApiFormsIdStatisticsErrors, ThrowOnError>({
+export const getFormStatistics = <ThrowOnError extends boolean = false>(options: Options<GetFormStatisticsData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetFormStatisticsResponses, GetFormStatisticsErrors, ThrowOnError>({
     url: '/api/forms/{id}/statistics',
     ...options,
   });
@@ -588,8 +588,8 @@ export const getApiFormsIdStatistics = <ThrowOnError extends boolean = false>(op
  *
  * List all submissions for a form. Requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissions = <ThrowOnError extends boolean = false>(options: Options<GetApiFormsFormIdSubmissionsData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiFormsFormIdSubmissionsResponses, GetApiFormsFormIdSubmissionsErrors, ThrowOnError>({
+export const listFormSubmissions = <ThrowOnError extends boolean = false>(options: Options<ListFormSubmissionsData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListFormSubmissionsResponses, ListFormSubmissionsErrors, ThrowOnError>({
     url: '/api/forms/{formId}/submissions',
     ...options,
   });
@@ -600,8 +600,8 @@ export const getApiFormsFormIdSubmissions = <ThrowOnError extends boolean = fals
  *
  * Submit answers to a form
  */
-export const postApiFormsFormIdSubmissions = <ThrowOnError extends boolean = false>(options: Options<PostApiFormsFormIdSubmissionsData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiFormsFormIdSubmissionsResponses, PostApiFormsFormIdSubmissionsErrors, ThrowOnError>({
+export const createFormSubmission = <ThrowOnError extends boolean = false>(options: Options<CreateFormSubmissionData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateFormSubmissionResponses, CreateFormSubmissionErrors, ThrowOnError>({
     url: '/api/forms/{formId}/submissions',
     ...options,
     headers: {
@@ -616,8 +616,8 @@ export const postApiFormsFormIdSubmissions = <ThrowOnError extends boolean = fal
  *
  * Get a specific submission. Can view own submission or requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissionsId = <ThrowOnError extends boolean = false>(options: Options<GetApiFormsFormIdSubmissionsIdData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiFormsFormIdSubmissionsIdResponses, GetApiFormsFormIdSubmissionsIdErrors, ThrowOnError>({
+export const getFormSubmission = <ThrowOnError extends boolean = false>(options: Options<GetFormSubmissionData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetFormSubmissionResponses, GetFormSubmissionErrors, ThrowOnError>({
     url: '/api/forms/{formId}/submissions/{id}',
     ...options,
   });
@@ -628,10 +628,8 @@ export const getApiFormsFormIdSubmissionsId = <ThrowOnError extends boolean = fa
  *
  * Download all submissions for a form as CSV. Requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissionsDownload = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiFormsFormIdSubmissionsDownloadData, ThrowOnError>,
-) => {
-  return (options.client ?? client).get<GetApiFormsFormIdSubmissionsDownloadResponses, GetApiFormsFormIdSubmissionsDownloadErrors, ThrowOnError>({
+export const downloadFormSubmissions = <ThrowOnError extends boolean = false>(options: Options<DownloadFormSubmissionsData, ThrowOnError>) => {
+  return (options.client ?? client).get<DownloadFormSubmissionsResponses, DownloadFormSubmissionsErrors, ThrowOnError>({
     url: '/api/forms/{formId}/submissions/download',
     ...options,
   });
@@ -642,14 +640,8 @@ export const getApiFormsFormIdSubmissionsDownload = <ThrowOnError extends boolea
  *
  * Delete a submission and notify the user with a reason. Admin only.
  */
-export const deleteApiFormsFormIdSubmissionsIdDestroyWithReason = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData, ThrowOnError>,
-) => {
-  return (options.client ?? client).delete<
-    DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonResponses,
-    DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonErrors,
-    ThrowOnError
-  >({
+export const deleteFormSubmission = <ThrowOnError extends boolean = false>(options: Options<DeleteFormSubmissionData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteFormSubmissionResponses, DeleteFormSubmissionErrors, ThrowOnError>({
     url: '/api/forms/{formId}/submissions/{id}/destroy_with_reason',
     ...options,
     headers: {
@@ -664,8 +656,8 @@ export const deleteApiFormsFormIdSubmissionsIdDestroyWithReason = <ThrowOnError 
  *
  * Returns paginated list of notifications for the authenticated user, ordered by most recent first
  */
-export const getApiNotification = <ThrowOnError extends boolean = false>(options?: Options<GetApiNotificationData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiNotificationResponses, GetApiNotificationErrors, ThrowOnError>({
+export const listNotifications = <ThrowOnError extends boolean = false>(options?: Options<ListNotificationsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListNotificationsResponses, ListNotificationsErrors, ThrowOnError>({
     url: '/api/notification',
     ...options,
   });
@@ -676,8 +668,8 @@ export const getApiNotification = <ThrowOnError extends boolean = false>(options
  *
  * Delete a notification by ID. User must be authenticated and own the notification.
  */
-export const deleteApiNotificationId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiNotificationIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiNotificationIdResponses, DeleteApiNotificationIdErrors, ThrowOnError>({
+export const deleteNotification = <ThrowOnError extends boolean = false>(options: Options<DeleteNotificationData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteNotificationResponses, DeleteNotificationErrors, ThrowOnError>({
     url: '/api/notification/{id}',
     ...options,
   });
@@ -688,8 +680,8 @@ export const deleteApiNotificationId = <ThrowOnError extends boolean = false>(op
  *
  * Update the read status of a notification. User must be authenticated and own the notification.
  */
-export const patchApiNotificationIdRead = <ThrowOnError extends boolean = false>(options: Options<PatchApiNotificationIdReadData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiNotificationIdReadResponses, PatchApiNotificationIdReadErrors, ThrowOnError>({
+export const markNotificationRead = <ThrowOnError extends boolean = false>(options: Options<MarkNotificationReadData, ThrowOnError>) => {
+  return (options.client ?? client).patch<MarkNotificationReadResponses, MarkNotificationReadErrors, ThrowOnError>({
     url: '/api/notification/{id}/read',
     ...options,
     headers: {
@@ -704,8 +696,8 @@ export const patchApiNotificationIdRead = <ThrowOnError extends boolean = false>
  *
  * Retrieve a list of all groups. Supports optional filtering by type and search query.
  */
-export const getApiGroups = <ThrowOnError extends boolean = false>(options?: Options<GetApiGroupsData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiGroupsResponses, unknown, ThrowOnError>({
+export const listGroups = <ThrowOnError extends boolean = false>(options?: Options<ListGroupsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListGroupsResponses, unknown, ThrowOnError>({
     url: '/api/groups',
     ...options,
   });
@@ -716,8 +708,8 @@ export const getApiGroups = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Create a new group. Requires 'groups:create' permission.
  */
-export const postApiGroups = <ThrowOnError extends boolean = false>(options?: Options<PostApiGroupsData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiGroupsResponses, PostApiGroupsErrors, ThrowOnError>({
+export const createGroup = <ThrowOnError extends boolean = false>(options?: Options<CreateGroupData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateGroupResponses, CreateGroupErrors, ThrowOnError>({
     url: '/api/groups',
     ...options,
     headers: {
@@ -732,8 +724,8 @@ export const postApiGroups = <ThrowOnError extends boolean = false>(options?: Op
  *
  * Delete a group by its slug. Requires being a group leader OR having 'groups:delete' permission (globally or scoped to this group). This action is irreversible and will remove all associated data, including memberships and fines.
  */
-export const deleteApiGroupsSlug = <ThrowOnError extends boolean = false>(options: Options<DeleteApiGroupsSlugData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiGroupsSlugResponses, DeleteApiGroupsSlugErrors, ThrowOnError>({
+export const deleteGroup = <ThrowOnError extends boolean = false>(options: Options<DeleteGroupData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteGroupResponses, DeleteGroupErrors, ThrowOnError>({
     url: '/api/groups/{slug}',
     ...options,
   });
@@ -744,8 +736,8 @@ export const deleteApiGroupsSlug = <ThrowOnError extends boolean = false>(option
  *
  * Retrieve detailed information about a specific group by its slug identifier.
  */
-export const getApiGroupsSlug = <ThrowOnError extends boolean = false>(options: Options<GetApiGroupsSlugData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiGroupsSlugResponses, GetApiGroupsSlugErrors, ThrowOnError>({
+export const getGroup = <ThrowOnError extends boolean = false>(options: Options<GetGroupData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetGroupResponses, GetGroupErrors, ThrowOnError>({
     url: '/api/groups/{slug}',
     ...options,
   });
@@ -756,8 +748,8 @@ export const getApiGroupsSlug = <ThrowOnError extends boolean = false>(options: 
  *
  * Partially update an existing group by its slug. Only provided fields will be updated. Requires being a group leader OR having 'groups:update' permission (globally or scoped to this group).
  */
-export const patchApiGroupsSlug = <ThrowOnError extends boolean = false>(options: Options<PatchApiGroupsSlugData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiGroupsSlugResponses, PatchApiGroupsSlugErrors, ThrowOnError>({
+export const updateGroup = <ThrowOnError extends boolean = false>(options: Options<UpdateGroupData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateGroupResponses, UpdateGroupErrors, ThrowOnError>({
     url: '/api/groups/{slug}',
     ...options,
     headers: {
@@ -772,8 +764,8 @@ export const patchApiGroupsSlug = <ThrowOnError extends boolean = false>(options
  *
  * Retrieve a list of fines for a group. Users can view their own fines, fines admins can view all fines for their group. Supports filtering by status and user.
  */
-export const getApiGroupsGroupSlugFines = <ThrowOnError extends boolean = false>(options: Options<GetApiGroupsGroupSlugFinesData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiGroupsGroupSlugFinesResponses, GetApiGroupsGroupSlugFinesErrors, ThrowOnError>({
+export const listFines = <ThrowOnError extends boolean = false>(options: Options<ListFinesData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListFinesResponses, ListFinesErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/fines',
     ...options,
   });
@@ -784,8 +776,8 @@ export const getApiGroupsGroupSlugFines = <ThrowOnError extends boolean = false>
  *
  * Create a new fine for a group member. Requires being a group leader OR having 'fines:create' permission (globally or scoped to this group).
  */
-export const postApiGroupsGroupSlugFines = <ThrowOnError extends boolean = false>(options: Options<PostApiGroupsGroupSlugFinesData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiGroupsGroupSlugFinesResponses, PostApiGroupsGroupSlugFinesErrors, ThrowOnError>({
+export const createFine = <ThrowOnError extends boolean = false>(options: Options<CreateFineData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateFineResponses, CreateFineErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/fines',
     ...options,
     headers: {
@@ -800,10 +792,8 @@ export const postApiGroupsGroupSlugFines = <ThrowOnError extends boolean = false
  *
  * Delete a fine by its ID. Requires being the fines admin OR having 'fines:delete' permission (globally or scoped to this group). This action is irreversible.
  */
-export const deleteApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteApiGroupsGroupSlugFinesFineIdData, ThrowOnError>,
-) => {
-  return (options.client ?? client).delete<DeleteApiGroupsGroupSlugFinesFineIdResponses, DeleteApiGroupsGroupSlugFinesFineIdErrors, ThrowOnError>({
+export const deleteFine = <ThrowOnError extends boolean = false>(options: Options<DeleteFineData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteFineResponses, DeleteFineErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/fines/{fineId}',
     ...options,
   });
@@ -814,10 +804,8 @@ export const deleteApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean
  *
  * Retrieve detailed information about a specific fine. Users can view their own fines, fines admins can view all fines for their group.
  */
-export const getApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean = false>(
-  options: Options<GetApiGroupsGroupSlugFinesFineIdData, ThrowOnError>,
-) => {
-  return (options.client ?? client).get<GetApiGroupsGroupSlugFinesFineIdResponses, GetApiGroupsGroupSlugFinesFineIdErrors, ThrowOnError>({
+export const getFine = <ThrowOnError extends boolean = false>(options: Options<GetFineData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetFineResponses, GetFineErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/fines/{fineId}',
     ...options,
   });
@@ -828,10 +816,8 @@ export const getApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean = 
  *
  * Partially update a fine. Only provided fields will be updated. Users can add defense to their own fines. Fines admins can update status and approve/reject fines.
  */
-export const patchApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean = false>(
-  options: Options<PatchApiGroupsGroupSlugFinesFineIdData, ThrowOnError>,
-) => {
-  return (options.client ?? client).patch<PatchApiGroupsGroupSlugFinesFineIdResponses, PatchApiGroupsGroupSlugFinesFineIdErrors, ThrowOnError>({
+export const updateFine = <ThrowOnError extends boolean = false>(options: Options<UpdateFineData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateFineResponses, UpdateFineErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/fines/{fineId}',
     ...options,
     headers: {
@@ -846,8 +832,8 @@ export const patchApiGroupsGroupSlugFinesFineId = <ThrowOnError extends boolean 
  *
  * Retrieve a list of all members in a group.
  */
-export const getApiGroupsGroupSlugMembers = <ThrowOnError extends boolean = false>(options: Options<GetApiGroupsGroupSlugMembersData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiGroupsGroupSlugMembersResponses, GetApiGroupsGroupSlugMembersErrors, ThrowOnError>({
+export const listGroupMembers = <ThrowOnError extends boolean = false>(options: Options<ListGroupMembersData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListGroupMembersResponses, ListGroupMembersErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/members',
     ...options,
   });
@@ -858,8 +844,8 @@ export const getApiGroupsGroupSlugMembers = <ThrowOnError extends boolean = fals
  *
  * Add a member to a group. Requires 'groups:manage' permission.
  */
-export const postApiGroupsGroupSlugMembers = <ThrowOnError extends boolean = false>(options: Options<PostApiGroupsGroupSlugMembersData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiGroupsGroupSlugMembersResponses, PostApiGroupsGroupSlugMembersErrors, ThrowOnError>({
+export const addGroupMember = <ThrowOnError extends boolean = false>(options: Options<AddGroupMemberData, ThrowOnError>) => {
+  return (options.client ?? client).post<AddGroupMemberResponses, AddGroupMemberErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/members',
     ...options,
     headers: {
@@ -874,10 +860,8 @@ export const postApiGroupsGroupSlugMembers = <ThrowOnError extends boolean = fal
  *
  * Remove a member from a group. Requires 'groups:manage' permission.
  */
-export const deleteApiGroupsGroupSlugMembersUserId = <ThrowOnError extends boolean = false>(
-  options: Options<DeleteApiGroupsGroupSlugMembersUserIdData, ThrowOnError>,
-) => {
-  return (options.client ?? client).delete<DeleteApiGroupsGroupSlugMembersUserIdResponses, DeleteApiGroupsGroupSlugMembersUserIdErrors, ThrowOnError>({
+export const removeGroupMember = <ThrowOnError extends boolean = false>(options: Options<RemoveGroupMemberData, ThrowOnError>) => {
+  return (options.client ?? client).delete<RemoveGroupMemberResponses, RemoveGroupMemberErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/members/{userId}',
     ...options,
   });
@@ -888,10 +872,8 @@ export const deleteApiGroupsGroupSlugMembersUserId = <ThrowOnError extends boole
  *
  * Update a member's role in a group. Requires 'groups:manage' permission.
  */
-export const patchApiGroupsGroupSlugMembersUserId = <ThrowOnError extends boolean = false>(
-  options: Options<PatchApiGroupsGroupSlugMembersUserIdData, ThrowOnError>,
-) => {
-  return (options.client ?? client).patch<PatchApiGroupsGroupSlugMembersUserIdResponses, PatchApiGroupsGroupSlugMembersUserIdErrors, ThrowOnError>({
+export const updateGroupMemberRole = <ThrowOnError extends boolean = false>(options: Options<UpdateGroupMemberRoleData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateGroupMemberRoleResponses, UpdateGroupMemberRoleErrors, ThrowOnError>({
     url: '/api/groups/{groupSlug}/members/{userId}',
     ...options,
     headers: {
@@ -906,8 +888,8 @@ export const patchApiGroupsGroupSlugMembersUserId = <ThrowOnError extends boolea
  *
  * Get all forms for a group, filtered by user permissions
  */
-export const getApiGroupsSlugForms = <ThrowOnError extends boolean = false>(options: Options<GetApiGroupsSlugFormsData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiGroupsSlugFormsResponses, GetApiGroupsSlugFormsErrors, ThrowOnError>({
+export const listGroupForms = <ThrowOnError extends boolean = false>(options: Options<ListGroupFormsData, ThrowOnError>) => {
+  return (options.client ?? client).get<ListGroupFormsResponses, ListGroupFormsErrors, ThrowOnError>({
     url: '/api/groups/{slug}/forms',
     ...options,
   });
@@ -918,8 +900,8 @@ export const getApiGroupsSlugForms = <ThrowOnError extends boolean = false>(opti
  *
  * Create a form for a group. Requires group leader permission or forms:create permission.
  */
-export const postApiGroupsSlugForms = <ThrowOnError extends boolean = false>(options: Options<PostApiGroupsSlugFormsData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiGroupsSlugFormsResponses, PostApiGroupsSlugFormsErrors, ThrowOnError>({
+export const createGroupForm = <ThrowOnError extends boolean = false>(options: Options<CreateGroupFormData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateGroupFormResponses, CreateGroupFormErrors, ThrowOnError>({
     url: '/api/groups/{slug}/forms',
     ...options,
     headers: {
@@ -934,8 +916,8 @@ export const postApiGroupsSlugForms = <ThrowOnError extends boolean = false>(opt
  *
  * Get a paginated list of all news articles. Public endpoint.
  */
-export const getApiNews = <ThrowOnError extends boolean = false>(options?: Options<GetApiNewsData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiNewsResponses, unknown, ThrowOnError>({
+export const listNews = <ThrowOnError extends boolean = false>(options?: Options<ListNewsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListNewsResponses, unknown, ThrowOnError>({
     url: '/api/news',
     ...options,
   });
@@ -946,8 +928,8 @@ export const getApiNews = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Create a new news article. Requires 'news:create' permission.
  */
-export const postApiNews = <ThrowOnError extends boolean = false>(options?: Options<PostApiNewsData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiNewsResponses, PostApiNewsErrors, ThrowOnError>({
+export const createNews = <ThrowOnError extends boolean = false>(options?: Options<CreateNewsData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateNewsResponses, CreateNewsErrors, ThrowOnError>({
     url: '/api/news',
     ...options,
     headers: {
@@ -962,8 +944,8 @@ export const postApiNews = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Delete a news article. Requires 'news:delete' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const deleteApiNewsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiNewsIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiNewsIdResponses, DeleteApiNewsIdErrors, ThrowOnError>({
+export const deleteNews = <ThrowOnError extends boolean = false>(options: Options<DeleteNewsData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteNewsResponses, DeleteNewsErrors, ThrowOnError>({
     url: '/api/news/{id}',
     ...options,
   });
@@ -974,8 +956,8 @@ export const deleteApiNewsId = <ThrowOnError extends boolean = false>(options: O
  *
  * Get a single news article by ID. Public endpoint.
  */
-export const getApiNewsId = <ThrowOnError extends boolean = false>(options: Options<GetApiNewsIdData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiNewsIdResponses, GetApiNewsIdErrors, ThrowOnError>({
+export const getNews = <ThrowOnError extends boolean = false>(options: Options<GetNewsData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetNewsResponses, GetNewsErrors, ThrowOnError>({
     url: '/api/news/{id}',
     ...options,
   });
@@ -986,8 +968,8 @@ export const getApiNewsId = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Update a news article. Requires 'news:update' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const patchApiNewsId = <ThrowOnError extends boolean = false>(options: Options<PatchApiNewsIdData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiNewsIdResponses, PatchApiNewsIdErrors, ThrowOnError>({
+export const updateNews = <ThrowOnError extends boolean = false>(options: Options<UpdateNewsData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateNewsResponses, UpdateNewsErrors, ThrowOnError>({
     url: '/api/news/{id}',
     ...options,
     headers: {
@@ -1002,8 +984,8 @@ export const patchApiNewsId = <ThrowOnError extends boolean = false>(options: Op
  *
  * Remove your emoji reaction from a news article.
  */
-export const deleteApiNewsIdReactions = <ThrowOnError extends boolean = false>(options: Options<DeleteApiNewsIdReactionsData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiNewsIdReactionsResponses, DeleteApiNewsIdReactionsErrors, ThrowOnError>({
+export const deleteNewsReaction = <ThrowOnError extends boolean = false>(options: Options<DeleteNewsReactionData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteNewsReactionResponses, DeleteNewsReactionErrors, ThrowOnError>({
     url: '/api/news/{id}/reactions',
     ...options,
   });
@@ -1014,8 +996,8 @@ export const deleteApiNewsIdReactions = <ThrowOnError extends boolean = false>(o
  *
  * Add or update emoji reaction to a news article. Requires authentication.
  */
-export const postApiNewsIdReactions = <ThrowOnError extends boolean = false>(options: Options<PostApiNewsIdReactionsData, ThrowOnError>) => {
-  return (options.client ?? client).post<PostApiNewsIdReactionsResponses, PostApiNewsIdReactionsErrors, ThrowOnError>({
+export const createNewsReaction = <ThrowOnError extends boolean = false>(options: Options<CreateNewsReactionData, ThrowOnError>) => {
+  return (options.client ?? client).post<CreateNewsReactionResponses, CreateNewsReactionErrors, ThrowOnError>({
     url: '/api/news/{id}/reactions',
     ...options,
     headers: {
@@ -1030,8 +1012,8 @@ export const postApiNewsIdReactions = <ThrowOnError extends boolean = false>(opt
  *
  * Get a list of job postings. Supports search and expired filtering. Public endpoint.
  */
-export const getApiJobs = <ThrowOnError extends boolean = false>(options?: Options<GetApiJobsData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiJobsResponses, unknown, ThrowOnError>({
+export const listJobs = <ThrowOnError extends boolean = false>(options?: Options<ListJobsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListJobsResponses, unknown, ThrowOnError>({
     url: '/api/jobs',
     ...options,
   });
@@ -1042,8 +1024,8 @@ export const getApiJobs = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Create a new job posting. Requires 'jobs:create' permission.
  */
-export const postApiJobs = <ThrowOnError extends boolean = false>(options?: Options<PostApiJobsData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiJobsResponses, PostApiJobsErrors, ThrowOnError>({
+export const createJob = <ThrowOnError extends boolean = false>(options?: Options<CreateJobData, ThrowOnError>) => {
+  return (options?.client ?? client).post<CreateJobResponses, CreateJobErrors, ThrowOnError>({
     url: '/api/jobs',
     ...options,
     headers: {
@@ -1058,8 +1040,8 @@ export const postApiJobs = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Delete a job posting. Requires 'jobs:delete' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const deleteApiJobsId = <ThrowOnError extends boolean = false>(options: Options<DeleteApiJobsIdData, ThrowOnError>) => {
-  return (options.client ?? client).delete<DeleteApiJobsIdResponses, DeleteApiJobsIdErrors, ThrowOnError>({
+export const deleteJob = <ThrowOnError extends boolean = false>(options: Options<DeleteJobData, ThrowOnError>) => {
+  return (options.client ?? client).delete<DeleteJobResponses, DeleteJobErrors, ThrowOnError>({
     url: '/api/jobs/{id}',
     ...options,
   });
@@ -1070,8 +1052,8 @@ export const deleteApiJobsId = <ThrowOnError extends boolean = false>(options: O
  *
  * Get a single job posting by ID. Public endpoint.
  */
-export const getApiJobsId = <ThrowOnError extends boolean = false>(options: Options<GetApiJobsIdData, ThrowOnError>) => {
-  return (options.client ?? client).get<GetApiJobsIdResponses, GetApiJobsIdErrors, ThrowOnError>({
+export const getJob = <ThrowOnError extends boolean = false>(options: Options<GetJobData, ThrowOnError>) => {
+  return (options.client ?? client).get<GetJobResponses, GetJobErrors, ThrowOnError>({
     url: '/api/jobs/{id}',
     ...options,
   });
@@ -1082,8 +1064,8 @@ export const getApiJobsId = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Update a job posting. Requires 'jobs:update' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const patchApiJobsId = <ThrowOnError extends boolean = false>(options: Options<PatchApiJobsIdData, ThrowOnError>) => {
-  return (options.client ?? client).patch<PatchApiJobsIdResponses, PatchApiJobsIdErrors, ThrowOnError>({
+export const updateJob = <ThrowOnError extends boolean = false>(options: Options<UpdateJobData, ThrowOnError>) => {
+  return (options.client ?? client).patch<UpdateJobResponses, UpdateJobErrors, ThrowOnError>({
     url: '/api/jobs/{id}',
     ...options,
     headers: {
@@ -1098,8 +1080,8 @@ export const patchApiJobsId = <ThrowOnError extends boolean = false>(options: Op
  *
  * Retrieve the authenticated user's settings including preferences and allergies.
  */
-export const getApiUserMeSettings = <ThrowOnError extends boolean = false>(options?: Options<GetApiUserMeSettingsData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiUserMeSettingsResponses, GetApiUserMeSettingsErrors, ThrowOnError>({
+export const getUserSettings = <ThrowOnError extends boolean = false>(options?: Options<GetUserSettingsData, ThrowOnError>) => {
+  return (options?.client ?? client).get<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError>({
     url: '/api/user/me/settings',
     ...options,
   });
@@ -1110,8 +1092,8 @@ export const getApiUserMeSettings = <ThrowOnError extends boolean = false>(optio
  *
  * Partially update the authenticated user's settings. Only provided fields will be updated. User must have completed onboarding first.
  */
-export const patchApiUserMeSettings = <ThrowOnError extends boolean = false>(options?: Options<PatchApiUserMeSettingsData, ThrowOnError>) => {
-  return (options?.client ?? client).patch<PatchApiUserMeSettingsResponses, PatchApiUserMeSettingsErrors, ThrowOnError>({
+export const updateUserSettings = <ThrowOnError extends boolean = false>(options?: Options<UpdateUserSettingsData, ThrowOnError>) => {
+  return (options?.client ?? client).patch<UpdateUserSettingsResponses, UpdateUserSettingsErrors, ThrowOnError>({
     url: '/api/user/me/settings',
     ...options,
     headers: {
@@ -1126,8 +1108,8 @@ export const patchApiUserMeSettings = <ThrowOnError extends boolean = false>(opt
  *
  * Create initial user settings and mark the user as onboarded. Can only be called once per user.
  */
-export const postApiUserMeSettings = <ThrowOnError extends boolean = false>(options?: Options<PostApiUserMeSettingsData, ThrowOnError>) => {
-  return (options?.client ?? client).post<PostApiUserMeSettingsResponses, PostApiUserMeSettingsErrors, ThrowOnError>({
+export const onboardUser = <ThrowOnError extends boolean = false>(options?: Options<OnboardUserData, ThrowOnError>) => {
+  return (options?.client ?? client).post<OnboardUserResponses, OnboardUserErrors, ThrowOnError>({
     url: '/api/user/me/settings',
     ...options,
     headers: {
@@ -1142,8 +1124,8 @@ export const postApiUserMeSettings = <ThrowOnError extends boolean = false>(opti
  *
  * Retrieve a list of all possible allergies that users can have.
  */
-export const getApiUserAllergy = <ThrowOnError extends boolean = false>(options?: Options<GetApiUserAllergyData, ThrowOnError>) => {
-  return (options?.client ?? client).get<GetApiUserAllergyResponses, unknown, ThrowOnError>({
+export const listAllergies = <ThrowOnError extends boolean = false>(options?: Options<ListAllergiesData, ThrowOnError>) => {
+  return (options?.client ?? client).get<ListAllergiesResponses, unknown, ThrowOnError>({
     url: '/api/user/allergy',
     ...options,
   });

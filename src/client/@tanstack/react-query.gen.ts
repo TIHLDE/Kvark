@@ -4,184 +4,184 @@ import { infiniteQueryOptions, queryOptions, type DefaultError, type InfiniteDat
 
 import { client } from '../client.gen';
 import {
-  deleteApiApiKeysId,
-  deleteApiEventEventId,
-  deleteApiEventEventIdRegistration,
-  deleteApiFormsFormIdSubmissionsIdDestroyWithReason,
-  deleteApiFormsId,
-  deleteApiGroupsGroupSlugFinesFineId,
-  deleteApiGroupsGroupSlugMembersUserId,
-  deleteApiGroupsSlug,
-  deleteApiJobsId,
-  deleteApiNewsId,
-  deleteApiNewsIdReactions,
-  deleteApiNotificationId,
-  getApiApiKeys,
-  getApiApiKeysId,
-  getApiEvent,
-  getApiEventEventIdForms,
-  getApiEventEventIdFormsType,
-  getApiEventEventIdRegistration,
-  getApiEventFavorite,
-  getApiForms,
-  getApiFormsFormIdSubmissions,
-  getApiFormsFormIdSubmissionsDownload,
-  getApiFormsFormIdSubmissionsId,
-  getApiFormsId,
-  getApiFormsIdStatistics,
-  getApiGroups,
-  getApiGroupsGroupSlugFines,
-  getApiGroupsGroupSlugFinesFineId,
-  getApiGroupsGroupSlugMembers,
-  getApiGroupsSlug,
-  getApiGroupsSlugForms,
-  getApiJobs,
-  getApiJobsId,
-  getApiNews,
-  getApiNewsId,
-  getApiNotification,
-  getApiUserAllergy,
-  getApiUserMeSettings,
-  patchApiApiKeysId,
-  patchApiFormsId,
-  patchApiGroupsGroupSlugFinesFineId,
-  patchApiGroupsGroupSlugMembersUserId,
-  patchApiGroupsSlug,
-  patchApiJobsId,
-  patchApiNewsId,
-  patchApiNotificationIdRead,
-  patchApiUserMeSettings,
-  postApiApiKeys,
-  postApiApiKeysIdRegenerate,
-  postApiApiKeysValidate,
-  postApiEmailSend,
-  postApiEvent,
-  postApiEventEventIdForms,
-  postApiEventEventIdPayment,
-  postApiEventEventIdRegistration,
-  postApiEventPaymentWebhook,
-  postApiForms,
-  postApiFormsFormIdSubmissions,
-  postApiGroups,
-  postApiGroupsGroupSlugFines,
-  postApiGroupsGroupSlugMembers,
-  postApiGroupsSlugForms,
-  postApiJobs,
-  postApiNews,
-  postApiNewsIdReactions,
-  postApiUserMeSettings,
-  putApiEventFavoriteId,
-  putApiEventId,
+  addGroupMember,
+  createApiKey,
+  createEvent,
+  createEventForm,
+  createEventPayment,
+  createEventRegistration,
+  createFine,
+  createForm,
+  createFormSubmission,
+  createGroup,
+  createGroupForm,
+  createJob,
+  createNews,
+  createNewsReaction,
+  deleteApiKey,
+  deleteEvent,
+  deleteEventRegistration,
+  deleteFine,
+  deleteForm,
+  deleteFormSubmission,
+  deleteGroup,
+  deleteJob,
+  deleteNews,
+  deleteNewsReaction,
+  deleteNotification,
+  downloadFormSubmissions,
+  getApiKey,
+  getEventForm,
+  getFavoriteEvents,
+  getFine,
+  getForm,
+  getFormStatistics,
+  getFormSubmission,
+  getGroup,
+  getJob,
+  getNews,
+  getUserSettings,
+  handlePaymentWebhook,
+  listAllergies,
+  listApiKeys,
+  listEventForms,
+  listEventRegistrations,
+  listEvents,
+  listFines,
+  listForms,
+  listFormSubmissions,
+  listGroupForms,
+  listGroupMembers,
+  listGroups,
+  listJobs,
+  listNews,
+  listNotifications,
+  markNotificationRead,
+  onboardUser,
+  regenerateApiKey,
+  removeGroupMember,
+  sendCustomEmail,
+  updateApiKey,
+  updateEvent,
+  updateEventFavorite,
+  updateFine,
+  updateForm,
+  updateGroup,
+  updateGroupMemberRole,
+  updateJob,
+  updateNews,
+  updateUserSettings,
+  validateApiKey,
   type Options,
 } from '../sdk.gen';
 import type {
-  DeleteApiApiKeysIdData,
-  DeleteApiApiKeysIdResponse,
-  DeleteApiEventEventIdData,
-  DeleteApiEventEventIdRegistrationData,
-  DeleteApiEventEventIdRegistrationResponse,
-  DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData,
-  DeleteApiFormsIdData,
-  DeleteApiGroupsGroupSlugFinesFineIdData,
-  DeleteApiGroupsGroupSlugFinesFineIdResponse,
-  DeleteApiGroupsGroupSlugMembersUserIdData,
-  DeleteApiGroupsGroupSlugMembersUserIdResponse,
-  DeleteApiGroupsSlugData,
-  DeleteApiGroupsSlugResponse,
-  DeleteApiJobsIdData,
-  DeleteApiNewsIdData,
-  DeleteApiNewsIdReactionsData,
-  DeleteApiNotificationIdData,
-  DeleteApiNotificationIdResponse,
-  GetApiApiKeysData,
-  GetApiApiKeysIdData,
-  GetApiApiKeysIdResponse,
-  GetApiApiKeysResponse,
-  GetApiEventData,
-  GetApiEventEventIdFormsData,
-  GetApiEventEventIdFormsResponse,
-  GetApiEventEventIdFormsTypeData,
-  GetApiEventEventIdFormsTypeResponse,
-  GetApiEventEventIdRegistrationData,
-  GetApiEventEventIdRegistrationResponse,
-  GetApiEventFavoriteData,
-  GetApiEventFavoriteResponse,
-  GetApiEventResponse,
-  GetApiFormsData,
-  GetApiFormsFormIdSubmissionsData,
-  GetApiFormsFormIdSubmissionsDownloadData,
-  GetApiFormsFormIdSubmissionsIdData,
-  GetApiFormsFormIdSubmissionsIdResponse,
-  GetApiFormsFormIdSubmissionsResponse,
-  GetApiFormsIdData,
-  GetApiFormsIdResponse,
-  GetApiFormsIdStatisticsData,
-  GetApiFormsIdStatisticsResponse,
-  GetApiFormsResponse,
-  GetApiGroupsData,
-  GetApiGroupsGroupSlugFinesData,
-  GetApiGroupsGroupSlugFinesFineIdData,
-  GetApiGroupsGroupSlugFinesFineIdResponse,
-  GetApiGroupsGroupSlugFinesResponse,
-  GetApiGroupsGroupSlugMembersData,
-  GetApiGroupsGroupSlugMembersResponse,
-  GetApiGroupsResponse,
-  GetApiGroupsSlugData,
-  GetApiGroupsSlugFormsData,
-  GetApiGroupsSlugFormsResponse,
-  GetApiGroupsSlugResponse,
-  GetApiJobsData,
-  GetApiJobsIdData,
-  GetApiNewsData,
-  GetApiNewsIdData,
-  GetApiNotificationData,
-  GetApiNotificationResponse,
-  GetApiUserAllergyData,
-  GetApiUserAllergyResponse,
-  GetApiUserMeSettingsData,
-  GetApiUserMeSettingsResponse,
-  PatchApiApiKeysIdData,
-  PatchApiApiKeysIdResponse,
-  PatchApiFormsIdData,
-  PatchApiGroupsGroupSlugFinesFineIdData,
-  PatchApiGroupsGroupSlugMembersUserIdData,
-  PatchApiGroupsSlugData,
-  PatchApiJobsIdData,
-  PatchApiNewsIdData,
-  PatchApiNotificationIdReadData,
-  PatchApiNotificationIdReadResponse,
-  PatchApiUserMeSettingsData,
-  PatchApiUserMeSettingsResponse,
-  PostApiApiKeysData,
-  PostApiApiKeysIdRegenerateData,
-  PostApiApiKeysIdRegenerateResponse,
-  PostApiApiKeysResponse,
-  PostApiApiKeysValidateData,
-  PostApiApiKeysValidateResponse,
-  PostApiEmailSendData,
-  PostApiEmailSendResponse,
-  PostApiEventData,
-  PostApiEventEventIdFormsData,
-  PostApiEventEventIdPaymentData,
-  PostApiEventEventIdPaymentResponse,
-  PostApiEventEventIdRegistrationData,
-  PostApiEventEventIdRegistrationResponse,
-  PostApiEventPaymentWebhookData,
-  PostApiEventResponse,
-  PostApiFormsData,
-  PostApiFormsFormIdSubmissionsData,
-  PostApiFormsResponse,
-  PostApiGroupsData,
-  PostApiGroupsGroupSlugFinesData,
-  PostApiGroupsGroupSlugMembersData,
-  PostApiGroupsSlugFormsData,
-  PostApiJobsData,
-  PostApiNewsData,
-  PostApiNewsIdReactionsData,
-  PostApiUserMeSettingsData,
-  PostApiUserMeSettingsResponse,
-  PutApiEventFavoriteIdData,
-  PutApiEventIdData,
+  AddGroupMemberData,
+  CreateApiKeyData,
+  CreateApiKeyResponse,
+  CreateEventData,
+  CreateEventFormData,
+  CreateEventPaymentData,
+  CreateEventPaymentResponse,
+  CreateEventRegistrationData,
+  CreateEventRegistrationResponse,
+  CreateEventResponse,
+  CreateFineData,
+  CreateFormData,
+  CreateFormResponse,
+  CreateFormSubmissionData,
+  CreateGroupData,
+  CreateGroupFormData,
+  CreateJobData,
+  CreateNewsData,
+  CreateNewsReactionData,
+  DeleteApiKeyData,
+  DeleteApiKeyResponse,
+  DeleteEventData,
+  DeleteEventRegistrationData,
+  DeleteEventRegistrationResponse,
+  DeleteFineData,
+  DeleteFineResponse,
+  DeleteFormData,
+  DeleteFormSubmissionData,
+  DeleteGroupData,
+  DeleteGroupResponse,
+  DeleteJobData,
+  DeleteNewsData,
+  DeleteNewsReactionData,
+  DeleteNotificationData,
+  DeleteNotificationResponse,
+  DownloadFormSubmissionsData,
+  GetApiKeyData,
+  GetApiKeyResponse,
+  GetEventFormData,
+  GetEventFormResponse,
+  GetFavoriteEventsData,
+  GetFavoriteEventsResponse,
+  GetFineData,
+  GetFineResponse,
+  GetFormData,
+  GetFormResponse,
+  GetFormStatisticsData,
+  GetFormStatisticsResponse,
+  GetFormSubmissionData,
+  GetFormSubmissionResponse,
+  GetGroupData,
+  GetGroupResponse,
+  GetJobData,
+  GetNewsData,
+  GetUserSettingsData,
+  GetUserSettingsResponse,
+  HandlePaymentWebhookData,
+  ListAllergiesData,
+  ListAllergiesResponse,
+  ListApiKeysData,
+  ListApiKeysResponse,
+  ListEventFormsData,
+  ListEventFormsResponse,
+  ListEventRegistrationsData,
+  ListEventRegistrationsResponse,
+  ListEventsData,
+  ListEventsResponse,
+  ListFinesData,
+  ListFinesResponse,
+  ListFormsData,
+  ListFormsResponse,
+  ListFormSubmissionsData,
+  ListFormSubmissionsResponse,
+  ListGroupFormsData,
+  ListGroupFormsResponse,
+  ListGroupMembersData,
+  ListGroupMembersResponse,
+  ListGroupsData,
+  ListGroupsResponse,
+  ListJobsData,
+  ListNewsData,
+  ListNotificationsData,
+  ListNotificationsResponse,
+  MarkNotificationReadData,
+  MarkNotificationReadResponse,
+  OnboardUserData,
+  OnboardUserResponse,
+  RegenerateApiKeyData,
+  RegenerateApiKeyResponse,
+  RemoveGroupMemberData,
+  RemoveGroupMemberResponse,
+  SendCustomEmailData,
+  SendCustomEmailResponse,
+  UpdateApiKeyData,
+  UpdateApiKeyResponse,
+  UpdateEventData,
+  UpdateEventFavoriteData,
+  UpdateFineData,
+  UpdateFormData,
+  UpdateGroupData,
+  UpdateGroupMemberRoleData,
+  UpdateJobData,
+  UpdateNewsData,
+  UpdateUserSettingsData,
+  UpdateUserSettingsResponse,
+  ValidateApiKeyData,
+  ValidateApiKeyResponse,
 } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
@@ -220,17 +220,17 @@ const createQueryKey = <TOptions extends Options>(
   return [params];
 };
 
-export const getApiApiKeysQueryKey = (options?: Options<GetApiApiKeysData>) => createQueryKey('getApiApiKeys', options);
+export const listApiKeysQueryKey = (options?: Options<ListApiKeysData>) => createQueryKey('listApiKeys', options);
 
 /**
  * List API keys
  *
  * Get a list of all API keys. Does not include the full key values. Requires 'api-keys:view' permission.
  */
-export const getApiApiKeysOptions = (options?: Options<GetApiApiKeysData>) =>
-  queryOptions<GetApiApiKeysResponse, DefaultError, GetApiApiKeysResponse, ReturnType<typeof getApiApiKeysQueryKey>>({
+export const listApiKeysOptions = (options?: Options<ListApiKeysData>) =>
+  queryOptions<ListApiKeysResponse, DefaultError, ListApiKeysResponse, ReturnType<typeof listApiKeysQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiApiKeys({
+      const { data } = await listApiKeys({
         ...options,
         ...queryKey[0],
         signal,
@@ -238,7 +238,7 @@ export const getApiApiKeysOptions = (options?: Options<GetApiApiKeysData>) =>
       });
       return data;
     },
-    queryKey: getApiApiKeysQueryKey(options),
+    queryKey: listApiKeysQueryKey(options),
   });
 
 /**
@@ -246,12 +246,12 @@ export const getApiApiKeysOptions = (options?: Options<GetApiApiKeysData>) =>
  *
  * Create a new API key. The full key is returned only once and cannot be retrieved again. Requires 'api-keys:create' permission.
  */
-export const postApiApiKeysMutation = (
-  options?: Partial<Options<PostApiApiKeysData>>,
-): UseMutationOptions<PostApiApiKeysResponse, DefaultError, Options<PostApiApiKeysData>> => {
-  const mutationOptions: UseMutationOptions<PostApiApiKeysResponse, DefaultError, Options<PostApiApiKeysData>> = {
+export const createApiKeyMutation = (
+  options?: Partial<Options<CreateApiKeyData>>,
+): UseMutationOptions<CreateApiKeyResponse, DefaultError, Options<CreateApiKeyData>> => {
+  const mutationOptions: UseMutationOptions<CreateApiKeyResponse, DefaultError, Options<CreateApiKeyData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiApiKeys({
+      const { data } = await createApiKey({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -267,12 +267,12 @@ export const postApiApiKeysMutation = (
  *
  * Delete an API key. This action is irreversible. Requires 'api-keys:delete' permission.
  */
-export const deleteApiApiKeysIdMutation = (
-  options?: Partial<Options<DeleteApiApiKeysIdData>>,
-): UseMutationOptions<DeleteApiApiKeysIdResponse, DefaultError, Options<DeleteApiApiKeysIdData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiApiKeysIdResponse, DefaultError, Options<DeleteApiApiKeysIdData>> = {
+export const deleteApiKeyMutation = (
+  options?: Partial<Options<DeleteApiKeyData>>,
+): UseMutationOptions<DeleteApiKeyResponse, DefaultError, Options<DeleteApiKeyData>> => {
+  const mutationOptions: UseMutationOptions<DeleteApiKeyResponse, DefaultError, Options<DeleteApiKeyData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiApiKeysId({
+      const { data } = await deleteApiKey({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -283,17 +283,17 @@ export const deleteApiApiKeysIdMutation = (
   return mutationOptions;
 };
 
-export const getApiApiKeysIdQueryKey = (options: Options<GetApiApiKeysIdData>) => createQueryKey('getApiApiKeysId', options);
+export const getApiKeyQueryKey = (options: Options<GetApiKeyData>) => createQueryKey('getApiKey', options);
 
 /**
  * Get API key
  *
  * Get a single API key by ID. Does not include the full key value. Requires 'api-keys:view' permission.
  */
-export const getApiApiKeysIdOptions = (options: Options<GetApiApiKeysIdData>) =>
-  queryOptions<GetApiApiKeysIdResponse, DefaultError, GetApiApiKeysIdResponse, ReturnType<typeof getApiApiKeysIdQueryKey>>({
+export const getApiKeyOptions = (options: Options<GetApiKeyData>) =>
+  queryOptions<GetApiKeyResponse, DefaultError, GetApiKeyResponse, ReturnType<typeof getApiKeyQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiApiKeysId({
+      const { data } = await getApiKey({
         ...options,
         ...queryKey[0],
         signal,
@@ -301,7 +301,7 @@ export const getApiApiKeysIdOptions = (options: Options<GetApiApiKeysIdData>) =>
       });
       return data;
     },
-    queryKey: getApiApiKeysIdQueryKey(options),
+    queryKey: getApiKeyQueryKey(options),
   });
 
 /**
@@ -309,12 +309,12 @@ export const getApiApiKeysIdOptions = (options: Options<GetApiApiKeysIdData>) =>
  *
  * Update an API key's metadata (name, description, permissions, metadata). Cannot update the key itself - use regenerate for that. Requires 'api-keys:update' permission.
  */
-export const patchApiApiKeysIdMutation = (
-  options?: Partial<Options<PatchApiApiKeysIdData>>,
-): UseMutationOptions<PatchApiApiKeysIdResponse, DefaultError, Options<PatchApiApiKeysIdData>> => {
-  const mutationOptions: UseMutationOptions<PatchApiApiKeysIdResponse, DefaultError, Options<PatchApiApiKeysIdData>> = {
+export const updateApiKeyMutation = (
+  options?: Partial<Options<UpdateApiKeyData>>,
+): UseMutationOptions<UpdateApiKeyResponse, DefaultError, Options<UpdateApiKeyData>> => {
+  const mutationOptions: UseMutationOptions<UpdateApiKeyResponse, DefaultError, Options<UpdateApiKeyData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiApiKeysId({
+      const { data } = await updateApiKey({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -330,12 +330,12 @@ export const patchApiApiKeysIdMutation = (
  *
  * Generate a new key value for an existing API key. The old key will be invalidated. The new full key is returned only once and cannot be retrieved again. Requires 'api-keys:update' permission.
  */
-export const postApiApiKeysIdRegenerateMutation = (
-  options?: Partial<Options<PostApiApiKeysIdRegenerateData>>,
-): UseMutationOptions<PostApiApiKeysIdRegenerateResponse, DefaultError, Options<PostApiApiKeysIdRegenerateData>> => {
-  const mutationOptions: UseMutationOptions<PostApiApiKeysIdRegenerateResponse, DefaultError, Options<PostApiApiKeysIdRegenerateData>> = {
+export const regenerateApiKeyMutation = (
+  options?: Partial<Options<RegenerateApiKeyData>>,
+): UseMutationOptions<RegenerateApiKeyResponse, DefaultError, Options<RegenerateApiKeyData>> => {
+  const mutationOptions: UseMutationOptions<RegenerateApiKeyResponse, DefaultError, Options<RegenerateApiKeyData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiApiKeysIdRegenerate({
+      const { data } = await regenerateApiKey({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -351,12 +351,12 @@ export const postApiApiKeysIdRegenerateMutation = (
  *
  * Check if an API key is valid and return its details. This is a public endpoint that does not require authentication. Updates the lastUsedAt timestamp if the key is valid.
  */
-export const postApiApiKeysValidateMutation = (
-  options?: Partial<Options<PostApiApiKeysValidateData>>,
-): UseMutationOptions<PostApiApiKeysValidateResponse, DefaultError, Options<PostApiApiKeysValidateData>> => {
-  const mutationOptions: UseMutationOptions<PostApiApiKeysValidateResponse, DefaultError, Options<PostApiApiKeysValidateData>> = {
+export const validateApiKeyMutation = (
+  options?: Partial<Options<ValidateApiKeyData>>,
+): UseMutationOptions<ValidateApiKeyResponse, DefaultError, Options<ValidateApiKeyData>> => {
+  const mutationOptions: UseMutationOptions<ValidateApiKeyResponse, DefaultError, Options<ValidateApiKeyData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiApiKeysValidate({
+      const { data } = await validateApiKey({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -372,12 +372,12 @@ export const postApiApiKeysValidateMutation = (
  *
  * Send a custom email with structured content blocks. Requires API key authentication via Bearer token.
  */
-export const postApiEmailSendMutation = (
-  options?: Partial<Options<PostApiEmailSendData>>,
-): UseMutationOptions<PostApiEmailSendResponse, DefaultError, Options<PostApiEmailSendData>> => {
-  const mutationOptions: UseMutationOptions<PostApiEmailSendResponse, DefaultError, Options<PostApiEmailSendData>> = {
+export const sendCustomEmailMutation = (
+  options?: Partial<Options<SendCustomEmailData>>,
+): UseMutationOptions<SendCustomEmailResponse, DefaultError, Options<SendCustomEmailData>> => {
+  const mutationOptions: UseMutationOptions<SendCustomEmailResponse, DefaultError, Options<SendCustomEmailData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEmailSend({
+      const { data } = await sendCustomEmail({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -388,15 +388,15 @@ export const postApiEmailSendMutation = (
   return mutationOptions;
 };
 
-export const getApiEventQueryKey = (options?: Options<GetApiEventData>) => createQueryKey('getApiEvent', options);
+export const listEventsQueryKey = (options?: Options<ListEventsData>) => createQueryKey('listEvents', options);
 
 /**
  * List events
  */
-export const getApiEventOptions = (options?: Options<GetApiEventData>) =>
-  queryOptions<GetApiEventResponse, DefaultError, GetApiEventResponse, ReturnType<typeof getApiEventQueryKey>>({
+export const listEventsOptions = (options?: Options<ListEventsData>) =>
+  queryOptions<ListEventsResponse, DefaultError, ListEventsResponse, ReturnType<typeof listEventsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiEvent({
+      const { data } = await listEvents({
         ...options,
         ...queryKey[0],
         signal,
@@ -404,7 +404,7 @@ export const getApiEventOptions = (options?: Options<GetApiEventData>) =>
       });
       return data;
     },
-    queryKey: getApiEventQueryKey(options),
+    queryKey: listEventsQueryKey(options),
   });
 
 const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>>(queryKey: QueryKey<Options>, page: K) => {
@@ -438,25 +438,24 @@ const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'hea
   return params as unknown as typeof page;
 };
 
-export const getApiEventInfiniteQueryKey = (options?: Options<GetApiEventData>): QueryKey<Options<GetApiEventData>> =>
-  createQueryKey('getApiEvent', options, true);
+export const listEventsInfiniteQueryKey = (options?: Options<ListEventsData>): QueryKey<Options<ListEventsData>> => createQueryKey('listEvents', options, true);
 
 /**
  * List events
  */
-export const getApiEventInfiniteOptions = (options?: Options<GetApiEventData>) => {
+export const listEventsInfiniteOptions = (options?: Options<ListEventsData>) => {
   return infiniteQueryOptions<
-    GetApiEventResponse,
+    ListEventsResponse,
     DefaultError,
-    InfiniteData<GetApiEventResponse>,
-    QueryKey<Options<GetApiEventData>>,
-    number | Pick<QueryKey<Options<GetApiEventData>>[0], 'body' | 'headers' | 'path' | 'query'>
+    InfiniteData<ListEventsResponse>,
+    QueryKey<Options<ListEventsData>>,
+    number | Pick<QueryKey<Options<ListEventsData>>[0], 'body' | 'headers' | 'path' | 'query'>
   >(
     // @ts-ignore
     {
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
-        const page: Pick<QueryKey<Options<GetApiEventData>>[0], 'body' | 'headers' | 'path' | 'query'> =
+        const page: Pick<QueryKey<Options<ListEventsData>>[0], 'body' | 'headers' | 'path' | 'query'> =
           typeof pageParam === 'object'
             ? pageParam
             : {
@@ -465,7 +464,7 @@ export const getApiEventInfiniteOptions = (options?: Options<GetApiEventData>) =
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getApiEvent({
+        const { data } = await listEvents({
           ...options,
           ...params,
           signal,
@@ -473,7 +472,7 @@ export const getApiEventInfiniteOptions = (options?: Options<GetApiEventData>) =
         });
         return data;
       },
-      queryKey: getApiEventInfiniteQueryKey(options),
+      queryKey: listEventsInfiniteQueryKey(options),
     },
   );
 };
@@ -483,12 +482,12 @@ export const getApiEventInfiniteOptions = (options?: Options<GetApiEventData>) =
  *
  * Create a new event. Requires 'events:create' permission.
  */
-export const postApiEventMutation = (
-  options?: Partial<Options<PostApiEventData>>,
-): UseMutationOptions<PostApiEventResponse, DefaultError, Options<PostApiEventData>> => {
-  const mutationOptions: UseMutationOptions<PostApiEventResponse, DefaultError, Options<PostApiEventData>> = {
+export const createEventMutation = (
+  options?: Partial<Options<CreateEventData>>,
+): UseMutationOptions<CreateEventResponse, DefaultError, Options<CreateEventData>> => {
+  const mutationOptions: UseMutationOptions<CreateEventResponse, DefaultError, Options<CreateEventData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEvent({
+      const { data } = await createEvent({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -504,10 +503,10 @@ export const postApiEventMutation = (
  *
  * Update an event by its ID. Event creators can update their own events. Users with 'events:update' or 'events:manage' permission can update any event.
  */
-export const putApiEventIdMutation = (options?: Partial<Options<PutApiEventIdData>>): UseMutationOptions<unknown, DefaultError, Options<PutApiEventIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PutApiEventIdData>> = {
+export const updateEventMutation = (options?: Partial<Options<UpdateEventData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateEventData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateEventData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await putApiEventId({
+      const { data } = await updateEvent({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -523,12 +522,10 @@ export const putApiEventIdMutation = (options?: Partial<Options<PutApiEventIdDat
  *
  * Delete an event by its ID. Event creators can delete their own events. Users with 'events:delete' permission can delete any event. This action is irreversible and will remove all associated data, including registrations and feedback.
  */
-export const deleteApiEventEventIdMutation = (
-  options?: Partial<Options<DeleteApiEventEventIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiEventEventIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiEventEventIdData>> = {
+export const deleteEventMutation = (options?: Partial<Options<DeleteEventData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteEventData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteEventData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiEventEventId({
+      const { data } = await deleteEvent({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -542,12 +539,12 @@ export const deleteApiEventEventIdMutation = (
 /**
  * Update event favorite
  */
-export const putApiEventFavoriteIdMutation = (
-  options?: Partial<Options<PutApiEventFavoriteIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PutApiEventFavoriteIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PutApiEventFavoriteIdData>> = {
+export const updateEventFavoriteMutation = (
+  options?: Partial<Options<UpdateEventFavoriteData>>,
+): UseMutationOptions<unknown, DefaultError, Options<UpdateEventFavoriteData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateEventFavoriteData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await putApiEventFavoriteId({
+      const { data } = await updateEventFavorite({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -558,15 +555,17 @@ export const putApiEventFavoriteIdMutation = (
   return mutationOptions;
 };
 
-export const getApiEventFavoriteQueryKey = (options?: Options<GetApiEventFavoriteData>) => createQueryKey('getApiEventFavorite', options);
+export const getFavoriteEventsQueryKey = (options?: Options<GetFavoriteEventsData>) => createQueryKey('getFavoriteEvents', options);
 
 /**
  * Get all my favorite events
+ *
+ * Retrieve a list of all events you have marked as favorite.
  */
-export const getApiEventFavoriteOptions = (options?: Options<GetApiEventFavoriteData>) =>
-  queryOptions<GetApiEventFavoriteResponse, DefaultError, GetApiEventFavoriteResponse, ReturnType<typeof getApiEventFavoriteQueryKey>>({
+export const getFavoriteEventsOptions = (options?: Options<GetFavoriteEventsData>) =>
+  queryOptions<GetFavoriteEventsResponse, DefaultError, GetFavoriteEventsResponse, ReturnType<typeof getFavoriteEventsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiEventFavorite({
+      const { data } = await getFavoriteEvents({
         ...options,
         ...queryKey[0],
         signal,
@@ -574,18 +573,18 @@ export const getApiEventFavoriteOptions = (options?: Options<GetApiEventFavorite
       });
       return data;
     },
-    queryKey: getApiEventFavoriteQueryKey(options),
+    queryKey: getFavoriteEventsQueryKey(options),
   });
 
 /**
  * Unregister from event
  */
-export const deleteApiEventEventIdRegistrationMutation = (
-  options?: Partial<Options<DeleteApiEventEventIdRegistrationData>>,
-): UseMutationOptions<DeleteApiEventEventIdRegistrationResponse, DefaultError, Options<DeleteApiEventEventIdRegistrationData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiEventEventIdRegistrationResponse, DefaultError, Options<DeleteApiEventEventIdRegistrationData>> = {
+export const deleteEventRegistrationMutation = (
+  options?: Partial<Options<DeleteEventRegistrationData>>,
+): UseMutationOptions<DeleteEventRegistrationResponse, DefaultError, Options<DeleteEventRegistrationData>> => {
+  const mutationOptions: UseMutationOptions<DeleteEventRegistrationResponse, DefaultError, Options<DeleteEventRegistrationData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiEventEventIdRegistration({
+      const { data } = await deleteEventRegistration({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -596,21 +595,15 @@ export const deleteApiEventEventIdRegistrationMutation = (
   return mutationOptions;
 };
 
-export const getApiEventEventIdRegistrationQueryKey = (options: Options<GetApiEventEventIdRegistrationData>) =>
-  createQueryKey('getApiEventEventIdRegistration', options);
+export const listEventRegistrationsQueryKey = (options: Options<ListEventRegistrationsData>) => createQueryKey('listEventRegistrations', options);
 
 /**
  * Get event registrations
  */
-export const getApiEventEventIdRegistrationOptions = (options: Options<GetApiEventEventIdRegistrationData>) =>
-  queryOptions<
-    GetApiEventEventIdRegistrationResponse,
-    DefaultError,
-    GetApiEventEventIdRegistrationResponse,
-    ReturnType<typeof getApiEventEventIdRegistrationQueryKey>
-  >({
+export const listEventRegistrationsOptions = (options: Options<ListEventRegistrationsData>) =>
+  queryOptions<ListEventRegistrationsResponse, DefaultError, ListEventRegistrationsResponse, ReturnType<typeof listEventRegistrationsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiEventEventIdRegistration({
+      const { data } = await listEventRegistrations({
         ...options,
         ...queryKey[0],
         signal,
@@ -618,29 +611,28 @@ export const getApiEventEventIdRegistrationOptions = (options: Options<GetApiEve
       });
       return data;
     },
-    queryKey: getApiEventEventIdRegistrationQueryKey(options),
+    queryKey: listEventRegistrationsQueryKey(options),
   });
 
-export const getApiEventEventIdRegistrationInfiniteQueryKey = (
-  options: Options<GetApiEventEventIdRegistrationData>,
-): QueryKey<Options<GetApiEventEventIdRegistrationData>> => createQueryKey('getApiEventEventIdRegistration', options, true);
+export const listEventRegistrationsInfiniteQueryKey = (options: Options<ListEventRegistrationsData>): QueryKey<Options<ListEventRegistrationsData>> =>
+  createQueryKey('listEventRegistrations', options, true);
 
 /**
  * Get event registrations
  */
-export const getApiEventEventIdRegistrationInfiniteOptions = (options: Options<GetApiEventEventIdRegistrationData>) => {
+export const listEventRegistrationsInfiniteOptions = (options: Options<ListEventRegistrationsData>) => {
   return infiniteQueryOptions<
-    GetApiEventEventIdRegistrationResponse,
+    ListEventRegistrationsResponse,
     DefaultError,
-    InfiniteData<GetApiEventEventIdRegistrationResponse>,
-    QueryKey<Options<GetApiEventEventIdRegistrationData>>,
-    number | Pick<QueryKey<Options<GetApiEventEventIdRegistrationData>>[0], 'body' | 'headers' | 'path' | 'query'>
+    InfiniteData<ListEventRegistrationsResponse>,
+    QueryKey<Options<ListEventRegistrationsData>>,
+    number | Pick<QueryKey<Options<ListEventRegistrationsData>>[0], 'body' | 'headers' | 'path' | 'query'>
   >(
     // @ts-ignore
     {
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
-        const page: Pick<QueryKey<Options<GetApiEventEventIdRegistrationData>>[0], 'body' | 'headers' | 'path' | 'query'> =
+        const page: Pick<QueryKey<Options<ListEventRegistrationsData>>[0], 'body' | 'headers' | 'path' | 'query'> =
           typeof pageParam === 'object'
             ? pageParam
             : {
@@ -649,7 +641,7 @@ export const getApiEventEventIdRegistrationInfiniteOptions = (options: Options<G
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getApiEventEventIdRegistration({
+        const { data } = await listEventRegistrations({
           ...options,
           ...params,
           signal,
@@ -657,7 +649,7 @@ export const getApiEventEventIdRegistrationInfiniteOptions = (options: Options<G
         });
         return data;
       },
-      queryKey: getApiEventEventIdRegistrationInfiniteQueryKey(options),
+      queryKey: listEventRegistrationsInfiniteQueryKey(options),
     },
   );
 };
@@ -665,12 +657,12 @@ export const getApiEventEventIdRegistrationInfiniteOptions = (options: Options<G
 /**
  * Register to an event
  */
-export const postApiEventEventIdRegistrationMutation = (
-  options?: Partial<Options<PostApiEventEventIdRegistrationData>>,
-): UseMutationOptions<PostApiEventEventIdRegistrationResponse, DefaultError, Options<PostApiEventEventIdRegistrationData>> => {
-  const mutationOptions: UseMutationOptions<PostApiEventEventIdRegistrationResponse, DefaultError, Options<PostApiEventEventIdRegistrationData>> = {
+export const createEventRegistrationMutation = (
+  options?: Partial<Options<CreateEventRegistrationData>>,
+): UseMutationOptions<CreateEventRegistrationResponse, DefaultError, Options<CreateEventRegistrationData>> => {
+  const mutationOptions: UseMutationOptions<CreateEventRegistrationResponse, DefaultError, Options<CreateEventRegistrationData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEventEventIdRegistration({
+      const { data } = await createEventRegistration({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -686,12 +678,12 @@ export const postApiEventEventIdRegistrationMutation = (
  *
  * Initiates a Vipps payment for an event registration. User must have a registered status for the event.
  */
-export const postApiEventEventIdPaymentMutation = (
-  options?: Partial<Options<PostApiEventEventIdPaymentData>>,
-): UseMutationOptions<PostApiEventEventIdPaymentResponse, DefaultError, Options<PostApiEventEventIdPaymentData>> => {
-  const mutationOptions: UseMutationOptions<PostApiEventEventIdPaymentResponse, DefaultError, Options<PostApiEventEventIdPaymentData>> = {
+export const createEventPaymentMutation = (
+  options?: Partial<Options<CreateEventPaymentData>>,
+): UseMutationOptions<CreateEventPaymentResponse, DefaultError, Options<CreateEventPaymentData>> => {
+  const mutationOptions: UseMutationOptions<CreateEventPaymentResponse, DefaultError, Options<CreateEventPaymentData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEventEventIdPayment({
+      const { data } = await createEventPayment({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -707,12 +699,12 @@ export const postApiEventEventIdPaymentMutation = (
  *
  * Webhook endpoint for Vipps to notify about payment status changes. Updates payment record based on Vipps payment state.
  */
-export const postApiEventPaymentWebhookMutation = (
-  options?: Partial<Options<PostApiEventPaymentWebhookData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiEventPaymentWebhookData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiEventPaymentWebhookData>> = {
+export const handlePaymentWebhookMutation = (
+  options?: Partial<Options<HandlePaymentWebhookData>>,
+): UseMutationOptions<unknown, DefaultError, Options<HandlePaymentWebhookData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<HandlePaymentWebhookData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEventPaymentWebhook({
+      const { data } = await handlePaymentWebhook({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -723,17 +715,17 @@ export const postApiEventPaymentWebhookMutation = (
   return mutationOptions;
 };
 
-export const getApiEventEventIdFormsQueryKey = (options: Options<GetApiEventEventIdFormsData>) => createQueryKey('getApiEventEventIdForms', options);
+export const listEventFormsQueryKey = (options: Options<ListEventFormsData>) => createQueryKey('listEventForms', options);
 
 /**
  * List event forms
  *
  * Get all forms (survey and evaluation) for an event
  */
-export const getApiEventEventIdFormsOptions = (options: Options<GetApiEventEventIdFormsData>) =>
-  queryOptions<GetApiEventEventIdFormsResponse, DefaultError, GetApiEventEventIdFormsResponse, ReturnType<typeof getApiEventEventIdFormsQueryKey>>({
+export const listEventFormsOptions = (options: Options<ListEventFormsData>) =>
+  queryOptions<ListEventFormsResponse, DefaultError, ListEventFormsResponse, ReturnType<typeof listEventFormsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiEventEventIdForms({
+      const { data } = await listEventForms({
         ...options,
         ...queryKey[0],
         signal,
@@ -741,7 +733,7 @@ export const getApiEventEventIdFormsOptions = (options: Options<GetApiEventEvent
       });
       return data;
     },
-    queryKey: getApiEventEventIdFormsQueryKey(options),
+    queryKey: listEventFormsQueryKey(options),
   });
 
 /**
@@ -749,12 +741,12 @@ export const getApiEventEventIdFormsOptions = (options: Options<GetApiEventEvent
  *
  * Create a survey or evaluation form for an event. Requires event write permission.
  */
-export const postApiEventEventIdFormsMutation = (
-  options?: Partial<Options<PostApiEventEventIdFormsData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiEventEventIdFormsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiEventEventIdFormsData>> = {
+export const createEventFormMutation = (
+  options?: Partial<Options<CreateEventFormData>>,
+): UseMutationOptions<unknown, DefaultError, Options<CreateEventFormData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateEventFormData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiEventEventIdForms({
+      const { data } = await createEventForm({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -765,18 +757,17 @@ export const postApiEventEventIdFormsMutation = (
   return mutationOptions;
 };
 
-export const getApiEventEventIdFormsTypeQueryKey = (options: Options<GetApiEventEventIdFormsTypeData>) =>
-  createQueryKey('getApiEventEventIdFormsType', options);
+export const getEventFormQueryKey = (options: Options<GetEventFormData>) => createQueryKey('getEventForm', options);
 
 /**
  * Get event form
  *
  * Get a specific form (survey or evaluation) for an event with all fields and options
  */
-export const getApiEventEventIdFormsTypeOptions = (options: Options<GetApiEventEventIdFormsTypeData>) =>
-  queryOptions<GetApiEventEventIdFormsTypeResponse, DefaultError, GetApiEventEventIdFormsTypeResponse, ReturnType<typeof getApiEventEventIdFormsTypeQueryKey>>({
+export const getEventFormOptions = (options: Options<GetEventFormData>) =>
+  queryOptions<GetEventFormResponse, DefaultError, GetEventFormResponse, ReturnType<typeof getEventFormQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiEventEventIdFormsType({
+      const { data } = await getEventForm({
         ...options,
         ...queryKey[0],
         signal,
@@ -784,20 +775,20 @@ export const getApiEventEventIdFormsTypeOptions = (options: Options<GetApiEventE
       });
       return data;
     },
-    queryKey: getApiEventEventIdFormsTypeQueryKey(options),
+    queryKey: getEventFormQueryKey(options),
   });
 
-export const getApiFormsQueryKey = (options?: Options<GetApiFormsData>) => createQueryKey('getApiForms', options);
+export const listFormsQueryKey = (options?: Options<ListFormsData>) => createQueryKey('listForms', options);
 
 /**
  * List forms
  *
  * List all form templates by default. Use ?all=true to include all forms. Returns template forms by default.
  */
-export const getApiFormsOptions = (options?: Options<GetApiFormsData>) =>
-  queryOptions<GetApiFormsResponse, DefaultError, GetApiFormsResponse, ReturnType<typeof getApiFormsQueryKey>>({
+export const listFormsOptions = (options?: Options<ListFormsData>) =>
+  queryOptions<ListFormsResponse, DefaultError, ListFormsResponse, ReturnType<typeof listFormsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiForms({
+      const { data } = await listForms({
         ...options,
         ...queryKey[0],
         signal,
@@ -805,7 +796,7 @@ export const getApiFormsOptions = (options?: Options<GetApiFormsData>) =>
       });
       return data;
     },
-    queryKey: getApiFormsQueryKey(options),
+    queryKey: listFormsQueryKey(options),
   });
 
 /**
@@ -813,12 +804,12 @@ export const getApiFormsOptions = (options?: Options<GetApiFormsData>) =>
  *
  * Create a new base form template. Requires 'forms:create' permission.
  */
-export const postApiFormsMutation = (
-  options?: Partial<Options<PostApiFormsData>>,
-): UseMutationOptions<PostApiFormsResponse, DefaultError, Options<PostApiFormsData>> => {
-  const mutationOptions: UseMutationOptions<PostApiFormsResponse, DefaultError, Options<PostApiFormsData>> = {
+export const createFormMutation = (
+  options?: Partial<Options<CreateFormData>>,
+): UseMutationOptions<CreateFormResponse, DefaultError, Options<CreateFormData>> => {
+  const mutationOptions: UseMutationOptions<CreateFormResponse, DefaultError, Options<CreateFormData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiForms({
+      const { data } = await createForm({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -834,12 +825,10 @@ export const postApiFormsMutation = (
  *
  * Delete a form and all associated data. Requires permission to manage the form.
  */
-export const deleteApiFormsIdMutation = (
-  options?: Partial<Options<DeleteApiFormsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiFormsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiFormsIdData>> = {
+export const deleteFormMutation = (options?: Partial<Options<DeleteFormData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteFormData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteFormData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiFormsId({
+      const { data } = await deleteForm({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -850,17 +839,17 @@ export const deleteApiFormsIdMutation = (
   return mutationOptions;
 };
 
-export const getApiFormsIdQueryKey = (options: Options<GetApiFormsIdData>) => createQueryKey('getApiFormsId', options);
+export const getFormQueryKey = (options: Options<GetFormData>) => createQueryKey('getForm', options);
 
 /**
  * Get form
  *
  * Get a form by ID with all fields and options
  */
-export const getApiFormsIdOptions = (options: Options<GetApiFormsIdData>) =>
-  queryOptions<GetApiFormsIdResponse, DefaultError, GetApiFormsIdResponse, ReturnType<typeof getApiFormsIdQueryKey>>({
+export const getFormOptions = (options: Options<GetFormData>) =>
+  queryOptions<GetFormResponse, DefaultError, GetFormResponse, ReturnType<typeof getFormQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiFormsId({
+      const { data } = await getForm({
         ...options,
         ...queryKey[0],
         signal,
@@ -868,7 +857,7 @@ export const getApiFormsIdOptions = (options: Options<GetApiFormsIdData>) =>
       });
       return data;
     },
-    queryKey: getApiFormsIdQueryKey(options),
+    queryKey: getFormQueryKey(options),
   });
 
 /**
@@ -876,12 +865,10 @@ export const getApiFormsIdOptions = (options: Options<GetApiFormsIdData>) =>
  *
  * Update a form. Requires permission to manage the form.
  */
-export const patchApiFormsIdMutation = (
-  options?: Partial<Options<PatchApiFormsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiFormsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiFormsIdData>> = {
+export const updateFormMutation = (options?: Partial<Options<UpdateFormData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateFormData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateFormData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiFormsId({
+      const { data } = await updateForm({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -892,17 +879,17 @@ export const patchApiFormsIdMutation = (
   return mutationOptions;
 };
 
-export const getApiFormsIdStatisticsQueryKey = (options: Options<GetApiFormsIdStatisticsData>) => createQueryKey('getApiFormsIdStatistics', options);
+export const getFormStatisticsQueryKey = (options: Options<GetFormStatisticsData>) => createQueryKey('getFormStatistics', options);
 
 /**
  * Get form statistics
  *
  * Get aggregated statistics for a form. Requires permission to manage the form.
  */
-export const getApiFormsIdStatisticsOptions = (options: Options<GetApiFormsIdStatisticsData>) =>
-  queryOptions<GetApiFormsIdStatisticsResponse, DefaultError, GetApiFormsIdStatisticsResponse, ReturnType<typeof getApiFormsIdStatisticsQueryKey>>({
+export const getFormStatisticsOptions = (options: Options<GetFormStatisticsData>) =>
+  queryOptions<GetFormStatisticsResponse, DefaultError, GetFormStatisticsResponse, ReturnType<typeof getFormStatisticsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiFormsIdStatistics({
+      const { data } = await getFormStatistics({
         ...options,
         ...queryKey[0],
         signal,
@@ -910,26 +897,20 @@ export const getApiFormsIdStatisticsOptions = (options: Options<GetApiFormsIdSta
       });
       return data;
     },
-    queryKey: getApiFormsIdStatisticsQueryKey(options),
+    queryKey: getFormStatisticsQueryKey(options),
   });
 
-export const getApiFormsFormIdSubmissionsQueryKey = (options: Options<GetApiFormsFormIdSubmissionsData>) =>
-  createQueryKey('getApiFormsFormIdSubmissions', options);
+export const listFormSubmissionsQueryKey = (options: Options<ListFormSubmissionsData>) => createQueryKey('listFormSubmissions', options);
 
 /**
  * List submissions
  *
  * List all submissions for a form. Requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissionsOptions = (options: Options<GetApiFormsFormIdSubmissionsData>) =>
-  queryOptions<
-    GetApiFormsFormIdSubmissionsResponse,
-    DefaultError,
-    GetApiFormsFormIdSubmissionsResponse,
-    ReturnType<typeof getApiFormsFormIdSubmissionsQueryKey>
-  >({
+export const listFormSubmissionsOptions = (options: Options<ListFormSubmissionsData>) =>
+  queryOptions<ListFormSubmissionsResponse, DefaultError, ListFormSubmissionsResponse, ReturnType<typeof listFormSubmissionsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiFormsFormIdSubmissions({
+      const { data } = await listFormSubmissions({
         ...options,
         ...queryKey[0],
         signal,
@@ -937,7 +918,7 @@ export const getApiFormsFormIdSubmissionsOptions = (options: Options<GetApiForms
       });
       return data;
     },
-    queryKey: getApiFormsFormIdSubmissionsQueryKey(options),
+    queryKey: listFormSubmissionsQueryKey(options),
   });
 
 /**
@@ -945,12 +926,12 @@ export const getApiFormsFormIdSubmissionsOptions = (options: Options<GetApiForms
  *
  * Submit answers to a form
  */
-export const postApiFormsFormIdSubmissionsMutation = (
-  options?: Partial<Options<PostApiFormsFormIdSubmissionsData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiFormsFormIdSubmissionsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiFormsFormIdSubmissionsData>> = {
+export const createFormSubmissionMutation = (
+  options?: Partial<Options<CreateFormSubmissionData>>,
+): UseMutationOptions<unknown, DefaultError, Options<CreateFormSubmissionData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateFormSubmissionData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiFormsFormIdSubmissions({
+      const { data } = await createFormSubmission({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -961,23 +942,17 @@ export const postApiFormsFormIdSubmissionsMutation = (
   return mutationOptions;
 };
 
-export const getApiFormsFormIdSubmissionsIdQueryKey = (options: Options<GetApiFormsFormIdSubmissionsIdData>) =>
-  createQueryKey('getApiFormsFormIdSubmissionsId', options);
+export const getFormSubmissionQueryKey = (options: Options<GetFormSubmissionData>) => createQueryKey('getFormSubmission', options);
 
 /**
  * Get submission
  *
  * Get a specific submission. Can view own submission or requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissionsIdOptions = (options: Options<GetApiFormsFormIdSubmissionsIdData>) =>
-  queryOptions<
-    GetApiFormsFormIdSubmissionsIdResponse,
-    DefaultError,
-    GetApiFormsFormIdSubmissionsIdResponse,
-    ReturnType<typeof getApiFormsFormIdSubmissionsIdQueryKey>
-  >({
+export const getFormSubmissionOptions = (options: Options<GetFormSubmissionData>) =>
+  queryOptions<GetFormSubmissionResponse, DefaultError, GetFormSubmissionResponse, ReturnType<typeof getFormSubmissionQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiFormsFormIdSubmissionsId({
+      const { data } = await getFormSubmission({
         ...options,
         ...queryKey[0],
         signal,
@@ -985,21 +960,20 @@ export const getApiFormsFormIdSubmissionsIdOptions = (options: Options<GetApiFor
       });
       return data;
     },
-    queryKey: getApiFormsFormIdSubmissionsIdQueryKey(options),
+    queryKey: getFormSubmissionQueryKey(options),
   });
 
-export const getApiFormsFormIdSubmissionsDownloadQueryKey = (options: Options<GetApiFormsFormIdSubmissionsDownloadData>) =>
-  createQueryKey('getApiFormsFormIdSubmissionsDownload', options);
+export const downloadFormSubmissionsQueryKey = (options: Options<DownloadFormSubmissionsData>) => createQueryKey('downloadFormSubmissions', options);
 
 /**
  * Download submissions as CSV
  *
  * Download all submissions for a form as CSV. Requires permission to manage the form.
  */
-export const getApiFormsFormIdSubmissionsDownloadOptions = (options: Options<GetApiFormsFormIdSubmissionsDownloadData>) =>
-  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiFormsFormIdSubmissionsDownloadQueryKey>>({
+export const downloadFormSubmissionsOptions = (options: Options<DownloadFormSubmissionsData>) =>
+  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof downloadFormSubmissionsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiFormsFormIdSubmissionsDownload({
+      const { data } = await downloadFormSubmissions({
         ...options,
         ...queryKey[0],
         signal,
@@ -1007,7 +981,7 @@ export const getApiFormsFormIdSubmissionsDownloadOptions = (options: Options<Get
       });
       return data;
     },
-    queryKey: getApiFormsFormIdSubmissionsDownloadQueryKey(options),
+    queryKey: downloadFormSubmissionsQueryKey(options),
   });
 
 /**
@@ -1015,12 +989,12 @@ export const getApiFormsFormIdSubmissionsDownloadOptions = (options: Options<Get
  *
  * Delete a submission and notify the user with a reason. Admin only.
  */
-export const deleteApiFormsFormIdSubmissionsIdDestroyWithReasonMutation = (
-  options?: Partial<Options<DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData>> = {
+export const deleteFormSubmissionMutation = (
+  options?: Partial<Options<DeleteFormSubmissionData>>,
+): UseMutationOptions<unknown, DefaultError, Options<DeleteFormSubmissionData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteFormSubmissionData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiFormsFormIdSubmissionsIdDestroyWithReason({
+      const { data } = await deleteFormSubmission({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1031,17 +1005,17 @@ export const deleteApiFormsFormIdSubmissionsIdDestroyWithReasonMutation = (
   return mutationOptions;
 };
 
-export const getApiNotificationQueryKey = (options?: Options<GetApiNotificationData>) => createQueryKey('getApiNotification', options);
+export const listNotificationsQueryKey = (options?: Options<ListNotificationsData>) => createQueryKey('listNotifications', options);
 
 /**
  * List notifications for authenticated user
  *
  * Returns paginated list of notifications for the authenticated user, ordered by most recent first
  */
-export const getApiNotificationOptions = (options?: Options<GetApiNotificationData>) =>
-  queryOptions<GetApiNotificationResponse, DefaultError, GetApiNotificationResponse, ReturnType<typeof getApiNotificationQueryKey>>({
+export const listNotificationsOptions = (options?: Options<ListNotificationsData>) =>
+  queryOptions<ListNotificationsResponse, DefaultError, ListNotificationsResponse, ReturnType<typeof listNotificationsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiNotification({
+      const { data } = await listNotifications({
         ...options,
         ...queryKey[0],
         signal,
@@ -1049,30 +1023,30 @@ export const getApiNotificationOptions = (options?: Options<GetApiNotificationDa
       });
       return data;
     },
-    queryKey: getApiNotificationQueryKey(options),
+    queryKey: listNotificationsQueryKey(options),
   });
 
-export const getApiNotificationInfiniteQueryKey = (options?: Options<GetApiNotificationData>): QueryKey<Options<GetApiNotificationData>> =>
-  createQueryKey('getApiNotification', options, true);
+export const listNotificationsInfiniteQueryKey = (options?: Options<ListNotificationsData>): QueryKey<Options<ListNotificationsData>> =>
+  createQueryKey('listNotifications', options, true);
 
 /**
  * List notifications for authenticated user
  *
  * Returns paginated list of notifications for the authenticated user, ordered by most recent first
  */
-export const getApiNotificationInfiniteOptions = (options?: Options<GetApiNotificationData>) => {
+export const listNotificationsInfiniteOptions = (options?: Options<ListNotificationsData>) => {
   return infiniteQueryOptions<
-    GetApiNotificationResponse,
+    ListNotificationsResponse,
     DefaultError,
-    InfiniteData<GetApiNotificationResponse>,
-    QueryKey<Options<GetApiNotificationData>>,
-    number | Pick<QueryKey<Options<GetApiNotificationData>>[0], 'body' | 'headers' | 'path' | 'query'>
+    InfiniteData<ListNotificationsResponse>,
+    QueryKey<Options<ListNotificationsData>>,
+    number | Pick<QueryKey<Options<ListNotificationsData>>[0], 'body' | 'headers' | 'path' | 'query'>
   >(
     // @ts-ignore
     {
       queryFn: async ({ pageParam, queryKey, signal }) => {
         // @ts-ignore
-        const page: Pick<QueryKey<Options<GetApiNotificationData>>[0], 'body' | 'headers' | 'path' | 'query'> =
+        const page: Pick<QueryKey<Options<ListNotificationsData>>[0], 'body' | 'headers' | 'path' | 'query'> =
           typeof pageParam === 'object'
             ? pageParam
             : {
@@ -1081,7 +1055,7 @@ export const getApiNotificationInfiniteOptions = (options?: Options<GetApiNotifi
                 },
               };
         const params = createInfiniteParams(queryKey, page);
-        const { data } = await getApiNotification({
+        const { data } = await listNotifications({
           ...options,
           ...params,
           signal,
@@ -1089,7 +1063,7 @@ export const getApiNotificationInfiniteOptions = (options?: Options<GetApiNotifi
         });
         return data;
       },
-      queryKey: getApiNotificationInfiniteQueryKey(options),
+      queryKey: listNotificationsInfiniteQueryKey(options),
     },
   );
 };
@@ -1099,12 +1073,12 @@ export const getApiNotificationInfiniteOptions = (options?: Options<GetApiNotifi
  *
  * Delete a notification by ID. User must be authenticated and own the notification.
  */
-export const deleteApiNotificationIdMutation = (
-  options?: Partial<Options<DeleteApiNotificationIdData>>,
-): UseMutationOptions<DeleteApiNotificationIdResponse, DefaultError, Options<DeleteApiNotificationIdData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiNotificationIdResponse, DefaultError, Options<DeleteApiNotificationIdData>> = {
+export const deleteNotificationMutation = (
+  options?: Partial<Options<DeleteNotificationData>>,
+): UseMutationOptions<DeleteNotificationResponse, DefaultError, Options<DeleteNotificationData>> => {
+  const mutationOptions: UseMutationOptions<DeleteNotificationResponse, DefaultError, Options<DeleteNotificationData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiNotificationId({
+      const { data } = await deleteNotification({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1120,12 +1094,12 @@ export const deleteApiNotificationIdMutation = (
  *
  * Update the read status of a notification. User must be authenticated and own the notification.
  */
-export const patchApiNotificationIdReadMutation = (
-  options?: Partial<Options<PatchApiNotificationIdReadData>>,
-): UseMutationOptions<PatchApiNotificationIdReadResponse, DefaultError, Options<PatchApiNotificationIdReadData>> => {
-  const mutationOptions: UseMutationOptions<PatchApiNotificationIdReadResponse, DefaultError, Options<PatchApiNotificationIdReadData>> = {
+export const markNotificationReadMutation = (
+  options?: Partial<Options<MarkNotificationReadData>>,
+): UseMutationOptions<MarkNotificationReadResponse, DefaultError, Options<MarkNotificationReadData>> => {
+  const mutationOptions: UseMutationOptions<MarkNotificationReadResponse, DefaultError, Options<MarkNotificationReadData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiNotificationIdRead({
+      const { data } = await markNotificationRead({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1136,17 +1110,17 @@ export const patchApiNotificationIdReadMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsQueryKey = (options?: Options<GetApiGroupsData>) => createQueryKey('getApiGroups', options);
+export const listGroupsQueryKey = (options?: Options<ListGroupsData>) => createQueryKey('listGroups', options);
 
 /**
  * List groups
  *
  * Retrieve a list of all groups. Supports optional filtering by type and search query.
  */
-export const getApiGroupsOptions = (options?: Options<GetApiGroupsData>) =>
-  queryOptions<GetApiGroupsResponse, DefaultError, GetApiGroupsResponse, ReturnType<typeof getApiGroupsQueryKey>>({
+export const listGroupsOptions = (options?: Options<ListGroupsData>) =>
+  queryOptions<ListGroupsResponse, DefaultError, ListGroupsResponse, ReturnType<typeof listGroupsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroups({
+      const { data } = await listGroups({
         ...options,
         ...queryKey[0],
         signal,
@@ -1154,7 +1128,7 @@ export const getApiGroupsOptions = (options?: Options<GetApiGroupsData>) =>
       });
       return data;
     },
-    queryKey: getApiGroupsQueryKey(options),
+    queryKey: listGroupsQueryKey(options),
   });
 
 /**
@@ -1162,10 +1136,10 @@ export const getApiGroupsOptions = (options?: Options<GetApiGroupsData>) =>
  *
  * Create a new group. Requires 'groups:create' permission.
  */
-export const postApiGroupsMutation = (options?: Partial<Options<PostApiGroupsData>>): UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsData>> = {
+export const createGroupMutation = (options?: Partial<Options<CreateGroupData>>): UseMutationOptions<unknown, DefaultError, Options<CreateGroupData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateGroupData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiGroups({
+      const { data } = await createGroup({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1181,12 +1155,12 @@ export const postApiGroupsMutation = (options?: Partial<Options<PostApiGroupsDat
  *
  * Delete a group by its slug. Requires being a group leader OR having 'groups:delete' permission (globally or scoped to this group). This action is irreversible and will remove all associated data, including memberships and fines.
  */
-export const deleteApiGroupsSlugMutation = (
-  options?: Partial<Options<DeleteApiGroupsSlugData>>,
-): UseMutationOptions<DeleteApiGroupsSlugResponse, DefaultError, Options<DeleteApiGroupsSlugData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiGroupsSlugResponse, DefaultError, Options<DeleteApiGroupsSlugData>> = {
+export const deleteGroupMutation = (
+  options?: Partial<Options<DeleteGroupData>>,
+): UseMutationOptions<DeleteGroupResponse, DefaultError, Options<DeleteGroupData>> => {
+  const mutationOptions: UseMutationOptions<DeleteGroupResponse, DefaultError, Options<DeleteGroupData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiGroupsSlug({
+      const { data } = await deleteGroup({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1197,17 +1171,17 @@ export const deleteApiGroupsSlugMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsSlugQueryKey = (options: Options<GetApiGroupsSlugData>) => createQueryKey('getApiGroupsSlug', options);
+export const getGroupQueryKey = (options: Options<GetGroupData>) => createQueryKey('getGroup', options);
 
 /**
  * Get group by slug
  *
  * Retrieve detailed information about a specific group by its slug identifier.
  */
-export const getApiGroupsSlugOptions = (options: Options<GetApiGroupsSlugData>) =>
-  queryOptions<GetApiGroupsSlugResponse, DefaultError, GetApiGroupsSlugResponse, ReturnType<typeof getApiGroupsSlugQueryKey>>({
+export const getGroupOptions = (options: Options<GetGroupData>) =>
+  queryOptions<GetGroupResponse, DefaultError, GetGroupResponse, ReturnType<typeof getGroupQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroupsSlug({
+      const { data } = await getGroup({
         ...options,
         ...queryKey[0],
         signal,
@@ -1215,7 +1189,7 @@ export const getApiGroupsSlugOptions = (options: Options<GetApiGroupsSlugData>) 
       });
       return data;
     },
-    queryKey: getApiGroupsSlugQueryKey(options),
+    queryKey: getGroupQueryKey(options),
   });
 
 /**
@@ -1223,12 +1197,10 @@ export const getApiGroupsSlugOptions = (options: Options<GetApiGroupsSlugData>) 
  *
  * Partially update an existing group by its slug. Only provided fields will be updated. Requires being a group leader OR having 'groups:update' permission (globally or scoped to this group).
  */
-export const patchApiGroupsSlugMutation = (
-  options?: Partial<Options<PatchApiGroupsSlugData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsSlugData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsSlugData>> = {
+export const updateGroupMutation = (options?: Partial<Options<UpdateGroupData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateGroupData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateGroupData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiGroupsSlug({
+      const { data } = await updateGroup({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1239,17 +1211,17 @@ export const patchApiGroupsSlugMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsGroupSlugFinesQueryKey = (options: Options<GetApiGroupsGroupSlugFinesData>) => createQueryKey('getApiGroupsGroupSlugFines', options);
+export const listFinesQueryKey = (options: Options<ListFinesData>) => createQueryKey('listFines', options);
 
 /**
  * List fines for a group
  *
  * Retrieve a list of fines for a group. Users can view their own fines, fines admins can view all fines for their group. Supports filtering by status and user.
  */
-export const getApiGroupsGroupSlugFinesOptions = (options: Options<GetApiGroupsGroupSlugFinesData>) =>
-  queryOptions<GetApiGroupsGroupSlugFinesResponse, DefaultError, GetApiGroupsGroupSlugFinesResponse, ReturnType<typeof getApiGroupsGroupSlugFinesQueryKey>>({
+export const listFinesOptions = (options: Options<ListFinesData>) =>
+  queryOptions<ListFinesResponse, DefaultError, ListFinesResponse, ReturnType<typeof listFinesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroupsGroupSlugFines({
+      const { data } = await listFines({
         ...options,
         ...queryKey[0],
         signal,
@@ -1257,7 +1229,7 @@ export const getApiGroupsGroupSlugFinesOptions = (options: Options<GetApiGroupsG
       });
       return data;
     },
-    queryKey: getApiGroupsGroupSlugFinesQueryKey(options),
+    queryKey: listFinesQueryKey(options),
   });
 
 /**
@@ -1265,12 +1237,10 @@ export const getApiGroupsGroupSlugFinesOptions = (options: Options<GetApiGroupsG
  *
  * Create a new fine for a group member. Requires being a group leader OR having 'fines:create' permission (globally or scoped to this group).
  */
-export const postApiGroupsGroupSlugFinesMutation = (
-  options?: Partial<Options<PostApiGroupsGroupSlugFinesData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsGroupSlugFinesData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsGroupSlugFinesData>> = {
+export const createFineMutation = (options?: Partial<Options<CreateFineData>>): UseMutationOptions<unknown, DefaultError, Options<CreateFineData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateFineData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiGroupsGroupSlugFines({
+      const { data } = await createFine({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1286,12 +1256,12 @@ export const postApiGroupsGroupSlugFinesMutation = (
  *
  * Delete a fine by its ID. Requires being the fines admin OR having 'fines:delete' permission (globally or scoped to this group). This action is irreversible.
  */
-export const deleteApiGroupsGroupSlugFinesFineIdMutation = (
-  options?: Partial<Options<DeleteApiGroupsGroupSlugFinesFineIdData>>,
-): UseMutationOptions<DeleteApiGroupsGroupSlugFinesFineIdResponse, DefaultError, Options<DeleteApiGroupsGroupSlugFinesFineIdData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiGroupsGroupSlugFinesFineIdResponse, DefaultError, Options<DeleteApiGroupsGroupSlugFinesFineIdData>> = {
+export const deleteFineMutation = (
+  options?: Partial<Options<DeleteFineData>>,
+): UseMutationOptions<DeleteFineResponse, DefaultError, Options<DeleteFineData>> => {
+  const mutationOptions: UseMutationOptions<DeleteFineResponse, DefaultError, Options<DeleteFineData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiGroupsGroupSlugFinesFineId({
+      const { data } = await deleteFine({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1302,23 +1272,17 @@ export const deleteApiGroupsGroupSlugFinesFineIdMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsGroupSlugFinesFineIdQueryKey = (options: Options<GetApiGroupsGroupSlugFinesFineIdData>) =>
-  createQueryKey('getApiGroupsGroupSlugFinesFineId', options);
+export const getFineQueryKey = (options: Options<GetFineData>) => createQueryKey('getFine', options);
 
 /**
  * Get fine by ID
  *
  * Retrieve detailed information about a specific fine. Users can view their own fines, fines admins can view all fines for their group.
  */
-export const getApiGroupsGroupSlugFinesFineIdOptions = (options: Options<GetApiGroupsGroupSlugFinesFineIdData>) =>
-  queryOptions<
-    GetApiGroupsGroupSlugFinesFineIdResponse,
-    DefaultError,
-    GetApiGroupsGroupSlugFinesFineIdResponse,
-    ReturnType<typeof getApiGroupsGroupSlugFinesFineIdQueryKey>
-  >({
+export const getFineOptions = (options: Options<GetFineData>) =>
+  queryOptions<GetFineResponse, DefaultError, GetFineResponse, ReturnType<typeof getFineQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroupsGroupSlugFinesFineId({
+      const { data } = await getFine({
         ...options,
         ...queryKey[0],
         signal,
@@ -1326,7 +1290,7 @@ export const getApiGroupsGroupSlugFinesFineIdOptions = (options: Options<GetApiG
       });
       return data;
     },
-    queryKey: getApiGroupsGroupSlugFinesFineIdQueryKey(options),
+    queryKey: getFineQueryKey(options),
   });
 
 /**
@@ -1334,12 +1298,10 @@ export const getApiGroupsGroupSlugFinesFineIdOptions = (options: Options<GetApiG
  *
  * Partially update a fine. Only provided fields will be updated. Users can add defense to their own fines. Fines admins can update status and approve/reject fines.
  */
-export const patchApiGroupsGroupSlugFinesFineIdMutation = (
-  options?: Partial<Options<PatchApiGroupsGroupSlugFinesFineIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsGroupSlugFinesFineIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsGroupSlugFinesFineIdData>> = {
+export const updateFineMutation = (options?: Partial<Options<UpdateFineData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateFineData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateFineData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiGroupsGroupSlugFinesFineId({
+      const { data } = await updateFine({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1350,23 +1312,17 @@ export const patchApiGroupsGroupSlugFinesFineIdMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsGroupSlugMembersQueryKey = (options: Options<GetApiGroupsGroupSlugMembersData>) =>
-  createQueryKey('getApiGroupsGroupSlugMembers', options);
+export const listGroupMembersQueryKey = (options: Options<ListGroupMembersData>) => createQueryKey('listGroupMembers', options);
 
 /**
  * List group members
  *
  * Retrieve a list of all members in a group.
  */
-export const getApiGroupsGroupSlugMembersOptions = (options: Options<GetApiGroupsGroupSlugMembersData>) =>
-  queryOptions<
-    GetApiGroupsGroupSlugMembersResponse,
-    DefaultError,
-    GetApiGroupsGroupSlugMembersResponse,
-    ReturnType<typeof getApiGroupsGroupSlugMembersQueryKey>
-  >({
+export const listGroupMembersOptions = (options: Options<ListGroupMembersData>) =>
+  queryOptions<ListGroupMembersResponse, DefaultError, ListGroupMembersResponse, ReturnType<typeof listGroupMembersQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroupsGroupSlugMembers({
+      const { data } = await listGroupMembers({
         ...options,
         ...queryKey[0],
         signal,
@@ -1374,7 +1330,7 @@ export const getApiGroupsGroupSlugMembersOptions = (options: Options<GetApiGroup
       });
       return data;
     },
-    queryKey: getApiGroupsGroupSlugMembersQueryKey(options),
+    queryKey: listGroupMembersQueryKey(options),
   });
 
 /**
@@ -1382,12 +1338,12 @@ export const getApiGroupsGroupSlugMembersOptions = (options: Options<GetApiGroup
  *
  * Add a member to a group. Requires 'groups:manage' permission.
  */
-export const postApiGroupsGroupSlugMembersMutation = (
-  options?: Partial<Options<PostApiGroupsGroupSlugMembersData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsGroupSlugMembersData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsGroupSlugMembersData>> = {
+export const addGroupMemberMutation = (
+  options?: Partial<Options<AddGroupMemberData>>,
+): UseMutationOptions<unknown, DefaultError, Options<AddGroupMemberData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<AddGroupMemberData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiGroupsGroupSlugMembers({
+      const { data } = await addGroupMember({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1403,12 +1359,12 @@ export const postApiGroupsGroupSlugMembersMutation = (
  *
  * Remove a member from a group. Requires 'groups:manage' permission.
  */
-export const deleteApiGroupsGroupSlugMembersUserIdMutation = (
-  options?: Partial<Options<DeleteApiGroupsGroupSlugMembersUserIdData>>,
-): UseMutationOptions<DeleteApiGroupsGroupSlugMembersUserIdResponse, DefaultError, Options<DeleteApiGroupsGroupSlugMembersUserIdData>> => {
-  const mutationOptions: UseMutationOptions<DeleteApiGroupsGroupSlugMembersUserIdResponse, DefaultError, Options<DeleteApiGroupsGroupSlugMembersUserIdData>> = {
+export const removeGroupMemberMutation = (
+  options?: Partial<Options<RemoveGroupMemberData>>,
+): UseMutationOptions<RemoveGroupMemberResponse, DefaultError, Options<RemoveGroupMemberData>> => {
+  const mutationOptions: UseMutationOptions<RemoveGroupMemberResponse, DefaultError, Options<RemoveGroupMemberData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiGroupsGroupSlugMembersUserId({
+      const { data } = await removeGroupMember({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1424,12 +1380,12 @@ export const deleteApiGroupsGroupSlugMembersUserIdMutation = (
  *
  * Update a member's role in a group. Requires 'groups:manage' permission.
  */
-export const patchApiGroupsGroupSlugMembersUserIdMutation = (
-  options?: Partial<Options<PatchApiGroupsGroupSlugMembersUserIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsGroupSlugMembersUserIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiGroupsGroupSlugMembersUserIdData>> = {
+export const updateGroupMemberRoleMutation = (
+  options?: Partial<Options<UpdateGroupMemberRoleData>>,
+): UseMutationOptions<unknown, DefaultError, Options<UpdateGroupMemberRoleData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateGroupMemberRoleData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiGroupsGroupSlugMembersUserId({
+      const { data } = await updateGroupMemberRole({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1440,17 +1396,17 @@ export const patchApiGroupsGroupSlugMembersUserIdMutation = (
   return mutationOptions;
 };
 
-export const getApiGroupsSlugFormsQueryKey = (options: Options<GetApiGroupsSlugFormsData>) => createQueryKey('getApiGroupsSlugForms', options);
+export const listGroupFormsQueryKey = (options: Options<ListGroupFormsData>) => createQueryKey('listGroupForms', options);
 
 /**
  * List group forms
  *
  * Get all forms for a group, filtered by user permissions
  */
-export const getApiGroupsSlugFormsOptions = (options: Options<GetApiGroupsSlugFormsData>) =>
-  queryOptions<GetApiGroupsSlugFormsResponse, DefaultError, GetApiGroupsSlugFormsResponse, ReturnType<typeof getApiGroupsSlugFormsQueryKey>>({
+export const listGroupFormsOptions = (options: Options<ListGroupFormsData>) =>
+  queryOptions<ListGroupFormsResponse, DefaultError, ListGroupFormsResponse, ReturnType<typeof listGroupFormsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiGroupsSlugForms({
+      const { data } = await listGroupForms({
         ...options,
         ...queryKey[0],
         signal,
@@ -1458,7 +1414,7 @@ export const getApiGroupsSlugFormsOptions = (options: Options<GetApiGroupsSlugFo
       });
       return data;
     },
-    queryKey: getApiGroupsSlugFormsQueryKey(options),
+    queryKey: listGroupFormsQueryKey(options),
   });
 
 /**
@@ -1466,12 +1422,12 @@ export const getApiGroupsSlugFormsOptions = (options: Options<GetApiGroupsSlugFo
  *
  * Create a form for a group. Requires group leader permission or forms:create permission.
  */
-export const postApiGroupsSlugFormsMutation = (
-  options?: Partial<Options<PostApiGroupsSlugFormsData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsSlugFormsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiGroupsSlugFormsData>> = {
+export const createGroupFormMutation = (
+  options?: Partial<Options<CreateGroupFormData>>,
+): UseMutationOptions<unknown, DefaultError, Options<CreateGroupFormData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateGroupFormData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiGroupsSlugForms({
+      const { data } = await createGroupForm({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1482,17 +1438,17 @@ export const postApiGroupsSlugFormsMutation = (
   return mutationOptions;
 };
 
-export const getApiNewsQueryKey = (options?: Options<GetApiNewsData>) => createQueryKey('getApiNews', options);
+export const listNewsQueryKey = (options?: Options<ListNewsData>) => createQueryKey('listNews', options);
 
 /**
  * List news articles
  *
  * Get a paginated list of all news articles. Public endpoint.
  */
-export const getApiNewsOptions = (options?: Options<GetApiNewsData>) =>
-  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiNewsQueryKey>>({
+export const listNewsOptions = (options?: Options<ListNewsData>) =>
+  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof listNewsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiNews({
+      const { data } = await listNews({
         ...options,
         ...queryKey[0],
         signal,
@@ -1500,7 +1456,7 @@ export const getApiNewsOptions = (options?: Options<GetApiNewsData>) =>
       });
       return data;
     },
-    queryKey: getApiNewsQueryKey(options),
+    queryKey: listNewsQueryKey(options),
   });
 
 /**
@@ -1508,10 +1464,10 @@ export const getApiNewsOptions = (options?: Options<GetApiNewsData>) =>
  *
  * Create a new news article. Requires 'news:create' permission.
  */
-export const postApiNewsMutation = (options?: Partial<Options<PostApiNewsData>>): UseMutationOptions<unknown, DefaultError, Options<PostApiNewsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiNewsData>> = {
+export const createNewsMutation = (options?: Partial<Options<CreateNewsData>>): UseMutationOptions<unknown, DefaultError, Options<CreateNewsData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateNewsData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiNews({
+      const { data } = await createNews({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1527,12 +1483,10 @@ export const postApiNewsMutation = (options?: Partial<Options<PostApiNewsData>>)
  *
  * Delete a news article. Requires 'news:delete' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const deleteApiNewsIdMutation = (
-  options?: Partial<Options<DeleteApiNewsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiNewsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiNewsIdData>> = {
+export const deleteNewsMutation = (options?: Partial<Options<DeleteNewsData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteNewsData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteNewsData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiNewsId({
+      const { data } = await deleteNews({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1543,17 +1497,17 @@ export const deleteApiNewsIdMutation = (
   return mutationOptions;
 };
 
-export const getApiNewsIdQueryKey = (options: Options<GetApiNewsIdData>) => createQueryKey('getApiNewsId', options);
+export const getNewsQueryKey = (options: Options<GetNewsData>) => createQueryKey('getNews', options);
 
 /**
  * Get news article
  *
  * Get a single news article by ID. Public endpoint.
  */
-export const getApiNewsIdOptions = (options: Options<GetApiNewsIdData>) =>
-  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiNewsIdQueryKey>>({
+export const getNewsOptions = (options: Options<GetNewsData>) =>
+  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getNewsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiNewsId({
+      const { data } = await getNews({
         ...options,
         ...queryKey[0],
         signal,
@@ -1561,7 +1515,7 @@ export const getApiNewsIdOptions = (options: Options<GetApiNewsIdData>) =>
       });
       return data;
     },
-    queryKey: getApiNewsIdQueryKey(options),
+    queryKey: getNewsQueryKey(options),
   });
 
 /**
@@ -1569,12 +1523,10 @@ export const getApiNewsIdOptions = (options: Options<GetApiNewsIdData>) =>
  *
  * Update a news article. Requires 'news:update' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const patchApiNewsIdMutation = (
-  options?: Partial<Options<PatchApiNewsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiNewsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiNewsIdData>> = {
+export const updateNewsMutation = (options?: Partial<Options<UpdateNewsData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateNewsData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateNewsData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiNewsId({
+      const { data } = await updateNews({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1590,12 +1542,12 @@ export const patchApiNewsIdMutation = (
  *
  * Remove your emoji reaction from a news article.
  */
-export const deleteApiNewsIdReactionsMutation = (
-  options?: Partial<Options<DeleteApiNewsIdReactionsData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiNewsIdReactionsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiNewsIdReactionsData>> = {
+export const deleteNewsReactionMutation = (
+  options?: Partial<Options<DeleteNewsReactionData>>,
+): UseMutationOptions<unknown, DefaultError, Options<DeleteNewsReactionData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteNewsReactionData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiNewsIdReactions({
+      const { data } = await deleteNewsReaction({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1611,12 +1563,12 @@ export const deleteApiNewsIdReactionsMutation = (
  *
  * Add or update emoji reaction to a news article. Requires authentication.
  */
-export const postApiNewsIdReactionsMutation = (
-  options?: Partial<Options<PostApiNewsIdReactionsData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PostApiNewsIdReactionsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiNewsIdReactionsData>> = {
+export const createNewsReactionMutation = (
+  options?: Partial<Options<CreateNewsReactionData>>,
+): UseMutationOptions<unknown, DefaultError, Options<CreateNewsReactionData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateNewsReactionData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiNewsIdReactions({
+      const { data } = await createNewsReaction({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1627,17 +1579,17 @@ export const postApiNewsIdReactionsMutation = (
   return mutationOptions;
 };
 
-export const getApiJobsQueryKey = (options?: Options<GetApiJobsData>) => createQueryKey('getApiJobs', options);
+export const listJobsQueryKey = (options?: Options<ListJobsData>) => createQueryKey('listJobs', options);
 
 /**
  * List job postings
  *
  * Get a list of job postings. Supports search and expired filtering. Public endpoint.
  */
-export const getApiJobsOptions = (options?: Options<GetApiJobsData>) =>
-  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiJobsQueryKey>>({
+export const listJobsOptions = (options?: Options<ListJobsData>) =>
+  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof listJobsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiJobs({
+      const { data } = await listJobs({
         ...options,
         ...queryKey[0],
         signal,
@@ -1645,7 +1597,7 @@ export const getApiJobsOptions = (options?: Options<GetApiJobsData>) =>
       });
       return data;
     },
-    queryKey: getApiJobsQueryKey(options),
+    queryKey: listJobsQueryKey(options),
   });
 
 /**
@@ -1653,10 +1605,10 @@ export const getApiJobsOptions = (options?: Options<GetApiJobsData>) =>
  *
  * Create a new job posting. Requires 'jobs:create' permission.
  */
-export const postApiJobsMutation = (options?: Partial<Options<PostApiJobsData>>): UseMutationOptions<unknown, DefaultError, Options<PostApiJobsData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PostApiJobsData>> = {
+export const createJobMutation = (options?: Partial<Options<CreateJobData>>): UseMutationOptions<unknown, DefaultError, Options<CreateJobData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<CreateJobData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiJobs({
+      const { data } = await createJob({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1672,12 +1624,10 @@ export const postApiJobsMutation = (options?: Partial<Options<PostApiJobsData>>)
  *
  * Delete a job posting. Requires 'jobs:delete' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const deleteApiJobsIdMutation = (
-  options?: Partial<Options<DeleteApiJobsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<DeleteApiJobsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteApiJobsIdData>> = {
+export const deleteJobMutation = (options?: Partial<Options<DeleteJobData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteJobData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteJobData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await deleteApiJobsId({
+      const { data } = await deleteJob({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1688,17 +1638,17 @@ export const deleteApiJobsIdMutation = (
   return mutationOptions;
 };
 
-export const getApiJobsIdQueryKey = (options: Options<GetApiJobsIdData>) => createQueryKey('getApiJobsId', options);
+export const getJobQueryKey = (options: Options<GetJobData>) => createQueryKey('getJob', options);
 
 /**
  * Get job posting
  *
  * Get a single job posting by ID. Public endpoint.
  */
-export const getApiJobsIdOptions = (options: Options<GetApiJobsIdData>) =>
-  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getApiJobsIdQueryKey>>({
+export const getJobOptions = (options: Options<GetJobData>) =>
+  queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getJobQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiJobsId({
+      const { data } = await getJob({
         ...options,
         ...queryKey[0],
         signal,
@@ -1706,7 +1656,7 @@ export const getApiJobsIdOptions = (options: Options<GetApiJobsIdData>) =>
       });
       return data;
     },
-    queryKey: getApiJobsIdQueryKey(options),
+    queryKey: getJobQueryKey(options),
   });
 
 /**
@@ -1714,12 +1664,10 @@ export const getApiJobsIdOptions = (options: Options<GetApiJobsIdData>) =>
  *
  * Update a job posting. Requires 'jobs:update' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const patchApiJobsIdMutation = (
-  options?: Partial<Options<PatchApiJobsIdData>>,
-): UseMutationOptions<unknown, DefaultError, Options<PatchApiJobsIdData>> => {
-  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<PatchApiJobsIdData>> = {
+export const updateJobMutation = (options?: Partial<Options<UpdateJobData>>): UseMutationOptions<unknown, DefaultError, Options<UpdateJobData>> => {
+  const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<UpdateJobData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiJobsId({
+      const { data } = await updateJob({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1730,17 +1678,17 @@ export const patchApiJobsIdMutation = (
   return mutationOptions;
 };
 
-export const getApiUserMeSettingsQueryKey = (options?: Options<GetApiUserMeSettingsData>) => createQueryKey('getApiUserMeSettings', options);
+export const getUserSettingsQueryKey = (options?: Options<GetUserSettingsData>) => createQueryKey('getUserSettings', options);
 
 /**
  * Get current user settings
  *
  * Retrieve the authenticated user's settings including preferences and allergies.
  */
-export const getApiUserMeSettingsOptions = (options?: Options<GetApiUserMeSettingsData>) =>
-  queryOptions<GetApiUserMeSettingsResponse, DefaultError, GetApiUserMeSettingsResponse, ReturnType<typeof getApiUserMeSettingsQueryKey>>({
+export const getUserSettingsOptions = (options?: Options<GetUserSettingsData>) =>
+  queryOptions<GetUserSettingsResponse, DefaultError, GetUserSettingsResponse, ReturnType<typeof getUserSettingsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiUserMeSettings({
+      const { data } = await getUserSettings({
         ...options,
         ...queryKey[0],
         signal,
@@ -1748,7 +1696,7 @@ export const getApiUserMeSettingsOptions = (options?: Options<GetApiUserMeSettin
       });
       return data;
     },
-    queryKey: getApiUserMeSettingsQueryKey(options),
+    queryKey: getUserSettingsQueryKey(options),
   });
 
 /**
@@ -1756,12 +1704,12 @@ export const getApiUserMeSettingsOptions = (options?: Options<GetApiUserMeSettin
  *
  * Partially update the authenticated user's settings. Only provided fields will be updated. User must have completed onboarding first.
  */
-export const patchApiUserMeSettingsMutation = (
-  options?: Partial<Options<PatchApiUserMeSettingsData>>,
-): UseMutationOptions<PatchApiUserMeSettingsResponse, DefaultError, Options<PatchApiUserMeSettingsData>> => {
-  const mutationOptions: UseMutationOptions<PatchApiUserMeSettingsResponse, DefaultError, Options<PatchApiUserMeSettingsData>> = {
+export const updateUserSettingsMutation = (
+  options?: Partial<Options<UpdateUserSettingsData>>,
+): UseMutationOptions<UpdateUserSettingsResponse, DefaultError, Options<UpdateUserSettingsData>> => {
+  const mutationOptions: UseMutationOptions<UpdateUserSettingsResponse, DefaultError, Options<UpdateUserSettingsData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await patchApiUserMeSettings({
+      const { data } = await updateUserSettings({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1777,12 +1725,12 @@ export const patchApiUserMeSettingsMutation = (
  *
  * Create initial user settings and mark the user as onboarded. Can only be called once per user.
  */
-export const postApiUserMeSettingsMutation = (
-  options?: Partial<Options<PostApiUserMeSettingsData>>,
-): UseMutationOptions<PostApiUserMeSettingsResponse, DefaultError, Options<PostApiUserMeSettingsData>> => {
-  const mutationOptions: UseMutationOptions<PostApiUserMeSettingsResponse, DefaultError, Options<PostApiUserMeSettingsData>> = {
+export const onboardUserMutation = (
+  options?: Partial<Options<OnboardUserData>>,
+): UseMutationOptions<OnboardUserResponse, DefaultError, Options<OnboardUserData>> => {
+  const mutationOptions: UseMutationOptions<OnboardUserResponse, DefaultError, Options<OnboardUserData>> = {
     mutationFn: async (fnOptions) => {
-      const { data } = await postApiUserMeSettings({
+      const { data } = await onboardUser({
         ...options,
         ...fnOptions,
         throwOnError: true,
@@ -1793,17 +1741,17 @@ export const postApiUserMeSettingsMutation = (
   return mutationOptions;
 };
 
-export const getApiUserAllergyQueryKey = (options?: Options<GetApiUserAllergyData>) => createQueryKey('getApiUserAllergy', options);
+export const listAllergiesQueryKey = (options?: Options<ListAllergiesData>) => createQueryKey('listAllergies', options);
 
 /**
  * List all allergies
  *
  * Retrieve a list of all possible allergies that users can have.
  */
-export const getApiUserAllergyOptions = (options?: Options<GetApiUserAllergyData>) =>
-  queryOptions<GetApiUserAllergyResponse, DefaultError, GetApiUserAllergyResponse, ReturnType<typeof getApiUserAllergyQueryKey>>({
+export const listAllergiesOptions = (options?: Options<ListAllergiesData>) =>
+  queryOptions<ListAllergiesResponse, DefaultError, ListAllergiesResponse, ReturnType<typeof listAllergiesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-      const { data } = await getApiUserAllergy({
+      const { data } = await listAllergies({
         ...options,
         ...queryKey[0],
         signal,
@@ -1811,5 +1759,5 @@ export const getApiUserAllergyOptions = (options?: Options<GetApiUserAllergyData
       });
       return data;
     },
-    queryKey: getApiUserAllergyQueryKey(options),
+    queryKey: listAllergiesQueryKey(options),
   });

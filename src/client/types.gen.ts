@@ -4,21 +4,21 @@ export type ClientOptions = {
   baseUrl: 'http://localhost:4000' | 'https://photon.tihlde.org' | (string & {});
 };
 
-export type GetApiApiKeysData = {
+export type ListApiKeysData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/api-keys';
 };
 
-export type GetApiApiKeysErrors = {
+export type ListApiKeysErrors = {
   /**
    * Forbidden - Missing api-keys:view permission
    */
   403: unknown;
 };
 
-export type GetApiApiKeysResponses = {
+export type ListApiKeysResponses = {
   /**
    * List of API keys
    */
@@ -68,9 +68,9 @@ export type GetApiApiKeysResponses = {
   }>;
 };
 
-export type GetApiApiKeysResponse = GetApiApiKeysResponses[keyof GetApiApiKeysResponses];
+export type ListApiKeysResponse = ListApiKeysResponses[keyof ListApiKeysResponses];
 
-export type PostApiApiKeysData = {
+export type CreateApiKeyData = {
   body?: {
     /**
      * Name for the API key
@@ -96,14 +96,14 @@ export type PostApiApiKeysData = {
   url: '/api/api-keys';
 };
 
-export type PostApiApiKeysErrors = {
+export type CreateApiKeyErrors = {
   /**
    * Forbidden - Missing api-keys:create permission
    */
   403: unknown;
 };
 
-export type PostApiApiKeysResponses = {
+export type CreateApiKeyResponses = {
   /**
    * API key created successfully. The 'key' field contains the full API key and will not be shown again.
    */
@@ -157,9 +157,9 @@ export type PostApiApiKeysResponses = {
   };
 };
 
-export type PostApiApiKeysResponse = PostApiApiKeysResponses[keyof PostApiApiKeysResponses];
+export type CreateApiKeyResponse = CreateApiKeyResponses[keyof CreateApiKeyResponses];
 
-export type DeleteApiApiKeysIdData = {
+export type DeleteApiKeyData = {
   body?: never;
   path: {
     /**
@@ -171,7 +171,7 @@ export type DeleteApiApiKeysIdData = {
   url: '/api/api-keys/{id}';
 };
 
-export type DeleteApiApiKeysIdErrors = {
+export type DeleteApiKeyErrors = {
   /**
    * Forbidden - Missing api-keys:delete permission
    */
@@ -182,7 +182,7 @@ export type DeleteApiApiKeysIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiApiKeysIdResponses = {
+export type DeleteApiKeyResponses = {
   /**
    * API key deleted successfully
    */
@@ -194,9 +194,9 @@ export type DeleteApiApiKeysIdResponses = {
   };
 };
 
-export type DeleteApiApiKeysIdResponse = DeleteApiApiKeysIdResponses[keyof DeleteApiApiKeysIdResponses];
+export type DeleteApiKeyResponse = DeleteApiKeyResponses[keyof DeleteApiKeyResponses];
 
-export type GetApiApiKeysIdData = {
+export type GetApiKeyData = {
   body?: never;
   path: {
     /**
@@ -208,7 +208,7 @@ export type GetApiApiKeysIdData = {
   url: '/api/api-keys/{id}';
 };
 
-export type GetApiApiKeysIdErrors = {
+export type GetApiKeyErrors = {
   /**
    * Forbidden - Missing api-keys:view permission
    */
@@ -219,7 +219,7 @@ export type GetApiApiKeysIdErrors = {
   404: unknown;
 };
 
-export type GetApiApiKeysIdResponses = {
+export type GetApiKeyResponses = {
   /**
    * API key details
    */
@@ -269,9 +269,9 @@ export type GetApiApiKeysIdResponses = {
   };
 };
 
-export type GetApiApiKeysIdResponse = GetApiApiKeysIdResponses[keyof GetApiApiKeysIdResponses];
+export type GetApiKeyResponse = GetApiKeyResponses[keyof GetApiKeyResponses];
 
-export type PatchApiApiKeysIdData = {
+export type UpdateApiKeyData = {
   body?: {
     /**
      * Name for the API key
@@ -302,7 +302,7 @@ export type PatchApiApiKeysIdData = {
   url: '/api/api-keys/{id}';
 };
 
-export type PatchApiApiKeysIdErrors = {
+export type UpdateApiKeyErrors = {
   /**
    * Forbidden - Missing api-keys:update permission
    */
@@ -313,7 +313,7 @@ export type PatchApiApiKeysIdErrors = {
   404: unknown;
 };
 
-export type PatchApiApiKeysIdResponses = {
+export type UpdateApiKeyResponses = {
   /**
    * API key updated successfully
    */
@@ -363,9 +363,9 @@ export type PatchApiApiKeysIdResponses = {
   };
 };
 
-export type PatchApiApiKeysIdResponse = PatchApiApiKeysIdResponses[keyof PatchApiApiKeysIdResponses];
+export type UpdateApiKeyResponse = UpdateApiKeyResponses[keyof UpdateApiKeyResponses];
 
-export type PostApiApiKeysIdRegenerateData = {
+export type RegenerateApiKeyData = {
   body?: never;
   path: {
     /**
@@ -377,7 +377,7 @@ export type PostApiApiKeysIdRegenerateData = {
   url: '/api/api-keys/{id}/regenerate';
 };
 
-export type PostApiApiKeysIdRegenerateErrors = {
+export type RegenerateApiKeyErrors = {
   /**
    * Forbidden - Missing api-keys:update permission
    */
@@ -388,7 +388,7 @@ export type PostApiApiKeysIdRegenerateErrors = {
   404: unknown;
 };
 
-export type PostApiApiKeysIdRegenerateResponses = {
+export type RegenerateApiKeyResponses = {
   /**
    * API key regenerated successfully. The 'key' field contains the new API key and will not be shown again.
    */
@@ -442,9 +442,9 @@ export type PostApiApiKeysIdRegenerateResponses = {
   };
 };
 
-export type PostApiApiKeysIdRegenerateResponse = PostApiApiKeysIdRegenerateResponses[keyof PostApiApiKeysIdRegenerateResponses];
+export type RegenerateApiKeyResponse = RegenerateApiKeyResponses[keyof RegenerateApiKeyResponses];
 
-export type PostApiApiKeysValidateData = {
+export type ValidateApiKeyData = {
   body?: {
     /**
      * The API key to validate
@@ -456,7 +456,7 @@ export type PostApiApiKeysValidateData = {
   url: '/api/api-keys/validate';
 };
 
-export type PostApiApiKeysValidateResponses = {
+export type ValidateApiKeyResponses = {
   /**
    * Validation result. If valid=true, includes the API key details and permissions.
    */
@@ -515,9 +515,9 @@ export type PostApiApiKeysValidateResponses = {
   };
 };
 
-export type PostApiApiKeysValidateResponse = PostApiApiKeysValidateResponses[keyof PostApiApiKeysValidateResponses];
+export type ValidateApiKeyResponse = ValidateApiKeyResponses[keyof ValidateApiKeyResponses];
 
-export type PostApiEmailSendData = {
+export type SendCustomEmailData = {
   body?: {
     /**
      * Recipient email address (string) or list of recipient email addresses (array)
@@ -572,7 +572,7 @@ export type PostApiEmailSendData = {
   url: '/api/email/send';
 };
 
-export type PostApiEmailSendErrors = {
+export type SendCustomEmailErrors = {
   /**
    * Missing or invalid Authorization header
    */
@@ -587,7 +587,7 @@ export type PostApiEmailSendErrors = {
   503: unknown;
 };
 
-export type PostApiEmailSendResponses = {
+export type SendCustomEmailResponses = {
   /**
    * Email queued successfully
    */
@@ -599,9 +599,9 @@ export type PostApiEmailSendResponses = {
   };
 };
 
-export type PostApiEmailSendResponse = PostApiEmailSendResponses[keyof PostApiEmailSendResponses];
+export type SendCustomEmailResponse = SendCustomEmailResponses[keyof SendCustomEmailResponses];
 
-export type GetApiEventData = {
+export type ListEventsData = {
   body?: never;
   path?: never;
   query?: {
@@ -611,7 +611,7 @@ export type GetApiEventData = {
   url: '/api/event';
 };
 
-export type GetApiEventResponses = {
+export type ListEventsResponses = {
   /**
    * OK
    */
@@ -689,9 +689,9 @@ export type GetApiEventResponses = {
   }>;
 };
 
-export type GetApiEventResponse = GetApiEventResponses[keyof GetApiEventResponses];
+export type ListEventsResponse = ListEventsResponses[keyof ListEventsResponses];
 
-export type PostApiEventData = {
+export type CreateEventData = {
   body?: {
     /**
      * Short title of the event
@@ -800,14 +800,14 @@ export type PostApiEventData = {
   url: '/api/event';
 };
 
-export type PostApiEventErrors = {
+export type CreateEventErrors = {
   /**
    * Forbidden - Missing events:create permission
    */
   403: unknown;
 };
 
-export type PostApiEventResponses = {
+export type CreateEventResponses = {
   /**
    * Created
    */
@@ -816,9 +816,9 @@ export type PostApiEventResponses = {
   };
 };
 
-export type PostApiEventResponse = PostApiEventResponses[keyof PostApiEventResponses];
+export type CreateEventResponse = CreateEventResponses[keyof CreateEventResponses];
 
-export type PutApiEventIdData = {
+export type UpdateEventData = {
   body?: {
     /**
      * Short title of the event
@@ -929,7 +929,7 @@ export type PutApiEventIdData = {
   url: '/api/event/{id}';
 };
 
-export type PutApiEventIdErrors = {
+export type UpdateEventErrors = {
   /**
    * Forbidden - You must be the event creator or have events:update/events:manage permission
    */
@@ -940,14 +940,14 @@ export type PutApiEventIdErrors = {
   404: unknown;
 };
 
-export type PutApiEventIdResponses = {
+export type UpdateEventResponses = {
   /**
    * Updated
    */
   200: unknown;
 };
 
-export type DeleteApiEventEventIdData = {
+export type DeleteEventData = {
   body?: never;
   path: {
     eventId: string;
@@ -956,7 +956,7 @@ export type DeleteApiEventEventIdData = {
   url: '/api/event/{eventId}';
 };
 
-export type DeleteApiEventEventIdErrors = {
+export type DeleteEventErrors = {
   /**
    * Forbidden - You must be the event creator or have events:delete permission
    */
@@ -967,14 +967,14 @@ export type DeleteApiEventEventIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiEventEventIdResponses = {
+export type DeleteEventResponses = {
   /**
    * Event successfully deleted
    */
   200: unknown;
 };
 
-export type PutApiEventFavoriteIdData = {
+export type UpdateEventFavoriteData = {
   body?: {
     /**
      * Is favorite
@@ -988,28 +988,28 @@ export type PutApiEventFavoriteIdData = {
   url: '/api/event/favorite/{id}';
 };
 
-export type PutApiEventFavoriteIdErrors = {
+export type UpdateEventFavoriteErrors = {
   /**
    * Not found
    */
   404: unknown;
 };
 
-export type PutApiEventFavoriteIdResponses = {
+export type UpdateEventFavoriteResponses = {
   /**
    * Updated
    */
   200: unknown;
 };
 
-export type GetApiEventFavoriteData = {
+export type GetFavoriteEventsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/event/favorite';
 };
 
-export type GetApiEventFavoriteResponses = {
+export type GetFavoriteEventsResponses = {
   /**
    * List of favorite events
    */
@@ -1033,9 +1033,9 @@ export type GetApiEventFavoriteResponses = {
   }>;
 };
 
-export type GetApiEventFavoriteResponse = GetApiEventFavoriteResponses[keyof GetApiEventFavoriteResponses];
+export type GetFavoriteEventsResponse = GetFavoriteEventsResponses[keyof GetFavoriteEventsResponses];
 
-export type DeleteApiEventEventIdRegistrationData = {
+export type DeleteEventRegistrationData = {
   body?: never;
   path: {
     eventId: string;
@@ -1044,7 +1044,7 @@ export type DeleteApiEventEventIdRegistrationData = {
   url: '/api/event/{eventId}/registration';
 };
 
-export type DeleteApiEventEventIdRegistrationResponses = {
+export type DeleteEventRegistrationResponses = {
   /**
    * OK
    */
@@ -1053,9 +1053,9 @@ export type DeleteApiEventEventIdRegistrationResponses = {
   };
 };
 
-export type DeleteApiEventEventIdRegistrationResponse = DeleteApiEventEventIdRegistrationResponses[keyof DeleteApiEventEventIdRegistrationResponses];
+export type DeleteEventRegistrationResponse = DeleteEventRegistrationResponses[keyof DeleteEventRegistrationResponses];
 
-export type GetApiEventEventIdRegistrationData = {
+export type ListEventRegistrationsData = {
   body?: never;
   path: {
     eventId: string;
@@ -1067,7 +1067,7 @@ export type GetApiEventEventIdRegistrationData = {
   url: '/api/event/{eventId}/registration';
 };
 
-export type GetApiEventEventIdRegistrationResponses = {
+export type ListEventRegistrationsResponses = {
   /**
    * OK
    */
@@ -1097,9 +1097,9 @@ export type GetApiEventEventIdRegistrationResponses = {
   }>;
 };
 
-export type GetApiEventEventIdRegistrationResponse = GetApiEventEventIdRegistrationResponses[keyof GetApiEventEventIdRegistrationResponses];
+export type ListEventRegistrationsResponse = ListEventRegistrationsResponses[keyof ListEventRegistrationsResponses];
 
-export type PostApiEventEventIdRegistrationData = {
+export type CreateEventRegistrationData = {
   body?: never;
   path: {
     eventId: string;
@@ -1108,7 +1108,7 @@ export type PostApiEventEventIdRegistrationData = {
   url: '/api/event/{eventId}/registration';
 };
 
-export type PostApiEventEventIdRegistrationErrors = {
+export type CreateEventRegistrationErrors = {
   /**
    * Event not found
    */
@@ -1119,7 +1119,7 @@ export type PostApiEventEventIdRegistrationErrors = {
   409: unknown;
 };
 
-export type PostApiEventEventIdRegistrationResponses = {
+export type CreateEventRegistrationResponses = {
   /**
    * OK
    */
@@ -1131,9 +1131,9 @@ export type PostApiEventEventIdRegistrationResponses = {
   };
 };
 
-export type PostApiEventEventIdRegistrationResponse = PostApiEventEventIdRegistrationResponses[keyof PostApiEventEventIdRegistrationResponses];
+export type CreateEventRegistrationResponse = CreateEventRegistrationResponses[keyof CreateEventRegistrationResponses];
 
-export type PostApiEventEventIdPaymentData = {
+export type CreateEventPaymentData = {
   body?: {
     /**
      * URL to redirect user after payment
@@ -1151,7 +1151,7 @@ export type PostApiEventEventIdPaymentData = {
   url: '/api/event/{eventId}/payment';
 };
 
-export type PostApiEventEventIdPaymentErrors = {
+export type CreateEventPaymentErrors = {
   /**
    * Bad request - event not found or not a paid event
    */
@@ -1166,7 +1166,7 @@ export type PostApiEventEventIdPaymentErrors = {
   409: unknown;
 };
 
-export type PostApiEventEventIdPaymentResponses = {
+export type CreateEventPaymentResponses = {
   /**
    * Payment created successfully
    */
@@ -1179,16 +1179,16 @@ export type PostApiEventEventIdPaymentResponses = {
   };
 };
 
-export type PostApiEventEventIdPaymentResponse = PostApiEventEventIdPaymentResponses[keyof PostApiEventEventIdPaymentResponses];
+export type CreateEventPaymentResponse = CreateEventPaymentResponses[keyof CreateEventPaymentResponses];
 
-export type PostApiEventPaymentWebhookData = {
+export type HandlePaymentWebhookData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/event/payment/webhook';
 };
 
-export type PostApiEventPaymentWebhookErrors = {
+export type HandlePaymentWebhookErrors = {
   /**
    * Invalid webhook payload
    */
@@ -1199,14 +1199,14 @@ export type PostApiEventPaymentWebhookErrors = {
   404: unknown;
 };
 
-export type PostApiEventPaymentWebhookResponses = {
+export type HandlePaymentWebhookResponses = {
   /**
    * Webhook processed successfully
    */
   200: unknown;
 };
 
-export type GetApiEventEventIdFormsData = {
+export type ListEventFormsData = {
   body?: never;
   path: {
     eventId: string;
@@ -1215,14 +1215,14 @@ export type GetApiEventEventIdFormsData = {
   url: '/api/event/{eventId}/forms';
 };
 
-export type GetApiEventEventIdFormsErrors = {
+export type ListEventFormsErrors = {
   /**
    * Event not found
    */
   404: unknown;
 };
 
-export type GetApiEventEventIdFormsResponses = {
+export type ListEventFormsResponses = {
   /**
    * Success
    */
@@ -1238,9 +1238,9 @@ export type GetApiEventEventIdFormsResponses = {
   }>;
 };
 
-export type GetApiEventEventIdFormsResponse = GetApiEventEventIdFormsResponses[keyof GetApiEventEventIdFormsResponses];
+export type ListEventFormsResponse = ListEventFormsResponses[keyof ListEventFormsResponses];
 
-export type PostApiEventEventIdFormsData = {
+export type CreateEventFormData = {
   body?: {
     title: string;
     description?: string;
@@ -1265,7 +1265,7 @@ export type PostApiEventEventIdFormsData = {
   url: '/api/event/{eventId}/forms';
 };
 
-export type PostApiEventEventIdFormsErrors = {
+export type CreateEventFormErrors = {
   /**
    * Bad request - Form already exists for this event type
    */
@@ -1280,14 +1280,14 @@ export type PostApiEventEventIdFormsErrors = {
   404: unknown;
 };
 
-export type PostApiEventEventIdFormsResponses = {
+export type CreateEventFormResponses = {
   /**
    * Created
    */
   201: unknown;
 };
 
-export type GetApiEventEventIdFormsTypeData = {
+export type GetEventFormData = {
   body?: never;
   path: {
     eventId: string;
@@ -1297,7 +1297,7 @@ export type GetApiEventEventIdFormsTypeData = {
   url: '/api/event/{eventId}/forms/{type}';
 };
 
-export type GetApiEventEventIdFormsTypeErrors = {
+export type GetEventFormErrors = {
   /**
    * Forbidden - Evaluation forms require attendance
    */
@@ -1308,7 +1308,7 @@ export type GetApiEventEventIdFormsTypeErrors = {
   404: unknown;
 };
 
-export type GetApiEventEventIdFormsTypeResponses = {
+export type GetEventFormResponses = {
   /**
    * Success
    */
@@ -1337,16 +1337,16 @@ export type GetApiEventEventIdFormsTypeResponses = {
   };
 };
 
-export type GetApiEventEventIdFormsTypeResponse = GetApiEventEventIdFormsTypeResponses[keyof GetApiEventEventIdFormsTypeResponses];
+export type GetEventFormResponse = GetEventFormResponses[keyof GetEventFormResponses];
 
-export type GetApiFormsData = {
+export type ListFormsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/forms';
 };
 
-export type GetApiFormsResponses = {
+export type ListFormsResponses = {
   /**
    * Success
    */
@@ -1362,9 +1362,9 @@ export type GetApiFormsResponses = {
   }>;
 };
 
-export type GetApiFormsResponse = GetApiFormsResponses[keyof GetApiFormsResponses];
+export type ListFormsResponse = ListFormsResponses[keyof ListFormsResponses];
 
-export type PostApiFormsData = {
+export type CreateFormData = {
   body?: {
     title: string;
     description?: string;
@@ -1385,14 +1385,14 @@ export type PostApiFormsData = {
   url: '/api/forms';
 };
 
-export type PostApiFormsErrors = {
+export type CreateFormErrors = {
   /**
    * Forbidden - Missing forms:create permission
    */
   403: unknown;
 };
 
-export type PostApiFormsResponses = {
+export type CreateFormResponses = {
   /**
    * Created
    */
@@ -1406,9 +1406,9 @@ export type PostApiFormsResponses = {
   };
 };
 
-export type PostApiFormsResponse = PostApiFormsResponses[keyof PostApiFormsResponses];
+export type CreateFormResponse = CreateFormResponses[keyof CreateFormResponses];
 
-export type DeleteApiFormsIdData = {
+export type DeleteFormData = {
   body?: never;
   path: {
     id: string;
@@ -1417,7 +1417,7 @@ export type DeleteApiFormsIdData = {
   url: '/api/forms/{id}';
 };
 
-export type DeleteApiFormsIdErrors = {
+export type DeleteFormErrors = {
   /**
    * Forbidden
    */
@@ -1428,14 +1428,14 @@ export type DeleteApiFormsIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiFormsIdResponses = {
+export type DeleteFormResponses = {
   /**
    * Success
    */
   200: unknown;
 };
 
-export type GetApiFormsIdData = {
+export type GetFormData = {
   body?: never;
   path: {
     id: string;
@@ -1444,14 +1444,14 @@ export type GetApiFormsIdData = {
   url: '/api/forms/{id}';
 };
 
-export type GetApiFormsIdErrors = {
+export type GetFormErrors = {
   /**
    * Form not found
    */
   404: unknown;
 };
 
-export type GetApiFormsIdResponses = {
+export type GetFormResponses = {
   /**
    * Success
    */
@@ -1480,9 +1480,9 @@ export type GetApiFormsIdResponses = {
   };
 };
 
-export type GetApiFormsIdResponse = GetApiFormsIdResponses[keyof GetApiFormsIdResponses];
+export type GetFormResponse = GetFormResponses[keyof GetFormResponses];
 
-export type PatchApiFormsIdData = {
+export type UpdateFormData = {
   body?: {
     title?: string;
     description?: string;
@@ -1507,7 +1507,7 @@ export type PatchApiFormsIdData = {
   url: '/api/forms/{id}';
 };
 
-export type PatchApiFormsIdErrors = {
+export type UpdateFormErrors = {
   /**
    * Forbidden
    */
@@ -1518,14 +1518,14 @@ export type PatchApiFormsIdErrors = {
   404: unknown;
 };
 
-export type PatchApiFormsIdResponses = {
+export type UpdateFormResponses = {
   /**
    * Success
    */
   200: unknown;
 };
 
-export type GetApiFormsIdStatisticsData = {
+export type GetFormStatisticsData = {
   body?: never;
   path: {
     id: string;
@@ -1534,7 +1534,7 @@ export type GetApiFormsIdStatisticsData = {
   url: '/api/forms/{id}/statistics';
 };
 
-export type GetApiFormsIdStatisticsErrors = {
+export type GetFormStatisticsErrors = {
   /**
    * Forbidden
    */
@@ -1545,7 +1545,7 @@ export type GetApiFormsIdStatisticsErrors = {
   404: unknown;
 };
 
-export type GetApiFormsIdStatisticsResponses = {
+export type GetFormStatisticsResponses = {
   /**
    * Success
    */
@@ -1568,9 +1568,9 @@ export type GetApiFormsIdStatisticsResponses = {
   };
 };
 
-export type GetApiFormsIdStatisticsResponse = GetApiFormsIdStatisticsResponses[keyof GetApiFormsIdStatisticsResponses];
+export type GetFormStatisticsResponse = GetFormStatisticsResponses[keyof GetFormStatisticsResponses];
 
-export type GetApiFormsFormIdSubmissionsData = {
+export type ListFormSubmissionsData = {
   body?: never;
   path: {
     formId: string;
@@ -1579,7 +1579,7 @@ export type GetApiFormsFormIdSubmissionsData = {
   url: '/api/forms/{formId}/submissions';
 };
 
-export type GetApiFormsFormIdSubmissionsErrors = {
+export type ListFormSubmissionsErrors = {
   /**
    * Forbidden
    */
@@ -1590,7 +1590,7 @@ export type GetApiFormsFormIdSubmissionsErrors = {
   404: unknown;
 };
 
-export type GetApiFormsFormIdSubmissionsResponses = {
+export type ListFormSubmissionsResponses = {
   /**
    * Success
    */
@@ -1615,9 +1615,9 @@ export type GetApiFormsFormIdSubmissionsResponses = {
   }>;
 };
 
-export type GetApiFormsFormIdSubmissionsResponse = GetApiFormsFormIdSubmissionsResponses[keyof GetApiFormsFormIdSubmissionsResponses];
+export type ListFormSubmissionsResponse = ListFormSubmissionsResponses[keyof ListFormSubmissionsResponses];
 
-export type PostApiFormsFormIdSubmissionsData = {
+export type CreateFormSubmissionData = {
   body?: {
     answers: Array<{
       field: {
@@ -1636,7 +1636,7 @@ export type PostApiFormsFormIdSubmissionsData = {
   url: '/api/forms/{formId}/submissions';
 };
 
-export type PostApiFormsFormIdSubmissionsErrors = {
+export type CreateFormSubmissionErrors = {
   /**
    * Forbidden - Cannot submit to this form
    */
@@ -1651,14 +1651,14 @@ export type PostApiFormsFormIdSubmissionsErrors = {
   409: unknown;
 };
 
-export type PostApiFormsFormIdSubmissionsResponses = {
+export type CreateFormSubmissionResponses = {
   /**
    * Created
    */
   201: unknown;
 };
 
-export type GetApiFormsFormIdSubmissionsIdData = {
+export type GetFormSubmissionData = {
   body?: never;
   path: {
     formId: string;
@@ -1668,7 +1668,7 @@ export type GetApiFormsFormIdSubmissionsIdData = {
   url: '/api/forms/{formId}/submissions/{id}';
 };
 
-export type GetApiFormsFormIdSubmissionsIdErrors = {
+export type GetFormSubmissionErrors = {
   /**
    * Forbidden
    */
@@ -1679,7 +1679,7 @@ export type GetApiFormsFormIdSubmissionsIdErrors = {
   404: unknown;
 };
 
-export type GetApiFormsFormIdSubmissionsIdResponses = {
+export type GetFormSubmissionResponses = {
   /**
    * Success
    */
@@ -1704,9 +1704,9 @@ export type GetApiFormsFormIdSubmissionsIdResponses = {
   };
 };
 
-export type GetApiFormsFormIdSubmissionsIdResponse = GetApiFormsFormIdSubmissionsIdResponses[keyof GetApiFormsFormIdSubmissionsIdResponses];
+export type GetFormSubmissionResponse = GetFormSubmissionResponses[keyof GetFormSubmissionResponses];
 
-export type GetApiFormsFormIdSubmissionsDownloadData = {
+export type DownloadFormSubmissionsData = {
   body?: never;
   path: {
     formId: string;
@@ -1715,7 +1715,7 @@ export type GetApiFormsFormIdSubmissionsDownloadData = {
   url: '/api/forms/{formId}/submissions/download';
 };
 
-export type GetApiFormsFormIdSubmissionsDownloadErrors = {
+export type DownloadFormSubmissionsErrors = {
   /**
    * Forbidden
    */
@@ -1726,14 +1726,14 @@ export type GetApiFormsFormIdSubmissionsDownloadErrors = {
   404: unknown;
 };
 
-export type GetApiFormsFormIdSubmissionsDownloadResponses = {
+export type DownloadFormSubmissionsResponses = {
   /**
    * Success - Returns CSV file
    */
   200: unknown;
 };
 
-export type DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData = {
+export type DeleteFormSubmissionData = {
   body?: {
     reason: string;
   };
@@ -1745,21 +1745,21 @@ export type DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonData = {
   url: '/api/forms/{formId}/submissions/{id}/destroy_with_reason';
 };
 
-export type DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonErrors = {
+export type DeleteFormSubmissionErrors = {
   /**
    * Submission not found
    */
   404: unknown;
 };
 
-export type DeleteApiFormsFormIdSubmissionsIdDestroyWithReasonResponses = {
+export type DeleteFormSubmissionResponses = {
   /**
    * Success
    */
   200: unknown;
 };
 
-export type GetApiNotificationData = {
+export type ListNotificationsData = {
   body?: never;
   path?: never;
   query?: {
@@ -1769,14 +1769,14 @@ export type GetApiNotificationData = {
   url: '/api/notification';
 };
 
-export type GetApiNotificationErrors = {
+export type ListNotificationsErrors = {
   /**
    * Unauthorized - user not authenticated
    */
   401: unknown;
 };
 
-export type GetApiNotificationResponses = {
+export type ListNotificationsResponses = {
   /**
    * OK
    */
@@ -1816,9 +1816,9 @@ export type GetApiNotificationResponses = {
   }>;
 };
 
-export type GetApiNotificationResponse = GetApiNotificationResponses[keyof GetApiNotificationResponses];
+export type ListNotificationsResponse = ListNotificationsResponses[keyof ListNotificationsResponses];
 
-export type DeleteApiNotificationIdData = {
+export type DeleteNotificationData = {
   body?: never;
   path: {
     id: string;
@@ -1827,7 +1827,7 @@ export type DeleteApiNotificationIdData = {
   url: '/api/notification/{id}';
 };
 
-export type DeleteApiNotificationIdErrors = {
+export type DeleteNotificationErrors = {
   /**
    * Unauthorized - user not authenticated
    */
@@ -1838,7 +1838,7 @@ export type DeleteApiNotificationIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiNotificationIdResponses = {
+export type DeleteNotificationResponses = {
   /**
    * Notification deleted successfully
    */
@@ -1850,9 +1850,9 @@ export type DeleteApiNotificationIdResponses = {
   };
 };
 
-export type DeleteApiNotificationIdResponse = DeleteApiNotificationIdResponses[keyof DeleteApiNotificationIdResponses];
+export type DeleteNotificationResponse = DeleteNotificationResponses[keyof DeleteNotificationResponses];
 
-export type PatchApiNotificationIdReadData = {
+export type MarkNotificationReadData = {
   body?: {
     /**
      * Whether notification should be marked as read
@@ -1866,7 +1866,7 @@ export type PatchApiNotificationIdReadData = {
   url: '/api/notification/{id}/read';
 };
 
-export type PatchApiNotificationIdReadErrors = {
+export type MarkNotificationReadErrors = {
   /**
    * Unauthorized - user not authenticated
    */
@@ -1877,7 +1877,7 @@ export type PatchApiNotificationIdReadErrors = {
   404: unknown;
 };
 
-export type PatchApiNotificationIdReadResponses = {
+export type MarkNotificationReadResponses = {
   /**
    * Notification updated successfully
    */
@@ -1897,16 +1897,16 @@ export type PatchApiNotificationIdReadResponses = {
   };
 };
 
-export type PatchApiNotificationIdReadResponse = PatchApiNotificationIdReadResponses[keyof PatchApiNotificationIdReadResponses];
+export type MarkNotificationReadResponse = MarkNotificationReadResponses[keyof MarkNotificationReadResponses];
 
-export type GetApiGroupsData = {
+export type ListGroupsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/groups';
 };
 
-export type GetApiGroupsResponses = {
+export type ListGroupsResponses = {
   /**
    * List of groups retrieved successfully
    */
@@ -1958,9 +1958,9 @@ export type GetApiGroupsResponses = {
   }>;
 };
 
-export type GetApiGroupsResponse = GetApiGroupsResponses[keyof GetApiGroupsResponses];
+export type ListGroupsResponse = ListGroupsResponses[keyof ListGroupsResponses];
 
-export type PostApiGroupsData = {
+export type CreateGroupData = {
   body?: {
     /**
      * Unique group slug identifier
@@ -2004,7 +2004,7 @@ export type PostApiGroupsData = {
   url: '/api/groups';
 };
 
-export type PostApiGroupsErrors = {
+export type CreateGroupErrors = {
   /**
    * Bad Request - Invalid input or slug already exists
    */
@@ -2015,14 +2015,14 @@ export type PostApiGroupsErrors = {
   403: unknown;
 };
 
-export type PostApiGroupsResponses = {
+export type CreateGroupResponses = {
   /**
    * Group created successfully
    */
   201: unknown;
 };
 
-export type DeleteApiGroupsSlugData = {
+export type DeleteGroupData = {
   body?: never;
   path: {
     slug: string;
@@ -2031,7 +2031,7 @@ export type DeleteApiGroupsSlugData = {
   url: '/api/groups/{slug}';
 };
 
-export type DeleteApiGroupsSlugErrors = {
+export type DeleteGroupErrors = {
   /**
    * Forbidden - Not a group leader or missing groups:delete permission
    */
@@ -2042,16 +2042,16 @@ export type DeleteApiGroupsSlugErrors = {
   404: unknown;
 };
 
-export type DeleteApiGroupsSlugResponses = {
+export type DeleteGroupResponses = {
   /**
    * Group successfully deleted
    */
   204: void;
 };
 
-export type DeleteApiGroupsSlugResponse = DeleteApiGroupsSlugResponses[keyof DeleteApiGroupsSlugResponses];
+export type DeleteGroupResponse = DeleteGroupResponses[keyof DeleteGroupResponses];
 
-export type GetApiGroupsSlugData = {
+export type GetGroupData = {
   body?: never;
   path: {
     slug: string;
@@ -2060,14 +2060,14 @@ export type GetApiGroupsSlugData = {
   url: '/api/groups/{slug}';
 };
 
-export type GetApiGroupsSlugErrors = {
+export type GetGroupErrors = {
   /**
    * Not Found - Group with the specified slug does not exist
    */
   404: unknown;
 };
 
-export type GetApiGroupsSlugResponses = {
+export type GetGroupResponses = {
   /**
    * Group details retrieved successfully
    */
@@ -2119,9 +2119,9 @@ export type GetApiGroupsSlugResponses = {
   };
 };
 
-export type GetApiGroupsSlugResponse = GetApiGroupsSlugResponses[keyof GetApiGroupsSlugResponses];
+export type GetGroupResponse = GetGroupResponses[keyof GetGroupResponses];
 
-export type PatchApiGroupsSlugData = {
+export type UpdateGroupData = {
   body?: {
     /**
      * Group image URL
@@ -2163,7 +2163,7 @@ export type PatchApiGroupsSlugData = {
   url: '/api/groups/{slug}';
 };
 
-export type PatchApiGroupsSlugErrors = {
+export type UpdateGroupErrors = {
   /**
    * Bad Request - Invalid input
    */
@@ -2178,14 +2178,14 @@ export type PatchApiGroupsSlugErrors = {
   404: unknown;
 };
 
-export type PatchApiGroupsSlugResponses = {
+export type UpdateGroupResponses = {
   /**
    * Group updated successfully
    */
   200: unknown;
 };
 
-export type GetApiGroupsGroupSlugFinesData = {
+export type ListFinesData = {
   body?: never;
   path: {
     groupSlug: string;
@@ -2194,7 +2194,7 @@ export type GetApiGroupsGroupSlugFinesData = {
   url: '/api/groups/{groupSlug}/fines';
 };
 
-export type GetApiGroupsGroupSlugFinesErrors = {
+export type ListFinesErrors = {
   /**
    * Forbidden - Not authorized to view fines for this group
    */
@@ -2205,7 +2205,7 @@ export type GetApiGroupsGroupSlugFinesErrors = {
   404: unknown;
 };
 
-export type GetApiGroupsGroupSlugFinesResponses = {
+export type ListFinesResponses = {
   /**
    * List of fines retrieved successfully
    */
@@ -2265,9 +2265,9 @@ export type GetApiGroupsGroupSlugFinesResponses = {
   }>;
 };
 
-export type GetApiGroupsGroupSlugFinesResponse = GetApiGroupsGroupSlugFinesResponses[keyof GetApiGroupsGroupSlugFinesResponses];
+export type ListFinesResponse = ListFinesResponses[keyof ListFinesResponses];
 
-export type PostApiGroupsGroupSlugFinesData = {
+export type CreateFineData = {
   body?: {
     /**
      * User ID who receives the fine
@@ -2297,7 +2297,7 @@ export type PostApiGroupsGroupSlugFinesData = {
   url: '/api/groups/{groupSlug}/fines';
 };
 
-export type PostApiGroupsGroupSlugFinesErrors = {
+export type CreateFineErrors = {
   /**
    * Bad Request - Invalid input or fines not activated for group
    */
@@ -2312,14 +2312,14 @@ export type PostApiGroupsGroupSlugFinesErrors = {
   404: unknown;
 };
 
-export type PostApiGroupsGroupSlugFinesResponses = {
+export type CreateFineResponses = {
   /**
    * Fine created successfully
    */
   201: unknown;
 };
 
-export type DeleteApiGroupsGroupSlugFinesFineIdData = {
+export type DeleteFineData = {
   body?: never;
   path: {
     groupSlug: string;
@@ -2329,7 +2329,7 @@ export type DeleteApiGroupsGroupSlugFinesFineIdData = {
   url: '/api/groups/{groupSlug}/fines/{fineId}';
 };
 
-export type DeleteApiGroupsGroupSlugFinesFineIdErrors = {
+export type DeleteFineErrors = {
   /**
    * Forbidden - Not authorized to delete this fine
    */
@@ -2340,16 +2340,16 @@ export type DeleteApiGroupsGroupSlugFinesFineIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiGroupsGroupSlugFinesFineIdResponses = {
+export type DeleteFineResponses = {
   /**
    * Fine successfully deleted
    */
   204: void;
 };
 
-export type DeleteApiGroupsGroupSlugFinesFineIdResponse = DeleteApiGroupsGroupSlugFinesFineIdResponses[keyof DeleteApiGroupsGroupSlugFinesFineIdResponses];
+export type DeleteFineResponse = DeleteFineResponses[keyof DeleteFineResponses];
 
-export type GetApiGroupsGroupSlugFinesFineIdData = {
+export type GetFineData = {
   body?: never;
   path: {
     groupSlug: string;
@@ -2359,7 +2359,7 @@ export type GetApiGroupsGroupSlugFinesFineIdData = {
   url: '/api/groups/{groupSlug}/fines/{fineId}';
 };
 
-export type GetApiGroupsGroupSlugFinesFineIdErrors = {
+export type GetFineErrors = {
   /**
    * Forbidden - Not authorized to view this fine
    */
@@ -2370,7 +2370,7 @@ export type GetApiGroupsGroupSlugFinesFineIdErrors = {
   404: unknown;
 };
 
-export type GetApiGroupsGroupSlugFinesFineIdResponses = {
+export type GetFineResponses = {
   /**
    * Fine details retrieved successfully
    */
@@ -2430,9 +2430,9 @@ export type GetApiGroupsGroupSlugFinesFineIdResponses = {
   };
 };
 
-export type GetApiGroupsGroupSlugFinesFineIdResponse = GetApiGroupsGroupSlugFinesFineIdResponses[keyof GetApiGroupsGroupSlugFinesFineIdResponses];
+export type GetFineResponse = GetFineResponses[keyof GetFineResponses];
 
-export type PatchApiGroupsGroupSlugFinesFineIdData = {
+export type UpdateFineData = {
   body?: {
     /**
      * User's defense text
@@ -2455,7 +2455,7 @@ export type PatchApiGroupsGroupSlugFinesFineIdData = {
   url: '/api/groups/{groupSlug}/fines/{fineId}';
 };
 
-export type PatchApiGroupsGroupSlugFinesFineIdErrors = {
+export type UpdateFineErrors = {
   /**
    * Bad Request - Invalid status transition
    */
@@ -2470,14 +2470,14 @@ export type PatchApiGroupsGroupSlugFinesFineIdErrors = {
   404: unknown;
 };
 
-export type PatchApiGroupsGroupSlugFinesFineIdResponses = {
+export type UpdateFineResponses = {
   /**
    * Fine updated successfully
    */
   200: unknown;
 };
 
-export type GetApiGroupsGroupSlugMembersData = {
+export type ListGroupMembersData = {
   body?: never;
   path: {
     groupSlug: string;
@@ -2486,14 +2486,14 @@ export type GetApiGroupsGroupSlugMembersData = {
   url: '/api/groups/{groupSlug}/members';
 };
 
-export type GetApiGroupsGroupSlugMembersErrors = {
+export type ListGroupMembersErrors = {
   /**
    * Not Found - Group not found
    */
   404: unknown;
 };
 
-export type GetApiGroupsGroupSlugMembersResponses = {
+export type ListGroupMembersResponses = {
   /**
    * List of members retrieved successfully
    */
@@ -2521,9 +2521,9 @@ export type GetApiGroupsGroupSlugMembersResponses = {
   }>;
 };
 
-export type GetApiGroupsGroupSlugMembersResponse = GetApiGroupsGroupSlugMembersResponses[keyof GetApiGroupsGroupSlugMembersResponses];
+export type ListGroupMembersResponse = ListGroupMembersResponses[keyof ListGroupMembersResponses];
 
-export type PostApiGroupsGroupSlugMembersData = {
+export type AddGroupMemberData = {
   body?: {
     /**
      * User ID to add as member
@@ -2541,7 +2541,7 @@ export type PostApiGroupsGroupSlugMembersData = {
   url: '/api/groups/{groupSlug}/members';
 };
 
-export type PostApiGroupsGroupSlugMembersErrors = {
+export type AddGroupMemberErrors = {
   /**
    * Bad Request - User already a member or user not found
    */
@@ -2556,14 +2556,14 @@ export type PostApiGroupsGroupSlugMembersErrors = {
   404: unknown;
 };
 
-export type PostApiGroupsGroupSlugMembersResponses = {
+export type AddGroupMemberResponses = {
   /**
    * Member added successfully
    */
   201: unknown;
 };
 
-export type DeleteApiGroupsGroupSlugMembersUserIdData = {
+export type RemoveGroupMemberData = {
   body?: never;
   path: {
     groupSlug: string;
@@ -2573,7 +2573,7 @@ export type DeleteApiGroupsGroupSlugMembersUserIdData = {
   url: '/api/groups/{groupSlug}/members/{userId}';
 };
 
-export type DeleteApiGroupsGroupSlugMembersUserIdErrors = {
+export type RemoveGroupMemberErrors = {
   /**
    * Forbidden - Missing groups:manage permission
    */
@@ -2584,17 +2584,16 @@ export type DeleteApiGroupsGroupSlugMembersUserIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiGroupsGroupSlugMembersUserIdResponses = {
+export type RemoveGroupMemberResponses = {
   /**
    * Member removed successfully
    */
   204: void;
 };
 
-export type DeleteApiGroupsGroupSlugMembersUserIdResponse =
-  DeleteApiGroupsGroupSlugMembersUserIdResponses[keyof DeleteApiGroupsGroupSlugMembersUserIdResponses];
+export type RemoveGroupMemberResponse = RemoveGroupMemberResponses[keyof RemoveGroupMemberResponses];
 
-export type PatchApiGroupsGroupSlugMembersUserIdData = {
+export type UpdateGroupMemberRoleData = {
   body?: {
     /**
      * Membership role
@@ -2609,7 +2608,7 @@ export type PatchApiGroupsGroupSlugMembersUserIdData = {
   url: '/api/groups/{groupSlug}/members/{userId}';
 };
 
-export type PatchApiGroupsGroupSlugMembersUserIdErrors = {
+export type UpdateGroupMemberRoleErrors = {
   /**
    * Forbidden - Missing groups:manage permission
    */
@@ -2620,14 +2619,14 @@ export type PatchApiGroupsGroupSlugMembersUserIdErrors = {
   404: unknown;
 };
 
-export type PatchApiGroupsGroupSlugMembersUserIdResponses = {
+export type UpdateGroupMemberRoleResponses = {
   /**
    * Member role updated successfully
    */
   200: unknown;
 };
 
-export type GetApiGroupsSlugFormsData = {
+export type ListGroupFormsData = {
   body?: never;
   path: {
     slug: string;
@@ -2636,14 +2635,14 @@ export type GetApiGroupsSlugFormsData = {
   url: '/api/groups/{slug}/forms';
 };
 
-export type GetApiGroupsSlugFormsErrors = {
+export type ListGroupFormsErrors = {
   /**
    * Group not found
    */
   404: unknown;
 };
 
-export type GetApiGroupsSlugFormsResponses = {
+export type ListGroupFormsResponses = {
   /**
    * Success
    */
@@ -2663,9 +2662,9 @@ export type GetApiGroupsSlugFormsResponses = {
   }>;
 };
 
-export type GetApiGroupsSlugFormsResponse = GetApiGroupsSlugFormsResponses[keyof GetApiGroupsSlugFormsResponses];
+export type ListGroupFormsResponse = ListGroupFormsResponses[keyof ListGroupFormsResponses];
 
-export type PostApiGroupsSlugFormsData = {
+export type CreateGroupFormData = {
   body?: {
     title: string;
     description?: string;
@@ -2693,7 +2692,7 @@ export type PostApiGroupsSlugFormsData = {
   url: '/api/groups/{slug}/forms';
 };
 
-export type PostApiGroupsSlugFormsErrors = {
+export type CreateGroupFormErrors = {
   /**
    * Forbidden
    */
@@ -2704,28 +2703,28 @@ export type PostApiGroupsSlugFormsErrors = {
   404: unknown;
 };
 
-export type PostApiGroupsSlugFormsResponses = {
+export type CreateGroupFormResponses = {
   /**
    * Created
    */
   201: unknown;
 };
 
-export type GetApiNewsData = {
+export type ListNewsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/news';
 };
 
-export type GetApiNewsResponses = {
+export type ListNewsResponses = {
   /**
    * List of news articles
    */
   200: unknown;
 };
 
-export type PostApiNewsData = {
+export type CreateNewsData = {
   body?: {
     /**
      * News article title
@@ -2757,21 +2756,21 @@ export type PostApiNewsData = {
   url: '/api/news';
 };
 
-export type PostApiNewsErrors = {
+export type CreateNewsErrors = {
   /**
    * Forbidden - Missing news:create permission
    */
   403: unknown;
 };
 
-export type PostApiNewsResponses = {
+export type CreateNewsResponses = {
   /**
    * News article created successfully
    */
   201: unknown;
 };
 
-export type DeleteApiNewsIdData = {
+export type DeleteNewsData = {
   body?: never;
   path: {
     id: string;
@@ -2780,7 +2779,7 @@ export type DeleteApiNewsIdData = {
   url: '/api/news/{id}';
 };
 
-export type DeleteApiNewsIdErrors = {
+export type DeleteNewsErrors = {
   /**
    * Forbidden - Insufficient permissions
    */
@@ -2791,14 +2790,14 @@ export type DeleteApiNewsIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiNewsIdResponses = {
+export type DeleteNewsResponses = {
   /**
    * News article deleted successfully
    */
   200: unknown;
 };
 
-export type GetApiNewsIdData = {
+export type GetNewsData = {
   body?: never;
   path: {
     id: string;
@@ -2807,21 +2806,21 @@ export type GetApiNewsIdData = {
   url: '/api/news/{id}';
 };
 
-export type GetApiNewsIdErrors = {
+export type GetNewsErrors = {
   /**
    * News article not found
    */
   404: unknown;
 };
 
-export type GetApiNewsIdResponses = {
+export type GetNewsResponses = {
   /**
    * News article details
    */
   200: unknown;
 };
 
-export type PatchApiNewsIdData = {
+export type UpdateNewsData = {
   body?: {
     title?: string;
     header?: string;
@@ -2837,7 +2836,7 @@ export type PatchApiNewsIdData = {
   url: '/api/news/{id}';
 };
 
-export type PatchApiNewsIdErrors = {
+export type UpdateNewsErrors = {
   /**
    * Forbidden - Insufficient permissions
    */
@@ -2848,14 +2847,14 @@ export type PatchApiNewsIdErrors = {
   404: unknown;
 };
 
-export type PatchApiNewsIdResponses = {
+export type UpdateNewsResponses = {
   /**
    * News article updated successfully
    */
   200: unknown;
 };
 
-export type DeleteApiNewsIdReactionsData = {
+export type DeleteNewsReactionData = {
   body?: never;
   path: {
     id: string;
@@ -2864,21 +2863,21 @@ export type DeleteApiNewsIdReactionsData = {
   url: '/api/news/{id}/reactions';
 };
 
-export type DeleteApiNewsIdReactionsErrors = {
+export type DeleteNewsReactionErrors = {
   /**
    * News article or reaction not found
    */
   404: unknown;
 };
 
-export type DeleteApiNewsIdReactionsResponses = {
+export type DeleteNewsReactionResponses = {
   /**
    * Reaction removed successfully
    */
   200: unknown;
 };
 
-export type PostApiNewsIdReactionsData = {
+export type CreateNewsReactionData = {
   body?: {
     /**
      * Emoji reaction (e.g., 👍, ❤️, 😂)
@@ -2892,7 +2891,7 @@ export type PostApiNewsIdReactionsData = {
   url: '/api/news/{id}/reactions';
 };
 
-export type PostApiNewsIdReactionsErrors = {
+export type CreateNewsReactionErrors = {
   /**
    * Forbidden - Reactions not allowed on this news article
    */
@@ -2903,28 +2902,28 @@ export type PostApiNewsIdReactionsErrors = {
   404: unknown;
 };
 
-export type PostApiNewsIdReactionsResponses = {
+export type CreateNewsReactionResponses = {
   /**
    * Reaction added successfully
    */
   201: unknown;
 };
 
-export type GetApiJobsData = {
+export type ListJobsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/jobs';
 };
 
-export type GetApiJobsResponses = {
+export type ListJobsResponses = {
   /**
    * List of job postings
    */
   200: unknown;
 };
 
-export type PostApiJobsData = {
+export type CreateJobData = {
   body?: {
     /**
      * Job posting title
@@ -2988,7 +2987,7 @@ export type PostApiJobsData = {
   url: '/api/jobs';
 };
 
-export type PostApiJobsErrors = {
+export type CreateJobErrors = {
   /**
    * Bad Request - Invalid input
    */
@@ -2999,14 +2998,14 @@ export type PostApiJobsErrors = {
   403: unknown;
 };
 
-export type PostApiJobsResponses = {
+export type CreateJobResponses = {
   /**
    * Job posting created successfully
    */
   201: unknown;
 };
 
-export type DeleteApiJobsIdData = {
+export type DeleteJobData = {
   body?: never;
   path: {
     id: string;
@@ -3015,7 +3014,7 @@ export type DeleteApiJobsIdData = {
   url: '/api/jobs/{id}';
 };
 
-export type DeleteApiJobsIdErrors = {
+export type DeleteJobErrors = {
   /**
    * Forbidden - Insufficient permissions
    */
@@ -3026,14 +3025,14 @@ export type DeleteApiJobsIdErrors = {
   404: unknown;
 };
 
-export type DeleteApiJobsIdResponses = {
+export type DeleteJobResponses = {
   /**
    * Job posting deleted successfully
    */
   200: unknown;
 };
 
-export type GetApiJobsIdData = {
+export type GetJobData = {
   body?: never;
   path: {
     id: string;
@@ -3042,21 +3041,21 @@ export type GetApiJobsIdData = {
   url: '/api/jobs/{id}';
 };
 
-export type GetApiJobsIdErrors = {
+export type GetJobErrors = {
   /**
    * Job posting not found
    */
   404: unknown;
 };
 
-export type GetApiJobsIdResponses = {
+export type GetJobResponses = {
   /**
    * Job posting details
    */
   200: unknown;
 };
 
-export type PatchApiJobsIdData = {
+export type UpdateJobData = {
   body?: {
     title?: string;
     ingress?: string;
@@ -3080,7 +3079,7 @@ export type PatchApiJobsIdData = {
   url: '/api/jobs/{id}';
 };
 
-export type PatchApiJobsIdErrors = {
+export type UpdateJobErrors = {
   /**
    * Forbidden - Insufficient permissions
    */
@@ -3091,28 +3090,28 @@ export type PatchApiJobsIdErrors = {
   404: unknown;
 };
 
-export type PatchApiJobsIdResponses = {
+export type UpdateJobResponses = {
   /**
    * Job posting updated successfully
    */
   200: unknown;
 };
 
-export type GetApiUserMeSettingsData = {
+export type GetUserSettingsData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/user/me/settings';
 };
 
-export type GetApiUserMeSettingsErrors = {
+export type GetUserSettingsErrors = {
   /**
    * Not Found - User settings do not exist (user needs to complete onboarding)
    */
   404: unknown;
 };
 
-export type GetApiUserMeSettingsResponses = {
+export type GetUserSettingsResponses = {
   /**
    * User settings retrieved successfully
    */
@@ -3133,9 +3132,9 @@ export type GetApiUserMeSettingsResponses = {
   };
 };
 
-export type GetApiUserMeSettingsResponse = GetApiUserMeSettingsResponses[keyof GetApiUserMeSettingsResponses];
+export type GetUserSettingsResponse = GetUserSettingsResponses[keyof GetUserSettingsResponses];
 
-export type PatchApiUserMeSettingsData = {
+export type UpdateUserSettingsData = {
   body?: {
     gender?: 'male' | 'female' | 'other';
     allowsPhotosByDefault?: boolean;
@@ -3152,7 +3151,7 @@ export type PatchApiUserMeSettingsData = {
   url: '/api/user/me/settings';
 };
 
-export type PatchApiUserMeSettingsErrors = {
+export type UpdateUserSettingsErrors = {
   /**
    * Bad Request - Invalid input
    */
@@ -3163,7 +3162,7 @@ export type PatchApiUserMeSettingsErrors = {
   404: unknown;
 };
 
-export type PatchApiUserMeSettingsResponses = {
+export type UpdateUserSettingsResponses = {
   /**
    * Settings updated successfully
    */
@@ -3180,9 +3179,9 @@ export type PatchApiUserMeSettingsResponses = {
   };
 };
 
-export type PatchApiUserMeSettingsResponse = PatchApiUserMeSettingsResponses[keyof PatchApiUserMeSettingsResponses];
+export type UpdateUserSettingsResponse = UpdateUserSettingsResponses[keyof UpdateUserSettingsResponses];
 
-export type PostApiUserMeSettingsData = {
+export type OnboardUserData = {
   body?: {
     gender: 'male' | 'female' | 'other';
     allowsPhotosByDefault: boolean;
@@ -3199,14 +3198,14 @@ export type PostApiUserMeSettingsData = {
   url: '/api/user/me/settings';
 };
 
-export type PostApiUserMeSettingsErrors = {
+export type OnboardUserErrors = {
   /**
    * Bad Request - User has already completed onboarding
    */
   400: unknown;
 };
 
-export type PostApiUserMeSettingsResponses = {
+export type OnboardUserResponses = {
   /**
    * User onboarded successfully
    */
@@ -3223,16 +3222,16 @@ export type PostApiUserMeSettingsResponses = {
   };
 };
 
-export type PostApiUserMeSettingsResponse = PostApiUserMeSettingsResponses[keyof PostApiUserMeSettingsResponses];
+export type OnboardUserResponse = OnboardUserResponses[keyof OnboardUserResponses];
 
-export type GetApiUserAllergyData = {
+export type ListAllergiesData = {
   body?: never;
   path?: never;
   query?: never;
   url: '/api/user/allergy';
 };
 
-export type GetApiUserAllergyResponses = {
+export type ListAllergiesResponses = {
   /**
    * List of allergies retrieved successfully
    */
@@ -3252,4 +3251,4 @@ export type GetApiUserAllergyResponses = {
   }>;
 };
 
-export type GetApiUserAllergyResponse = GetApiUserAllergyResponses[keyof GetApiUserAllergyResponses];
+export type ListAllergiesResponse = ListAllergiesResponses[keyof ListAllergiesResponses];
