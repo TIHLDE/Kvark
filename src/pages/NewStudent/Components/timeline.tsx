@@ -24,10 +24,10 @@ const Timeline: React.FC = () => {
   // Manually set text for each stage here
   const stageInfoTexts: Record<number, string> = {
     1: 'To be continued',
-    2: 'To be continued',
-    3: 'To be continued',
+    2: 'Gå inn på Studentweb og følg instruksjonene for å melde deg på eksamen og betale semesteravgiften. Husk å gjøre dette innen fristen for å unngå problemer senere.',
+    3: 'Trykk på linken for å se en oversikt over hvem du skal dele de neste semestrene med! Timeplanen din vil være tilgjengelig på ""',
     4: 'To be continued',
-    5: 'To be continued',
+    5: 'Info om hvor du skal møte opp for å få mer inforrmasjon om studiestart får du i linken over.',
   };
 
   const current = stages.find((stage) => stage.id === currentStage);
@@ -77,7 +77,11 @@ const Timeline: React.FC = () => {
           {selectedStage !== 1 && <InfoMenu title={stages.find((s) => s.id === selectedStage)?.title} stageId={selectedStage} stageTexts={stageInfoTexts} />}
           {selectedStage === 1 && (
             <div className='mt-4 space-y-3'>
-              <GCard tittel='Fadderuke påmelding' beskrivelse='Fullfør betalingen for å sikre plass i fadderuka.' kroner={500} />
+              <GCard
+                tittel='Fadderuke påmelding'
+                beskrivelse='Fullfør betalingen på vipps til 519679 for å sikre plass i fadderuka. Betalingen er på 500kr.'
+                kroner={500}
+              />
               <div className='flex justify-end'>
                 <GKnapp tekst='Betal 500 kr' onClick={() => console.log('Betaling initiert')} />
               </div>
