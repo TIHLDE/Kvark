@@ -3,7 +3,7 @@ import { defineConfig } from '@hey-api/openapi-ts';
 export default defineConfig({
   input: 'https://photon.tihlde.org/openapi',
   output: {
-    path: 'src/client',
+    path: 'src/gen-client',
     format: 'prettier',
     lint: 'eslint',
   },

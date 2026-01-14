@@ -14,7 +14,7 @@
     "pre-commit": "lint-staged",
     "format": "prettier --write src",
     "prepare": "husky",
-    "photon-api": "openapi-ts"
+    "gen-client": "openapi-ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -125,6 +125,7 @@
     "*.{ts?(x),js?(x)}": [
       "eslint --fix",
       "prettier --write"
-    ]
+    ],
+    "src/gen-client/**/*": []
   }
 }

@@ -85,8 +85,6 @@ export const getParseAs = (contentType: string | null): Exclude<Config['parseAs'
   if (cleanContent.startsWith('text/')) {
     return 'text';
   }
-
-  return;
 };
 
 const checkForExistence = (
