@@ -92,6 +92,7 @@ export const routes = rootRoute('./routes/__root.tsx', [
 
     route('/logg-inn', './routes/auth/login.tsx'),
     route('/glemt-passord', './routes/auth/forgot-password.tsx'),
+    route('/tilbakestill-passord', './routes/auth/reset-password.tsx'),
 
     route('ny-bruker', [
       index('./routes/auth/new-account.tsx'),

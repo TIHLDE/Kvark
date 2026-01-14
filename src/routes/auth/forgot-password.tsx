@@ -12,6 +12,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { photonAuthClient } from '../../api/photon';
+
 export const Route = createFileRoute('/_MainLayout/glemt-passord')({
   component: ForgotPassword,
 });
@@ -34,15 +36,15 @@ function ForgotPassword() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    forgotPassword.mutate(values.email, {
-      onSuccess: (data) => {
-        toast.success(data.detail);
-        event('forgot-password', 'auth', 'Forgot password');
-      },
-      onError: (e) => {
-        form.setError('email', { message: e.detail });
-      },
-    });
+    const response = await photonAuthClient.requestPasswordReset({ email: values.email, redirectTo: window.location.origin + URLS.resetPassword });
+
+    if (response.error) {
+      form.setError('email', { message: response.error.message });
+      return;
+    }
+
+    toast.success('E-post med instruksjoner for tilbakestilling av passord er sendt hvis adressen er registrert.');
+    event('forgot-password', 'auth', 'Forgot password');
   };
 
   return (

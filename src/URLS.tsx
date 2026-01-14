@@ -33,6 +33,7 @@ const URLS = {
   events: '/arrangementer',
   eventRegister: 'registrering',
   forgotPassword: '/glemt-passord',
+  resetPassword: '/tilbakestill-passord',
   form: '/sporreskjema',
   groups: {
     index: '/grupper',

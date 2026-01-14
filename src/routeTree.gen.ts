@@ -23,6 +23,7 @@ import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/Interes
 import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
+import { Route as DotRoutesAuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
 import { Route as DotRoutesAuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as DotPagesBadgesIndexRouteImport } from './pages/Badges/index'
@@ -134,6 +135,12 @@ const DotPagesLandingIndexRoute = DotPagesLandingIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
+const DotRoutesAuthResetPasswordRoute =
+  DotRoutesAuthResetPasswordRouteImport.update({
+    id: '/tilbakestill-passord',
+    path: '/tilbakestill-passord',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
 const DotRoutesAuthLoginRoute = DotRoutesAuthLoginRouteImport.update({
   id: '/logg-inn',
   path: '/logg-inn',
@@ -374,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
+  '/tilbakestill-passord': typeof DotRoutesAuthResetPasswordRoute
   '/': typeof DotPagesLandingIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -429,6 +437,7 @@ export interface FileRoutesByTo {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
+  '/tilbakestill-passord': typeof DotRoutesAuthResetPasswordRoute
   '/': typeof DotPagesLandingIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -483,6 +492,7 @@ export interface FileRoutesById {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
   '/_MainLayout/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
+  '/_MainLayout/tilbakestill-passord': typeof DotRoutesAuthResetPasswordRoute
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
@@ -541,6 +551,7 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/glemt-passord'
     | '/logg-inn'
+    | '/tilbakestill-passord'
     | '/'
     | '/bedrifter'
     | '/endringslogg'
@@ -596,6 +607,7 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/glemt-passord'
     | '/logg-inn'
+    | '/tilbakestill-passord'
     | '/'
     | '/bedrifter'
     | '/endringslogg'
@@ -649,6 +661,7 @@ export interface FileRouteTypes {
     | '/interesse'
     | '/_MainLayout/glemt-passord'
     | '/_MainLayout/logg-inn'
+    | '/_MainLayout/tilbakestill-passord'
     | '/_MainLayout/'
     | '/_MainLayout/bedrifter'
     | '/_MainLayout/endringslogg'
@@ -798,6 +811,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof DotPagesLandingIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/tilbakestill-passord': {
+      id: '/_MainLayout/tilbakestill-passord'
+      path: '/tilbakestill-passord'
+      fullPath: '/tilbakestill-passord'
+      preLoaderRoute: typeof DotRoutesAuthResetPasswordRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/logg-inn': {
@@ -1173,6 +1193,7 @@ const MainLayoutBadgesRouteWithChildren =
 interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthForgotPasswordRoute: typeof DotRoutesAuthForgotPasswordRoute
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
+  DotRoutesAuthResetPasswordRoute: typeof DotRoutesAuthResetPasswordRoute
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
   DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
@@ -1216,6 +1237,7 @@ interface DotPagesMainLayoutRouteChildren {
 const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthForgotPasswordRoute: DotRoutesAuthForgotPasswordRoute,
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
+  DotRoutesAuthResetPasswordRoute: DotRoutesAuthResetPasswordRoute,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
   DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
