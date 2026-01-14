@@ -65,13 +65,13 @@ const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
       title='Legg til medlem'
       trigger={OpenButton}>
       <Form {...form}>
-        <form className='px-2 space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+        <div className='px-2 space-y-4'>
           <SingleUserSearch form={form} label='Søk etter bruker' name='user' />
 
-          <Button className='w-full' disabled={createMembership.isPending}>
+          <Button onClick={form.handleSubmit(onSubmit)} className='w-full' disabled={createMembership.isPending}>
             {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}
           </Button>
-        </form>
+        </div>
       </Form>
     </ResponsiveDialog>
   );
