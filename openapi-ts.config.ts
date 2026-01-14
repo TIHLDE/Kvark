@@ -8,10 +8,10 @@ export default defineConfig({
     lint: 'eslint',
   },
   plugins: [
-    '@tanstack/react-query',
     {
       dates: true,
       name: '@hey-api/transformers',
     },
+    '@hey-api/sdk',
   ],
 });
