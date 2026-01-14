@@ -46,6 +46,8 @@
     "@tanstack/react-start": "^1.140.5",
     "@tanstack/virtual-file-routes": "^1.140.0",
     "@uploadthing/react": "^7.3.3",
+    "@vercel/analytics": "1.5.0",
+    "better-auth": "^1.3.26",
     "browser-image-compression": "^2.0.2",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",

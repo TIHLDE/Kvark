@@ -27,7 +27,7 @@ export const TOKEN_HEADER_NAME = 'X-CSRF-Token';
 /**
  * Name of cookie which is used to store the authentication-token from backend
  */
-export const ACCESS_TOKEN = 'TIHLDE-AccessToken';
+export const ACCESS_TOKEN = 'LEPTON_LEGACY_TOKEN';
 /**
  * Name of cookie which is used to store whether the user has accepted our analytics popup
  */
