@@ -15,7 +15,7 @@
     "format": "prettier --write src",
     "prepare": "husky",
     "knip": "knip",
-    "photon-api": "openapi-ts"
+    "gen-client": "openapi-ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
@@ -109,6 +109,7 @@
     "*.{ts?(x),js?(x)}": [
       "eslint --fix",
       "prettier --write"
-    ]
+    ],
+    "src/gen-client/**/*": []
   }
 }

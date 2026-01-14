@@ -25,5 +25,6 @@
     },
     "allowJs": false
   },
-  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "vite.config.ts"],
+  "exclude": ["src/gen-client"]
 }
