@@ -12,6 +12,7 @@
 
 ## Neste versjon
 
+- ⚡ **Se Profil-knapp** Synliggjort knappen for autoriserte brukere, ikke bare admin
 - 🦟 **Botknapp instant** Gjort funksjonaliteten til markeringen på godkjent knapp på bøter instant
 - 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
 - ⚡ **Andre Grupper** Fjernet "andre grupper" fra gruppelisten.
