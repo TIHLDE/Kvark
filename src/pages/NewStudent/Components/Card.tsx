@@ -4,7 +4,7 @@ interface CardProps {
   kroner: number;
 }
 
-export const GCard = ({ tittel, beskrivelse, kroner }: CardProps) => {
+export const Card = ({ tittel, beskrivelse, kroner }: CardProps) => {
   return (
     <div className='rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow p-6 md:p-8'>
       <div className='flex items-start justify-between gap-4'>
@@ -18,4 +18,4 @@ export const GCard = ({ tittel, beskrivelse, kroner }: CardProps) => {
   );
 };
 
-export default GCard;
+export default Card;

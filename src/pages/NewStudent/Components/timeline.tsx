@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import GCard from './Card';
+import Card from './Card';
 import InfoMenu from './infoMenu';
-import { gKnapp as GKnapp } from './Knapp';
+import { Button } from './Knapp';
 import StepIndicator from './StepIndicator';
 
 const Timeline: React.FC = () => {
@@ -10,23 +10,24 @@ const Timeline: React.FC = () => {
   const [selectedStage, setSelectedStage] = useState<number | null>(1);
 
   const stages = [
-    { id: 1, title: 'Påmelding og betaling', description: 'Alt du trenger er under!' },
+    { id: 1, title: 'Påmelding og betaling til fadderuka', description: 'Alt du trenger er under!' },
+    { id: 2, title: 'Lag bruker på nettsiden for fadderuka!', description: ' fadderuka.tihlde.org' },
     {
-      id: 2,
+      id: 3,
       title: 'Eksamen og semesteravgift',
       description: 'Meld deg på eksamen og betal semesteravgift! https://fsweb.no/studentweb/login.jsf?inst=FSNTNU',
     },
-    { id: 3, title: 'Timeplan og klasseoversikt', description: 'Link kommer etterhvert' },
-    { id: 4, title: 'Fadderuka og bli kjent', description: 'Link kommer etterhvert' },
+
+    { id: 4, title: 'Timeplan og klasseoversikt', description: 'Link kommer etterhvert' },
     { id: 5, title: 'Første skoledag', description: 'Link kommer etterhvert' },
   ];
 
   // Manually set text for each stage here
   const stageInfoTexts: Record<number, string> = {
     1: 'To be continued',
-    2: 'Gå inn på Studentweb og følg instruksjonene for å melde deg på eksamen og betale semesteravgiften. Husk å gjøre dette innen fristen for å unngå problemer senere.',
-    3: 'Trykk på linken for å se en oversikt over hvem du skal dele de neste semestrene med! Timeplanen din vil være tilgjengelig på ""',
-    4: 'To be continued',
+    2: 'Gå inn på Tihlde sin egen nettside for fadderuka, lag en bruker med ditt telefonnummer og få tilgangmye nyttig informasjon!',
+    3: 'Gå inn på Studentweb og følg instruksjonene for å melde deg på eksamen og betale semesteravgiften. Husk å gjøre dette innen fristen for å unngå problemer senere.',
+    4: 'Trykk på linken for å se en oversikt over hvem du skal dele de neste semestrene med! Timeplanen din vil være tilgjengelig på ""',
     5: 'Info om hvor du skal møte opp for å få mer inforrmasjon om studiestart får du i linken over.',
   };
 
@@ -40,10 +41,10 @@ const Timeline: React.FC = () => {
     <div className='w-full flex flex-col items-center space-y-8'>
       <StepIndicator stages={stages} currentStage={currentStage} onSelectStage={handleStageClick} />
 
-      {selectedStage !== 1 && (
+      {selectedStage !== null && (
         <div className='text-center'>
           <h3 className='text-xl font-semibold text-slate-900 dark:text-slate-100'>{current?.title}</h3>
-          {currentStage === 2 ? (
+          {currentStage === 3 ? (
             <a
               href='https://fsweb.no/studentweb/login.jsf?inst=FSNTNU'
               target='_blank'
@@ -53,6 +54,24 @@ const Timeline: React.FC = () => {
             </a>
           ) : (
             <p className='text-slate-600 dark:text-slate-300 mt-2'>{current?.description}</p>
+          )}
+        </div>
+      )}
+
+      {selectedStage !== null && (
+        <div className='w-full max-w-4xl'>
+          {selectedStage !== 1 && <InfoMenu title={stages.find((s) => s.id === selectedStage)?.title} stageId={selectedStage} stageTexts={stageInfoTexts} />}
+          {selectedStage === 1 && (
+            <div className='mt-4 space-y-3'>
+              <Card
+                tittel='Fadderuke påmelding'
+                beskrivelse='Fullfør betalingen på vipps til 519679 for å sikre plass i fadderuka. Betalingen er på 500kr.'
+                kroner={500}
+              />
+              <div className='flex justify-end'>
+                <Button tekst='Betal 500 kr' onClick={() => console.log('Betaling initiert')} />
+              </div>
+            </div>
           )}
         </div>
       )}
@@ -71,24 +90,6 @@ const Timeline: React.FC = () => {
           Neste steg
         </button>
       </div>
-
-      {selectedStage !== null && (
-        <div className='w-full max-w-4xl'>
-          {selectedStage !== 1 && <InfoMenu title={stages.find((s) => s.id === selectedStage)?.title} stageId={selectedStage} stageTexts={stageInfoTexts} />}
-          {selectedStage === 1 && (
-            <div className='mt-4 space-y-3'>
-              <GCard
-                tittel='Fadderuke påmelding'
-                beskrivelse='Fullfør betalingen på vipps til 519679 for å sikre plass i fadderuka. Betalingen er på 500kr.'
-                kroner={500}
-              />
-              <div className='flex justify-end'>
-                <GKnapp tekst='Betal 500 kr' onClick={() => console.log('Betaling initiert')} />
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 };
