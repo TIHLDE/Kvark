@@ -91,7 +91,7 @@ importers:
         version: 1.140.0
       '@uploadthing/react':
         specifier: ^7.3.3
-        version: 7.3.3(react@19.2.1)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17))
+        version: 7.3.3(react@19.2.1)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17))
       browser-image-compression:
         specifier: ^2.0.2
         version: 2.0.2
@@ -118,7 +118,7 @@ importers:
         version: 0.560.0(react@19.2.1)
       nitro:
         specifier: 3.0.1-alpha.1
-        version: 3.0.1-alpha.1(chokidar@5.0.0)(lru-cache@11.2.4)(rollup@4.53.3)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17))(vite@7.2.7(@types/node@22.18.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
+        version: 3.0.1-alpha.1(lru-cache@11.2.4)(rollup@4.53.3)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17))(vite@7.2.7(@types/node@22.18.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2))
       nuqs:
         specifier: ^2.7.2
         version: 2.7.2(@tanstack/react-router@1.140.5(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-router@7.10.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react@19.2.1)
@@ -2585,10 +2585,6 @@ packages:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
 
-  chokidar@5.0.0:
-    resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
-    engines: {node: '>= 20.19.0'}
-
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
@@ -3216,15 +3212,6 @@ packages:
 
   h3@2.0.1-rc.5:
     resolution: {integrity: sha512-qkohAzCab0nLzXNm78tBjZDvtKMTmtygS8BJLT3VPczAQofdqlFXDPkXdLMJN4r05+xqneG8snZJ0HgkERCZTg==}
-    engines: {node: '>=20.11.1'}
-    peerDependencies:
-      crossws: ^0.4.1
-    peerDependenciesMeta:
-      crossws:
-        optional: true
-
-  h3@2.0.1-rc.6:
-    resolution: {integrity: sha512-kKLFVFNJlDVTbQjakz1ZTFSHB9+oi9+Khf0v7xQsUKU3iOqu2qmrFzTD56YsDvvj2nBgqVDphGRXB2VRursw4w==}
     engines: {node: '>=20.11.1'}
     peerDependencies:
       crossws: ^0.4.1
@@ -4152,10 +4139,6 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
-  readdirp@5.0.0:
-    resolution: {integrity: sha512-9u/XQ1pvrQtYyMpZe7DXKv2p5CNvyVwzUB6uhLAnQwHMSgKMBR62lc7AHljaeteeHXn11XTAaLLUVZYVZyuRBQ==}
-    engines: {node: '>= 20.19.0'}
-
   recast@0.23.11:
     resolution: {integrity: sha512-YTUo+Flmw4ZXiWfQKGcwwc11KnoRAYgzAE2E7mXKCjSviTKShtxBsN6YUUBB2gtaBzKzeKunxhUwNHQuRryhWA==}
     engines: {node: '>= 4'}
@@ -4388,11 +4371,6 @@ packages:
 
   srvx@0.9.5:
     resolution: {integrity: sha512-nQsA2c8q3XwbSn6kTxVQjz0zS096rV+Be2pzJwrYEAdtnYszLw4MTy8JWJjz1XEGBZwP0qW51SUIX3WdjdRemQ==}
-    engines: {node: '>=20.16.0'}
-    hasBin: true
-
-  srvx@0.9.8:
-    resolution: {integrity: sha512-RZaxTKJEE/14HYn8COLuUOJAt0U55N9l1Xf6jj+T0GoA01EUH1Xz5JtSUOI+EHn+AEgPCVn7gk6jHJffrr06fQ==}
     engines: {node: '>=20.16.0'}
     hasBin: true
 
@@ -6910,12 +6888,12 @@ snapshots:
 
   '@uploadthing/mime-types@0.3.6': {}
 
-  '@uploadthing/react@7.3.3(react@19.2.1)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17))':
+  '@uploadthing/react@7.3.3(react@19.2.1)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17))':
     dependencies:
       '@uploadthing/shared': 7.1.10
       file-selector: 0.6.0
       react: 19.2.1
-      uploadthing: 7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17)
+      uploadthing: 7.7.4(express@5.2.1)(tailwindcss@4.1.17)
 
   '@uploadthing/shared@7.1.10':
     dependencies:
@@ -7186,11 +7164,6 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
-
-  chokidar@5.0.0:
-    dependencies:
-      readdirp: 5.0.0
-    optional: true
 
   class-variance-authority@0.7.1:
     dependencies:
@@ -7955,14 +7928,6 @@ snapshots:
     optionalDependencies:
       crossws: 0.4.1(srvx@0.9.5)
 
-  h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)):
-    dependencies:
-      rou3: 0.7.11
-      srvx: 0.9.8
-    optionalDependencies:
-      crossws: 0.4.1(srvx@0.9.5)
-    optional: true
-
   has-bigints@1.1.0: {}
 
   has-flag@4.0.0: {}
@@ -8703,7 +8668,7 @@ snapshots:
 
   nf3@0.1.10: {}
 
-  nitro@3.0.1-alpha.1(chokidar@5.0.0)(lru-cache@11.2.4)(rollup@4.53.3)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17))(vite@7.2.7(@types/node@22.18.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)):
+  nitro@3.0.1-alpha.1(lru-cache@11.2.4)(rollup@4.53.3)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17))(vite@7.2.7(@types/node@22.18.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)):
     dependencies:
       consola: 3.4.2
       crossws: 0.4.1(srvx@0.9.5)
@@ -8718,7 +8683,7 @@ snapshots:
       srvx: 0.9.5
       undici: 7.16.0
       unenv: 2.0.0-rc.24
-      unstorage: 2.0.0-alpha.4(chokidar@5.0.0)(db0@0.3.4)(lru-cache@11.2.4)(ofetch@2.0.0-alpha.3)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17))
+      unstorage: 2.0.0-alpha.4(db0@0.3.4)(lru-cache@11.2.4)(ofetch@2.0.0-alpha.3)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17))
     optionalDependencies:
       rollup: 4.53.3
       vite: 7.2.7(@types/node@22.18.0)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0)(yaml@2.8.2)
@@ -9129,9 +9094,6 @@ snapshots:
     dependencies:
       picomatch: 2.3.1
 
-  readdirp@5.0.0:
-    optional: true
-
   recast@0.23.11:
     dependencies:
       ast-types: 0.16.1
@@ -9443,9 +9405,6 @@ snapshots:
 
   srvx@0.9.5: {}
 
-  srvx@0.9.8:
-    optional: true
-
   statuses@2.0.2:
     optional: true
 
@@ -9701,13 +9660,12 @@ snapshots:
       picomatch: 4.0.3
       webpack-virtual-modules: 0.6.2
 
-  unstorage@2.0.0-alpha.4(chokidar@5.0.0)(db0@0.3.4)(lru-cache@11.2.4)(ofetch@2.0.0-alpha.3)(uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17)):
+  unstorage@2.0.0-alpha.4(db0@0.3.4)(lru-cache@11.2.4)(ofetch@2.0.0-alpha.3)(uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17)):
     optionalDependencies:
-      chokidar: 5.0.0
       db0: 0.3.4
       lru-cache: 11.2.4
       ofetch: 2.0.0-alpha.3
-      uploadthing: 7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17)
+      uploadthing: 7.7.4(express@5.2.1)(tailwindcss@4.1.17)
 
   update-browserslist-db@1.2.2(browserslist@4.28.1):
     dependencies:
@@ -9715,7 +9673,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  uploadthing@7.7.4(express@5.2.1)(h3@2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5)))(tailwindcss@4.1.17):
+  uploadthing@7.7.4(express@5.2.1)(tailwindcss@4.1.17):
     dependencies:
       '@effect/platform': 0.90.3(effect@3.17.7)
       '@standard-schema/spec': 1.0.0-beta.4
@@ -9724,7 +9682,6 @@ snapshots:
       effect: 3.17.7
     optionalDependencies:
       express: 5.2.1
-      h3: 2.0.1-rc.6(crossws@0.4.1(srvx@0.9.5))
       tailwindcss: 4.1.17
 
   uri-js@4.4.1:

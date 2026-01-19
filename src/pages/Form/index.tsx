@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createFileRoute, Link, useParams, useRouter } from '@tanstack/react-router';
+import { createFileRoute, Link, useCanGoBack, useParams, useRouter } from '@tanstack/react-router';
 import { authClientWithRedirect } from '~/api/auth';
 import FormView from '~/components/forms/FormView';
 import Page from '~/components/navigation/Page';
@@ -15,6 +15,7 @@ import { EventFormType, FormResourceType } from '~/types/Enums';
 import URLS from '~/URLS';
 import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
+import { ArrowLeft } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -43,9 +44,12 @@ function FormPage() {
   const router = useRouter();
   const { event: GAEvent } = useAnalytics();
   const { id } = useParams({ strict: false });
+  const canGoBack = useCanGoBack();
+
   const { data: form, isError } = useFormById(id || '-');
   const createSubmission = useCreateSubmission(id || '-');
   const [isLoading, setIsLoading] = useState(false);
+
   const title = useMemo(
     () => (form ? (form.resource_type === FormResourceType.EVENT_FORM && form.type === EventFormType.EVALUATION ? 'Evaluering' : form.title) : ''),
     [form],
@@ -137,6 +141,13 @@ function FormPage() {
 
   return (
     <Page className='max-w-5xl mx-auto'>
+      {canGoBack ? (
+        <Button variant='outline' onClick={() => router.history.back()} aria-label='Gå tilbake' className='flex items-center gap-2'>
+          <ArrowLeft className='size-4' />
+          Tilbake
+        </Button>
+      ) : null}
+
       <Card>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
