@@ -8,7 +8,7 @@ import { ListChecks, ListPlus } from 'lucide-react';
 
 import UserFilter from './components/UserFilter';
 
-export const Route = createFileRoute('/_MainLayout/admin/brukere')({
+export const Route = createFileRoute('/admin/brukere')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

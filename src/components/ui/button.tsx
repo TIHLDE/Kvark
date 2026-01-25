@@ -1,7 +1,6 @@
 import { mergeProps } from '@base-ui/react/merge-props';
-import { useRender } from '@base-ui/react/use-render';
 import { Link, LinkOptions } from '@tanstack/react-router';
-import { cn, useRenderParam } from '~/lib/utils';
+import { cn, useRenderAsChild, useRenderAsChildProp } from '~/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 
@@ -31,19 +30,17 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps extends useRender.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-}
+export interface ButtonProps extends useRenderAsChildProp<'button'>, VariantProps<typeof buttonVariants> {};
 
-function Button({ className, variant, size, asChild = false, render, children, ...props }: ButtonProps) {
-  const [childRender, child] = useRenderParam(render, asChild, children);
-  return useRender({
+function Button({ className, variant, size, asChild, render, children, ...props }: ButtonProps) {
+  return useRenderAsChild({
     defaultTagName: 'button',
-    render: childRender,
+    render,
+    asChild,
+    children,
     props: mergeProps<'button'>(
       {
         className: cn(buttonVariants({ variant, size, className })),
-        ...(child != null ? { children: child } : {}),
       },
       props,
     ),

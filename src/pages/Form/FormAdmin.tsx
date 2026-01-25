@@ -8,7 +8,7 @@ import { useFormById } from '~/hooks/Form';
 import { EventFormType, FormResourceType, PermissionApp } from '~/types/Enums';
 import { useMemo } from 'react';
 
-export const Route = createFileRoute('/_MainLayout/sporreskjema/admin/$id')({
+export const Route = createFileRoute('/admin/sporreskjema/$id')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

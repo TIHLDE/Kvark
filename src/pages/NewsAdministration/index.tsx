@@ -8,7 +8,7 @@ import { ChevronRight, Plus } from 'lucide-react';
 
 import NewsList from './components/NewsList';
 
-export const Route = createFileRoute('/_MainLayout/admin/nyheter/{-$newsId}')({
+export const Route = createFileRoute('/admin/nyheter/{-$newsId}')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

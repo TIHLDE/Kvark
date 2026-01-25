@@ -6,6 +6,7 @@ import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanst
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
 import appCss from '~/assets/css/index.css?url';
+import ShortCutMenu from '~/components/miscellaneous/shortCutMenu';
 import Http404 from '~/components/shells/Http404';
 import { Toaster } from '~/components/ui/sonner';
 import { useTheme } from '~/hooks/Theme';
@@ -112,6 +113,7 @@ function RootComponent() {
     <RootDocument>
       <NuqsAdapter>
         <Outlet />
+        <ShortCutMenu />
       </NuqsAdapter>
     </RootDocument>
   );

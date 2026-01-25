@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
-export const Route = createFileRoute('/_MainLayout/admin/arrangementer/{-$eventId}')({
+export const Route = createFileRoute('/admin/arrangementer/{-$eventId}')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

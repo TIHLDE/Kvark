@@ -9,7 +9,7 @@ import { DotSquare, Users } from 'lucide-react';
 import AllStrikesList from './components/AllStrikeList';
 import UserStrikeList from './components/UserStrikeList';
 
-export const Route = createFileRoute('/_MainLayout/admin/prikker')({
+export const Route = createFileRoute('/admin/prikker')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

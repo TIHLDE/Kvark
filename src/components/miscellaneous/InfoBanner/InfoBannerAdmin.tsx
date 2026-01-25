@@ -15,7 +15,7 @@ import { z } from 'zod';
 
 import InfoBannerItem, { InfoBannerForm } from './InfoBannerAdminItem';
 
-export const Route = createFileRoute('/_MainLayout/admin/bannere')({
+export const Route = createFileRoute('/admin/bannere')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

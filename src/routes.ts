@@ -18,7 +18,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/toddel', './pages/Toddel/index.tsx'),
 
     route('/sporreskjema', [
-      route('/admin/$id', './pages/Form/FormAdmin.tsx'),
       route('/$id', './pages/Form/index.tsx'),
       //
     ]),
@@ -78,18 +77,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/qr-koder', './pages/QRCodes/index.tsx'),
     route('/opptak', './pages/Admissions/index.tsx'),
 
-    route('/admin', [
-      // WTF why is this in the components folder?
-      route('/bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
-      route('/ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
-      route('/stillingsannonser/{-$jobPostId}', './pages/JobPostAdministration/index.tsx'),
-      route('/arrangementer/{-$eventId}', './pages/EventAdministration/index.tsx'),
-      route('/nyheter/{-$newsId}', './pages/NewsAdministration/index.tsx'),
-      route('/brukere', './pages/UserAdmin/index.tsx'),
-      route('/prikker', './pages/StrikeAdmin/index.tsx'),
-      route('/opptak', './pages/Opptak/index.tsx'),
-    ]),
-
     route('/logg-inn', './routes/auth/login.tsx'),
     route('/glemt-passord', './routes/auth/forgot-password.tsx'),
 
@@ -100,5 +87,21 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
     route('/endringslogg', './pages/Changelog/index.tsx'),
+  ]),
+
+  route('/admin', './routes/admin/layout.tsx', [
+    index('./routes/admin/index.tsx'),
+
+    route('/sporreskjema/$id', './pages/Form/FormAdmin.tsx'),
+
+    // WTF why is this in the components folder?
+    route('/bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
+    route('/ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
+    route('/stillingsannonser/{-$jobPostId}', './pages/JobPostAdministration/index.tsx'),
+    route('/arrangementer/{-$eventId}', './pages/EventAdministration/index.tsx'),
+    route('/nyheter/{-$newsId}', './pages/NewsAdministration/index.tsx'),
+    route('/brukere', './pages/UserAdmin/index.tsx'),
+    route('/prikker', './pages/StrikeAdmin/index.tsx'),
+    route('/opptak', './pages/Opptak/index.tsx'),
   ]),
 ]);

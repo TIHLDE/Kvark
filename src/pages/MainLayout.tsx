@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
-import ShortCutMenu from '~/components/miscellaneous/shortCutMenu';
 import Navigation from '~/components/navigation/Navigation';
 
 export const Route = createFileRoute('/_MainLayout')({
@@ -23,16 +22,11 @@ export const Route = createFileRoute('/_MainLayout')({
 function Layout() {
   return (
     <Navigation>
-      <ShortCutMenu />
       <Outlet />
     </Navigation>
   );
 }
 
 function Skeleton() {
-  return (
-    <Navigation>
-      <ShortCutMenu />
-    </Navigation>
-  );
+  return <Navigation></Navigation>;
 }

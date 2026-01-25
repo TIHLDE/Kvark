@@ -25,7 +25,7 @@ const schema = z.object({
   }),
 });
 
-export const Route = createFileRoute('/_MainLayout/admin/ny-gruppe')({
+export const Route = createFileRoute('/admin/ny-gruppe')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useParams } from '@tanstack/react-router';
+import { createFileRoute, Navigate, redirect, useParams } from '@tanstack/react-router';
 import { authClient, createLoginRedirectUrl } from '~/api/auth';
 import { QRButton } from '~/components/miscellaneous/QRButton';
 import Page from '~/components/navigation/Page';
@@ -11,7 +11,6 @@ import { Skeleton } from '~/components/ui/skeleton';
 import { useHavePermission, useLogout, useUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
-import ProfileAdmin from '~/pages/Profile/components/ProfileAdmin';
 import ProfileBadges from '~/pages/Profile/components/ProfileBadges';
 import ProfileEvents from '~/pages/Profile/components/ProfileEvents';
 import ProfileForms from '~/pages/Profile/components/ProfileForms';
@@ -190,7 +189,7 @@ function Profile() {
           {tab === formsTab.label && <ProfileForms />}
           {tab === strikesTab.label && <ProfileStrikes />}
           {tab === settingsTab.label && user && <ProfileSettings user={user} />}
-          {tab === adminTab.label && <ProfileAdmin />}
+          {tab === adminTab.label && <Navigate to='/admin' />}
         </div>
       </div>
     </Page>

@@ -13,7 +13,7 @@ import { Calendar, Download, FileText, Users } from 'lucide-react';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/_MainLayout/admin/opptak')({
+export const Route = createFileRoute('/admin/opptak')({
   async beforeLoad({ location }) {
     await authClientWithRedirect(location.href);
   },

@@ -1,4 +1,4 @@
-import type { useRender } from "@base-ui/react"
+import { HTMLProps, useRender } from "@base-ui/react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -22,4 +22,41 @@ export function useRenderParam<ElementType extends React.ElementType>(
     return [children as React.ReactElement<Record<string, unknown>>, undefined]
   }
   return [undefined, children];
+}
+
+
+export type useRenderAsChildProp<ElementType extends React.ElementType, State = {}, RenderFunctionProps = HTMLProps> = useRender.ComponentProps<ElementType, State, RenderFunctionProps> & {
+  asChild?: boolean;
+  children?: React.ReactNode;
+}
+
+export function useRenderAsChild<
+  State extends Record<string, unknown>,
+  RenderedElementType extends Element,
+  Enabled extends boolean | undefined = undefined
+>({ children, asChild = false, render, ...params }: useRender.Parameters<State, RenderedElementType, Enabled> & { asChild?: boolean, children?: React.ReactNode }): useRender.ReturnValue<Enabled> {
+  if (render != null) {
+    return useRender({
+      ...params,
+      render,
+      props: {
+        ...params.props,
+        children,
+      }
+    });
+  }
+  
+  if (asChild && children) {
+    const { children: _, ...restProps } = params.props || {};
+    
+    return useRender({
+      ...params,
+      render: children as React.ReactElement,
+      props: {
+        ...restProps,
+      }
+    });
+  }
+
+  return useRender(params);
 }

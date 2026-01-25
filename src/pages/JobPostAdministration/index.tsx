@@ -8,7 +8,7 @@ import { ChevronRight, Plus } from 'lucide-react';
 
 import JobPostList from './components/JobPostList';
 
-export const Route = createFileRoute('/_MainLayout/admin/stillingsannonser/{-$jobPostId}')({
+export const Route = createFileRoute('/admin/stillingsannonser/{-$jobPostId}')({
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 
