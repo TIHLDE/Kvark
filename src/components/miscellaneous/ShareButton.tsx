@@ -27,7 +27,7 @@ const ShareButton = ({ shareId, title, shareType }: ShareProps) => {
     }
   }, [shareType]);
   const shareUrl = useMemo(
-    () => (useShortener ? `https://s.tihlde.org/${urlFromType}/${shareId}${shareType === 'pages' ? '' : '/'}` : `${location.origin}${urlFromType}${shareId}/`),
+    () => (useShortener ? `https://s.tihlde.org/${urlFromType}/${shareId}${shareType === 'pages' ? '' : '/'}` : `${location.origin}${urlFromType}/${shareId}/`),
     [shareId, shareType, urlFromType, useShortener],
   );
 
