@@ -34,9 +34,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ stages, currentStage, onS
               </div>
 
               {/* Linje mellom steg */}
-              {!isLast && (
-                <div className={`flex-grow h-0.5 transition-colors duration-300 ${isCompleted ? 'bg-green-600' : 'bg-slate-300 dark:bg-slate-700'}`} />
-              )}
+              {!isLast && <div className={`grow h-0.5 transition-colors duration-300 ${isCompleted ? 'bg-green-600' : 'bg-slate-300 dark:bg-slate-700'}`} />}
             </div>
           );
         })}
