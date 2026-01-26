@@ -25,10 +25,10 @@ const Timeline: React.FC = () => {
   // Manually set text for each stage here
   const stageInfoTexts: Record<number, string> = {
     1: 'To be continued',
-    2: 'Gå inn på Tihlde sin egen nettside for fadderuka, lag en bruker med ditt telefonnummer og få tilgangmye nyttig informasjon!',
+    2: 'Gå inn på Tihlde sin egen nettside for fadderuka, lag en bruker med ditt telefonnummer og få tilgang til mye nyttig informasjon!',
     3: 'Gå inn på Studentweb og følg instruksjonene for å melde deg på eksamen og betale semesteravgiften. Husk å gjøre dette innen fristen for å unngå problemer senere.',
     4: 'Trykk på linken for å se en oversikt over hvem du skal dele de neste semestrene med! Timeplanen din vil være tilgjengelig på ""',
-    5: 'Info om hvor du skal møte opp for å få mer inforrmasjon om studiestart får du i linken over.',
+    5: 'Info om hvor du skal møte opp for å få mer informasjon om studiestart får du i linken over.',
   };
 
   const current = stages.find((stage) => stage.id === currentStage);
