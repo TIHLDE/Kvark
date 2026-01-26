@@ -3,11 +3,12 @@ import { linkOptions, redirect } from '@tanstack/react-router';
 import { ACCESS_TOKEN } from '~/constant';
 import { getQueryClient } from '~/integrations/tanstack-query';
 import { Permissions, RequestResponse, User } from '~/types';
-import { MembershipType, PermissionApp } from '~/types/Enums';
+import { PermissionApp } from '~/types/Enums';
 import { z } from 'zod';
 
 import API from './api';
 import { getCookie, setCookie } from './cookie';
+import { photon, photonAuthClient } from './photon';
 
 export const AuthObjectSchema = z.object({
   user: z.object({
@@ -52,21 +53,30 @@ export const authQueryOptions = queryOptions({
       getQueryClient().cancelQueries({ queryKey: ['user', null] });
       const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
 
-      // TODO: Check if we need to handle pagination here
-      // Pagination on the backend returns 25 objects. I dont we have to worry about that here
-      const memberships = (await API.getUserMemberships(user.user_id)).results;
+      const settings = (await photon.getUserSettings()).data;
+      const profile = (await photonAuthClient.getSession()).data;
+      const groups = (await photon.listMyGroups()).data;
+
+      if (settings === undefined || profile === null || groups === undefined) {
+        // eslint-disable-next-line no-console
+        console.error('Failed to fetch user data from Photon');
+        // eslint-disable-next-line no-console
+        console.error({ settings, profile, groups });
+        return null;
+      }
+
+      // TODO: Use single `name` field instead of splitting into firstName/lastName
       const authUser = {
-        id: user.user_id,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        image: user.image,
-        groups: memberships.map((m) => ({
-          id: m.group.slug,
-          name: m.group.name,
-          isLeader: m.membership_type === MembershipType.LEADER,
+        id: profile.user.id,
+        firstName: profile.user.name.split(' ')[0] ?? '',
+        lastName: profile.user.name.split(' ').slice(1).join(' ') ?? '',
+        email: profile.user.email,
+        image: settings.imageUrl,
+        groups: groups.map((g) => ({
+          id: g.slug,
+          name: g.name,
+          isLeader: g.membership.role === 'leader',
         })),
-        //TODO: Check if more fields are needed
       };
       getQueryClient().setQueryData(['user', null], user);
       return AuthObjectSchema.parse({ user: authUser, permissions: permission.permissions, tihldeUser: user });

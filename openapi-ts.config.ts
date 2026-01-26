@@ -1,7 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-  input: 'https://photon.tihlde.org/openapi',
+  input: 'http://localhost:4000/openapi',
   output: {
     path: 'src/gen-client',
     format: 'prettier',
