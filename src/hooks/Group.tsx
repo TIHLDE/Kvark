@@ -53,7 +53,7 @@ export function getGroupQueryOptions(slug: Group['slug']) {
 export function getGroupsQueryOptions(filters?: any) {
   return queryOptions({
     queryKey: GROUPS_QUERY_KEYS.list(filters),
-    queryFn: () => API.getGroups({ ...(filters ?? {}) }),
+    queryFn: () => API.getGroups({ ...filters }),
   });
 }
 

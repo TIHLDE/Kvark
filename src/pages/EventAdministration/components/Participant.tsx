@@ -6,7 +6,7 @@ import { Checkbox } from '~/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '~/components/ui/collapsible';
 import { Label } from '~/components/ui/label';
 import { Separator } from '~/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipPositioner, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import { useEventById, useUpdateEventRegistration } from '~/hooks/Event';
 import { useUserStrikes } from '~/hooks/User';
 import { cn } from '~/lib/utils';
@@ -113,32 +113,24 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
           </div>
           <div className='flex items-center space-x-2'>
             {event?.is_paid_event && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HandCoins className={cn('w-5 h-5 stroke-[1.5px]', registration.has_paid_order ? 'text-emerald-700' : 'text-red-700')} />
-                  </TooltipTrigger>
-                  <TooltipPositioner>
-                    <TooltipContent>
-                      <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
-                    </TooltipContent>
-                  </TooltipPositioner>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HandCoins className={cn('w-5 h-5 stroke-[1.5px]', registration.has_paid_order ? 'text-emerald-700' : 'text-red-700')} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
+                </TooltipContent>
+              </Tooltip>
             )}
             {!registration.is_on_wait && checkedState && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <BadgeCheck className='w-5 h-5 stroke-[1.5px] text-emerald-700' />
-                  </TooltipTrigger>
-                  <TooltipPositioner>
-                    <TooltipContent>
-                      <p>Deltager har ankommet</p>
-                    </TooltipContent>
-                  </TooltipPositioner>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <BadgeCheck className='w-5 h-5 stroke-[1.5px] text-emerald-700' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Deltager har ankommet</p>
+                </TooltipContent>
+              </Tooltip>
             )}
             {expanded ? <ChevronDown className='stroke-[1.5px]' /> : <ChevronRight className='stroke-[1.5px]' />}
           </div>

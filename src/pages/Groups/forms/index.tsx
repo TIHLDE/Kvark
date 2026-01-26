@@ -36,13 +36,13 @@ function GroupFormAdminListItem({ form }: { form: GroupForm }) {
         )}
         <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-2'>
           <Button asChild className='w-full text-black dark:text-white' variant='outline'>
-            <Link to='/sporreskjema/admin/$id' params={{ id: form.id }}>
+            <Link to='/admin/sporreskjema/$id' params={{ id: form.id }}>
               <Settings className='w-5 h-5 mr-2' />
               Administrer
             </Link>
           </Button>
           <Button className='w-full text-black dark:text-white' disabled={!form.is_open_for_submissions} variant='outline' asChild>
-            <Link to='/sporreskjema/admin/$id' params={{ id: form.id }}>
+            <Link to='/admin/sporreskjema/$id' params={{ id: form.id }}>
               <Eye className='w-5 h-5 mr-2' />
               Svar på/se skjema
             </Link>

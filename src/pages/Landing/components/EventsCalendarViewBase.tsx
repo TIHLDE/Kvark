@@ -143,12 +143,7 @@ const Calendar = ({
 
 export const useCalendar = () => useContext(Context);
 
-const CalendarViewTrigger = forwardRef<
-  HTMLButtonElement,
-  React.HTMLAttributes<HTMLButtonElement> & {
-    view: View;
-  }
->(({ children, view, ...props }) => {
+function CalendarViewTrigger({ view, children, ...props }: React.ComponentProps<typeof Button> & { view: View }) {
   const { view: currentView, setView, onChangeView } = useCalendar();
 
   return (
@@ -164,7 +159,7 @@ const CalendarViewTrigger = forwardRef<
       {children}
     </Button>
   );
-});
+}
 CalendarViewTrigger.displayName = 'CalendarViewTrigger';
 
 const EventGroup = ({ events, hour }: { events: CalendarEvent[]; hour: Date }) => {

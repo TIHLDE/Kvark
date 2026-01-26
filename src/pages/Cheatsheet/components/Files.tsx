@@ -1,7 +1,7 @@
 import GitHub from '~/assets/icons/github.svg';
 import { PaginateButton } from '~/components/ui/button';
 import { Separator } from '~/components/ui/separator';
-import { Tooltip, TooltipContent, TooltipPositioner, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import type { Cheatsheet } from '~/types';
 import { CheatsheetType } from '~/types/Enums';
@@ -60,18 +60,14 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                   <div className='flex items-center space-x-2 justify-start w-full'>
                     <h1>{file.creator}</h1>
                     {file.official && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <ShieldCheck />
-                          </TooltipTrigger>
-                          <TooltipPositioner>
-                            <TooltipContent>
-                              <p>Laget av NTNU</p>
-                            </TooltipContent>
-                          </TooltipPositioner>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <ShieldCheck />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Laget av NTNU</p>
+                        </TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
                 )}
@@ -79,18 +75,14 @@ const Files = ({ files, hasNextPage, getNextPage, isLoading }: FilesProps) => {
                 <div className='flex items-center space-x-2 justify-start w-full'>
                   <h1>{file.course}</h1>
                   {file.official && isDesktop && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <ShieldCheck />
-                        </TooltipTrigger>
-                        <TooltipPositioner>
-                          <TooltipContent>
-                            <p>Laget av NTNU</p>
-                          </TooltipContent>
-                        </TooltipPositioner>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <ShieldCheck />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Laget av NTNU</p>
+                      </TooltipContent>
+                    </Tooltip>
                   )}
                 </div>
               </a>

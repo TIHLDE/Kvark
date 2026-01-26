@@ -99,7 +99,7 @@ export const useUserEvents = (userId?: User['user_id'], expired?: boolean) => {
 export const useUserForms = (filters?: any) =>
   useInfiniteQuery<PaginationResponse<Form>, RequestResponse>({
     queryKey: [USER_FORMS_QUERY_KEY, filters],
-    queryFn: ({ pageParam }) => API.getUserForms({ ...(filters ?? {}), page: pageParam }),
+    queryFn: ({ pageParam }) => API.getUserForms({ ...filters, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });

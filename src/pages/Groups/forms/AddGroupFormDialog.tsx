@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { linkOptions, useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import FormInput from '~/components/inputs/Input';
 import { Button } from '~/components/ui/button';
 import { Form } from '~/components/ui/form';
@@ -47,7 +47,7 @@ const AddGroupFormDialog = ({ groupSlug }: AddGroupFormDialogProps) => {
     createGroupForm.mutate(newForm, {
       onSuccess: (form) => {
         toast.success(`Skjemaet ble opprettet`);
-        navigate(linkOptions({ to: '/sporreskjema/admin/$id', params: { id: form.id.toString() } }));
+        navigate({ to: '/admin/sporreskjema/$id', params: { id: form.id.toString() } });
       },
       onError: (e) => {
         toast.error(e.detail);

@@ -94,10 +94,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className='h-12'>
-            <SidebarMenuButton asChild>
-              <Link aria-label='Til forsiden' to='/' className='h-full w-full cursor-pointer'>
-                <TihldeLogo className='w-full! h-full! text-primary' size='large' />
-              </Link>
+            <SidebarMenuButton render={<Link aria-label='Til forsiden' to='/' className='h-full w-full cursor-pointer' />}>
+              <TihldeLogo className='w-full! h-full! text-primary' size='large' />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -109,15 +107,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {group.items.map((item) => (
                 <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      {...item.link}
-                      className='[&.active]:bg-sidebar-primary [&.active]:text-sidebar-primary-foreground'
-                      activeProps={{ className: 'active' }}
-                      activeOptions={{ exact: item.exact ?? false }}>
-                      {item.icon && <item.icon />}
-                      <span>{item.label}</span>
-                    </Link>
+                  <SidebarMenuButton
+                    render={
+                      <Link
+                        {...item.link}
+                        className='[&.active]:bg-sidebar-primary [&.active]:text-sidebar-primary-foreground'
+                        activeProps={{ className: 'active' }}
+                        activeOptions={{ exact: item.exact ?? false }}
+                      />
+                    }>
+                    {item.icon && <item.icon />}
+                    <span>{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

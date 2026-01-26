@@ -30,7 +30,7 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps extends useRenderAsChildProp<'button'>, VariantProps<typeof buttonVariants> {};
+export type ButtonProps = useRenderAsChildProp<'button'> & VariantProps<typeof buttonVariants>;
 
 function Button({ className, variant, size, asChild, render, children, ...props }: ButtonProps) {
   return useRenderAsChild({
