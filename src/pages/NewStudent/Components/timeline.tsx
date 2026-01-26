@@ -86,8 +86,9 @@ const Timeline: React.FC = () => {
         <button
           onClick={() => handleStageClick(Math.min(stages.length, currentStage + 1))}
           disabled={currentStage === stages.length}
-          className='inline-flex items-center rounded-md bg-sky-600 text-white hover:bg-sky-700 disabled:opacity-50 px-3 py-2 text-sm font-medium'>
-          Neste steg
+          className={`inline-flex items-center rounded-md px-3 py-2 text-sm font-medium disabled:opacity-50 transition-colors
+            ${currentStage === stages.length ? 'bg-green-600 text-white' : 'bg-sky-600 text-white hover:bg-sky-700'}`}>
+          {currentStage === stages.length ? 'Alt er klart! Velkommen til TIHLDE :)' : 'Neste steg'}
         </button>
       </div>
     </div>
