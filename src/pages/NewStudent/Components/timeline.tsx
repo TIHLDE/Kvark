@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import Card from './Card';
 import InfoMenu from './infoMenu';
-import { Button } from './Knapp';
 import StepIndicator from './StepIndicator';
 
 const Timeline: React.FC = () => {
@@ -51,9 +50,9 @@ const Timeline: React.FC = () => {
                 beskrivelse='Fullfør betalingen på vipps til 519679 for å sikre plass i fadderuka. Betalingen er på 500kr.'
                 kroner={500}
               />
-              <div className='flex justify-end'>
+              {/* <div className='flex justify-end'>
                 <Button tekst='Betal 500 kr' onClick={() => console.log('Knapp trykket')} />
-              </div>
+                </div> */}
             </div>
           )}
         </div>
