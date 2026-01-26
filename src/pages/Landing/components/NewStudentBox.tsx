@@ -49,8 +49,8 @@ const NewStudentBox = () => {
   const fadderukaSignupAnalytics = () => event('signup-fadderuka-from-box', 'new-student', 'Clicked on link to signup for fadderuka');
 
   return (
-    <div className='p-4 rounded-md border max-w-3xl w-full mx-auto space-y-4'>
-      <h1 className='text-center text-4xl font-bold'>{header}</h1>
+    <div className='p-4 rounded-md border max-w-2xl w-full mx-auto space-y-4 mt-8'>
+      <h1 className='text-center text-3xl font-bold'>{header}</h1>
       <p className='text-center'>{text}</p>
       {header === HEADER.NEW_STUDENT && (
         <div className='space-y-2 md:space-y-0 md:flex md:items-center md:space-x-4 md:justify-center pt-4 pb-2'>
