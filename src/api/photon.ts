@@ -5,6 +5,7 @@ import { createConfig } from '../gen-client/client';
 import { client } from '../gen-client/client.gen';
 import * as sdk from '../gen-client/sdk.gen';
 import { ClientOptions } from '../gen-client/types.gen';
+import { unwrapSdk } from './queries/helper';
 
 /**
  * Better-Auth client for Photon
@@ -23,10 +24,10 @@ client.setConfig(
 );
 
 /**
- * Type-safe Photon API client
+ * Type-safe Photon API client that returns data directly
  *
  * @example
- * const { data, error } = await photonClient.listApiKeys();
- * const { data } = await photonClient.createEvent({ body: { ... } });
+ * const apiKeys = await photon.listApiKeys();
+ * const event = await photon.createEvent({ body: { ... } });
  */
-export const photon = sdk;
+export const photon = unwrapSdk(sdk);

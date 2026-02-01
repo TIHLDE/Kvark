@@ -53,9 +53,9 @@ export const authQueryOptions = queryOptions({
       getQueryClient().cancelQueries({ queryKey: ['user', null] });
       const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
 
-      const settings = (await photon.getUserSettings()).data;
+      const settings = await photon.getUserSettings();
       const profile = (await photonAuthClient.getSession()).data;
-      const groups = (await photon.listMyGroups()).data;
+      const groups = await photon.listMyGroups();
 
       if (settings === undefined || profile === null || groups === undefined) {
         // eslint-disable-next-line no-console
