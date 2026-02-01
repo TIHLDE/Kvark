@@ -13,5 +13,9 @@ export default defineConfig({
       name: '@hey-api/transformers',
     },
     '@hey-api/sdk',
+    {
+      name: '@hey-api/client-fetch',
+      throwOnError: true,
+    },
   ],
 });

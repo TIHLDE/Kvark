@@ -23,7 +23,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  *
  * Get a list of all API keys. Does not include the full key values. Requires 'api-keys:view' permission.
  */
-export const listApiKeys = <ThrowOnError extends boolean = false>(options?: Options<ListApiKeysData, ThrowOnError>) => {
+export const listApiKeys = <ThrowOnError extends boolean = true>(options?: Options<ListApiKeysData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListApiKeysResponses, ListApiKeysErrors, ThrowOnError>({
         url: '/api/api-keys',
         ...options
@@ -35,7 +35,7 @@ export const listApiKeys = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Create a new API key. The full key is returned only once and cannot be retrieved again. Requires 'api-keys:create' permission.
  */
-export const createApiKey = <ThrowOnError extends boolean = false>(options?: Options<CreateApiKeyData, ThrowOnError>) => {
+export const createApiKey = <ThrowOnError extends boolean = true>(options?: Options<CreateApiKeyData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateApiKeyResponses, CreateApiKeyErrors, ThrowOnError>({
         url: '/api/api-keys',
         ...options,
@@ -51,7 +51,7 @@ export const createApiKey = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Delete an API key. This action is irreversible. Requires 'api-keys:delete' permission.
  */
-export const deleteApiKey = <ThrowOnError extends boolean = false>(options: Options<DeleteApiKeyData, ThrowOnError>) => {
+export const deleteApiKey = <ThrowOnError extends boolean = true>(options: Options<DeleteApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteApiKeyResponses, DeleteApiKeyErrors, ThrowOnError>({
         url: '/api/api-keys/{id}',
         ...options
@@ -63,7 +63,7 @@ export const deleteApiKey = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Get a single API key by ID. Does not include the full key value. Requires 'api-keys:view' permission.
  */
-export const getApiKey = <ThrowOnError extends boolean = false>(options: Options<GetApiKeyData, ThrowOnError>) => {
+export const getApiKey = <ThrowOnError extends boolean = true>(options: Options<GetApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).get<GetApiKeyResponses, GetApiKeyErrors, ThrowOnError>({
         url: '/api/api-keys/{id}',
         ...options
@@ -75,7 +75,7 @@ export const getApiKey = <ThrowOnError extends boolean = false>(options: Options
  *
  * Update an API key's metadata (name, description, permissions, metadata). Cannot update the key itself - use regenerate for that. Requires 'api-keys:update' permission.
  */
-export const updateApiKey = <ThrowOnError extends boolean = false>(options: Options<UpdateApiKeyData, ThrowOnError>) => {
+export const updateApiKey = <ThrowOnError extends boolean = true>(options: Options<UpdateApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateApiKeyResponses, UpdateApiKeyErrors, ThrowOnError>({
         url: '/api/api-keys/{id}',
         ...options,
@@ -91,7 +91,7 @@ export const updateApiKey = <ThrowOnError extends boolean = false>(options: Opti
  *
  * Generate a new key value for an existing API key. The old key will be invalidated. The new full key is returned only once and cannot be retrieved again. Requires 'api-keys:update' permission.
  */
-export const regenerateApiKey = <ThrowOnError extends boolean = false>(options: Options<RegenerateApiKeyData, ThrowOnError>) => {
+export const regenerateApiKey = <ThrowOnError extends boolean = true>(options: Options<RegenerateApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).post<RegenerateApiKeyResponses, RegenerateApiKeyErrors, ThrowOnError>({
         url: '/api/api-keys/{id}/regenerate',
         ...options
@@ -103,7 +103,7 @@ export const regenerateApiKey = <ThrowOnError extends boolean = false>(options: 
  *
  * Check if an API key is valid and return its details. This is a public endpoint that does not require authentication. Updates the lastUsedAt timestamp if the key is valid.
  */
-export const validateApiKey = <ThrowOnError extends boolean = false>(options?: Options<ValidateApiKeyData, ThrowOnError>) => {
+export const validateApiKey = <ThrowOnError extends boolean = true>(options?: Options<ValidateApiKeyData, ThrowOnError>) => {
     return (options?.client ?? client).post<ValidateApiKeyResponses, unknown, ThrowOnError>({
         url: '/api/api-keys/validate',
         ...options,
@@ -119,7 +119,7 @@ export const validateApiKey = <ThrowOnError extends boolean = false>(options?: O
  *
  * Send a custom email with structured content blocks. Requires API key authentication via Bearer token.
  */
-export const sendCustomEmail = <ThrowOnError extends boolean = false>(options?: Options<SendCustomEmailData, ThrowOnError>) => {
+export const sendCustomEmail = <ThrowOnError extends boolean = true>(options?: Options<SendCustomEmailData, ThrowOnError>) => {
     return (options?.client ?? client).post<SendCustomEmailResponses, SendCustomEmailErrors, ThrowOnError>({
         url: '/api/email/send',
         ...options,
@@ -135,7 +135,7 @@ export const sendCustomEmail = <ThrowOnError extends boolean = false>(options?: 
  *
  * Retrieve a paginated list of all events with basic information including organizer and category details
  */
-export const listEvents = <ThrowOnError extends boolean = false>(options?: Options<ListEventsData, ThrowOnError>) => {
+export const listEvents = <ThrowOnError extends boolean = true>(options?: Options<ListEventsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListEventsResponses, unknown, ThrowOnError>({
         url: '/api/event',
         ...options
@@ -147,7 +147,7 @@ export const listEvents = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Create a new event. Requires 'events:create' permission.
  */
-export const createEvent = <ThrowOnError extends boolean = false>(options?: Options<CreateEventData, ThrowOnError>) => {
+export const createEvent = <ThrowOnError extends boolean = true>(options?: Options<CreateEventData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateEventResponses, CreateEventErrors, ThrowOnError>({
         url: '/api/event',
         ...options,
@@ -163,7 +163,7 @@ export const createEvent = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Update an event by its ID. Event creators can update their own events. Users with 'events:update' or 'events:manage' permission can update any event.
  */
-export const updateEvent = <ThrowOnError extends boolean = false>(options: Options<UpdateEventData, ThrowOnError>) => {
+export const updateEvent = <ThrowOnError extends boolean = true>(options: Options<UpdateEventData, ThrowOnError>) => {
     return (options.client ?? client).put<UpdateEventResponses, UpdateEventErrors, ThrowOnError>({
         url: '/api/event/{id}',
         ...options,
@@ -179,7 +179,7 @@ export const updateEvent = <ThrowOnError extends boolean = false>(options: Optio
  *
  * Delete an event by its ID. Event creators can delete their own events. Users with 'events:delete' permission can delete any event. This action is irreversible and will remove all associated data, including registrations and feedback.
  */
-export const deleteEvent = <ThrowOnError extends boolean = false>(options: Options<DeleteEventData, ThrowOnError>) => {
+export const deleteEvent = <ThrowOnError extends boolean = true>(options: Options<DeleteEventData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteEventResponses, DeleteEventErrors, ThrowOnError>({
         url: '/api/event/{eventId}',
         ...options
@@ -191,7 +191,7 @@ export const deleteEvent = <ThrowOnError extends boolean = false>(options: Optio
  *
  * Retrieve detailed information about a specific event, including registration status for the authenticated user if available
  */
-export const getEvent = <ThrowOnError extends boolean = false>(options: Options<GetEventData, ThrowOnError>) => {
+export const getEvent = <ThrowOnError extends boolean = true>(options: Options<GetEventData, ThrowOnError>) => {
     return (options.client ?? client).get<GetEventResponses, unknown, ThrowOnError>({
         url: '/api/event/{eventId}',
         ...options
@@ -203,7 +203,7 @@ export const getEvent = <ThrowOnError extends boolean = false>(options: Options<
  *
  * Mark or unmark an event as a favorite for the authenticated user
  */
-export const updateEventFavorite = <ThrowOnError extends boolean = false>(options: Options<UpdateEventFavoriteData, ThrowOnError>) => {
+export const updateEventFavorite = <ThrowOnError extends boolean = true>(options: Options<UpdateEventFavoriteData, ThrowOnError>) => {
     return (options.client ?? client).put<UpdateEventFavoriteResponses, UpdateEventFavoriteErrors, ThrowOnError>({
         url: '/api/event/favorite/{id}',
         ...options,
@@ -219,7 +219,7 @@ export const updateEventFavorite = <ThrowOnError extends boolean = false>(option
  *
  * Retrieve a list of all events you have marked as favorite.
  */
-export const getFavoriteEvents = <ThrowOnError extends boolean = false>(options?: Options<GetFavoriteEventsData, ThrowOnError>) => {
+export const getFavoriteEvents = <ThrowOnError extends boolean = true>(options?: Options<GetFavoriteEventsData, ThrowOnError>) => {
     return (options?.client ?? client).get<GetFavoriteEventsResponses, GetFavoriteEventsErrors, ThrowOnError>({
         url: '/api/event/favorite',
         ...options
@@ -231,7 +231,7 @@ export const getFavoriteEvents = <ThrowOnError extends boolean = false>(options?
  *
  * Remove the authenticated user's registration from an event
  */
-export const deleteEventRegistration = <ThrowOnError extends boolean = false>(options: Options<DeleteEventRegistrationData, ThrowOnError>) => {
+export const deleteEventRegistration = <ThrowOnError extends boolean = true>(options: Options<DeleteEventRegistrationData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteEventRegistrationResponses, DeleteEventRegistrationErrors, ThrowOnError>({
         url: '/api/event/{eventId}/registration',
         ...options
@@ -243,7 +243,7 @@ export const deleteEventRegistration = <ThrowOnError extends boolean = false>(op
  *
  * Retrieve a paginated list of users registered for a specific event, including registered and waitlist counts
  */
-export const listEventRegistrations = <ThrowOnError extends boolean = false>(options: Options<ListEventRegistrationsData, ThrowOnError>) => {
+export const listEventRegistrations = <ThrowOnError extends boolean = true>(options: Options<ListEventRegistrationsData, ThrowOnError>) => {
     return (options.client ?? client).get<ListEventRegistrationsResponses, unknown, ThrowOnError>({
         url: '/api/event/{eventId}/registration',
         ...options
@@ -255,7 +255,7 @@ export const listEventRegistrations = <ThrowOnError extends boolean = false>(opt
  *
  * Create a new registration for the authenticated user to attend an event, initially with pending status
  */
-export const createEventRegistration = <ThrowOnError extends boolean = false>(options: Options<CreateEventRegistrationData, ThrowOnError>) => {
+export const createEventRegistration = <ThrowOnError extends boolean = true>(options: Options<CreateEventRegistrationData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateEventRegistrationResponses, CreateEventRegistrationErrors, ThrowOnError>({
         url: '/api/event/{eventId}/registration',
         ...options
@@ -267,7 +267,7 @@ export const createEventRegistration = <ThrowOnError extends boolean = false>(op
  *
  * Initiates a Vipps payment for an event registration. User must have a registered status for the event.
  */
-export const createEventPayment = <ThrowOnError extends boolean = false>(options: Options<CreateEventPaymentData, ThrowOnError>) => {
+export const createEventPayment = <ThrowOnError extends boolean = true>(options: Options<CreateEventPaymentData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateEventPaymentResponses, CreateEventPaymentErrors, ThrowOnError>({
         url: '/api/event/{eventId}/payment',
         ...options,
@@ -283,7 +283,7 @@ export const createEventPayment = <ThrowOnError extends boolean = false>(options
  *
  * Webhook endpoint for Vipps to notify about payment status changes. Updates payment record based on Vipps payment state.
  */
-export const handlePaymentWebhook = <ThrowOnError extends boolean = false>(options?: Options<HandlePaymentWebhookData, ThrowOnError>) => {
+export const handlePaymentWebhook = <ThrowOnError extends boolean = true>(options?: Options<HandlePaymentWebhookData, ThrowOnError>) => {
     return (options?.client ?? client).post<HandlePaymentWebhookResponses, HandlePaymentWebhookErrors, ThrowOnError>({
         url: '/api/event/payment/webhook',
         ...options
@@ -295,7 +295,7 @@ export const handlePaymentWebhook = <ThrowOnError extends boolean = false>(optio
  *
  * Get all forms (survey and evaluation) for an event
  */
-export const listEventForms = <ThrowOnError extends boolean = false>(options: Options<ListEventFormsData, ThrowOnError>) => {
+export const listEventForms = <ThrowOnError extends boolean = true>(options: Options<ListEventFormsData, ThrowOnError>) => {
     return (options.client ?? client).get<ListEventFormsResponses, ListEventFormsErrors, ThrowOnError>({
         url: '/api/event/{eventId}/forms',
         ...options
@@ -307,7 +307,7 @@ export const listEventForms = <ThrowOnError extends boolean = false>(options: Op
  *
  * Create a survey or evaluation form for an event. Requires event write permission.
  */
-export const createEventForm = <ThrowOnError extends boolean = false>(options: Options<CreateEventFormData, ThrowOnError>) => {
+export const createEventForm = <ThrowOnError extends boolean = true>(options: Options<CreateEventFormData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateEventFormResponses, CreateEventFormErrors, ThrowOnError>({
         url: '/api/event/{eventId}/forms',
         ...options,
@@ -323,7 +323,7 @@ export const createEventForm = <ThrowOnError extends boolean = false>(options: O
  *
  * Get a specific form (survey or evaluation) for an event with all fields and options
  */
-export const getEventForm = <ThrowOnError extends boolean = false>(options: Options<GetEventFormData, ThrowOnError>) => {
+export const getEventForm = <ThrowOnError extends boolean = true>(options: Options<GetEventFormData, ThrowOnError>) => {
     return (options.client ?? client).get<GetEventFormResponses, GetEventFormErrors, ThrowOnError>({
         url: '/api/event/{eventId}/forms/{type}',
         ...options
@@ -335,7 +335,7 @@ export const getEventForm = <ThrowOnError extends boolean = false>(options: Opti
  *
  * List all form templates by default. Use ?all=true to include all forms. Returns template forms by default.
  */
-export const listForms = <ThrowOnError extends boolean = false>(options?: Options<ListFormsData, ThrowOnError>) => {
+export const listForms = <ThrowOnError extends boolean = true>(options?: Options<ListFormsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListFormsResponses, ListFormsErrors, ThrowOnError>({
         url: '/api/forms',
         ...options
@@ -347,7 +347,7 @@ export const listForms = <ThrowOnError extends boolean = false>(options?: Option
  *
  * Create a new base form template. Requires 'forms:create' permission.
  */
-export const createForm = <ThrowOnError extends boolean = false>(options?: Options<CreateFormData, ThrowOnError>) => {
+export const createForm = <ThrowOnError extends boolean = true>(options?: Options<CreateFormData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateFormResponses, CreateFormErrors, ThrowOnError>({
         url: '/api/forms',
         ...options,
@@ -363,7 +363,7 @@ export const createForm = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Delete a form and all associated data. Requires permission to manage the form.
  */
-export const deleteForm = <ThrowOnError extends boolean = false>(options: Options<DeleteFormData, ThrowOnError>) => {
+export const deleteForm = <ThrowOnError extends boolean = true>(options: Options<DeleteFormData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteFormResponses, DeleteFormErrors, ThrowOnError>({
         url: '/api/forms/{id}',
         ...options
@@ -375,7 +375,7 @@ export const deleteForm = <ThrowOnError extends boolean = false>(options: Option
  *
  * Get a form by ID with all fields and options
  */
-export const getForm = <ThrowOnError extends boolean = false>(options: Options<GetFormData, ThrowOnError>) => {
+export const getForm = <ThrowOnError extends boolean = true>(options: Options<GetFormData, ThrowOnError>) => {
     return (options.client ?? client).get<GetFormResponses, GetFormErrors, ThrowOnError>({
         url: '/api/forms/{id}',
         ...options
@@ -387,7 +387,7 @@ export const getForm = <ThrowOnError extends boolean = false>(options: Options<G
  *
  * Update a form. Requires permission to manage the form.
  */
-export const updateForm = <ThrowOnError extends boolean = false>(options: Options<UpdateFormData, ThrowOnError>) => {
+export const updateForm = <ThrowOnError extends boolean = true>(options: Options<UpdateFormData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateFormResponses, UpdateFormErrors, ThrowOnError>({
         url: '/api/forms/{id}',
         ...options,
@@ -403,7 +403,7 @@ export const updateForm = <ThrowOnError extends boolean = false>(options: Option
  *
  * Get aggregated statistics for a form. Requires permission to manage the form.
  */
-export const getFormStatistics = <ThrowOnError extends boolean = false>(options: Options<GetFormStatisticsData, ThrowOnError>) => {
+export const getFormStatistics = <ThrowOnError extends boolean = true>(options: Options<GetFormStatisticsData, ThrowOnError>) => {
     return (options.client ?? client).get<GetFormStatisticsResponses, GetFormStatisticsErrors, ThrowOnError>({
         url: '/api/forms/{id}/statistics',
         ...options
@@ -415,7 +415,7 @@ export const getFormStatistics = <ThrowOnError extends boolean = false>(options:
  *
  * List all submissions for a form. Requires permission to manage the form.
  */
-export const listFormSubmissions = <ThrowOnError extends boolean = false>(options: Options<ListFormSubmissionsData, ThrowOnError>) => {
+export const listFormSubmissions = <ThrowOnError extends boolean = true>(options: Options<ListFormSubmissionsData, ThrowOnError>) => {
     return (options.client ?? client).get<ListFormSubmissionsResponses, ListFormSubmissionsErrors, ThrowOnError>({
         url: '/api/forms/{formId}/submissions',
         ...options
@@ -427,7 +427,7 @@ export const listFormSubmissions = <ThrowOnError extends boolean = false>(option
  *
  * Submit answers to a form
  */
-export const createFormSubmission = <ThrowOnError extends boolean = false>(options: Options<CreateFormSubmissionData, ThrowOnError>) => {
+export const createFormSubmission = <ThrowOnError extends boolean = true>(options: Options<CreateFormSubmissionData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateFormSubmissionResponses, CreateFormSubmissionErrors, ThrowOnError>({
         url: '/api/forms/{formId}/submissions',
         ...options,
@@ -443,7 +443,7 @@ export const createFormSubmission = <ThrowOnError extends boolean = false>(optio
  *
  * Get a specific submission. Can view own submission or requires permission to manage the form.
  */
-export const getFormSubmission = <ThrowOnError extends boolean = false>(options: Options<GetFormSubmissionData, ThrowOnError>) => {
+export const getFormSubmission = <ThrowOnError extends boolean = true>(options: Options<GetFormSubmissionData, ThrowOnError>) => {
     return (options.client ?? client).get<GetFormSubmissionResponses, GetFormSubmissionErrors, ThrowOnError>({
         url: '/api/forms/{formId}/submissions/{id}',
         ...options
@@ -455,7 +455,7 @@ export const getFormSubmission = <ThrowOnError extends boolean = false>(options:
  *
  * Download all submissions for a form as CSV. Requires permission to manage the form.
  */
-export const downloadFormSubmissions = <ThrowOnError extends boolean = false>(options: Options<DownloadFormSubmissionsData, ThrowOnError>) => {
+export const downloadFormSubmissions = <ThrowOnError extends boolean = true>(options: Options<DownloadFormSubmissionsData, ThrowOnError>) => {
     return (options.client ?? client).get<DownloadFormSubmissionsResponses, DownloadFormSubmissionsErrors, ThrowOnError>({
         url: '/api/forms/{formId}/submissions/download',
         ...options
@@ -467,7 +467,7 @@ export const downloadFormSubmissions = <ThrowOnError extends boolean = false>(op
  *
  * Delete a submission and notify the user with a reason. Admin only.
  */
-export const deleteFormSubmission = <ThrowOnError extends boolean = false>(options: Options<DeleteFormSubmissionData, ThrowOnError>) => {
+export const deleteFormSubmission = <ThrowOnError extends boolean = true>(options: Options<DeleteFormSubmissionData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteFormSubmissionResponses, DeleteFormSubmissionErrors, ThrowOnError>({
         url: '/api/forms/{formId}/submissions/{id}/destroy_with_reason',
         ...options,
@@ -483,7 +483,7 @@ export const deleteFormSubmission = <ThrowOnError extends boolean = false>(optio
  *
  * Returns paginated list of notifications for the authenticated user, ordered by most recent first
  */
-export const listNotifications = <ThrowOnError extends boolean = false>(options?: Options<ListNotificationsData, ThrowOnError>) => {
+export const listNotifications = <ThrowOnError extends boolean = true>(options?: Options<ListNotificationsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListNotificationsResponses, ListNotificationsErrors, ThrowOnError>({
         url: '/api/notification',
         ...options
@@ -495,7 +495,7 @@ export const listNotifications = <ThrowOnError extends boolean = false>(options?
  *
  * Delete a notification by ID. User must be authenticated and own the notification.
  */
-export const deleteNotification = <ThrowOnError extends boolean = false>(options: Options<DeleteNotificationData, ThrowOnError>) => {
+export const deleteNotification = <ThrowOnError extends boolean = true>(options: Options<DeleteNotificationData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteNotificationResponses, DeleteNotificationErrors, ThrowOnError>({
         url: '/api/notification/{id}',
         ...options
@@ -507,7 +507,7 @@ export const deleteNotification = <ThrowOnError extends boolean = false>(options
  *
  * Update the read status of a notification. User must be authenticated and own the notification.
  */
-export const markNotificationRead = <ThrowOnError extends boolean = false>(options: Options<MarkNotificationReadData, ThrowOnError>) => {
+export const markNotificationRead = <ThrowOnError extends boolean = true>(options: Options<MarkNotificationReadData, ThrowOnError>) => {
     return (options.client ?? client).patch<MarkNotificationReadResponses, MarkNotificationReadErrors, ThrowOnError>({
         url: '/api/notification/{id}/read',
         ...options,
@@ -523,7 +523,7 @@ export const markNotificationRead = <ThrowOnError extends boolean = false>(optio
  *
  * Retrieve a list of all groups. Supports optional filtering by type and search query.
  */
-export const listGroups = <ThrowOnError extends boolean = false>(options?: Options<ListGroupsData, ThrowOnError>) => {
+export const listGroups = <ThrowOnError extends boolean = true>(options?: Options<ListGroupsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListGroupsResponses, unknown, ThrowOnError>({
         url: '/api/groups',
         ...options
@@ -535,7 +535,7 @@ export const listGroups = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Create a new group. Requires 'groups:create' permission.
  */
-export const createGroup = <ThrowOnError extends boolean = false>(options?: Options<CreateGroupData, ThrowOnError>) => {
+export const createGroup = <ThrowOnError extends boolean = true>(options?: Options<CreateGroupData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateGroupResponses, CreateGroupErrors, ThrowOnError>({
         url: '/api/groups',
         ...options,
@@ -551,7 +551,7 @@ export const createGroup = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Retrieve all groups the authenticated user is a member of, including membership info.
  */
-export const listMyGroups = <ThrowOnError extends boolean = false>(options?: Options<ListMyGroupsData, ThrowOnError>) => {
+export const listMyGroups = <ThrowOnError extends boolean = true>(options?: Options<ListMyGroupsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListMyGroupsResponses, ListMyGroupsErrors, ThrowOnError>({
         url: '/api/groups/mine',
         ...options
@@ -563,7 +563,7 @@ export const listMyGroups = <ThrowOnError extends boolean = false>(options?: Opt
  *
  * Delete a group by its slug. Requires being a group leader OR having 'groups:delete' permission (globally or scoped to this group). This action is irreversible and will remove all associated data, including memberships and fines.
  */
-export const deleteGroup = <ThrowOnError extends boolean = false>(options: Options<DeleteGroupData, ThrowOnError>) => {
+export const deleteGroup = <ThrowOnError extends boolean = true>(options: Options<DeleteGroupData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteGroupResponses, DeleteGroupErrors, ThrowOnError>({
         url: '/api/groups/{slug}',
         ...options
@@ -575,7 +575,7 @@ export const deleteGroup = <ThrowOnError extends boolean = false>(options: Optio
  *
  * Retrieve detailed information about a specific group by its slug identifier.
  */
-export const getGroup = <ThrowOnError extends boolean = false>(options: Options<GetGroupData, ThrowOnError>) => {
+export const getGroup = <ThrowOnError extends boolean = true>(options: Options<GetGroupData, ThrowOnError>) => {
     return (options.client ?? client).get<GetGroupResponses, GetGroupErrors, ThrowOnError>({
         url: '/api/groups/{slug}',
         ...options
@@ -587,7 +587,7 @@ export const getGroup = <ThrowOnError extends boolean = false>(options: Options<
  *
  * Partially update an existing group by its slug. Only provided fields will be updated. Requires being a group leader OR having 'groups:update' permission (globally or scoped to this group).
  */
-export const updateGroup = <ThrowOnError extends boolean = false>(options: Options<UpdateGroupData, ThrowOnError>) => {
+export const updateGroup = <ThrowOnError extends boolean = true>(options: Options<UpdateGroupData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateGroupResponses, UpdateGroupErrors, ThrowOnError>({
         url: '/api/groups/{slug}',
         ...options,
@@ -603,7 +603,7 @@ export const updateGroup = <ThrowOnError extends boolean = false>(options: Optio
  *
  * Retrieve a list of fines for a group. Users can view their own fines, fines admins can view all fines for their group. Supports filtering by status and user.
  */
-export const listFines = <ThrowOnError extends boolean = false>(options: Options<ListFinesData, ThrowOnError>) => {
+export const listFines = <ThrowOnError extends boolean = true>(options: Options<ListFinesData, ThrowOnError>) => {
     return (options.client ?? client).get<ListFinesResponses, ListFinesErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/fines',
         ...options
@@ -615,7 +615,7 @@ export const listFines = <ThrowOnError extends boolean = false>(options: Options
  *
  * Create a new fine for a group member. Requires being a group leader OR having 'fines:create' permission (globally or scoped to this group).
  */
-export const createFine = <ThrowOnError extends boolean = false>(options: Options<CreateFineData, ThrowOnError>) => {
+export const createFine = <ThrowOnError extends boolean = true>(options: Options<CreateFineData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateFineResponses, CreateFineErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/fines',
         ...options,
@@ -631,7 +631,7 @@ export const createFine = <ThrowOnError extends boolean = false>(options: Option
  *
  * Delete a fine by its ID. Requires being the fines admin OR having 'fines:delete' permission (globally or scoped to this group). This action is irreversible.
  */
-export const deleteFine = <ThrowOnError extends boolean = false>(options: Options<DeleteFineData, ThrowOnError>) => {
+export const deleteFine = <ThrowOnError extends boolean = true>(options: Options<DeleteFineData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteFineResponses, DeleteFineErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/fines/{fineId}',
         ...options
@@ -643,7 +643,7 @@ export const deleteFine = <ThrowOnError extends boolean = false>(options: Option
  *
  * Retrieve detailed information about a specific fine. Users can view their own fines, fines admins can view all fines for their group.
  */
-export const getFine = <ThrowOnError extends boolean = false>(options: Options<GetFineData, ThrowOnError>) => {
+export const getFine = <ThrowOnError extends boolean = true>(options: Options<GetFineData, ThrowOnError>) => {
     return (options.client ?? client).get<GetFineResponses, GetFineErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/fines/{fineId}',
         ...options
@@ -655,7 +655,7 @@ export const getFine = <ThrowOnError extends boolean = false>(options: Options<G
  *
  * Partially update a fine. Only provided fields will be updated. Users can add defense to their own fines. Fines admins can update status and approve/reject fines.
  */
-export const updateFine = <ThrowOnError extends boolean = false>(options: Options<UpdateFineData, ThrowOnError>) => {
+export const updateFine = <ThrowOnError extends boolean = true>(options: Options<UpdateFineData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateFineResponses, UpdateFineErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/fines/{fineId}',
         ...options,
@@ -671,7 +671,7 @@ export const updateFine = <ThrowOnError extends boolean = false>(options: Option
  *
  * Retrieve a list of all members in a group.
  */
-export const listGroupMembers = <ThrowOnError extends boolean = false>(options: Options<ListGroupMembersData, ThrowOnError>) => {
+export const listGroupMembers = <ThrowOnError extends boolean = true>(options: Options<ListGroupMembersData, ThrowOnError>) => {
     return (options.client ?? client).get<ListGroupMembersResponses, ListGroupMembersErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/members',
         ...options
@@ -683,7 +683,7 @@ export const listGroupMembers = <ThrowOnError extends boolean = false>(options: 
  *
  * Add a member to a group. Requires 'groups:manage' permission.
  */
-export const addGroupMember = <ThrowOnError extends boolean = false>(options: Options<AddGroupMemberData, ThrowOnError>) => {
+export const addGroupMember = <ThrowOnError extends boolean = true>(options: Options<AddGroupMemberData, ThrowOnError>) => {
     return (options.client ?? client).post<AddGroupMemberResponses, AddGroupMemberErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/members',
         ...options,
@@ -699,7 +699,7 @@ export const addGroupMember = <ThrowOnError extends boolean = false>(options: Op
  *
  * Remove a member from a group. Requires 'groups:manage' permission.
  */
-export const removeGroupMember = <ThrowOnError extends boolean = false>(options: Options<RemoveGroupMemberData, ThrowOnError>) => {
+export const removeGroupMember = <ThrowOnError extends boolean = true>(options: Options<RemoveGroupMemberData, ThrowOnError>) => {
     return (options.client ?? client).delete<RemoveGroupMemberResponses, RemoveGroupMemberErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/members/{userId}',
         ...options
@@ -711,7 +711,7 @@ export const removeGroupMember = <ThrowOnError extends boolean = false>(options:
  *
  * Update a member's role in a group. Requires 'groups:manage' permission.
  */
-export const updateGroupMemberRole = <ThrowOnError extends boolean = false>(options: Options<UpdateGroupMemberRoleData, ThrowOnError>) => {
+export const updateGroupMemberRole = <ThrowOnError extends boolean = true>(options: Options<UpdateGroupMemberRoleData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateGroupMemberRoleResponses, UpdateGroupMemberRoleErrors, ThrowOnError>({
         url: '/api/groups/{groupSlug}/members/{userId}',
         ...options,
@@ -727,7 +727,7 @@ export const updateGroupMemberRole = <ThrowOnError extends boolean = false>(opti
  *
  * Get all forms for a group, filtered by user permissions
  */
-export const listGroupForms = <ThrowOnError extends boolean = false>(options: Options<ListGroupFormsData, ThrowOnError>) => {
+export const listGroupForms = <ThrowOnError extends boolean = true>(options: Options<ListGroupFormsData, ThrowOnError>) => {
     return (options.client ?? client).get<ListGroupFormsResponses, ListGroupFormsErrors, ThrowOnError>({
         url: '/api/groups/{slug}/forms',
         ...options
@@ -739,7 +739,7 @@ export const listGroupForms = <ThrowOnError extends boolean = false>(options: Op
  *
  * Create a form for a group. Requires group leader permission or forms:create permission.
  */
-export const createGroupForm = <ThrowOnError extends boolean = false>(options: Options<CreateGroupFormData, ThrowOnError>) => {
+export const createGroupForm = <ThrowOnError extends boolean = true>(options: Options<CreateGroupFormData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateGroupFormResponses, CreateGroupFormErrors, ThrowOnError>({
         url: '/api/groups/{slug}/forms',
         ...options,
@@ -755,7 +755,7 @@ export const createGroupForm = <ThrowOnError extends boolean = false>(options: O
  *
  * Get a paginated list of all news articles. Public endpoint.
  */
-export const listNews = <ThrowOnError extends boolean = false>(options?: Options<ListNewsData, ThrowOnError>) => {
+export const listNews = <ThrowOnError extends boolean = true>(options?: Options<ListNewsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListNewsResponses, unknown, ThrowOnError>({
         url: '/api/news',
         ...options
@@ -767,7 +767,7 @@ export const listNews = <ThrowOnError extends boolean = false>(options?: Options
  *
  * Create a new news article. Requires 'news:create' permission.
  */
-export const createNews = <ThrowOnError extends boolean = false>(options?: Options<CreateNewsData, ThrowOnError>) => {
+export const createNews = <ThrowOnError extends boolean = true>(options?: Options<CreateNewsData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateNewsResponses, CreateNewsErrors, ThrowOnError>({
         url: '/api/news',
         ...options,
@@ -783,7 +783,7 @@ export const createNews = <ThrowOnError extends boolean = false>(options?: Optio
  *
  * Delete a news article. Requires 'news:delete' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const deleteNews = <ThrowOnError extends boolean = false>(options: Options<DeleteNewsData, ThrowOnError>) => {
+export const deleteNews = <ThrowOnError extends boolean = true>(options: Options<DeleteNewsData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteNewsResponses, DeleteNewsErrors, ThrowOnError>({
         url: '/api/news/{id}',
         ...options
@@ -795,7 +795,7 @@ export const deleteNews = <ThrowOnError extends boolean = false>(options: Option
  *
  * Get a single news article by ID. Public endpoint.
  */
-export const getNews = <ThrowOnError extends boolean = false>(options: Options<GetNewsData, ThrowOnError>) => {
+export const getNews = <ThrowOnError extends boolean = true>(options: Options<GetNewsData, ThrowOnError>) => {
     return (options.client ?? client).get<GetNewsResponses, GetNewsErrors, ThrowOnError>({
         url: '/api/news/{id}',
         ...options
@@ -807,7 +807,7 @@ export const getNews = <ThrowOnError extends boolean = false>(options: Options<G
  *
  * Update a news article. Requires 'news:update' or 'news:manage' permission (global or scoped) or being the creator.
  */
-export const updateNews = <ThrowOnError extends boolean = false>(options: Options<UpdateNewsData, ThrowOnError>) => {
+export const updateNews = <ThrowOnError extends boolean = true>(options: Options<UpdateNewsData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateNewsResponses, UpdateNewsErrors, ThrowOnError>({
         url: '/api/news/{id}',
         ...options,
@@ -823,7 +823,7 @@ export const updateNews = <ThrowOnError extends boolean = false>(options: Option
  *
  * Remove your emoji reaction from a news article.
  */
-export const deleteNewsReaction = <ThrowOnError extends boolean = false>(options: Options<DeleteNewsReactionData, ThrowOnError>) => {
+export const deleteNewsReaction = <ThrowOnError extends boolean = true>(options: Options<DeleteNewsReactionData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteNewsReactionResponses, DeleteNewsReactionErrors, ThrowOnError>({
         url: '/api/news/{id}/reactions',
         ...options
@@ -835,7 +835,7 @@ export const deleteNewsReaction = <ThrowOnError extends boolean = false>(options
  *
  * Add or update emoji reaction to a news article. Requires authentication.
  */
-export const createNewsReaction = <ThrowOnError extends boolean = false>(options: Options<CreateNewsReactionData, ThrowOnError>) => {
+export const createNewsReaction = <ThrowOnError extends boolean = true>(options: Options<CreateNewsReactionData, ThrowOnError>) => {
     return (options.client ?? client).post<CreateNewsReactionResponses, CreateNewsReactionErrors, ThrowOnError>({
         url: '/api/news/{id}/reactions',
         ...options,
@@ -851,7 +851,7 @@ export const createNewsReaction = <ThrowOnError extends boolean = false>(options
  *
  * Get a list of job postings. Supports search and expired filtering. Public endpoint.
  */
-export const listJobs = <ThrowOnError extends boolean = false>(options?: Options<ListJobsData, ThrowOnError>) => {
+export const listJobs = <ThrowOnError extends boolean = true>(options?: Options<ListJobsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListJobsResponses, unknown, ThrowOnError>({
         url: '/api/jobs',
         ...options
@@ -863,7 +863,7 @@ export const listJobs = <ThrowOnError extends boolean = false>(options?: Options
  *
  * Create a new job posting. Requires 'jobs:create' permission.
  */
-export const createJob = <ThrowOnError extends boolean = false>(options?: Options<CreateJobData, ThrowOnError>) => {
+export const createJob = <ThrowOnError extends boolean = true>(options?: Options<CreateJobData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateJobResponses, CreateJobErrors, ThrowOnError>({
         url: '/api/jobs',
         ...options,
@@ -879,7 +879,7 @@ export const createJob = <ThrowOnError extends boolean = false>(options?: Option
  *
  * Delete a job posting. Requires 'jobs:delete' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const deleteJob = <ThrowOnError extends boolean = false>(options: Options<DeleteJobData, ThrowOnError>) => {
+export const deleteJob = <ThrowOnError extends boolean = true>(options: Options<DeleteJobData, ThrowOnError>) => {
     return (options.client ?? client).delete<DeleteJobResponses, DeleteJobErrors, ThrowOnError>({
         url: '/api/jobs/{id}',
         ...options
@@ -891,7 +891,7 @@ export const deleteJob = <ThrowOnError extends boolean = false>(options: Options
  *
  * Get a single job posting by ID. Public endpoint.
  */
-export const getJob = <ThrowOnError extends boolean = false>(options: Options<GetJobData, ThrowOnError>) => {
+export const getJob = <ThrowOnError extends boolean = true>(options: Options<GetJobData, ThrowOnError>) => {
     return (options.client ?? client).get<GetJobResponses, GetJobErrors, ThrowOnError>({
         url: '/api/jobs/{id}',
         ...options
@@ -903,7 +903,7 @@ export const getJob = <ThrowOnError extends boolean = false>(options: Options<Ge
  *
  * Update a job posting. Requires 'jobs:update' or 'jobs:manage' permission (global or scoped) or being the creator.
  */
-export const updateJob = <ThrowOnError extends boolean = false>(options: Options<UpdateJobData, ThrowOnError>) => {
+export const updateJob = <ThrowOnError extends boolean = true>(options: Options<UpdateJobData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateJobResponses, UpdateJobErrors, ThrowOnError>({
         url: '/api/jobs/{id}',
         ...options,
@@ -919,7 +919,7 @@ export const updateJob = <ThrowOnError extends boolean = false>(options: Options
  *
  * Retrieve the authenticated user's settings including preferences and allergies.
  */
-export const getUserSettings = <ThrowOnError extends boolean = false>(options?: Options<GetUserSettingsData, ThrowOnError>) => {
+export const getUserSettings = <ThrowOnError extends boolean = true>(options?: Options<GetUserSettingsData, ThrowOnError>) => {
     return (options?.client ?? client).get<GetUserSettingsResponses, GetUserSettingsErrors, ThrowOnError>({
         url: '/api/user/me/settings',
         ...options
@@ -931,7 +931,7 @@ export const getUserSettings = <ThrowOnError extends boolean = false>(options?: 
  *
  * Partially update the authenticated user's settings. Only provided fields will be updated. User must have completed onboarding first.
  */
-export const updateUserSettings = <ThrowOnError extends boolean = false>(options?: Options<UpdateUserSettingsData, ThrowOnError>) => {
+export const updateUserSettings = <ThrowOnError extends boolean = true>(options?: Options<UpdateUserSettingsData, ThrowOnError>) => {
     return (options?.client ?? client).patch<UpdateUserSettingsResponses, UpdateUserSettingsErrors, ThrowOnError>({
         url: '/api/user/me/settings',
         ...options,
@@ -947,7 +947,7 @@ export const updateUserSettings = <ThrowOnError extends boolean = false>(options
  *
  * Create initial user settings and mark the user as onboarded. Can only be called once per user.
  */
-export const onboardUser = <ThrowOnError extends boolean = false>(options?: Options<OnboardUserData, ThrowOnError>) => {
+export const onboardUser = <ThrowOnError extends boolean = true>(options?: Options<OnboardUserData, ThrowOnError>) => {
     return (options?.client ?? client).post<OnboardUserResponses, OnboardUserErrors, ThrowOnError>({
         url: '/api/user/me/settings',
         ...options,
@@ -963,7 +963,7 @@ export const onboardUser = <ThrowOnError extends boolean = false>(options?: Opti
  *
  * Retrieve a list of all possible allergies that users can have.
  */
-export const listAllergies = <ThrowOnError extends boolean = false>(options?: Options<ListAllergiesData, ThrowOnError>) => {
+export const listAllergies = <ThrowOnError extends boolean = true>(options?: Options<ListAllergiesData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListAllergiesResponses, unknown, ThrowOnError>({
         url: '/api/user/allergy',
         ...options
