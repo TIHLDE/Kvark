@@ -29,23 +29,6 @@ export type ListApiKeysErrors = {
          */
         meta?: unknown;
     };
-    /**
-     * Missing required permission: api-keys:view
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
 };
 
 export type ListApiKeysError = ListApiKeysErrors[keyof ListApiKeysErrors];
@@ -133,23 +116,6 @@ export type CreateApiKeyErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: api-keys:create
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -254,23 +220,6 @@ export type DeleteApiKeyErrors = {
         meta?: unknown;
     };
     /**
-     * Missing required permission: api-keys:delete
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
      * Not Found - API key not found
      */
     404: unknown;
@@ -309,23 +258,6 @@ export type GetApiKeyErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: api-keys:view
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -449,23 +381,6 @@ export type UpdateApiKeyErrors = {
         meta?: unknown;
     };
     /**
-     * Missing required permission: api-keys:update
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
      * Not Found - API key not found
      */
     404: unknown;
@@ -542,23 +457,6 @@ export type RegenerateApiKeyErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: api-keys:update
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -1007,22 +905,9 @@ export type CreateEventErrors = {
         meta?: unknown;
     };
     /**
-     * Missing required permission: events:create
+     * Forbidden - Missing events:create permission
      */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
+    403: unknown;
 };
 
 export type CreateEventError = CreateEventErrors[keyof CreateEventErrors];
@@ -1855,7 +1740,7 @@ export type GetEventFormData = {
     body?: never;
     path: {
         eventId: string;
-        type: string;
+        type: 'survey' | 'evaluation';
     };
     query?: never;
     url: '/api/event/{eventId}/forms/{type}';
@@ -1995,23 +1880,6 @@ export type CreateFormErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: forms:create
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -2553,23 +2421,6 @@ export type DeleteFormSubmissionErrors = {
         meta?: unknown;
     };
     /**
-     * Missing required permission: forms:manage
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
      * Not Found - Submission not found
      */
     404: unknown;
@@ -2896,23 +2747,6 @@ export type CreateGroupErrors = {
          */
         meta?: unknown;
     };
-    /**
-     * Missing required permission: groups:create
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
 };
 
 export type CreateGroupError = CreateGroupErrors[keyof CreateGroupErrors];
@@ -2923,94 +2757,6 @@ export type CreateGroupResponses = {
      */
     201: unknown;
 };
-
-export type ListMyGroupsData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/api/groups/mine';
-};
-
-export type ListMyGroupsErrors = {
-    /**
-     * Authentication required
-     */
-    401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-};
-
-export type ListMyGroupsError = ListMyGroupsErrors[keyof ListMyGroupsErrors];
-
-export type ListMyGroupsResponses = {
-    /**
-     * List of groups the user is a member of
-     */
-    200: Array<{
-        /**
-         * Group slug
-         */
-        slug: string;
-        /**
-         * Group image URL
-         */
-        imageUrl: string | null;
-        /**
-         * Group name
-         */
-        name: string;
-        /**
-         * Group description
-         */
-        description: string | null;
-        /**
-         * Group contact email
-         */
-        contactEmail: string | null;
-        /**
-         * Group type
-         */
-        type: string;
-        /**
-         * Group fines info
-         */
-        finesInfo: string;
-        /**
-         * Group fines activated
-         */
-        finesActivated: boolean;
-        /**
-         * Group fines admin ID
-         */
-        finesAdminId: string | null;
-        /**
-         * Creation timestamp
-         */
-        createdAt: string;
-        /**
-         * Last update timestamp
-         */
-        updatedAt: string;
-        membership: {
-            role: 'member' | 'leader';
-            joinedAt: string;
-            updatedAt: string;
-        };
-    }>;
-};
-
-export type ListMyGroupsResponse = ListMyGroupsResponses[keyof ListMyGroupsResponses];
 
 export type DeleteGroupData = {
     body?: never;
@@ -3687,23 +3433,6 @@ export type AddGroupMemberErrors = {
         meta?: unknown;
     };
     /**
-     * Missing required permission: groups:manage
-     */
-    403: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
      * Not Found - Group not found
      */
     404: unknown;
@@ -3733,23 +3462,6 @@ export type RemoveGroupMemberErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: groups:manage
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -3800,23 +3512,6 @@ export type UpdateGroupMemberRoleErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: groups:manage
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -4018,23 +3713,6 @@ export type CreateNewsErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: news:create
-     */
-    403: {
         /**
          * The HTTP status code
          */
@@ -4361,23 +4039,6 @@ export type CreateJobErrors = {
      * Authentication required
      */
     401: {
-        /**
-         * The HTTP status code
-         */
-        status: number;
-        /**
-         * The error message
-         */
-        message: string;
-        /**
-         * Additional metadata about the error
-         */
-        meta?: unknown;
-    };
-    /**
-     * Missing required permission: jobs:create
-     */
-    403: {
         /**
          * The HTTP status code
          */
