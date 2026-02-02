@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 import API from './api';
 import { getCookie, setCookie } from './cookie';
-import { photon, photonAuthClient } from './photon';
+import { ExtendedSession, photonAuthClient } from './photon';
 
 export const AuthObjectSchema = z.object({
   user: z.object({
@@ -25,15 +25,7 @@ export const AuthObjectSchema = z.object({
       }),
     ),
   }),
-  permissions: z.record(
-    z.string(),
-    z.object({
-      write: z.boolean(),
-      read: z.boolean(),
-      write_all: z.boolean().optional(),
-      destroy: z.boolean().optional(),
-    }),
-  ),
+  permissions: z.array(z.string()),
   tihldeUser: z.custom<User>(),
 });
 
@@ -43,43 +35,22 @@ export const authQueryOptions = queryOptions({
   queryKey: ['auth'],
   staleTime: 1000 * 60 * 2, // 2 minutes we want to check this frequently
   async queryFn() {
-    const token = getCookie(ACCESS_TOKEN);
-
-    if (!token) {
-      return null; // Not allowed to set undefiened in the cache
-    }
-
     try {
       getQueryClient().cancelQueries({ queryKey: ['user', null] });
-      const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
+      const sessionResponse = (await photonAuthClient.getSession()).data;
 
-      const settings = await photon.getUserSettings();
-      const profile = (await photonAuthClient.getSession()).data;
-      const groups = await photon.listMyGroups();
-
-      if (settings === undefined || profile === null || groups === undefined) {
+      if (sessionResponse === null) {
         // eslint-disable-next-line no-console
         console.error('Failed to fetch user data from Photon');
         // eslint-disable-next-line no-console
-        console.error({ settings, profile, groups });
+        console.error({ profile: sessionResponse });
         return null;
       }
 
-      // TODO: Use single `name` field instead of splitting into firstName/lastName
-      const authUser = {
-        id: profile.user.id,
-        firstName: profile.user.name.split(' ')[0] ?? '',
-        lastName: profile.user.name.split(' ').slice(1).join(' ') ?? '',
-        email: profile.user.email,
-        image: settings.imageUrl,
-        groups: groups.map((g) => ({
-          id: g.slug,
-          name: g.name,
-          isLeader: g.membership.role === 'leader',
-        })),
-      };
-      getQueryClient().setQueryData(['user', null], user);
-      return AuthObjectSchema.parse({ user: authUser, permissions: permission.permissions, tihldeUser: user });
+      const session = sessionResponse as typeof sessionResponse & ExtendedSession;
+
+      getQueryClient().setQueryData(['user', null], session);
+      return session;
     } catch {
       // If we get an error, we want to invalidate the cache
       return null;

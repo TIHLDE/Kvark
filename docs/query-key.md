@@ -2,6 +2,19 @@
 
 Based on [tkDodo's blog: Effective React Query Keys](https://tkdodo.eu/blog/effective-react-query-keys)
 
+## Naming Convention
+
+Function names match the Photon SDK method names with a suffix:
+- Queries: `photon.{method}` → `{method}Query`
+- Mutations: `photon.{method}` → `{method}Mutation`
+
+Examples:
+- `photon.listEvents` → `listEventsQuery`
+- `photon.getEvent` → `getEventQuery`
+- `photon.createEvent` → `createEventMutation`
+- `photon.updateEvent` → `updateEventMutation`
+- `photon.deleteEvent` → `deleteEventMutation`
+
 ## Core Principles
 
 1. **Always use arrays** - Even for single elements: `['auth']` not `'auth'`

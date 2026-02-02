@@ -1,4 +1,22 @@
 /**
+ * Extract query parameters from a generated SDK Data type.
+ * Usage: QueryParams<ListEventsData> -> { expired?: boolean; ... }
+ */
+export type QueryParams<T> = T extends { query?: infer Q } ? Q : never;
+
+/**
+ * Extract path parameters from a generated SDK Data type.
+ * Usage: PathParams<GetEventData> -> { eventId: string }
+ */
+export type PathParams<T> = T extends { path?: infer P } ? P : never;
+
+/**
+ * Extract payload type (from body) for mutations
+ * Usage: Payload<CreateEventData> -> { title: string, ... }
+ */
+export type Payload<T> = T extends { body?: infer P } ? P : never;
+
+/**
  * Wraps an SDK module so all methods return only the `data` property.
  * This avoids having to write `.data` on every API call.
  */
