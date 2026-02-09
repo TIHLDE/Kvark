@@ -1,40 +1,61 @@
-import { Check } from 'lucide-react'; //
-import React from 'react';
+import { cn } from '~/lib/utils';
+import { Check, type LucideIcon } from 'lucide-react';
+
+interface Stage {
+  id: number;
+  title: string;
+  shortTitle: string;
+  icon: LucideIcon;
+}
 
 interface StepIndicatorProps {
-  stages: { id: number; title: string }[];
+  stages: Stage[];
   currentStage: number;
   onSelectStage: (id: number) => void;
 }
 
-const StepIndicator: React.FC<StepIndicatorProps> = ({ stages, currentStage, onSelectStage }) => {
+const StepIndicator = ({ stages, currentStage, onSelectStage }: StepIndicatorProps) => {
   return (
-    <div className='w-full flex justify-center'>
-      <div className='flex items-center justify-center w-full max-w-4xl'>
+    <div className='w-full'>
+      <div className='flex items-start justify-between w-full max-w-3xl mx-auto'>
         {stages.map((stage, index) => {
-          const isActive = stage.id <= currentStage;
+          const isActive = stage.id === currentStage;
           const isCompleted = stage.id < currentStage;
           const isLast = index === stages.length - 1;
+          const Icon = stage.icon;
 
           return (
-            <div key={stage.id} className='flex items-center w-full last:w-auto'>
-              {/* Sirkel */}
-              <div
-                onClick={() => onSelectStage(stage.id)}
-                className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300 cursor-pointer z-10
-                    ${
-                      isCompleted
-                        ? 'bg-white dark:bg-slate-800 border-green-500 text-green-600 dark:text-green-400'
-                        : isActive
-                          ? 'bg-white dark:bg-slate-800 border-sky-600 text-sky-600 dark:text-sky-300'
-                          : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-500 hover:border-sky-400'
-                    }
-                    `}>
-                {isCompleted ? <Check className='w-5 h-5 text-green-600 dark:text-white' strokeWidth={3} /> : stage.id}
+            <div key={stage.id} className='flex items-start flex-1 last:flex-none'>
+              <div className='flex flex-col items-center'>
+                <button
+                  type='button'
+                  onClick={() => onSelectStage(stage.id)}
+                  className={cn(
+                    'flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full border-2 transition-all duration-300 cursor-pointer z-10',
+                    isCompleted && 'bg-green-50 dark:bg-green-900/30 border-green-500 text-green-600 dark:text-green-400',
+                    isActive && 'bg-primary/10 dark:bg-primary/20 border-primary text-primary ring-4 ring-primary/20',
+                    !isActive && !isCompleted && 'bg-card border-border text-muted-foreground hover:border-primary/50 hover:text-primary/70',
+                  )}>
+                  {isCompleted ? <Check className='w-5 h-5 md:w-6 md:h-6' strokeWidth={2.5} /> : <Icon className='w-5 h-5 md:w-6 md:h-6' />}
+                </button>
+
+                <span
+                  className={cn(
+                    'mt-2 text-xs md:text-sm font-medium text-center max-w-[80px] md:max-w-[100px] leading-tight transition-colors duration-300',
+                    isActive && 'text-primary font-semibold',
+                    isCompleted && 'text-green-600 dark:text-green-400',
+                    !isActive && !isCompleted && 'text-muted-foreground',
+                  )}>
+                  <span className='md:hidden'>{stage.shortTitle}</span>
+                  <span className='hidden md:inline'>{stage.title}</span>
+                </span>
               </div>
 
-              {/* Linje mellom steg */}
-              {!isLast && <div className={`grow h-0.5 transition-colors duration-300 ${isCompleted ? 'bg-green-600' : 'bg-slate-300 dark:bg-slate-700'}`} />}
+              {!isLast && (
+                <div className='flex-1 flex items-center px-2 mt-6 md:mt-7'>
+                  <div className={cn('h-0.5 w-full transition-colors duration-300 rounded-full', isCompleted ? 'bg-green-500' : 'bg-border')} />
+                </div>
+              )}
             </div>
           );
         })}
