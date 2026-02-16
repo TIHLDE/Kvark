@@ -2,7 +2,8 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AddGroupMemberData, AddGroupMemberErrors, AddGroupMemberResponses, CreateApiKeyData, CreateApiKeyErrors, CreateApiKeyResponses, CreateEventData, CreateEventErrors, CreateEventFormData, CreateEventFormErrors, CreateEventFormResponses, CreateEventPaymentData, CreateEventPaymentErrors, CreateEventPaymentResponses, CreateEventRegistrationData, CreateEventRegistrationErrors, CreateEventRegistrationResponses, CreateEventResponses, CreateFineData, CreateFineErrors, CreateFineResponses, CreateFormData, CreateFormErrors, CreateFormResponses, CreateFormSubmissionData, CreateFormSubmissionErrors, CreateFormSubmissionResponses, CreateGroupData, CreateGroupErrors, CreateGroupFormData, CreateGroupFormErrors, CreateGroupFormResponses, CreateGroupResponses, CreateJobData, CreateJobErrors, CreateJobResponses, CreateNewsData, CreateNewsErrors, CreateNewsReactionData, CreateNewsReactionErrors, CreateNewsReactionResponses, CreateNewsResponses, DeleteApiKeyData, DeleteApiKeyErrors, DeleteApiKeyResponses, DeleteEventData, DeleteEventErrors, DeleteEventRegistrationData, DeleteEventRegistrationErrors, DeleteEventRegistrationResponses, DeleteEventResponses, DeleteFineData, DeleteFineErrors, DeleteFineResponses, DeleteFormData, DeleteFormErrors, DeleteFormResponses, DeleteFormSubmissionData, DeleteFormSubmissionErrors, DeleteFormSubmissionResponses, DeleteGroupData, DeleteGroupErrors, DeleteGroupResponses, DeleteJobData, DeleteJobErrors, DeleteJobResponses, DeleteNewsData, DeleteNewsErrors, DeleteNewsReactionData, DeleteNewsReactionErrors, DeleteNewsReactionResponses, DeleteNewsResponses, DeleteNotificationData, DeleteNotificationErrors, DeleteNotificationResponses, DownloadFormSubmissionsData, DownloadFormSubmissionsErrors, DownloadFormSubmissionsResponses, GetApiKeyData, GetApiKeyErrors, GetApiKeyResponses, GetEventData, GetEventFormData, GetEventFormErrors, GetEventFormResponses, GetEventResponses, GetFavoriteEventsData, GetFavoriteEventsErrors, GetFavoriteEventsResponses, GetFineData, GetFineErrors, GetFineResponses, GetFormData, GetFormErrors, GetFormResponses, GetFormStatisticsData, GetFormStatisticsErrors, GetFormStatisticsResponses, GetFormSubmissionData, GetFormSubmissionErrors, GetFormSubmissionResponses, GetGroupData, GetGroupErrors, GetGroupResponses, GetJobData, GetJobErrors, GetJobResponses, GetNewsData, GetNewsErrors, GetNewsResponses, GetUserSettingsData, GetUserSettingsErrors, GetUserSettingsResponses, HandlePaymentWebhookData, HandlePaymentWebhookErrors, HandlePaymentWebhookResponses, ListAllergiesData, ListAllergiesResponses, ListApiKeysData, ListApiKeysErrors, ListApiKeysResponses, ListEventFormsData, ListEventFormsErrors, ListEventFormsResponses, ListEventRegistrationsData, ListEventRegistrationsResponses, ListEventsData, ListEventsResponses, ListFinesData, ListFinesErrors, ListFinesResponses, ListFormsData, ListFormsErrors, ListFormsResponses, ListFormSubmissionsData, ListFormSubmissionsErrors, ListFormSubmissionsResponses, ListGroupFormsData, ListGroupFormsErrors, ListGroupFormsResponses, ListGroupMembersData, ListGroupMembersErrors, ListGroupMembersResponses, ListGroupsData, ListGroupsResponses, ListJobsData, ListJobsResponses, ListNewsData, ListNewsResponses, ListNotificationsData, ListNotificationsErrors, ListNotificationsResponses, MarkNotificationReadData, MarkNotificationReadErrors, MarkNotificationReadResponses, OnboardUserData, OnboardUserErrors, OnboardUserResponses, RegenerateApiKeyData, RegenerateApiKeyErrors, RegenerateApiKeyResponses, RemoveGroupMemberData, RemoveGroupMemberErrors, RemoveGroupMemberResponses, SendCustomEmailData, SendCustomEmailErrors, SendCustomEmailResponses, UpdateApiKeyData, UpdateApiKeyErrors, UpdateApiKeyResponses, UpdateEventData, UpdateEventErrors, UpdateEventFavoriteData, UpdateEventFavoriteErrors, UpdateEventFavoriteResponses, UpdateEventResponses, UpdateFineData, UpdateFineErrors, UpdateFineResponses, UpdateFormData, UpdateFormErrors, UpdateFormResponses, UpdateGroupData, UpdateGroupErrors, UpdateGroupMemberRoleData, UpdateGroupMemberRoleErrors, UpdateGroupMemberRoleResponses, UpdateGroupResponses, UpdateJobData, UpdateJobErrors, UpdateJobResponses, UpdateNewsData, UpdateNewsErrors, UpdateNewsResponses, UpdateUserSettingsData, UpdateUserSettingsErrors, UpdateUserSettingsResponses, ValidateApiKeyData, ValidateApiKeyResponses } from './types.gen';
+import { createApiKeyResponseTransformer, getApiKeyResponseTransformer, getEventResponseTransformer, getFavoriteEventsResponseTransformer, listApiKeysResponseTransformer, listEventsResponseTransformer, listNotificationsResponseTransformer, markNotificationReadResponseTransformer, regenerateApiKeyResponseTransformer, updateApiKeyResponseTransformer, validateApiKeyResponseTransformer } from './transformers.gen';
+import type { AddGroupMemberData, AddGroupMemberErrors, AddGroupMemberResponses, CreateApiKeyData, CreateApiKeyErrors, CreateApiKeyResponses, CreateEventData, CreateEventErrors, CreateEventFormData, CreateEventFormErrors, CreateEventFormResponses, CreateEventPaymentData, CreateEventPaymentErrors, CreateEventPaymentResponses, CreateEventRegistrationData, CreateEventRegistrationErrors, CreateEventRegistrationResponses, CreateEventResponses, CreateFineData, CreateFineErrors, CreateFineResponses, CreateFormData, CreateFormErrors, CreateFormResponses, CreateFormSubmissionData, CreateFormSubmissionErrors, CreateFormSubmissionResponses, CreateGroupData, CreateGroupErrors, CreateGroupFormData, CreateGroupFormErrors, CreateGroupFormResponses, CreateGroupResponses, CreateJobData, CreateJobErrors, CreateJobResponses, CreateNewsData, CreateNewsErrors, CreateNewsReactionData, CreateNewsReactionErrors, CreateNewsReactionResponses, CreateNewsResponses, DeleteApiKeyData, DeleteApiKeyErrors, DeleteApiKeyResponses, DeleteEventData, DeleteEventErrors, DeleteEventRegistrationData, DeleteEventRegistrationErrors, DeleteEventRegistrationResponses, DeleteEventResponses, DeleteFineData, DeleteFineErrors, DeleteFineResponses, DeleteFormData, DeleteFormErrors, DeleteFormResponses, DeleteFormSubmissionData, DeleteFormSubmissionErrors, DeleteFormSubmissionResponses, DeleteGroupData, DeleteGroupErrors, DeleteGroupResponses, DeleteJobData, DeleteJobErrors, DeleteJobResponses, DeleteNewsData, DeleteNewsErrors, DeleteNewsReactionData, DeleteNewsReactionErrors, DeleteNewsReactionResponses, DeleteNewsResponses, DeleteNotificationData, DeleteNotificationErrors, DeleteNotificationResponses, DownloadFormSubmissionsData, DownloadFormSubmissionsErrors, DownloadFormSubmissionsResponses, GetApiKeyData, GetApiKeyErrors, GetApiKeyResponses, GetEventData, GetEventFormData, GetEventFormErrors, GetEventFormResponses, GetEventResponses, GetFavoriteEventsData, GetFavoriteEventsErrors, GetFavoriteEventsResponses, GetFineData, GetFineErrors, GetFineResponses, GetFormData, GetFormErrors, GetFormResponses, GetFormStatisticsData, GetFormStatisticsErrors, GetFormStatisticsResponses, GetFormSubmissionData, GetFormSubmissionErrors, GetFormSubmissionResponses, GetGroupData, GetGroupErrors, GetGroupResponses, GetJobData, GetJobErrors, GetJobResponses, GetNewsData, GetNewsErrors, GetNewsResponses, GetUserSettingsData, GetUserSettingsErrors, GetUserSettingsResponses, HandlePaymentWebhookData, HandlePaymentWebhookErrors, HandlePaymentWebhookResponses, ListAllergiesData, ListAllergiesResponses, ListApiKeysData, ListApiKeysErrors, ListApiKeysResponses, ListEventFormsData, ListEventFormsErrors, ListEventFormsResponses, ListEventRegistrationsData, ListEventRegistrationsResponses, ListEventsData, ListEventsResponses, ListFinesData, ListFinesErrors, ListFinesResponses, ListFormsData, ListFormsErrors, ListFormsResponses, ListFormSubmissionsData, ListFormSubmissionsErrors, ListFormSubmissionsResponses, ListGroupFormsData, ListGroupFormsErrors, ListGroupFormsResponses, ListGroupMembersData, ListGroupMembersErrors, ListGroupMembersResponses, ListGroupsData, ListGroupsResponses, ListJobsData, ListJobsResponses, ListMyGroupsData, ListMyGroupsErrors, ListMyGroupsResponses, ListNewsData, ListNewsResponses, ListNotificationsData, ListNotificationsErrors, ListNotificationsResponses, MarkNotificationReadData, MarkNotificationReadErrors, MarkNotificationReadResponses, OnboardUserData, OnboardUserErrors, OnboardUserResponses, RegenerateApiKeyData, RegenerateApiKeyErrors, RegenerateApiKeyResponses, RemoveGroupMemberData, RemoveGroupMemberErrors, RemoveGroupMemberResponses, SendCustomEmailData, SendCustomEmailErrors, SendCustomEmailResponses, UpdateApiKeyData, UpdateApiKeyErrors, UpdateApiKeyResponses, UpdateEventData, UpdateEventErrors, UpdateEventFavoriteData, UpdateEventFavoriteErrors, UpdateEventFavoriteResponses, UpdateEventResponses, UpdateFineData, UpdateFineErrors, UpdateFineResponses, UpdateFormData, UpdateFormErrors, UpdateFormResponses, UpdateGroupData, UpdateGroupErrors, UpdateGroupMemberRoleData, UpdateGroupMemberRoleErrors, UpdateGroupMemberRoleResponses, UpdateGroupResponses, UpdateJobData, UpdateJobErrors, UpdateJobResponses, UpdateNewsData, UpdateNewsErrors, UpdateNewsResponses, UpdateUserSettingsData, UpdateUserSettingsErrors, UpdateUserSettingsResponses, ValidateApiKeyData, ValidateApiKeyResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -25,6 +26,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  */
 export const listApiKeys = <ThrowOnError extends boolean = true>(options?: Options<ListApiKeysData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListApiKeysResponses, ListApiKeysErrors, ThrowOnError>({
+        responseTransformer: listApiKeysResponseTransformer,
         url: '/api/api-keys',
         ...options
     });
@@ -37,6 +39,7 @@ export const listApiKeys = <ThrowOnError extends boolean = true>(options?: Optio
  */
 export const createApiKey = <ThrowOnError extends boolean = true>(options?: Options<CreateApiKeyData, ThrowOnError>) => {
     return (options?.client ?? client).post<CreateApiKeyResponses, CreateApiKeyErrors, ThrowOnError>({
+        responseTransformer: createApiKeyResponseTransformer,
         url: '/api/api-keys',
         ...options,
         headers: {
@@ -65,6 +68,7 @@ export const deleteApiKey = <ThrowOnError extends boolean = true>(options: Optio
  */
 export const getApiKey = <ThrowOnError extends boolean = true>(options: Options<GetApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).get<GetApiKeyResponses, GetApiKeyErrors, ThrowOnError>({
+        responseTransformer: getApiKeyResponseTransformer,
         url: '/api/api-keys/{id}',
         ...options
     });
@@ -77,6 +81,7 @@ export const getApiKey = <ThrowOnError extends boolean = true>(options: Options<
  */
 export const updateApiKey = <ThrowOnError extends boolean = true>(options: Options<UpdateApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).patch<UpdateApiKeyResponses, UpdateApiKeyErrors, ThrowOnError>({
+        responseTransformer: updateApiKeyResponseTransformer,
         url: '/api/api-keys/{id}',
         ...options,
         headers: {
@@ -93,6 +98,7 @@ export const updateApiKey = <ThrowOnError extends boolean = true>(options: Optio
  */
 export const regenerateApiKey = <ThrowOnError extends boolean = true>(options: Options<RegenerateApiKeyData, ThrowOnError>) => {
     return (options.client ?? client).post<RegenerateApiKeyResponses, RegenerateApiKeyErrors, ThrowOnError>({
+        responseTransformer: regenerateApiKeyResponseTransformer,
         url: '/api/api-keys/{id}/regenerate',
         ...options
     });
@@ -105,6 +111,7 @@ export const regenerateApiKey = <ThrowOnError extends boolean = true>(options: O
  */
 export const validateApiKey = <ThrowOnError extends boolean = true>(options?: Options<ValidateApiKeyData, ThrowOnError>) => {
     return (options?.client ?? client).post<ValidateApiKeyResponses, unknown, ThrowOnError>({
+        responseTransformer: validateApiKeyResponseTransformer,
         url: '/api/api-keys/validate',
         ...options,
         headers: {
@@ -137,6 +144,7 @@ export const sendCustomEmail = <ThrowOnError extends boolean = true>(options?: O
  */
 export const listEvents = <ThrowOnError extends boolean = true>(options?: Options<ListEventsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListEventsResponses, unknown, ThrowOnError>({
+        responseTransformer: listEventsResponseTransformer,
         url: '/api/event',
         ...options
     });
@@ -193,6 +201,7 @@ export const deleteEvent = <ThrowOnError extends boolean = true>(options: Option
  */
 export const getEvent = <ThrowOnError extends boolean = true>(options: Options<GetEventData, ThrowOnError>) => {
     return (options.client ?? client).get<GetEventResponses, unknown, ThrowOnError>({
+        responseTransformer: getEventResponseTransformer,
         url: '/api/event/{eventId}',
         ...options
     });
@@ -221,6 +230,7 @@ export const updateEventFavorite = <ThrowOnError extends boolean = true>(options
  */
 export const getFavoriteEvents = <ThrowOnError extends boolean = true>(options?: Options<GetFavoriteEventsData, ThrowOnError>) => {
     return (options?.client ?? client).get<GetFavoriteEventsResponses, GetFavoriteEventsErrors, ThrowOnError>({
+        responseTransformer: getFavoriteEventsResponseTransformer,
         url: '/api/event/favorite',
         ...options
     });
@@ -485,6 +495,7 @@ export const deleteFormSubmission = <ThrowOnError extends boolean = true>(option
  */
 export const listNotifications = <ThrowOnError extends boolean = true>(options?: Options<ListNotificationsData, ThrowOnError>) => {
     return (options?.client ?? client).get<ListNotificationsResponses, ListNotificationsErrors, ThrowOnError>({
+        responseTransformer: listNotificationsResponseTransformer,
         url: '/api/notification',
         ...options
     });
@@ -509,6 +520,7 @@ export const deleteNotification = <ThrowOnError extends boolean = true>(options:
  */
 export const markNotificationRead = <ThrowOnError extends boolean = true>(options: Options<MarkNotificationReadData, ThrowOnError>) => {
     return (options.client ?? client).patch<MarkNotificationReadResponses, MarkNotificationReadErrors, ThrowOnError>({
+        responseTransformer: markNotificationReadResponseTransformer,
         url: '/api/notification/{id}/read',
         ...options,
         headers: {
@@ -543,6 +555,18 @@ export const createGroup = <ThrowOnError extends boolean = true>(options?: Optio
             'Content-Type': 'application/json',
             ...options?.headers
         }
+    });
+};
+
+/**
+ * List current user's groups
+ *
+ * Retrieve all groups the authenticated user is a member of, including membership info.
+ */
+export const listMyGroups = <ThrowOnError extends boolean = true>(options?: Options<ListMyGroupsData, ThrowOnError>) => {
+    return (options?.client ?? client).get<ListMyGroupsResponses, ListMyGroupsErrors, ThrowOnError>({
+        url: '/api/groups/mine',
+        ...options
     });
 };
 

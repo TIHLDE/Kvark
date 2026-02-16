@@ -1,5 +1,5 @@
 import { USERS_ENDPOINT } from '~/api/api';
-import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { EventListItem, EventListLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Alert, AlertDescription } from '~/components/ui/alert';
 import { Button, PaginateButton } from '~/components/ui/button';

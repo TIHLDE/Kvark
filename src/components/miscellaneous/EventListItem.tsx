@@ -1,20 +1,72 @@
 import { Link } from '@tanstack/react-router';
+import { EventListEntry } from '~/api/queries/events';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
-import useMediaQuery, { LARGE_SCREEN } from '~/hooks/MediaQuery';
 import { cn } from '~/lib/utils';
-import type { EventList } from '~/types';
-import { Category, Groups } from '~/types/Enums';
 import { formatDate, urlEncode } from '~/utils';
-import { parseISO } from 'date-fns';
 import { Calendar, Shapes } from 'lucide-react';
-import { useMemo } from 'react';
 
 export type EventListItemProps = {
-  event: EventList;
+  event: EventListEntry;
   size: 'small' | 'medium' | 'large';
 };
 
+export function EventListItem({ event, size }: EventListItemProps) {
+  return (
+    <Link
+      className={`w-full p-1 rounded-md border bg-card flex space-x-2 md:space-x-6 transition-all duration-150`}
+      to='/arrangementer/$id/{-$urlTitle}'
+      params={{ id: event.id.toString(), urlTitle: urlEncode(event.title) }}>
+      <AspectRatioImg
+        alt={event.title}
+        className={cn(
+          'rounded-l-sm',
+          size === 'small' && 'w-[100px] lg:w-[150px]',
+          size === 'medium' && 'w-[150px] lg:w-[200px]',
+          size === 'large' && 'w-[150px] md:w-[200px] lg:w-[250px]',
+        )}
+        src={event.image ?? undefined}
+      />
+
+      <div className='space-y-1 py-2 w-full contain-inline-size'>
+        <h1
+          className={cn(
+            'font-bold text-black dark:text-white truncate block w-full',
+            size === 'small' && 'text-sm md:text-base',
+            size === 'medium' && 'text-base md:text-lg',
+            size === 'large' && 'text-sm md:text-lg',
+          )}>
+          {event.title}
+        </h1>
+        <div className='flex items-center space-x-1'>
+          <Calendar className='w-5 h-5 stroke-[1.5px] text-muted-foreground' />
+          <p
+            className={cn(
+              'text-muted-foreground',
+              size === 'small' && 'text-xs md:text-sm',
+              size === 'medium' && 'text-sm md:text-base',
+              size === 'large' && 'text-xs md:text-base',
+            )}>
+            {formatDate(event.startTime)}
+          </p>
+        </div>
+        <div className='not-lg:hidden flex items-center space-x-1'>
+          <Shapes className='w-5 h-5 stroke-[1.5px] text-muted-foreground' />
+          <p
+            className={cn(
+              'text-muted-foreground',
+              size === 'small' && 'text-xs md:text-sm',
+              size === 'medium' && 'text-sm md:text-base',
+              size === 'large' && 'text-xs md:text-base',
+            )}>
+            {event.category.label}
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+}
+/*
 const EventListItem = ({ event, size }: EventListItemProps) => {
   const isDesktop = useMediaQuery(LARGE_SCREEN);
 
@@ -71,10 +123,9 @@ const EventListItem = ({ event, size }: EventListItemProps) => {
     </Link>
   );
 };
+*/
 
-export default EventListItem;
-
-export const EventListItemLoading = ({ length = 6 }: { length?: number }) => {
+export const EventListLoading = ({ length = 6 }: { length?: number }) => {
   return (
     <div className='space-y-2'>
       {Array.from({ length: length }).map((_, index) => (

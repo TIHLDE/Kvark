@@ -12,7 +12,7 @@ export default defineConfig({
       dates: true,
       name: '@hey-api/transformers',
     },
-    '@hey-api/sdk',
+    { name: '@hey-api/sdk', transformer: true },
     {
       name: '@hey-api/client-fetch',
       throwOnError: true,

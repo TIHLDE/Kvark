@@ -1,9 +1,10 @@
 /// <reference types="vite/client" />
 
+import { TanStackDevtools } from '@tanstack/react-devtools';
 import type { QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { TanStackRouterDevtools, TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
 import appCss from '~/assets/css/index.css?url';
 import Http404 from '~/components/shells/Http404';
@@ -99,8 +100,25 @@ function RootDocument({ children }: React.PropsWithChildren) {
       <body>
         {children}
         <Toaster />
-        <TanStackRouterDevtools initialIsOpen={false} position='bottom-left' />
-        <ReactQueryDevtools initialIsOpen={false} position='bottom' />
+        <TanStackDevtools
+          config={{
+            defaultOpen: false,
+            openHotkey: [],
+            position: 'bottom-right',
+          }}
+          plugins={[
+            {
+              name: 'TanStack Query',
+              render: <ReactQueryDevtoolsPanel />,
+              defaultOpen: false,
+            },
+            {
+              name: 'TanStack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+              defaultOpen: false,
+            },
+          ]}
+        />
         <Scripts />
       </body>
     </html>

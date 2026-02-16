@@ -1,4 +1,4 @@
-import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { EventListItem, EventListLoading } from '~/components/miscellaneous/EventListItem';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/NewsListItem';
 import Expandable from '~/components/ui/expandable';

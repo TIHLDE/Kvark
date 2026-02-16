@@ -1,4 +1,4 @@
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, mutationOptions, queryOptions } from '@tanstack/react-query';
 import type {
   CreateEventData,
   CreateEventFormData,
@@ -9,19 +9,22 @@ import type {
   GetEventFormData,
   ListEventRegistrationsData,
   ListEventsData,
+  ListEventsResponses,
   UpdateEventData,
   UpdateEventFavoriteData,
 } from '~/gen-client/types.gen';
 
 import { photon } from '../photon';
-import type { PathParams, Payload, QueryParams } from './helper';
+import type { PathParams, Payload, QueryParams, RequestReturnType } from './helper';
 
 export type EventFilters = QueryParams<ListEventsData>;
 export type EventRegistrationFilters = QueryParams<ListEventRegistrationsData>;
 export type EventFormType = PathParams<GetEventFormData>['type'];
+export type EventListEntry = RequestReturnType<ListEventsResponses, 200>['items'][number];
 
 export const eventKeys = {
   all: ['events'],
+  infinite: ['events', 'infinite'],
   lists: ['events', 'list'],
   details: ['events', 'detail'],
   favorites: ['events', 'favorites'],
@@ -29,12 +32,38 @@ export const eventKeys = {
   forms: ['events', 'forms'],
 } as const;
 
-export const listEventsQuery = (filters?: EventFilters) =>
-  queryOptions({
-    queryKey: [...eventKeys.lists, filters].filter(Boolean),
-    queryFn: () => photon.listEvents({ query: filters }),
+const DEFAULT_PAGE_SIZE = 20;
+
+export const listEventInfiniteQuery = (filters?: EventFilters) =>
+  infiniteQueryOptions({
+    queryKey: [...eventKeys.infinite, filters].filter(Boolean),
+    queryFn: async ({ pageParam }) =>
+      await photon.listEvents({
+        throwOnError: true,
+        query: {
+          ...filters,
+          page: pageParam,
+          pageSize: DEFAULT_PAGE_SIZE,
+        },
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
+export const listEventsQuery = (page: number, pageSize = DEFAULT_PAGE_SIZE, filters: Omit<EventFilters, 'page' | 'pageSize'> = {}) =>
+  queryOptions({
+    queryKey: [...eventKeys.lists, page, pageSize, filters],
+    queryFn: async () =>
+      await photon.listEvents({
+        throwOnError: true,
+        query: {
+          ...filters,
+          page,
+          pageSize,
+        },
+      }),
+    select: (data) => data.items,
+  });
 export const getEventQuery = (eventId: string) =>
   queryOptions({
     queryKey: [...eventKeys.details, eventId],

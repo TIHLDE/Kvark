@@ -691,8 +691,26 @@ export type ListEventsData = {
     body?: never;
     path?: never;
     query?: {
-        limit?: number;
-        offset?: number;
+        /**
+         * Number of items to return
+         */
+        pageSize?: number;
+        /**
+         * Number of items to skip
+         */
+        page?: number;
+        /**
+         * Search term to filter events by title
+         */
+        search?: string;
+        /**
+         * Whether to include expired events or not
+         */
+        expired?: boolean;
+        /**
+         * Whether to include only events with open sign-ups
+         */
+        openSignUp?: boolean;
     };
     url: '/api/event';
 };
@@ -701,78 +719,95 @@ export type ListEventsResponses = {
     /**
      * OK
      */
-    200: Array<{
+    200: {
         /**
-         * Event ID
+         * Total number of items available
          */
-        id: string;
+        totalCount: number;
         /**
-         * Event slug
+         * Total number of pages available
          */
-        slug: string;
+        pages: number;
         /**
-         * Event title
+         * The next page number that can be fetched
          */
-        title: string;
+        nextPage: number | null;
         /**
-         * Event location (nullable)
+         * List of events
          */
-        location?: string | null;
-        /**
-         * Event start time (ISO 8601)
-         */
-        startTime: Date;
-        /**
-         * Event end time (ISO 8601)
-         */
-        endTime: Date;
-        /**
-         * Event organizer (nullable)
-         */
-        organizer: {
+        items: Array<{
             /**
-             * Organizer name
+             * Event ID
              */
-            name: string;
+            id: string;
             /**
-             * Organizer slug
+             * Event slug
              */
             slug: string;
             /**
-             * Organizer type
+             * Event title
              */
-            type: string;
-        } | null;
-        /**
-         * Is registration closed
-         */
-        closed: boolean;
-        /**
-         * Event image URL (nullable)
-         */
-        image: string | null;
-        /**
-         * Event creation time (ISO 8601)
-         */
-        createdAt: Date;
-        /**
-         * Event update time (ISO 8601)
-         */
-        updatedAt: Date;
-        /**
-         * Event category
-         */
-        category: {
+            title: string;
             /**
-             * Category slug
+             * Event location (nullable)
              */
-            slug: string;
+            location?: string | null;
             /**
-             * Category label
+             * Event start time (ISO 8601)
              */
-            label: string;
-        };
-    }>;
+            startTime: Date;
+            /**
+             * Event end time (ISO 8601)
+             */
+            endTime: Date;
+            /**
+             * Event organizer (nullable)
+             */
+            organizer: {
+                /**
+                 * Organizer name
+                 */
+                name: string;
+                /**
+                 * Organizer slug
+                 */
+                slug: string;
+                /**
+                 * Organizer type
+                 */
+                type: string;
+            } | null;
+            /**
+             * Is registration closed
+             */
+            closed: boolean;
+            /**
+             * Event image URL (nullable)
+             */
+            image: string | null;
+            /**
+             * Event creation time (ISO 8601)
+             */
+            createdAt: Date;
+            /**
+             * Event update time (ISO 8601)
+             */
+            updatedAt: Date;
+            /**
+             * Event category
+             */
+            category: {
+                /**
+                 * Category slug
+                 */
+                slug: string;
+                /**
+                 * Category label
+                 */
+                label: string;
+            };
+        }>;
+    };
 };
 
 export type ListEventsResponse = ListEventsResponses[keyof ListEventsResponses];
@@ -1434,8 +1469,14 @@ export type ListEventRegistrationsData = {
         eventId: string;
     };
     query?: {
-        limit?: number;
-        offset?: number;
+        /**
+         * Number of items to return
+         */
+        pageSize?: number;
+        /**
+         * Number of items to skip
+         */
+        page?: number;
     };
     url: '/api/event/{eventId}/registration';
 };
@@ -1444,7 +1485,22 @@ export type ListEventRegistrationsResponses = {
     /**
      * OK
      */
-    200: Array<{
+    200: {
+        /**
+         * Total number of items available
+         */
+        totalCount: number;
+        /**
+         * Total number of pages available
+         */
+        pages: number;
+        /**
+         * The next page number that can be fetched
+         */
+        nextPage: number | null;
+        /**
+         * List of registered users (paginated)
+         */
         registeredUsers: Array<{
             /**
              * User id
@@ -1459,15 +1515,7 @@ export type ListEventRegistrationsResponses = {
              */
             image: string | null;
         }>;
-        /**
-         * Total registered users. These users have access to the event.
-         */
-        registeredCount: number;
-        /**
-         * Number of users on the waitlist. These users are waiting in queue for a spot.
-         */
-        waitlistCount: number;
-    }>;
+    };
 };
 
 export type ListEventRegistrationsResponse = ListEventRegistrationsResponses[keyof ListEventRegistrationsResponses];
@@ -2439,8 +2487,14 @@ export type ListNotificationsData = {
     body?: never;
     path?: never;
     query?: {
-        limit?: number;
-        offset?: number;
+        /**
+         * Number of items to return
+         */
+        pageSize?: number;
+        /**
+         * Number of items to skip
+         */
+        page?: number;
     };
     url: '/api/notification';
 };
@@ -2471,40 +2525,57 @@ export type ListNotificationsResponses = {
     /**
      * OK
      */
-    200: Array<{
+    200: {
         /**
-         * Notification ID
+         * Total number of items available
          */
-        id: string;
+        totalCount: number;
         /**
-         * User ID
+         * Total number of pages available
          */
-        userId: string;
+        pages: number;
         /**
-         * Notification title
+         * The next page number that can be fetched
          */
-        title: string;
+        nextPage: number | null;
         /**
-         * Notification description
+         * List of notifications
          */
-        description: string;
-        /**
-         * Optional link URL (nullable)
-         */
-        link: string | null;
-        /**
-         * Whether notification is read
-         */
-        isRead: boolean;
-        /**
-         * Notification creation time (ISO 8601)
-         */
-        createdAt: Date;
-        /**
-         * Notification update time (ISO 8601)
-         */
-        updatedAt: Date;
-    }>;
+        items: Array<{
+            /**
+             * Notification ID
+             */
+            id: string;
+            /**
+             * User ID
+             */
+            userId: string;
+            /**
+             * Notification title
+             */
+            title: string;
+            /**
+             * Notification description
+             */
+            description: string;
+            /**
+             * Optional link URL (nullable)
+             */
+            link: string | null;
+            /**
+             * Whether notification is read
+             */
+            isRead: boolean;
+            /**
+             * Notification creation time (ISO 8601)
+             */
+            createdAt: Date;
+            /**
+             * Notification update time (ISO 8601)
+             */
+            updatedAt: Date;
+        }>;
+    };
 };
 
 export type ListNotificationsResponse = ListNotificationsResponses[keyof ListNotificationsResponses];
@@ -2757,6 +2828,94 @@ export type CreateGroupResponses = {
      */
     201: unknown;
 };
+
+export type ListMyGroupsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/groups/mine';
+};
+
+export type ListMyGroupsErrors = {
+    /**
+     * Authentication required
+     */
+    401: {
+        /**
+         * The HTTP status code
+         */
+        status: number;
+        /**
+         * The error message
+         */
+        message: string;
+        /**
+         * Additional metadata about the error
+         */
+        meta?: unknown;
+    };
+};
+
+export type ListMyGroupsError = ListMyGroupsErrors[keyof ListMyGroupsErrors];
+
+export type ListMyGroupsResponses = {
+    /**
+     * List of groups the user is a member of
+     */
+    200: Array<{
+        /**
+         * Group slug
+         */
+        slug: string;
+        /**
+         * Group image URL
+         */
+        imageUrl: string | null;
+        /**
+         * Group name
+         */
+        name: string;
+        /**
+         * Group description
+         */
+        description: string | null;
+        /**
+         * Group contact email
+         */
+        contactEmail: string | null;
+        /**
+         * Group type
+         */
+        type: string;
+        /**
+         * Group fines info
+         */
+        finesInfo: string;
+        /**
+         * Group fines activated
+         */
+        finesActivated: boolean;
+        /**
+         * Group fines admin ID
+         */
+        finesAdminId: string | null;
+        /**
+         * Creation timestamp
+         */
+        createdAt: string;
+        /**
+         * Last update timestamp
+         */
+        updatedAt: string;
+        membership: {
+            role: 'member' | 'leader';
+            joinedAt: string;
+            updatedAt: string;
+        };
+    }>;
+};
+
+export type ListMyGroupsResponse = ListMyGroupsResponses[keyof ListMyGroupsResponses];
 
 export type DeleteGroupData = {
     body?: never;

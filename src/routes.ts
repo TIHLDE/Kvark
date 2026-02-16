@@ -9,11 +9,17 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('tilbakemelding', './pages/Feedback/index.tsx'),
 
     route('/arrangementer', [
-      index('./pages/Events/index.tsx'),
-      // INFO: This route has been re-written from :id/registrering
-      route('/registrering/$id', './pages/EventRegistration/index.tsx'),
-      route('/$id/{-$urlTitle}', './pages/EventDetails/index.tsx'),
+      index('./routes/events/list/index.tsx'),
+      route('/$id/{-$urlTitle}', './routes/events/$eventId/index.tsx'),
+      route('/registrering/$id', './routes/events/register/index.tsx'),
     ]),
+
+    // route('/arrangementer', [
+    // index('./pages/Events/index.tsx'),
+    // INFO: This route has been re-written from :id/registrering
+    // route('/registrering/$id', './pages/EventRegistration/index.tsx'),
+    // route('/$id/{-$urlTitle}', './pages/EventDetails/index.tsx'),
+    // ]),
     route('/bedrifter', './pages/Companies/index.tsx'),
     route('/toddel', './pages/Toddel/index.tsx'),
 

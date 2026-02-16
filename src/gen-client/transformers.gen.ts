@@ -62,7 +62,7 @@ export const validateApiKeyResponseTransformer = async (data: any): Promise<Vali
 };
 
 export const listEventsResponseTransformer = async (data: any): Promise<ListEventsResponse> => {
-    data = data.map((item: any) => {
+    data.items = data.items.map((item: any) => {
         item.startTime = new Date(item.startTime);
         item.endTime = new Date(item.endTime);
         item.createdAt = new Date(item.createdAt);
@@ -96,7 +96,7 @@ export const getFavoriteEventsResponseTransformer = async (data: any): Promise<G
 };
 
 export const listNotificationsResponseTransformer = async (data: any): Promise<ListNotificationsResponse> => {
-    data = data.map((item: any) => {
+    data.items = data.items.map((item: any) => {
         item.createdAt = new Date(item.createdAt);
         item.updatedAt = new Date(item.updatedAt);
         return item;

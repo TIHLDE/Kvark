@@ -38,7 +38,7 @@ import { Route as DotPagesJobPostsIndexRouteImport } from './pages/JobPosts/inde
 import { Route as DotPagesNewsIndexRouteImport } from './pages/News/index'
 import { Route as DotPagesGroupsOverviewIndexRouteImport } from './pages/Groups/overview/index'
 import { Route as DotPagesGalleryIndexRouteImport } from './pages/Gallery/index'
-import { Route as DotPagesEventsIndexRouteImport } from './pages/Events/index'
+import { Route as DotRoutesEventsListIndexRouteImport } from './routes/events/list/index'
 import { Route as DotPagesGroupsGroupDetailsRouteImport } from './pages/Groups/GroupDetails'
 import { Route as DotComponentsMiscellaneousInfoBannerInfoBannerAdminRouteImport } from './components/miscellaneous/InfoBanner/InfoBannerAdmin'
 import { Route as DotRoutesAuthNewAccountRouteImport } from './routes/auth/new-account'
@@ -51,8 +51,8 @@ import { Route as DotPagesGroupsFinesIndexRouteImport } from './pages/Groups/fin
 import { Route as DotPagesGroupsEventsIndexRouteImport } from './pages/Groups/events/index'
 import { Route as DotPagesGalleryDetailsIndexRouteImport } from './pages/GalleryDetails/index'
 import { Route as DotPagesBadgesCategoryIndexRouteImport } from './pages/Badges/category/index'
-import { Route as DotPagesEventRegistrationIndexRouteImport } from './pages/EventRegistration/index'
-import { Route as DotPagesEventDetailsIndexRouteImport } from './pages/EventDetails/index'
+import { Route as DotRoutesEventsRegisterIndexRouteImport } from './routes/events/register/index'
+import { Route as DotRoutesEventsEventIdIndexRouteImport } from './routes/events/$eventId/index'
 import { Route as DotPagesJobPostAdministrationIndexRouteImport } from './pages/JobPostAdministration/index'
 import { Route as DotPagesNewsAdministrationIndexRouteImport } from './pages/NewsAdministration/index'
 import { Route as DotPagesEventAdministrationIndexRouteImport } from './pages/EventAdministration/index'
@@ -214,11 +214,12 @@ const DotPagesGalleryIndexRoute = DotPagesGalleryIndexRouteImport.update({
   path: '/galleri/',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotPagesEventsIndexRoute = DotPagesEventsIndexRouteImport.update({
-  id: '/arrangementer/',
-  path: '/arrangementer/',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
+const DotRoutesEventsListIndexRoute =
+  DotRoutesEventsListIndexRouteImport.update({
+    id: '/arrangementer/',
+    path: '/arrangementer/',
+    getParentRoute: () => DotPagesMainLayoutRoute,
+  } as any)
 const DotPagesGroupsGroupDetailsRoute =
   DotPagesGroupsGroupDetailsRouteImport.update({
     id: '/grupper/$slug',
@@ -288,14 +289,14 @@ const DotPagesBadgesCategoryIndexRoute =
     path: '/kategorier/$categoryId',
     getParentRoute: () => MainLayoutBadgesRoute,
   } as any)
-const DotPagesEventRegistrationIndexRoute =
-  DotPagesEventRegistrationIndexRouteImport.update({
+const DotRoutesEventsRegisterIndexRoute =
+  DotRoutesEventsRegisterIndexRouteImport.update({
     id: '/arrangementer/registrering/$id',
     path: '/arrangementer/registrering/$id',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
-const DotPagesEventDetailsIndexRoute =
-  DotPagesEventDetailsIndexRouteImport.update({
+const DotRoutesEventsEventIdIndexRoute =
+  DotRoutesEventsEventIdIndexRouteImport.update({
     id: '/arrangementer/$id/{-$urlTitle}',
     path: '/arrangementer/$id/{-$urlTitle}',
     getParentRoute: () => DotPagesMainLayoutRoute,
@@ -381,7 +382,7 @@ export interface FileRoutesByFullPath {
   '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
   '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   '/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
-  '/arrangementer': typeof DotPagesEventsIndexRoute
+  '/arrangementer': typeof DotRoutesEventsListIndexRoute
   '/galleri': typeof DotPagesGalleryIndexRoute
   '/grupper': typeof DotPagesGroupsOverviewIndexRoute
   '/nyheter': typeof DotPagesNewsIndexRoute
@@ -404,8 +405,8 @@ export interface FileRoutesByFullPath {
   '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
   '/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
   '/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
-  '/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
-  '/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/arrangementer/$id/{-$urlTitle}': typeof DotRoutesEventsEventIdIndexRoute
+  '/arrangementer/registrering/$id': typeof DotRoutesEventsRegisterIndexRoute
   '/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
   '/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
   '/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
@@ -434,7 +435,7 @@ export interface FileRoutesByTo {
   '/toddel': typeof DotPagesToddelIndexRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
   '/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
-  '/arrangementer': typeof DotPagesEventsIndexRoute
+  '/arrangementer': typeof DotRoutesEventsListIndexRoute
   '/galleri': typeof DotPagesGalleryIndexRoute
   '/grupper': typeof DotPagesGroupsOverviewIndexRoute
   '/nyheter': typeof DotPagesNewsIndexRoute
@@ -456,8 +457,8 @@ export interface FileRoutesByTo {
   '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
   '/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
   '/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
-  '/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
-  '/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/arrangementer/$id/{-$urlTitle}': typeof DotRoutesEventsEventIdIndexRoute
+  '/arrangementer/registrering/$id': typeof DotRoutesEventsRegisterIndexRoute
   '/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
   '/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
   '/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
@@ -488,7 +489,7 @@ export interface FileRoutesById {
   '/_MainLayout/ny-bruker/': typeof DotRoutesAuthNewAccountRoute
   '/_MainLayout/admin/bannere': typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   '/_MainLayout/grupper/$slug': typeof DotPagesGroupsGroupDetailsRouteWithChildren
-  '/_MainLayout/arrangementer/': typeof DotPagesEventsIndexRoute
+  '/_MainLayout/arrangementer/': typeof DotRoutesEventsListIndexRoute
   '/_MainLayout/galleri/': typeof DotPagesGalleryIndexRoute
   '/_MainLayout/grupper/': typeof DotPagesGroupsOverviewIndexRoute
   '/_MainLayout/nyheter/': typeof DotPagesNewsIndexRoute
@@ -512,8 +513,8 @@ export interface FileRoutesById {
   '/_MainLayout/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
   '/_MainLayout/admin/nyheter/{-$newsId}': typeof DotPagesNewsAdministrationIndexRoute
   '/_MainLayout/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
-  '/_MainLayout/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
-  '/_MainLayout/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
+  '/_MainLayout/arrangementer/$id/{-$urlTitle}': typeof DotRoutesEventsEventIdIndexRoute
+  '/_MainLayout/arrangementer/registrering/$id': typeof DotRoutesEventsRegisterIndexRoute
   '/_MainLayout/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
   '/_MainLayout/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
   '/_MainLayout/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
@@ -898,7 +899,7 @@ declare module '@tanstack/react-router' {
       id: '/_MainLayout/arrangementer/'
       path: '/arrangementer'
       fullPath: '/arrangementer'
-      preLoaderRoute: typeof DotPagesEventsIndexRouteImport
+      preLoaderRoute: typeof DotRoutesEventsListIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/grupper/$slug': {
@@ -989,14 +990,14 @@ declare module '@tanstack/react-router' {
       id: '/_MainLayout/arrangementer/registrering/$id'
       path: '/arrangementer/registrering/$id'
       fullPath: '/arrangementer/registrering/$id'
-      preLoaderRoute: typeof DotPagesEventRegistrationIndexRouteImport
+      preLoaderRoute: typeof DotRoutesEventsRegisterIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/arrangementer/$id/{-$urlTitle}': {
       id: '/_MainLayout/arrangementer/$id/{-$urlTitle}'
       path: '/arrangementer/$id/{-$urlTitle}'
       fullPath: '/arrangementer/$id/{-$urlTitle}'
-      preLoaderRoute: typeof DotPagesEventDetailsIndexRouteImport
+      preLoaderRoute: typeof DotRoutesEventsEventIdIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/admin/stillingsannonser/{-$jobPostId}': {
@@ -1167,7 +1168,7 @@ interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRoute
   DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute: typeof DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute
   DotPagesGroupsGroupDetailsRoute: typeof DotPagesGroupsGroupDetailsRouteWithChildren
-  DotPagesEventsIndexRoute: typeof DotPagesEventsIndexRoute
+  DotRoutesEventsListIndexRoute: typeof DotRoutesEventsListIndexRoute
   DotPagesGalleryIndexRoute: typeof DotPagesGalleryIndexRoute
   DotPagesGroupsOverviewIndexRoute: typeof DotPagesGroupsOverviewIndexRoute
   DotPagesNewsIndexRoute: typeof DotPagesNewsIndexRoute
@@ -1186,8 +1187,8 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesEventAdministrationIndexRoute: typeof DotPagesEventAdministrationIndexRoute
   DotPagesNewsAdministrationIndexRoute: typeof DotPagesNewsAdministrationIndexRoute
   DotPagesJobPostAdministrationIndexRoute: typeof DotPagesJobPostAdministrationIndexRoute
-  DotPagesEventDetailsIndexRoute: typeof DotPagesEventDetailsIndexRoute
-  DotPagesEventRegistrationIndexRoute: typeof DotPagesEventRegistrationIndexRoute
+  DotRoutesEventsEventIdIndexRoute: typeof DotRoutesEventsEventIdIndexRoute
+  DotRoutesEventsRegisterIndexRoute: typeof DotRoutesEventsRegisterIndexRoute
   DotPagesGalleryDetailsIndexRoute: typeof DotPagesGalleryDetailsIndexRoute
   DotPagesCheatsheetIndexRoute: typeof DotPagesCheatsheetIndexRoute
   DotPagesNewsDetailsIndexRoute: typeof DotPagesNewsDetailsIndexRoute
@@ -1210,7 +1211,7 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute:
     DotComponentsMiscellaneousInfoBannerInfoBannerAdminRoute,
   DotPagesGroupsGroupDetailsRoute: DotPagesGroupsGroupDetailsRouteWithChildren,
-  DotPagesEventsIndexRoute: DotPagesEventsIndexRoute,
+  DotRoutesEventsListIndexRoute: DotRoutesEventsListIndexRoute,
   DotPagesGalleryIndexRoute: DotPagesGalleryIndexRoute,
   DotPagesGroupsOverviewIndexRoute: DotPagesGroupsOverviewIndexRoute,
   DotPagesNewsIndexRoute: DotPagesNewsIndexRoute,
@@ -1231,8 +1232,8 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotPagesNewsAdministrationIndexRoute: DotPagesNewsAdministrationIndexRoute,
   DotPagesJobPostAdministrationIndexRoute:
     DotPagesJobPostAdministrationIndexRoute,
-  DotPagesEventDetailsIndexRoute: DotPagesEventDetailsIndexRoute,
-  DotPagesEventRegistrationIndexRoute: DotPagesEventRegistrationIndexRoute,
+  DotRoutesEventsEventIdIndexRoute: DotRoutesEventsEventIdIndexRoute,
+  DotRoutesEventsRegisterIndexRoute: DotRoutesEventsRegisterIndexRoute,
   DotPagesGalleryDetailsIndexRoute: DotPagesGalleryDetailsIndexRoute,
   DotPagesCheatsheetIndexRoute: DotPagesCheatsheetIndexRoute,
   DotPagesNewsDetailsIndexRoute: DotPagesNewsDetailsIndexRoute,

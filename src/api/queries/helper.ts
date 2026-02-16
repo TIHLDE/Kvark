@@ -17,6 +17,12 @@ export type PathParams<T> = T extends { path?: infer P } ? P : never;
 export type Payload<T> = T extends { body?: infer P } ? P : never;
 
 /**
+ * Extract the returned data from a responses type given the status code.
+ * Usage: RequestReturnType<GetEventResponses, 200> -> EventData
+ */
+export type RequestReturnType<T, StatusCode extends number = 200> = T extends { [K in StatusCode]: infer R } ? R : never;
+
+/**
  * Wraps an SDK module so all methods return only the `data` property.
  * This avoids having to write `.data` on every API call.
  */
