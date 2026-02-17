@@ -16,12 +16,12 @@ const EditBioButton = ({ userBio }: BioButtonProps) => {
 
   const OpenButton = (
     <Button variant='outline'>
-      <Pencil className='mr-2 w-5 h-5 stroke-[1.5px]' /> Redigér bio
+      <Pencil className='mr-2 w-5 h-5 stroke-[1.5px]' /> Rediger bio
     </Button>
   );
 
   return (
-    <ResponsiveDialog description='Rediger din bio' onOpenChange={setOpen} open={open} title='Redigér bio' trigger={OpenButton}>
+    <ResponsiveDialog description='Rediger din bio' onOpenChange={setOpen} open={open} title='Rediger bio' trigger={OpenButton}>
       <ScrollArea className='h-[60vh]'>
         <UserBioForm setOpen={setOpen} userBio={userBio} />
       </ScrollArea>
