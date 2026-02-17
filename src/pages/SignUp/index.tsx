@@ -173,7 +173,7 @@ function SignUp() {
                   render={({ field }) => (
                     <FormItem className='w-full'>
                       <FormLabel>
-                        Feide brukernavn <span className='text-red-300'>*</span>
+                        Feide-brukernavn <span className='text-red-300'>*</span>
                       </FormLabel>
                       <FormControl>
                         <Input placeholder='Skriv her...' {...field} />

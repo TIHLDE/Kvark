@@ -35,13 +35,13 @@ function SignUpOptions() {
             <h1 className='text-2xl font-bold'>Opprett bruker hos TIHLDE</h1>
             <p className='text-sm text-muted-foreground'>
               Vi anbefaler å registrere bruker automatisk ved hjelp av Feide. På denne måten vil du få tilgang til TIHLDE sine plattformer umiddelbart. Hvis du
-              ikke har Feide bruker enda, eller om det skulle oppstå et problem kan du registrere deg manuelt. Da trenger vi bevis på at du studerer ved ett av
+              ikke har Feide-bruker enda, eller om det skulle oppstå et problem kan du registrere deg manuelt. Da trenger vi bevis på at du studerer ved ett av
               TIHLDE sine studieretninger for å registrere brukeren din.
             </p>
-            <Expandable icon={<Info className='w-6 h-6' />} title='Hvordan få Feide bruker?'>
+            <Expandable icon={<Info className='w-6 h-6' />} title='Hvordan få Feide-bruker?'>
               <div className='space-y-4 text-sm'>
                 <p>
-                  For å få Feide bruker må du gjøre følgende (<ExternalLink href='https://i.ntnu.no/wiki/-/wiki/Norsk/Aktiver+brukerkonto' text='les mer her' />
+                  For å få Feide-bruker må du gjøre følgende (<ExternalLink href='https://i.ntnu.no/wiki/-/wiki/Norsk/Aktiver+brukerkonto' text='les mer her' />
                   ):
                 </p>
                 <ol className='ml-2 list-inside list-decimal space-y-2'>
