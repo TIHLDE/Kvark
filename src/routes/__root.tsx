@@ -2,9 +2,9 @@
 
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import type { QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools, ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
-import { TanStackRouterDevtools, TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
 import appCss from '~/assets/css/index.css?url';
 import Http404 from '~/components/shells/Http404';

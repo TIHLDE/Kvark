@@ -3824,16 +3824,81 @@ export type CreateGroupFormResponses = {
 export type ListNewsData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * Number of items to return
+         */
+        pageSize?: number;
+        /**
+         * Number of items to skip
+         */
+        page?: number;
+    };
     url: '/api/news';
 };
 
 export type ListNewsResponses = {
     /**
-     * List of news articles
+     * OK
      */
-    200: unknown;
+    200: {
+        /**
+         * Total number of items available
+         */
+        totalCount: number;
+        /**
+         * Total number of pages available
+         */
+        pages: number;
+        /**
+         * The next page number that can be fetched
+         */
+        nextPage: number | null;
+        /**
+         * List of news articles
+         */
+        items: Array<{
+            /**
+             * News ID
+             */
+            id: string;
+            /**
+             * News title
+             */
+            title: string;
+            /**
+             * News header
+             */
+            header: string;
+            /**
+             * News body
+             */
+            body: string;
+            /**
+             * Image URL
+             */
+            imageUrl: string | null;
+            /**
+             * Image alt text
+             */
+            imageAlt: string | null;
+            /**
+             * Whether reactions are allowed
+             */
+            emojisAllowed: boolean;
+            /**
+             * Creation time (ISO 8601)
+             */
+            createdAt: Date;
+            /**
+             * Last update time (ISO 8601)
+             */
+            updatedAt: Date;
+        }>;
+    };
 };
+
+export type ListNewsResponse = ListNewsResponses[keyof ListNewsResponses];
 
 export type CreateNewsData = {
     body?: {
@@ -4114,16 +4179,133 @@ export type CreateNewsReactionResponses = {
 export type ListJobsData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * Number of items to return
+         */
+        pageSize?: number;
+        /**
+         * Number of items to skip
+         */
+        page?: number;
+        /**
+         * Search term to filter by title or company name
+         */
+        search?: string;
+        /**
+         * Include expired job postings (default: false)
+         */
+        expired?: boolean;
+        /**
+         * Filter by job type
+         */
+        jobType?: 'full_time' | 'part_time' | 'summer_job' | 'other';
+        /**
+         * Filter by year of study (returns jobs targeting that class)
+         */
+        year?: 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
+    };
     url: '/api/jobs';
 };
 
 export type ListJobsResponses = {
     /**
-     * List of job postings
+     * OK
      */
-    200: unknown;
+    200: {
+        /**
+         * Total number of items available
+         */
+        totalCount: number;
+        /**
+         * Total number of pages available
+         */
+        pages: number;
+        /**
+         * The next page number that can be fetched
+         */
+        nextPage: number | null;
+        /**
+         * List of job postings
+         */
+        items: Array<{
+            /**
+             * Job post ID
+             */
+            id: string;
+            /**
+             * Job title
+             */
+            title: string;
+            /**
+             * Short description
+             */
+            ingress: string;
+            /**
+             * Full job description
+             */
+            body: string;
+            /**
+             * Company name
+             */
+            company: string;
+            /**
+             * Job location
+             */
+            location: string;
+            /**
+             * Application deadline (ISO 8601)
+             */
+            deadline: Date | null;
+            /**
+             * Is continuously hiring
+             */
+            isContinuouslyHiring: boolean;
+            /**
+             * Job type
+             */
+            jobType: 'full_time' | 'part_time' | 'summer_job' | 'other';
+            /**
+             * Contact email
+             */
+            email: string | null;
+            /**
+             * Application link
+             */
+            link: string | null;
+            /**
+             * Minimum year of study
+             */
+            classStart: 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
+            /**
+             * Maximum year of study
+             */
+            classEnd: 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
+            /**
+             * Image URL
+             */
+            imageUrl: string | null;
+            /**
+             * Image alt text
+             */
+            imageAlt: string | null;
+            /**
+             * Whether the job posting has expired
+             */
+            expired: boolean;
+            /**
+             * Creation time (ISO 8601)
+             */
+            createdAt: Date;
+            /**
+             * Last update time (ISO 8601)
+             */
+            updatedAt: Date;
+        }>;
+    };
 };
+
+export type ListJobsResponse = ListJobsResponses[keyof ListJobsResponses];
 
 export type CreateJobData = {
     body?: {

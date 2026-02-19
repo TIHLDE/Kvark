@@ -1,4 +1,4 @@
-import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { EventListItem, EventListLoading } from '~/components/miscellaneous/EventListItem';
 import { useEvents } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import { useCallback, useState } from 'react';
@@ -24,7 +24,7 @@ const ActivityEventsListView = () => {
   if (isLoading) {
     return (
       <div className='space-y-2'>
-        <EventListItemLoading length={3} />
+        <EventListLoading length={3} />
       </div>
     );
   } else if (!data?.pages[0]?.results.length) {

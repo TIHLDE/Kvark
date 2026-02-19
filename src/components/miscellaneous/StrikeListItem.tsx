@@ -1,4 +1,4 @@
-import EventListItem from '~/components/miscellaneous/EventListItem';
+import { EventListItem } from '~/components/miscellaneous/EventListItem';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
 import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';

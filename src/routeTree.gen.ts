@@ -34,8 +34,8 @@ import { Route as DotPagesStrikeAdminIndexRouteImport } from './pages/StrikeAdmi
 import { Route as DotPagesOpptakIndexRouteImport } from './pages/Opptak/index'
 import { Route as DotPagesNewGroupAdministrationIndexRouteImport } from './pages/NewGroupAdministration/index'
 import { Route as DotPagesUserAdminIndexRouteImport } from './pages/UserAdmin/index'
-import { Route as DotPagesJobPostsIndexRouteImport } from './pages/JobPosts/index'
-import { Route as DotPagesNewsIndexRouteImport } from './pages/News/index'
+import { Route as DotRoutesJobsListIndexRouteImport } from './routes/jobs/list/index'
+import { Route as DotRoutesNewsListIndexRouteImport } from './routes/news/list/index'
 import { Route as DotPagesGroupsOverviewIndexRouteImport } from './pages/Groups/overview/index'
 import { Route as DotPagesGalleryIndexRouteImport } from './pages/Gallery/index'
 import { Route as DotRoutesEventsListIndexRouteImport } from './routes/events/list/index'
@@ -193,12 +193,12 @@ const DotPagesUserAdminIndexRoute = DotPagesUserAdminIndexRouteImport.update({
   path: '/admin/brukere',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotPagesJobPostsIndexRoute = DotPagesJobPostsIndexRouteImport.update({
+const DotRoutesJobsListIndexRoute = DotRoutesJobsListIndexRouteImport.update({
   id: '/stillingsannonser/',
   path: '/stillingsannonser/',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotPagesNewsIndexRoute = DotPagesNewsIndexRouteImport.update({
+const DotRoutesNewsListIndexRoute = DotRoutesNewsListIndexRouteImport.update({
   id: '/nyheter/',
   path: '/nyheter/',
   getParentRoute: () => DotPagesMainLayoutRoute,
@@ -385,8 +385,8 @@ export interface FileRoutesByFullPath {
   '/arrangementer': typeof DotRoutesEventsListIndexRoute
   '/galleri': typeof DotPagesGalleryIndexRoute
   '/grupper': typeof DotPagesGroupsOverviewIndexRoute
-  '/nyheter': typeof DotPagesNewsIndexRoute
-  '/stillingsannonser': typeof DotPagesJobPostsIndexRoute
+  '/nyheter': typeof DotRoutesNewsListIndexRoute
+  '/stillingsannonser': typeof DotRoutesJobsListIndexRoute
   '/admin/brukere': typeof DotPagesUserAdminIndexRoute
   '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/admin/opptak': typeof DotPagesOpptakIndexRoute
@@ -438,8 +438,8 @@ export interface FileRoutesByTo {
   '/arrangementer': typeof DotRoutesEventsListIndexRoute
   '/galleri': typeof DotPagesGalleryIndexRoute
   '/grupper': typeof DotPagesGroupsOverviewIndexRoute
-  '/nyheter': typeof DotPagesNewsIndexRoute
-  '/stillingsannonser': typeof DotPagesJobPostsIndexRoute
+  '/nyheter': typeof DotRoutesNewsListIndexRoute
+  '/stillingsannonser': typeof DotRoutesJobsListIndexRoute
   '/admin/brukere': typeof DotPagesUserAdminIndexRoute
   '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/admin/opptak': typeof DotPagesOpptakIndexRoute
@@ -492,8 +492,8 @@ export interface FileRoutesById {
   '/_MainLayout/arrangementer/': typeof DotRoutesEventsListIndexRoute
   '/_MainLayout/galleri/': typeof DotPagesGalleryIndexRoute
   '/_MainLayout/grupper/': typeof DotPagesGroupsOverviewIndexRoute
-  '/_MainLayout/nyheter/': typeof DotPagesNewsIndexRoute
-  '/_MainLayout/stillingsannonser/': typeof DotPagesJobPostsIndexRoute
+  '/_MainLayout/nyheter/': typeof DotRoutesNewsListIndexRoute
+  '/_MainLayout/stillingsannonser/': typeof DotRoutesJobsListIndexRoute
   '/_MainLayout/admin/brukere': typeof DotPagesUserAdminIndexRoute
   '/_MainLayout/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/_MainLayout/admin/opptak': typeof DotPagesOpptakIndexRoute
@@ -871,14 +871,14 @@ declare module '@tanstack/react-router' {
       id: '/_MainLayout/stillingsannonser/'
       path: '/stillingsannonser'
       fullPath: '/stillingsannonser'
-      preLoaderRoute: typeof DotPagesJobPostsIndexRouteImport
+      preLoaderRoute: typeof DotRoutesJobsListIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/nyheter/': {
       id: '/_MainLayout/nyheter/'
       path: '/nyheter'
       fullPath: '/nyheter'
-      preLoaderRoute: typeof DotPagesNewsIndexRouteImport
+      preLoaderRoute: typeof DotRoutesNewsListIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/grupper/': {
@@ -1171,8 +1171,8 @@ interface DotPagesMainLayoutRouteChildren {
   DotRoutesEventsListIndexRoute: typeof DotRoutesEventsListIndexRoute
   DotPagesGalleryIndexRoute: typeof DotPagesGalleryIndexRoute
   DotPagesGroupsOverviewIndexRoute: typeof DotPagesGroupsOverviewIndexRoute
-  DotPagesNewsIndexRoute: typeof DotPagesNewsIndexRoute
-  DotPagesJobPostsIndexRoute: typeof DotPagesJobPostsIndexRoute
+  DotRoutesNewsListIndexRoute: typeof DotRoutesNewsListIndexRoute
+  DotRoutesJobsListIndexRoute: typeof DotRoutesJobsListIndexRoute
   DotPagesUserAdminIndexRoute: typeof DotPagesUserAdminIndexRoute
   DotPagesNewGroupAdministrationIndexRoute: typeof DotPagesNewGroupAdministrationIndexRoute
   DotPagesOpptakIndexRoute: typeof DotPagesOpptakIndexRoute
@@ -1214,8 +1214,8 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesEventsListIndexRoute: DotRoutesEventsListIndexRoute,
   DotPagesGalleryIndexRoute: DotPagesGalleryIndexRoute,
   DotPagesGroupsOverviewIndexRoute: DotPagesGroupsOverviewIndexRoute,
-  DotPagesNewsIndexRoute: DotPagesNewsIndexRoute,
-  DotPagesJobPostsIndexRoute: DotPagesJobPostsIndexRoute,
+  DotRoutesNewsListIndexRoute: DotRoutesNewsListIndexRoute,
+  DotRoutesJobsListIndexRoute: DotRoutesJobsListIndexRoute,
   DotPagesUserAdminIndexRoute: DotPagesUserAdminIndexRoute,
   DotPagesNewGroupAdministrationIndexRoute:
     DotPagesNewGroupAdministrationIndexRoute,

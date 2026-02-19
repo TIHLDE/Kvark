@@ -86,7 +86,7 @@ const ProfileEvents = () => {
       </div>
 
       {!data ? (
-        <EventListItemLoading />
+        <EventListLoading />
       ) : !events.length ? (
         <NotFoundIndicator header='Fant ingen arrangementer' subtitle='Du er ikke påmeldt noen kommende arrangementer' />
       ) : (

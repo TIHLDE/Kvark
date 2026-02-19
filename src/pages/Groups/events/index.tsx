@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useParams } from '@tanstack/react-router';
-import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { EventListItem, EventListLoading } from '~/components/miscellaneous/EventListItem';
 import NotFoundIndicator from '~/components/miscellaneous/NotFoundIndicator';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { useEvents } from '~/hooks/Event';
@@ -26,7 +26,7 @@ function GroupEvents() {
           <Link to='/admin/arrangementer/{-$eventId}'>Nytt arrangement</Link>
         </Button>
       )}
-      {isLoading && <EventListItemLoading />}
+      {isLoading && <EventListLoading />}
       {!isLoading && !events.length && <NotFoundIndicator header={`${group?.name} har ingen kommende arrangementer`} />}
       {error && <h1 className='text-center mt-4 text-muted-foreground'>{error.detail}</h1>}
       {data !== undefined && (

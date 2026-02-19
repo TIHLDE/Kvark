@@ -1,4 +1,4 @@
-import EventListItem, { EventListItemLoading } from '~/components/miscellaneous/EventListItem';
+import { EventListItem, EventListLoading } from '~/components/miscellaneous/EventListItem';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import type { EventList } from '~/types';
 import { Category, Groups } from '~/types/Enums';
@@ -17,17 +17,17 @@ const EventsListView = ({ events, isLoading = false }: EventsListViewProps) => {
   if (isLoading && !isDesktop) {
     return (
       <div className='space-y-2'>
-        <EventListItemLoading length={3} />
+        <EventListLoading length={3} />
       </div>
     );
   } else if (isLoading) {
     return (
       <div className='grid grid-cols-2 gap-2'>
         <div className='space-y-2'>
-          <EventListItemLoading length={3} />
+          <EventListLoading length={3} />
         </div>
         <div className='space-y-2'>
-          <EventListItemLoading length={3} />
+          <EventListLoading length={3} />
         </div>
       </div>
     );
