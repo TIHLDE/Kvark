@@ -58,9 +58,8 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/$badgeId', './pages/Badges/details/index.tsx'),
     ]),
 
-    //
     route('stillingsannonser', [
-      index('./pages/JobPosts/index.tsx'),
+      index('./routes/jobs/list/index.tsx'),
       //
       route('/$id/{-$urlTitle}', './pages/JobPostDetails/index.tsx'),
     ]),
@@ -71,9 +70,8 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
 
-    // Redirects to new wiki: https://wiki.tihlde.org/
     route('/nyheter', [
-      index('./pages/News/index.tsx'),
+      index('./routes/news/list/index.tsx'),
       route('/$id/{-$urlTitle}', './pages/NewsDetails/index.tsx'),
       //
     ]),

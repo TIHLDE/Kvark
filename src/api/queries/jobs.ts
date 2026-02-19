@@ -1,19 +1,46 @@
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
-import type { CreateJobData, DeleteJobData, UpdateJobData } from '~/gen-client/types.gen';
+import { infiniteQueryOptions, mutationOptions, queryOptions } from '@tanstack/react-query';
+import type { CreateJobData, DeleteJobData, ListJobsData, ListJobsResponses, UpdateJobData } from '~/gen-client/types.gen';
 
 import { photon } from '../photon';
-import type { PathParams, Payload } from './helper';
+import type { PathParams, Payload, QueryParams, RequestReturnType } from './helper';
 
 export const jobKeys = {
   all: ['jobs'],
+  infinite: ['jobs', 'infinite'],
   lists: ['jobs', 'list'],
   details: ['jobs', 'detail'],
 } as const;
 
-export const listJobsQuery = () =>
+const DEFAULT_PAGE_SIZE = 20;
+
+export type JobFilters = QueryParams<ListJobsData>;
+export type JobListEntry = RequestReturnType<ListJobsResponses, 200>['items'][number];
+
+export const listJobInfiniteQuery = (filters?: JobFilters) =>
+  infiniteQueryOptions({
+    queryKey: [...jobKeys.infinite, filters].filter(Boolean),
+    queryFn: async ({ pageParam }) =>
+      await photon.listJobs({
+        throwOnError: true,
+        query: {
+          ...filters,
+          page: pageParam,
+          pageSize: DEFAULT_PAGE_SIZE,
+        },
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  });
+
+export const listJobsQuery = (page: number, pageSize = DEFAULT_PAGE_SIZE, filters: Omit<JobFilters, 'page' | 'pageSize'> = {}) =>
   queryOptions({
-    queryKey: jobKeys.lists,
-    queryFn: () => photon.listJobs(),
+    queryKey: [...jobKeys.lists, page, pageSize, filters],
+    queryFn: async () =>
+      await photon.listJobs({
+        throwOnError: true,
+        query: { ...filters, page, pageSize },
+      }),
+    select: (data) => data.items,
   });
 
 export const getJobQuery = (id: string) =>

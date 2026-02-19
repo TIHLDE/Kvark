@@ -1,19 +1,43 @@
-import { mutationOptions, queryOptions } from '@tanstack/react-query';
-import type { CreateNewsData, CreateNewsReactionData, DeleteNewsData, DeleteNewsReactionData, UpdateNewsData } from '~/gen-client/types.gen';
+import { infiniteQueryOptions, mutationOptions, queryOptions } from '@tanstack/react-query';
+import type {
+  CreateNewsData,
+  CreateNewsReactionData,
+  DeleteNewsData,
+  DeleteNewsReactionData,
+  ListNewsData,
+  ListNewsResponses,
+  UpdateNewsData,
+} from '~/gen-client/types.gen';
 
 import { photon } from '../photon';
-import type { PathParams, Payload } from './helper';
+import type { PathParams, Payload, QueryParams, RequestReturnType } from './helper';
 
 export const newsKeys = {
   all: ['news'],
+  infinite: ['news', 'infinite'],
   lists: ['news', 'list'],
   details: ['news', 'detail'],
 } as const;
 
-export const listNewsQuery = () =>
-  queryOptions({
-    queryKey: newsKeys.lists,
-    queryFn: () => photon.listNews(),
+const DEFAULT_PAGE_SIZE = 20;
+
+export type NewsFilters = QueryParams<ListNewsData>;
+export type NewsListEntry = RequestReturnType<ListNewsResponses, 200>['items'][number];
+
+export const listNewsInfiniteQuery = (filters?: NewsFilters) =>
+  infiniteQueryOptions({
+    queryKey: [...newsKeys.infinite, filters].filter(Boolean),
+    queryFn: async ({ pageParam }) =>
+      await photon.listNews({
+        throwOnError: true,
+        query: {
+          ...filters,
+          page: pageParam,
+          pageSize: DEFAULT_PAGE_SIZE,
+        },
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
 export const getNewsQuery = (id: string) =>
