@@ -74,8 +74,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
 
     route('/profil/{-$userId}', './pages/Profile/index.tsx'),
     route('/kokebok/{-$studyId}/{-$classId}', './pages/Cheatsheet/index.tsx'),
-    route('/linker', './pages/ShortLinks/index.tsx'),
-    route('/qr-koder', './pages/QRCodes/index.tsx'),
     route('/opptak', './pages/Admissions/index.tsx'),
 
     route('/admin', [

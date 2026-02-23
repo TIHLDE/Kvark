@@ -210,20 +210,6 @@ function ToolOptions({ closeMenu }: { closeMenu: () => void }) {
     <CommandGroup heading='Verktøy'>
       <CommandItem
         onSelect={() => {
-          navigate(linkOptions({ to: '/linker' }));
-          closeMenu();
-        }}>
-        Link forkorter
-      </CommandItem>
-      <CommandItem
-        onSelect={() => {
-          navigate(linkOptions({ to: '/qr-koder' }));
-          closeMenu();
-        }}>
-        QR-Generator
-      </CommandItem>
-      <CommandItem
-        onSelect={() => {
           navigate(linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }));
           closeMenu();
         }}>

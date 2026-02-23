@@ -15,10 +15,8 @@ import { Route as DotPagesCompanyInterestIndexRouteImport } from './pages/Compan
 import { Route as DotPagesMainLayoutRouteImport } from './pages/MainLayout'
 import { Route as DotPagesToddelIndexRouteImport } from './pages/Toddel/index'
 import { Route as DotPagesFeedbackIndexRouteImport } from './pages/Feedback/index'
-import { Route as DotPagesQRCodesIndexRouteImport } from './pages/QRCodes/index'
 import { Route as DotPagesAdmissionsIndexRouteImport } from './pages/Admissions/index'
 import { Route as DotPagesNewStudentIndexRouteImport } from './pages/NewStudent/index'
-import { Route as DotPagesShortLinksIndexRouteImport } from './pages/ShortLinks/index'
 import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/InterestGroups/index'
 import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
@@ -93,11 +91,6 @@ const DotPagesFeedbackIndexRoute = DotPagesFeedbackIndexRouteImport.update({
   path: '/tilbakemelding',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotPagesQRCodesIndexRoute = DotPagesQRCodesIndexRouteImport.update({
-  id: '/qr-koder',
-  path: '/qr-koder',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
 const DotPagesAdmissionsIndexRoute = DotPagesAdmissionsIndexRouteImport.update({
   id: '/opptak',
   path: '/opptak',
@@ -106,11 +99,6 @@ const DotPagesAdmissionsIndexRoute = DotPagesAdmissionsIndexRouteImport.update({
 const DotPagesNewStudentIndexRoute = DotPagesNewStudentIndexRouteImport.update({
   id: '/ny-student',
   path: '/ny-student',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
-const DotPagesShortLinksIndexRoute = DotPagesShortLinksIndexRouteImport.update({
-  id: '/linker',
-  path: '/linker',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesInterestGroupsIndexRoute =
@@ -378,10 +366,8 @@ export interface FileRoutesByFullPath {
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
-  '/linker': typeof DotPagesShortLinksIndexRoute
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
-  '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
@@ -433,10 +419,8 @@ export interface FileRoutesByTo {
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
-  '/linker': typeof DotPagesShortLinksIndexRoute
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
-  '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
@@ -487,10 +471,8 @@ export interface FileRoutesById {
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
   '/_MainLayout/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
-  '/_MainLayout/linker': typeof DotPagesShortLinksIndexRoute
   '/_MainLayout/ny-student': typeof DotPagesNewStudentIndexRoute
   '/_MainLayout/opptak': typeof DotPagesAdmissionsIndexRoute
-  '/_MainLayout/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/_MainLayout/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/_MainLayout/toddel': typeof DotPagesToddelIndexRoute
   '/_MainLayout/ny-bruker/': typeof DotRoutesAuthNewAccountRoute
@@ -545,10 +527,8 @@ export interface FileRouteTypes {
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
-    | '/linker'
     | '/ny-student'
     | '/opptak'
-    | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
     | '/ny-bruker'
@@ -600,10 +580,8 @@ export interface FileRouteTypes {
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
-    | '/linker'
     | '/ny-student'
     | '/opptak'
-    | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
     | '/ny-bruker'
@@ -653,10 +631,8 @@ export interface FileRouteTypes {
     | '/_MainLayout/bedrifter'
     | '/_MainLayout/endringslogg'
     | '/_MainLayout/interessegrupper'
-    | '/_MainLayout/linker'
     | '/_MainLayout/ny-student'
     | '/_MainLayout/opptak'
-    | '/_MainLayout/qr-koder'
     | '/_MainLayout/tilbakemelding'
     | '/_MainLayout/toddel'
     | '/_MainLayout/ny-bruker/'
@@ -744,13 +720,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotPagesFeedbackIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
-    '/_MainLayout/qr-koder': {
-      id: '/_MainLayout/qr-koder'
-      path: '/qr-koder'
-      fullPath: '/qr-koder'
-      preLoaderRoute: typeof DotPagesQRCodesIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
     '/_MainLayout/opptak': {
       id: '/_MainLayout/opptak'
       path: '/opptak'
@@ -763,13 +732,6 @@ declare module '@tanstack/react-router' {
       path: '/ny-student'
       fullPath: '/ny-student'
       preLoaderRoute: typeof DotPagesNewStudentIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
-    '/_MainLayout/linker': {
-      id: '/_MainLayout/linker'
-      path: '/linker'
-      fullPath: '/linker'
-      preLoaderRoute: typeof DotPagesShortLinksIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/interessegrupper': {
@@ -1177,10 +1139,8 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
   DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
   DotPagesInterestGroupsIndexRoute: typeof DotPagesInterestGroupsIndexRoute
-  DotPagesShortLinksIndexRoute: typeof DotPagesShortLinksIndexRoute
   DotPagesNewStudentIndexRoute: typeof DotPagesNewStudentIndexRoute
   DotPagesAdmissionsIndexRoute: typeof DotPagesAdmissionsIndexRoute
-  DotPagesQRCodesIndexRoute: typeof DotPagesQRCodesIndexRoute
   DotPagesFeedbackIndexRoute: typeof DotPagesFeedbackIndexRoute
   DotPagesToddelIndexRoute: typeof DotPagesToddelIndexRoute
   DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRoute
@@ -1220,10 +1180,8 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
   DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
   DotPagesInterestGroupsIndexRoute: DotPagesInterestGroupsIndexRoute,
-  DotPagesShortLinksIndexRoute: DotPagesShortLinksIndexRoute,
   DotPagesNewStudentIndexRoute: DotPagesNewStudentIndexRoute,
   DotPagesAdmissionsIndexRoute: DotPagesAdmissionsIndexRoute,
-  DotPagesQRCodesIndexRoute: DotPagesQRCodesIndexRoute,
   DotPagesFeedbackIndexRoute: DotPagesFeedbackIndexRoute,
   DotPagesToddelIndexRoute: DotPagesToddelIndexRoute,
   DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRoute,

@@ -77,8 +77,6 @@ const NavigationContent = ({ children }: NavigationProps) => {
         items: [
           { title: 'Opptak', text: 'Søk verv hos TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/opptak' }) } },
           { title: 'Kokebok', text: 'Få hjelp til dine øvinger', link: { type: 'internal', options: linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }) } },
-          { title: 'Link-forkorter', text: 'Forkort linker til å peke mot TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/linker' }) } },
-          { title: 'QR koder', text: 'Generer dine egne QR koder', link: { type: 'internal', options: linkOptions({ to: '/qr-koder' }) } },
           { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', link: { type: 'internal', options: linkOptions({ to: '/badges' }) } },
           { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', link: { type: 'internal', options: linkOptions({ to: '/galleri' }) } },
           { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', link: { type: 'external', href: URLS.external.kontRes } },
