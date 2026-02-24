@@ -2,7 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import { linkOptions, redirect } from '@tanstack/react-router';
 import { ACCESS_TOKEN } from '~/constant';
 import { getQueryClient } from '~/integrations/tanstack-query';
-import { Permissions, RequestResponse, User } from '~/types';
+import { RequestResponse, User } from '~/types';
 import { PermissionApp } from '~/types/Enums';
 import { z } from 'zod';
 
@@ -118,18 +118,15 @@ export function invalidateAuth() {
  * @param some if true, the user must only have write permission for one of the apps
  * @returns if the user has write or write_all permission
  */
-export function userHasWritePermission(permissions: Record<string, Permissions>, app: PermissionApp | PermissionApp[], some: boolean = false): boolean {
+export function userHasWritePermission(permissions: string[] | Set<string>, app: PermissionApp | PermissionApp[], some: boolean = false): boolean {
+  const permSet = permissions instanceof Set ? permissions : new Set(permissions);
   if (!Array.isArray(app)) {
-    const perm = permissions[app];
-    if (!perm) {
-      return false;
-    }
-    return Boolean(perm.write) || Boolean(perm.write_all);
+    return permSet.has(app);
   }
   if (some) {
-    return app.some((p) => userHasWritePermission(permissions, p));
+    return app.some((p) => userHasWritePermission(permSet, p));
   }
-  return app.every((p) => userHasWritePermission(permissions, p));
+  return app.every((p) => userHasWritePermission(permSet, p));
 }
 
 /**
