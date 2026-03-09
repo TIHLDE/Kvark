@@ -23,6 +23,8 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
 
+    route('DNV', './pages/DNV/index.tsx'),
+
     route('/grupper', [
       index('./pages/Groups/overview/index.tsx'),
 

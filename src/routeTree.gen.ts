@@ -20,6 +20,7 @@ import { Route as DotPagesNewStudentIndexRouteImport } from './pages/NewStudent/
 import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/InterestGroups/index'
 import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
+import { Route as DotPagesDNVIndexRouteImport } from './pages/DNV/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
 import { Route as DotRoutesAuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
@@ -115,6 +116,11 @@ const DotPagesChangelogIndexRoute = DotPagesChangelogIndexRouteImport.update({
 const DotPagesCompaniesIndexRoute = DotPagesCompaniesIndexRouteImport.update({
   id: '/bedrifter',
   path: '/bedrifter',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesDNVIndexRoute = DotPagesDNVIndexRouteImport.update({
+  id: '/DNV',
+  path: '/DNV',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesLandingIndexRoute = DotPagesLandingIndexRouteImport.update({
@@ -363,6 +369,7 @@ export interface FileRoutesByFullPath {
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/': typeof DotPagesLandingIndexRoute
+  '/DNV': typeof DotPagesDNVIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -416,6 +423,7 @@ export interface FileRoutesByTo {
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/': typeof DotPagesLandingIndexRoute
+  '/DNV': typeof DotPagesDNVIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -468,6 +476,7 @@ export interface FileRoutesById {
   '/_MainLayout/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
+  '/_MainLayout/DNV': typeof DotPagesDNVIndexRoute
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
   '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
   '/_MainLayout/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
@@ -524,6 +533,7 @@ export interface FileRouteTypes {
     | '/glemt-passord'
     | '/logg-inn'
     | '/'
+    | '/DNV'
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
@@ -577,6 +587,7 @@ export interface FileRouteTypes {
     | '/glemt-passord'
     | '/logg-inn'
     | '/'
+    | '/DNV'
     | '/bedrifter'
     | '/endringslogg'
     | '/interessegrupper'
@@ -628,6 +639,7 @@ export interface FileRouteTypes {
     | '/_MainLayout/glemt-passord'
     | '/_MainLayout/logg-inn'
     | '/_MainLayout/'
+    | '/_MainLayout/DNV'
     | '/_MainLayout/bedrifter'
     | '/_MainLayout/endringslogg'
     | '/_MainLayout/interessegrupper'
@@ -753,6 +765,13 @@ declare module '@tanstack/react-router' {
       path: '/bedrifter'
       fullPath: '/bedrifter'
       preLoaderRoute: typeof DotPagesCompaniesIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/DNV': {
+      id: '/_MainLayout/DNV'
+      path: '/DNV'
+      fullPath: '/DNV'
+      preLoaderRoute: typeof DotPagesDNVIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/': {
@@ -1136,6 +1155,7 @@ interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthForgotPasswordRoute: typeof DotRoutesAuthForgotPasswordRoute
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
+  DotPagesDNVIndexRoute: typeof DotPagesDNVIndexRoute
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
   DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
   DotPagesInterestGroupsIndexRoute: typeof DotPagesInterestGroupsIndexRoute
@@ -1177,6 +1197,7 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthForgotPasswordRoute: DotRoutesAuthForgotPasswordRoute,
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
+  DotPagesDNVIndexRoute: DotPagesDNVIndexRoute,
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
   DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
   DotPagesInterestGroupsIndexRoute: DotPagesInterestGroupsIndexRoute,
