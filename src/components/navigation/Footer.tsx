@@ -80,11 +80,16 @@ const Footer = () => {
         </div>
       </div>
 
-      <div>
+      <div className='space-y-2'>
         <h1 className='text-center'>
           Feil på siden?{' '}
           <Link className='text-blue-500' to='/tilbakemelding'>
             Rapporter til Index
+          </Link>
+        </h1>
+        <h1 className='text-center'>
+          <Link className='text-blue-500' to={URLS.privacy}>
+            Personvernerklæring
           </Link>
         </h1>
       </div>

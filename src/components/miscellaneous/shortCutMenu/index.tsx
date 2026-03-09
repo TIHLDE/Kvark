@@ -16,6 +16,7 @@ const navigationLinks = [
   { name: 'Grupper', path: linkOptions({ to: '/grupper' }) },
   { name: 'Galleri', path: linkOptions({ to: '/galleri' }) },
   { name: 'Bugs', path: linkOptions({ to: '/tilbakemelding' }) },
+  { name: 'Personvern', path: linkOptions({ to: '/personvern' }) },
 ];
 
 const externalLinks = [

@@ -81,6 +81,7 @@ const URLS = {
   changelog: '/endringslogg',
   admissions: '/opptak',
   opptakAdmin: '/admin/opptak',
+  privacy: '/personvern',
 } as const;
 
 export default URLS;
