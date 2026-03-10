@@ -3,11 +3,13 @@ import { getCookie } from '~/api/cookie';
 import MultiSelect, { MultiSelectOption } from '~/components/inputs/MultiSelect';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Button } from '~/components/ui/button';
+import ResponsiveAlertDialog from '~/components/ui/responsive-alert-dialog';
 import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from '~/constant';
-import { useFormById, useFormSubmissions } from '~/hooks/Form';
+import { useDeleteAllSubmissions, useFormById, useFormSubmissions } from '~/hooks/Form';
 import type { Form, SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from '~/types';
 import { FormFieldType, FormResourceType } from '~/types/Enums';
 import { urlEncode } from '~/utils';
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -20,6 +22,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
   const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
   const { data, isLoading, error } = useFormSubmissions(formId || '-', selectedPage + 1);
   const [, setSelectedFields] = useState<string[]>(['Alle']);
+  const deleteSubmissions = useDeleteAllSubmissions(formId || '-');
 
   const handleSelectFields = (values: MultiSelectOption[]) => {
     if (values.length === 0) {
@@ -86,6 +89,24 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     }
   };
 
+  const onDeleteAll = () => {
+    deleteSubmissions.mutate(undefined, {
+      onSuccess: () => {
+        toast.success('Alle svar ble slettet');
+      },
+      onError: (e) => {
+        toast.error(e.detail || 'Kunne ikke slette svar');
+      },
+    });
+  };
+
+  const DeleteButton = (
+    <Button variant='destructive' disabled={deleteSubmissions.isPending || data.results.length === 0}>
+      <Trash className='mr-2 w-4 h-4' />
+      Slett alle svar
+    </Button>
+  );
+
   return (
     <div className='space-y-3'>
       <MultiSelect
@@ -114,7 +135,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
       </div>
 
       <div className='flex items-center justify-between'>
-        <div className='space-x-2'>
+        <div className='flex flex-wrap gap-2'>
           <Button
             disabled={selectedPage === 0}
             onClick={() => {
@@ -132,6 +153,15 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
           <Button onClick={downloadCSV} variant='outline'>
             Last ned som CSV
           </Button>
+        </div>
+
+        <div className='ml-auto'>
+          <ResponsiveAlertDialog
+            title='Slett alle svar'
+            description='Er du helt sikker på at du vil slette alle innsendte svar til dette skjemaet?'
+            action={onDeleteAll}
+            trigger={DeleteButton}
+          />
         </div>
       </div>
     </div>
