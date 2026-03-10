@@ -149,6 +149,18 @@ export const validateSubmissionInput = (submission: Submission, form: Form) => {
   });
 };
 
+export const useDeleteAllSubmissions = (formId: string): UseMutationResult<RequestResponse, RequestResponse, void, unknown> => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => API.deleteAllSubmissions(formId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [FORM_QUERY_KEY, formId] });
+      queryClient.invalidateQueries({ queryKey: [FORM_QUERY_KEY, formId, SUBMISSIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [FORM_QUERY_KEY, formId, STATISTICS_QUERY_KEY] });
+    },
+  });
+};
+
 export const validateSubmissionTextInput = (submission: Submission, form: Form) => {
   submission.answers?.forEach((answer, index) => {
     const field = form.fields.find((field) => field.id === answer.field.id);
