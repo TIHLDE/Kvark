@@ -42,7 +42,7 @@
     "@tanstack/react-router": "^1.140.5",
     "@tanstack/react-router-devtools": "^1.140.5",
     "@tanstack/react-router-ssr-query": "^1.140.5",
-    "@tanstack/react-start": "^1.140.5",
+    "@tanstack/react-start": "^1.141.3",
     "@tanstack/virtual-file-routes": "^1.140.0",
     "@uploadthing/react": "^7.3.3",
     "browser-image-compression": "^2.0.2",
