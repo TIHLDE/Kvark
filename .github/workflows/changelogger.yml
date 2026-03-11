@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-    steps:      
+    steps:
       - name: Checkout repo
         uses: actions/checkout@v2
 
@@ -24,13 +24,13 @@ jobs:
       - name: Iterate CHANGELOG
         run: |
           python .github/scripts/changeloger.py
-        
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ github.token }}
-          title: "docs(changelog): iterate changelog version"
-          commit-message: "docs(changelog): iterate changelog version"
+          title: 'docs(changelog): iterate changelog version'
+          commit-message: 'docs(changelog): iterate changelog version'
           branch: docs/iterate_changelog
           delete-branch: true
           base: dev
