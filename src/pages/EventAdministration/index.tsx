@@ -1,4 +1,4 @@
-import { createFileRoute, Link, linkOptions, redirect, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, Link, linkOptions, redirect, stripSearchParams, useNavigate } from '@tanstack/react-router';
 import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
@@ -7,6 +7,7 @@ import { useEventById } from '~/hooks/Event';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
 import EventEditor from '~/pages/EventAdministration/components/EventEditor';
 import EventParticipants from '~/pages/EventAdministration/components/EventParticipants';
+import { eventRegistrationDefaultValues, eventRegistrationSchema } from '~/pages/EventAdministration/eventRegistrationSearch';
 import { PermissionApp } from '~/types/Enums';
 import { urlEncode } from '~/utils';
 import { ChevronRight, CircleHelp, ListChecks, Pencil, Plus, Users } from 'lucide-react';
@@ -16,6 +17,10 @@ import EventFormAdmin from './components/EventFormAdmin';
 import EventList from './components/EventList';
 
 export const Route = createFileRoute('/_MainLayout/admin/arrangementer/{-$eventId}')({
+  validateSearch: eventRegistrationSchema,
+  search: {
+    middlewares: [stripSearchParams(eventRegistrationDefaultValues)],
+  },
   async beforeLoad({ location }) {
     const auth = await authClientWithRedirect(location.href);
 

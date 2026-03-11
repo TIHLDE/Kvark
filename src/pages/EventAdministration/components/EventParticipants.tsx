@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useSearch } from '@tanstack/react-router';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, PaginateButton } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
@@ -10,9 +11,9 @@ import { useEventById, useEventRegistrations } from '~/hooks/Event';
 import EventMessageSender from '~/pages/EventAdministration/components/EventMessageSender';
 import EventStatistics from '~/pages/EventAdministration/components/EventStatistics';
 import Participant from '~/pages/EventAdministration/components/Participant';
+import type { EventRegistrationSearch } from '~/pages/EventAdministration/eventRegistrationSearch';
 import type { Event } from '~/types';
 import { Copy, Info } from 'lucide-react';
-import { inferParserType, parseAsString, useQueryStates } from 'nuqs';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -32,18 +33,8 @@ const formSchema = z.object({
   emails: z.boolean(),
 });
 
-const eventRegistrationFilter = {
-  has_attended: parseAsString.withDefault(''),
-  year: parseAsString.withDefault(''),
-  study: parseAsString.withDefault(''),
-  has_allergy: parseAsString.withDefault(''),
-  search: parseAsString.withDefault(''),
-  has_paid: parseAsString.withDefault(''),
-  allow_photo: parseAsString.withDefault(''),
-};
-
 const Registrations = ({ onWait = false, eventId, needsSorting = false }: RegistrationsProps) => {
-  const [queryFilters] = useQueryStates(eventRegistrationFilter);
+  const queryFilters = useSearch({ from: '/_MainLayout/admin/arrangementer/{-$eventId}' });
   const filters = useMemo(() => {
     const { has_attended, ...rest } = queryFilters;
 
@@ -53,9 +44,9 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
       ...(!onWait ? rest : {}),
     };
 
-    return Object.fromEntries(Object.entries(values).filter(([, value]) => Boolean(value) || (typeof value === 'string' && value === 'false'))) as Partial<
-      inferParserType<typeof eventRegistrationFilter>
-    > & {
+    return Object.fromEntries(
+      Object.entries(values).filter(([, value]) => Boolean(value) || (typeof value === 'string' && value === 'false')),
+    ) as Partial<EventRegistrationSearch> & {
       is_on_wait: boolean;
     };
   }, [queryFilters, onWait]);
