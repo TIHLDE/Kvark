@@ -4,6 +4,7 @@ import Page from '~/components/navigation/Page';
 import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
 import { Button, buttonVariants } from '~/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
+import { Checkbox } from '~/components/ui/checkbox';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
@@ -49,6 +50,9 @@ const formSchema = z
     password_verify: z.string().min(8, {
       error: 'Minimum 8 karakterer',
     }),
+    privacy_accepted: z.boolean().refine((val) => val === true, {
+      message: 'Du må godta personvernerklæringen',
+    }),
   })
   .refine((data) => data.password === data.password_verify, {
     path: ['password_verify'],
@@ -89,6 +93,7 @@ function SignUp() {
       user_id: '',
       password: '',
       password_verify: '',
+      privacy_accepted: false,
     },
   });
 
@@ -294,6 +299,28 @@ function SignUp() {
                   )}
                 />
               </div>
+
+              <FormField
+                control={form.control}
+                name='privacy_accepted'
+                render={({ field }) => (
+                  <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <div className='space-y-1 leading-none'>
+                      <FormLabel>
+                        Jeg har lest og godtar{' '}
+                        <Link className='text-blue-500 hover:underline' target='_blank' to='/personvern'>
+                          personvernerklæringen
+                        </Link>{' '}
+                        <span className='text-red-300'>*</span>
+                      </FormLabel>
+                      <FormMessage />
+                    </div>
+                  </FormItem>
+                )}
+              />
 
               <Alert variant='warning'>
                 <Info className='w-4 h-4' />

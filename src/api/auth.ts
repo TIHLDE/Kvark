@@ -115,7 +115,7 @@ export async function loginUser(username: string, password: string) {
   }
 
   setCookie(ACCESS_TOKEN, token);
-  getQueryClient().removeQueries();
+  await getQueryClient().invalidateQueries();
   const auth = await authClient();
   if (!auth) {
     throw { detail: 'Kunne ikke finne brukerinformasjonen din' } satisfies RequestResponse;

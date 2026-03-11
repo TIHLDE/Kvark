@@ -98,5 +98,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
     route('/endringslogg', './pages/Changelog/index.tsx'),
+    route('/personvern', './pages/Privacy/index.tsx'),
   ]),
 ]);
