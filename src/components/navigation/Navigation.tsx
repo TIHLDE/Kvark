@@ -57,7 +57,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
         type: 'dropdown',
         text: 'Generelt',
         items: [
-          { title: 'Wiki', text: 'Her finner du all tilgjengelig informasjon om TIHLDE', link: { type: 'external', href: URLS.external.wiki.wiki } },
+          { title: 'Nyheter', text: 'Se de siste nyhetene fra TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/nyheter' }) } },
           { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', link: { type: 'internal', options: linkOptions({ to: '/toddel' }) } },
           { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', link: { type: 'internal', options: linkOptions({ to: '/grupper' }) } },
           { title: 'Interessegrupper', text: 'Se alle interessegrupper', link: { type: 'internal', options: linkOptions({ to: '/interessegrupper' }) } },
@@ -67,7 +67,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
 
       { type: 'link', text: 'Ny student', hidden: !SHOW_NEW_STUDENT_INFO, link: { type: 'internal', options: linkOptions({ to: '/ny-student' }) } },
       { type: 'link', text: 'Arrangementer', link: { type: 'internal', options: linkOptions({ to: '/arrangementer' }) } },
-      { type: 'link', text: 'Nyheter', link: { type: 'internal', options: linkOptions({ to: '/nyheter' }) } },
+      { type: 'link', text: 'Wiki', link: { type: 'external', href: URLS.external.wiki.wiki } },
       { type: 'link', text: 'Stillinger', link: { type: 'internal', options: linkOptions({ to: '/stillingsannonser' }) } },
 
       {

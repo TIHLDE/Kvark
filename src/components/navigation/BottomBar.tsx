@@ -6,16 +6,15 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
 import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
-import { BriefcaseBusiness, Calendar, Menu, Newspaper } from 'lucide-react';
+import URLS from '~/URLS';
+import { BookOpen, BriefcaseBusiness, Calendar, Menu } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ExternalLink } from '../ui/external-link';
 
-type Item = {
-  icon: React.ReactNode;
-  text: string;
-  to: LinkOptions;
-};
+type ActionItem =
+  | { icon: React.ReactNode; text: string; type: 'internal'; to: LinkOptions }
+  | { icon: React.ReactNode; text: string; type: 'external'; href: string };
 
 export type BottomBarProps = {
   items: Array<NavigationItem>;
@@ -26,25 +25,29 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
   const isAuthenticated = useIsAuthenticated();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-  const actions: Array<Item> = [
+  const actions: Array<ActionItem> = [
     {
       icon: <Logo className='w-auto h-5' size='small' />,
       text: 'Hjem',
+      type: 'internal',
       to: linkOptions({ to: '/' }),
     },
     {
       icon: <Calendar className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Arrangementer',
+      type: 'internal',
       to: linkOptions({ to: '/arrangementer' }),
     },
     {
-      icon: <Newspaper className='h-5 stroke-[1.5px] mx-auto' />,
-      text: 'Nyheter',
-      to: linkOptions({ to: '/nyheter' }),
+      icon: <BookOpen className='h-5 stroke-[1.5px] mx-auto' />,
+      text: 'Wiki',
+      type: 'external',
+      href: URLS.external.wiki.wiki,
     },
     {
       icon: <BriefcaseBusiness className='h-5 stroke-[1.5px] mx-auto' />,
       text: 'Stillinger',
+      type: 'internal',
       to: linkOptions({ to: '/stillingsannonser' }),
     },
   ];
@@ -56,12 +59,19 @@ const BottomBar = ({ items, className }: BottomBarProps) => {
         className,
       )}>
       <div className='flex items-center justify-between px-8 py-2'>
-        {actions.map((action, index) => (
-          <Link key={index} {...action.to} className='text-center'>
-            {action.icon}
-            <p className='text-xs'>{action.text}</p>
-          </Link>
-        ))}
+        {actions.map((action, index) =>
+          action.type === 'internal' ? (
+            <Link key={index} {...action.to} className='text-center'>
+              {action.icon}
+              <p className='text-xs'>{action.text}</p>
+            </Link>
+          ) : (
+            <ExternalLink key={index} href={action.href} className='text-center flex flex-col items-center'>
+              {action.icon}
+              <p className='text-xs'>{action.text}</p>
+            </ExternalLink>
+          ),
+        )}
 
         <Drawer onOpenChange={setMenuOpen} open={menuOpen}>
           <DrawerTrigger asChild>
