@@ -1,7 +1,7 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
 import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
@@ -15,22 +15,35 @@ import { Separator } from '~/components/ui/separator';
 import { jobPostsQuery } from '~/hooks/JobPost';
 import { useDebounce } from '~/hooks/Utils';
 import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { parseAsArrayOf, parseAsString, useQueryStates, type inferParserType } from 'nuqs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
 
-const urlParamFilters = {
-  search: parseAsString.withDefault(''),
-  classes: parseAsArrayOf(parseAsString).withDefault([]),
-  job_type: parseAsString.withDefault(''),
-};
+const defaultJobPostsSearch = { search: '', classes: [], job_type: '' };
+
+const jobPostsSearchSchema = z.object({
+  search: z.string().optional().default(defaultJobPostsSearch.search),
+  classes: z.array(z.string()).optional().default(defaultJobPostsSearch.classes),
+  job_type: z.string().optional().default(defaultJobPostsSearch.job_type),
+});
+
+type JobPostsSearch = z.infer<typeof jobPostsSearchSchema>;
 
 export const Route = createFileRoute('/_MainLayout/stillingsannonser/')({
+  validateSearch: jobPostsSearchSchema,
+  search: {
+    middlewares: [stripSearchParams(defaultJobPostsSearch)],
+  },
   loaderDeps: ({ search }) => search,
   component: JobPosts,
 });
 
 function JobPosts() {
-  const [queryFilters, setQueryFilters] = useQueryStates(urlParamFilters);
+  const queryFilters = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  function setQueryFilters(newFilters: JobPostsSearch) {
+    navigate({ search: newFilters, replace: true });
+  }
 
   const debouncedSearch = useDebounce(queryFilters.search, 500);
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
@@ -185,13 +198,25 @@ function JobPosts() {
 }
 
 type SearchFormProps = {
-  queryFilters: inferParserType<typeof urlParamFilters>;
-  setQueryFilters: (newFilters: inferParserType<typeof urlParamFilters>) => void;
+  queryFilters: JobPostsSearch;
+  setQueryFilters: (newFilters: JobPostsSearch) => void;
   search: () => void;
   isSearching: boolean;
 };
 
 function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: SearchFormProps) {
+  const [localSearch, setLocalSearch] = useState(queryFilters.search);
+
+  const navigate = Route.useNavigate();
+
+  const debouncedSearch = useDebounce(localSearch, 500);
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, search: debouncedSearch }),
+    });
+  }, [debouncedSearch]);
+
   const grade = [
     { label: '1. klasse', value: '1' },
     { label: '2. klasse', value: '2' },
@@ -218,9 +243,9 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
           <Input
             className='flex-1'
             id='search-input'
-            onChange={(e) => setQueryFilters({ ...queryFilters, search: e.target.value })}
+            onChange={(e) => setLocalSearch(e.target.value)}
             placeholder='Søk etter tittel, firma...'
-            value={queryFilters.search}
+            value={localSearch}
           />
           <Button aria-label='Søk' disabled={isSearching} onClick={() => search()} size='icon'>
             {isSearching ? <LoaderCircle className='h-4 w-4 animate-spin' /> : <Search className='h-4 w-4' />}

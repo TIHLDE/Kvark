@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, Link, stripSearchParams, useNavigate } from '@tanstack/react-router';
 import { loginUser } from '~/api/auth';
 import Page from '~/components/navigation/Page';
 import { Button, buttonVariants } from '~/components/ui/button';
@@ -9,12 +9,19 @@ import { Input } from '~/components/ui/input';
 import { analyticsEvent } from '~/hooks/Utils';
 import { RequestResponse } from '~/types';
 import URLS from '~/URLS';
-import { parseAsString, useQueryState } from 'nuqs';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+const loginSearchSchema = z.object({
+  redirectTo: z.string().optional().default('/'),
+});
+
 export const Route = createFileRoute('/_MainLayout/logg-inn')({
+  validateSearch: loginSearchSchema,
+  search: {
+    middlewares: [stripSearchParams({ redirectTo: '/' })],
+  },
   component: LoginPage,
 });
 
@@ -28,7 +35,7 @@ const formSchema = z.object({
 });
 
 function LoginPage() {
-  const [redirectTo] = useQueryState('redirectTo', parseAsString.withDefault(''));
+  const { redirectTo } = Route.useSearch();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({

@@ -9,7 +9,6 @@ import appCss from '~/assets/css/index.css?url';
 import Http404 from '~/components/shells/Http404';
 import { Toaster } from '~/components/ui/sonner';
 import { useTheme } from '~/hooks/Theme';
-import { NuqsAdapter } from 'nuqs/adapters/tanstack-router';
 import * as React from 'react';
 
 const appleSizes = ['57x57', '72x72', '60x60', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
@@ -110,9 +109,7 @@ function RootDocument({ children }: React.PropsWithChildren) {
 function RootComponent() {
   return (
     <RootDocument>
-      <NuqsAdapter>
-        <Outlet />
-      </NuqsAdapter>
+      <Outlet />
     </RootDocument>
   );
 }

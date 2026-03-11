@@ -1,7 +1,7 @@
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useEventStatistics } from '~/hooks/Event';
 import { cn } from '~/lib/utils';
 import type { Event } from '~/types';
-import { parseAsString, useQueryStates } from 'nuqs';
 
 type StatProps = {
   label: string;
@@ -30,28 +30,17 @@ export type EventStatisticsProps = {
   isPaid: boolean;
 };
 
-const eventRegistrationFilter = {
-  has_attended: parseAsString.withDefault(''),
-  year: parseAsString.withDefault(''),
-  study: parseAsString.withDefault(''),
-  has_allergy: parseAsString.withDefault(''),
-  has_paid: parseAsString.withDefault(''),
-  allow_photo: parseAsString.withDefault(''),
-};
-
 const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
   const { data } = useEventStatistics(eventId);
-
-  const [queryFilters, setQueryFilters] = useQueryStates(eventRegistrationFilter);
+  const queryFilters = useSearch({ from: '/_MainLayout/admin/arrangementer/{-$eventId}' });
+  const navigate = useNavigate();
 
   function handleFiltering(category: keyof typeof queryFilters, label: string) {
-    const newValue = { ...queryFilters };
-    if (newValue[category] === label) {
-      newValue[category] = '';
-    } else {
-      newValue[category] = label;
-    }
-    setQueryFilters(newValue);
+    navigate({
+      from: '/admin/arrangementer/{-$eventId}',
+      search: (prev) => ({ ...prev, [category]: prev[category] === label ? '' : label }),
+      replace: true,
+    });
   }
 
   if (!data) {
