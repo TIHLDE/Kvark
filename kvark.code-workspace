@@ -5,17 +5,21 @@
     },
   ],
   "settings": {
-    "files.exclude": {
-      "**/.git": true,
-      "**/node_modules": true,
-      "**/build": true,
-      "**/coverage": true,
+    "prettier.enable": false,
+    "eslint.enable": false,
+    "biome.enabled": "false",
+
+    "oxc.enable": true,
+
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "[typescript][typescriptreact][json][jsonc][css]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
     },
-    "editor.formatOnSave": true,
-    "eslint.validate": ["html", "javascript", "javascriptreact", "typescript", "typescriptreact"],
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.oxc": "explicit",
+    },
   },
   "extensions": {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+    "recommendations": ["oxc.oxc-vscode"],
   },
 }
