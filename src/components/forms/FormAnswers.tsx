@@ -160,6 +160,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
             title='Slett alle svar'
             description='Er du helt sikker på at du vil slette alle innsendte svar til dette skjemaet?'
             action={onDeleteAll}
+            actionText='Slett alle'
             trigger={DeleteButton}
           />
         </div>

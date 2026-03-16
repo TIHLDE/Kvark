@@ -36,6 +36,8 @@ const PromoteMember = ({ user, membership }: PromoteMemberProps) => {
       action={promoteUserToLeader}
       description='Er du sikker på at du vil promotere denne brukeren til leder?'
       title='Promoter til leder'
+      actionText='Promoter'
+      destructive={false}
       trigger={OpenButton}
     />
   );

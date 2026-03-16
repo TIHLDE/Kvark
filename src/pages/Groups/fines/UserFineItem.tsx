@@ -95,6 +95,8 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin, filters }: UserFineItemPro
             description='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som godkjent.'
             title='Godkjenn alle bøter'
             trigger={ApprovedButton}
+            actionText='Godkjenn alle bøter'
+            destructive={false}
           />
 
           <ResponsiveAlertDialog
@@ -102,6 +104,8 @@ const UserFineItem = ({ userFine, groupSlug, isAdmin, filters }: UserFineItemPro
             description='Alle bøtene til brukeren, uavhengig av valgte filtre, vil bli merket som betalt.'
             title='Betal alle bøter'
             trigger={PaidButton}
+            actionText='Betal alle bøter'
+            destructive={false}
           />
         </div>
       )}

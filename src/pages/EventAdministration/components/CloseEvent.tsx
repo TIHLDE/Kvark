@@ -14,6 +14,7 @@ const CloseEvent = ({ eventId, closeEvent }: CloseEventProps) => {
   return (
     <ResponsiveAlertDialog
       action={closeEvent}
+      actionText='Steng arrangement'
       description='Er du sikker på at du vil stenge arrangementet? Dette kan ikke angres. Eventuell på- og avmelding vil bli stengt.'
       title='Steng arrangement?'
       trigger={
