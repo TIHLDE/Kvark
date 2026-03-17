@@ -118,7 +118,7 @@ function FormControl({
       "aria-describedby": !error
         ? `${formDescriptionId}`
         : `${formDescriptionId} ${formMessageId}`,
-      "aria-invalid": !!error,
+      "aria-invalid": Boolean(error),
     },
   });
 }
