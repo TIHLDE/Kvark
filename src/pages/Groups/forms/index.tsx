@@ -42,7 +42,7 @@ function GroupFormAdminListItem({ form }: { form: GroupForm }) {
             </Link>
           </Button>
           <Button className='w-full text-black dark:text-white' disabled={!form.is_open_for_submissions} variant='outline' asChild>
-            <Link to='/sporreskjema/admin/$id' params={{ id: form.id }}>
+            <Link to='/sporreskjema/$id' params={{ id: form.id }}>
               <Eye className='w-5 h-5 mr-2' />
               Svar på/se skjema
             </Link>

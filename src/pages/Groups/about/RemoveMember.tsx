@@ -35,6 +35,7 @@ const RemoveMember = ({ user, membership }: RemoveMemberProps) => {
       action={removeMemberFromGroup}
       description='Er du sikker på at du vil fjerne denne brukeren fra gruppen?'
       title='Fjern medlem'
+      actionText='Fjern medlem'
       trigger={OpenButton}
     />
   );

@@ -74,7 +74,7 @@ const URLS = {
     mobileApp: MOBILE_APP,
     jubilee: 'https://jubileum.tihlde.org',
     fondet: 'https://fondet.tihlde.org',
-    kontRes: 'https://kontres.tihlde.org',
+    kontRes: 'https://new-kontres.tihlde.org',
     github: 'https://github.com/TIHLDE',
     pythons: 'https://pythons.tihlde.org',
     discord: 'https://discord.gg/HNt5XQdyxy',

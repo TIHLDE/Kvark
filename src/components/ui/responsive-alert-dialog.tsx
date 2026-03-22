@@ -10,13 +10,17 @@ type ResponsiveAlertDialogProps = {
     title?: string;
     description?: string;
     action: MouseEventHandler<HTMLButtonElement>;
+    actionText?: string;
+    destructive?: boolean;
 };
 
 const ResponsiveAlertDialog = ({
   trigger,
   title,
   description,
-  action
+  action,
+  actionText = 'Slett',
+  destructive = true
 }: ResponsiveAlertDialogProps) => {
   const [open, setOpen] = useState<boolean>(false)
   const isDesktop = useMediaQuery(MEDIUM_SCREEN);
@@ -37,8 +41,8 @@ const ResponsiveAlertDialog = ({
                 <AlertDialogCancel>
                     Avbryt
                 </AlertDialogCancel>
-                <AlertDialogAction onClick={action}>
-                    Bekreft
+              <AlertDialogAction className={destructive ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90' : undefined} onClick={action}>
+                {actionText}
                 </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>
@@ -64,12 +68,13 @@ const ResponsiveAlertDialog = ({
             Avbryt
         </Button>
         <Button
+            variant={destructive ? 'destructive' : 'default'}
             onClick={(e) => {
               action(e);
               setOpen(false);
             }}
         >
-            Bekreft
+            {actionText}
         </Button>
       </DrawerContent>
     </Drawer>
