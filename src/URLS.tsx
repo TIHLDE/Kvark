@@ -29,9 +29,11 @@ const URLS = {
   },
   feedback: '/tilbakemelding',
   cheatsheet: '/kokebok',
-  company: '/bedrifter',
+  company: 'https://bedrift.tihlde.org/',
+  contactInfo: `${WIKI_URLS.CONTACT_US}`,
   events: '/arrangementer',
   eventRegister: 'registrering',
+  eventRules: `${WIKI_URLS.EVENT_RULES}`,
   forgotPassword: '/glemt-passord',
   form: '/sporreskjema',
   groups: {
