@@ -63,7 +63,7 @@ const QRCodeItem = ({ qrCode }: QRCodeItemProps) => {
           </Button>
           <ResponsiveAlertDialog
             action={handleDelete}
-            description='Denne QR koden vil ikke lenger være tilgjenglig for deg selv og andre.'
+            description='Denne QR koden vil ikke lenger være tilgjengelig for deg selv og andre.'
             title='Er du sikker?'
             trigger={
               <Button className='w-full' variant='destructive'>
