@@ -80,7 +80,10 @@ export const useGroupsByType = (filters?: any) => {
   const BOARD_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.BOARD) || [], [groups]);
   const SUB_GROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.SUBGROUP) || [], [groups]);
   const COMMITTEES = useMemo(() => groups?.filter((group) => group.type === GroupType.COMMITTEE) || [], [groups]);
-  const INTERESTGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.INTERESTGROUP) || [], [groups]);
+  const INTERESTGROUPS = useMemo(
+    () => groups?.filter((group) => group.type === GroupType.INTERESTGROUP || group.type === GroupType.SPORTSTEAM) || [],
+    [groups],
+  );
   const STUDYGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.STUDY) || [], [groups]);
   const STUDYYEARGROUPS = useMemo(() => groups?.filter((group) => group.type === GroupType.STUDYYEAR) || [], [groups]);
   const OTHER_GROUPS = useMemo(

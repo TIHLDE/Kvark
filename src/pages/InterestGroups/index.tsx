@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_MainLayout/interessegrupper')({
 
 function InterestGroups() {
   const { data } = useGroups({ overview: true });
-  const groups = useMemo(() => data?.filter((group) => group.type === GroupType.INTERESTGROUP) ?? [], [data]);
+  const groups = useMemo(() => data?.filter((group) => group.type === GroupType.INTERESTGROUP || group.type === GroupType.SPORTSTEAM) ?? [], [data]);
   return (
     <Page>
       <Card>
