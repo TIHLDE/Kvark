@@ -66,7 +66,7 @@ function GroupPage() {
 
           <div className='space-y-4 lg:space-y-0 lg:flex lg:items-center lg:justify-between'>
             <div className='flex items-center space-x-4'>
-              <GoBackButton to={group.type === GroupType.INTERESTGROUP ? '/interessegrupper' : '/grupper'} />
+              <GoBackButton to={group.type === GroupType.INTERESTGROUP || group.type === GroupType.SPORTSTEAM ? '/interessegrupper' : '/grupper'} />
               <div className='flex items-center space-x-2'>
                 <AspectRatioImg alt={group.image_alt ?? ''} className='h-[45px] w-[45px] md:h-[70px] md:w-[70px] rounded-md' src={group.image ?? ''} />
                 <h1 className='text-3xl md:text-5xl font-bold'>{group.name}</h1>
