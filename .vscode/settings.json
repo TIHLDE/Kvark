@@ -1,7 +1,7 @@
 {
   "prettier.enable": false,
   "eslint.enable": false,
-  "biome.enabled": "false",
+  "biome.enabled": false,
   "oxc.enable": true,
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "[typescript][typescriptreact][json][jsonc][css]": {

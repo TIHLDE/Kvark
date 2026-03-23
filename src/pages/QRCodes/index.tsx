@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import QRCodeItem from './components/QRCodeItem';
+import QRCodeItem from './components/QRCodeItem.tsx';
 
 const formSchema = z.object({
   name: z.string().min(1, {
