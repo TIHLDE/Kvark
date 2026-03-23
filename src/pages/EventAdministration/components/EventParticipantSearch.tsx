@@ -13,7 +13,11 @@ export default function EventParticipantSearch() {
   const debouncedSearch = useDebounce(localSearch, 500);
 
   useEffect(() => {
-    navigate({ from: '/admin/arrangementer/{-$eventId}', search: (prev) => ({ ...prev, search: debouncedSearch }), replace: true });
+    setLocalSearch(defaultSearch);
+  }, [defaultSearch]);
+
+  useEffect(() => {
+    navigate({ from: '/_MainLayout/admin/arrangementer/{-$eventId}', search: (prev) => ({ ...prev, search: debouncedSearch }), replace: true });
   }, [debouncedSearch, navigate]);
 
   return (

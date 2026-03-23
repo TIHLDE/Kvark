@@ -212,10 +212,15 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
   const debouncedSearch = useDebounce(localSearch, 500);
 
   useEffect(() => {
+    setLocalSearch(queryFilters.search);
+  }, [queryFilters.search]);
+
+  useEffect(() => {
     navigate({
       search: (prev) => ({ ...prev, search: debouncedSearch }),
+      replace: true,
     });
-  }, [debouncedSearch]);
+  }, [debouncedSearch, navigate]);
 
   const grade = [
     { label: '1. klasse', value: '1' },

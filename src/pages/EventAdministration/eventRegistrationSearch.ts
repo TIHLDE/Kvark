@@ -11,7 +11,7 @@ export const eventRegistrationDefaultValues = {
 } as const;
 
 export const eventRegistrationSchema = z.object({
-  has_attended: z.string().optional().default(eventRegistrationDefaultValues.has_allergy),
+  has_attended: z.string().optional().default(eventRegistrationDefaultValues.has_attended),
   year: z.string().optional().default(eventRegistrationDefaultValues.year),
   study: z.string().optional().default(eventRegistrationDefaultValues.study),
   has_allergy: z.string().optional().default(eventRegistrationDefaultValues.has_allergy),

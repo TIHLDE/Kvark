@@ -37,7 +37,7 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
 
   function handleFiltering(category: keyof typeof queryFilters, label: string) {
     navigate({
-      from: '/admin/arrangementer/{-$eventId}',
+      from: '/_MainLayout/admin/arrangementer/{-$eventId}',
       search: (prev) => ({ ...prev, [category]: prev[category] === label ? '' : label }),
       replace: true,
     });
