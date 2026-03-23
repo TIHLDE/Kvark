@@ -33,11 +33,10 @@ export type EventStatisticsProps = {
 const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
   const { data } = useEventStatistics(eventId);
   const queryFilters = useSearch({ from: '/_MainLayout/admin/arrangementer/{-$eventId}' });
-  const navigate = useNavigate();
+  const navigate = useNavigate({ from: '/admin/arrangementer/{-$eventId}' });
 
   function handleFiltering(category: keyof typeof queryFilters, label: string) {
     navigate({
-      from: '/_MainLayout/admin/arrangementer/{-$eventId}',
       search: (prev) => ({ ...prev, [category]: prev[category] === label ? '' : label }),
       replace: true,
     });

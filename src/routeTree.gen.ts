@@ -13,6 +13,7 @@ import { Route as DotPagesCompanyInterestIndexRouteImport } from './pages/Compan
 import { Route as DotPagesMainLayoutRouteImport } from './pages/MainLayout'
 import { Route as DotPagesToddelIndexRouteImport } from './pages/Toddel/index'
 import { Route as DotPagesFeedbackIndexRouteImport } from './pages/Feedback/index'
+import { Route as DotPagesQRCodesIndexRouteImport } from './pages/QRCodes/index'
 import { Route as DotPagesPrivacyIndexRouteImport } from './pages/Privacy/index'
 import { Route as DotPagesAdmissionsIndexRouteImport } from './pages/Admissions/index'
 import { Route as DotPagesNewStudentIndexRouteImport } from './pages/NewStudent/index'
@@ -81,6 +82,11 @@ const DotPagesToddelIndexRoute = DotPagesToddelIndexRouteImport.update({
 const DotPagesFeedbackIndexRoute = DotPagesFeedbackIndexRouteImport.update({
   id: '/tilbakemelding',
   path: '/tilbakemelding',
+  getParentRoute: () => DotPagesMainLayoutRoute,
+} as any)
+const DotPagesQRCodesIndexRoute = DotPagesQRCodesIndexRouteImport.update({
+  id: '/qr-koder',
+  path: '/qr-koder',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
 const DotPagesPrivacyIndexRoute = DotPagesPrivacyIndexRouteImport.update({
@@ -367,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
   '/personvern': typeof DotPagesPrivacyIndexRoute
+  '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
   '/ny-bruker/': typeof DotRoutesAuthNewAccountRoute
@@ -421,6 +428,7 @@ export interface FileRoutesByTo {
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
   '/personvern': typeof DotPagesPrivacyIndexRoute
+  '/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/toddel': typeof DotPagesToddelIndexRoute
   '/ny-bruker': typeof DotRoutesAuthNewAccountRoute
@@ -474,6 +482,7 @@ export interface FileRoutesById {
   '/_MainLayout/ny-student': typeof DotPagesNewStudentIndexRoute
   '/_MainLayout/opptak': typeof DotPagesAdmissionsIndexRoute
   '/_MainLayout/personvern': typeof DotPagesPrivacyIndexRoute
+  '/_MainLayout/qr-koder': typeof DotPagesQRCodesIndexRoute
   '/_MainLayout/tilbakemelding': typeof DotPagesFeedbackIndexRoute
   '/_MainLayout/toddel': typeof DotPagesToddelIndexRoute
   '/_MainLayout/ny-bruker/': typeof DotRoutesAuthNewAccountRoute
@@ -530,6 +539,7 @@ export interface FileRouteTypes {
     | '/ny-student'
     | '/opptak'
     | '/personvern'
+    | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
     | '/ny-bruker/'
@@ -584,6 +594,7 @@ export interface FileRouteTypes {
     | '/ny-student'
     | '/opptak'
     | '/personvern'
+    | '/qr-koder'
     | '/tilbakemelding'
     | '/toddel'
     | '/ny-bruker'
@@ -636,6 +647,7 @@ export interface FileRouteTypes {
     | '/_MainLayout/ny-student'
     | '/_MainLayout/opptak'
     | '/_MainLayout/personvern'
+    | '/_MainLayout/qr-koder'
     | '/_MainLayout/tilbakemelding'
     | '/_MainLayout/toddel'
     | '/_MainLayout/ny-bruker/'
@@ -713,6 +725,13 @@ declare module '@tanstack/react-router' {
       path: '/tilbakemelding'
       fullPath: '/tilbakemelding'
       preLoaderRoute: typeof DotPagesFeedbackIndexRouteImport
+      parentRoute: typeof DotPagesMainLayoutRoute
+    }
+    '/_MainLayout/qr-koder': {
+      id: '/_MainLayout/qr-koder'
+      path: '/qr-koder'
+      fullPath: '/qr-koder'
+      preLoaderRoute: typeof DotPagesQRCodesIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/personvern': {
@@ -1130,6 +1149,7 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesNewStudentIndexRoute: typeof DotPagesNewStudentIndexRoute
   DotPagesAdmissionsIndexRoute: typeof DotPagesAdmissionsIndexRoute
   DotPagesPrivacyIndexRoute: typeof DotPagesPrivacyIndexRoute
+  DotPagesQRCodesIndexRoute: typeof DotPagesQRCodesIndexRoute
   DotPagesFeedbackIndexRoute: typeof DotPagesFeedbackIndexRoute
   DotPagesToddelIndexRoute: typeof DotPagesToddelIndexRoute
   DotRoutesAuthNewAccountRoute: typeof DotRoutesAuthNewAccountRoute
@@ -1173,6 +1193,7 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotPagesNewStudentIndexRoute: DotPagesNewStudentIndexRoute,
   DotPagesAdmissionsIndexRoute: DotPagesAdmissionsIndexRoute,
   DotPagesPrivacyIndexRoute: DotPagesPrivacyIndexRoute,
+  DotPagesQRCodesIndexRoute: DotPagesQRCodesIndexRoute,
   DotPagesFeedbackIndexRoute: DotPagesFeedbackIndexRoute,
   DotPagesToddelIndexRoute: DotPagesToddelIndexRoute,
   DotRoutesAuthNewAccountRoute: DotRoutesAuthNewAccountRoute,
