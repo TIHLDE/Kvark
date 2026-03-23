@@ -16,7 +16,7 @@ const QRCodeItem = ({ qrCode }: QRCodeItemProps) => {
   const deleteQRCode = useDeleteQRCode(qrCode.id);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const handleDelete = () => {
+  const handleDelete: () => void = () => {
     deleteQRCode.mutate(null, {
       onSuccess: () => {
         toast.success('QR koden ble slettet');
