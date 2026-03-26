@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2026.03.22
 
 - 🦟 **Botknapp instant** Gjort funksjonaliteten til markeringen på godkjent knapp på bøter instant
 - 🦟 **Interessegrupper/grupper** Fikset tilbakeknapp på interessegrupper, knappen er nå dynamisk
