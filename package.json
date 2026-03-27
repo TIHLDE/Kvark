@@ -52,7 +52,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
-    "emoji-picker-react": "^4.16.1",
+    "emoji-picker-react": "^4.18.0",
     "lucide-react": "^0.577.0",
     "nitro": "3.0.260311-beta",
     "posthog-js": "^1.360.1",
