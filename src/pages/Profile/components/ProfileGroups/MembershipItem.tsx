@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.png';
 import { Card, CardContent } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';

@@ -20,7 +20,7 @@ function Landing() {
   return (
     <div>
       <Wave />
-      <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
+      <div className='bg-[#f2f2f2] dark:bg-[#260303]'>
         <div className='max-w-5xl w-full mx-auto py-4 space-y-8 px-4'>
           <NewStudentBox />
           <InfoBanner />
@@ -38,7 +38,7 @@ function Landing() {
         </div>
         <EventsView />
       </div>
-      <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
+      <div className='bg-[#f2f2f2] dark:bg-[#260303]'>
         <div className='max-w-5xl w-full mx-auto py-4 space-y-6 px-4'>
           <div className='flex items-center justify-center space-x-2'>
             <h1 className='text-3xl font-bold'>Nyheter</h1>

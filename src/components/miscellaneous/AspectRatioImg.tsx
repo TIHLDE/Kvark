@@ -1,4 +1,4 @@
-import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.png';
 import { cn } from '~/lib/utils';
 import { useEffect, useState } from 'react';
 

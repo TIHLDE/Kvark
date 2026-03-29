@@ -1,5 +1,5 @@
 import { createFileRoute, useParams } from '@tanstack/react-router';
-import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDELOGO from '~/assets/img/TihldeBackground.png';
 import Page from '~/components/navigation/Page';
 import Http404 from '~/components/shells/Http404';
 import { newsByIdQuery, useNewsById } from '~/hooks/News';

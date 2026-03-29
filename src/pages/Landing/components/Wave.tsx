@@ -16,7 +16,7 @@ const Wave = () => {
     <div className='w-full h-[600px]'>
       <div className='overflow-hidden absolute w-full h-[600px] bg-linear-to-tr from-red-200 to-white dark:from-red-900 dark:to-background'>
         <div className='max-w-[920px] relative z-20 pt-[150px] px-[15px] pb-[100px] m-auto'>
-          <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px] text-primary' size='large' />
+          <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[150px] text-primary' size='large' />
           <h1 className='text-center md:text-lg py-2'>
             Linjeforeningen for{' '}
             <span className='line-through decoration-2'>
@@ -60,15 +60,15 @@ const Wave = () => {
         )}
 
         <div className='absolute left-0 right-0 bottom-0 w-full overflow-hidden h-[130px] z-15'>
-          <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-top z-10 opacity-50 origin-bottom'>
+          <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#260303] animate-wave-top z-10 opacity-50 origin-bottom'>
             <WaveSvg className='absolute w-full h-[200px]' type='top' />
             <WaveSvg className='absolute w-full h-[200px]' type='top' />
           </div>
-          <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-middle z-5 opacity-60 origin-bottom-left'>
+          <div className='absolute left-0 bottom-0 w-[200%] h-full fill-[#f2f2f2] dark:fill-[#260303] animate-wave-middle z-5 opacity-60 origin-bottom-left'>
             <WaveSvg className='absolute w-full h-[200px]' type='mid' />
             <WaveSvg className='absolute w-full h-[200px]' type='mid' />
           </div>
-          <div className='absolute left-0 bottom-0 w-[280%] h-full fill-[#f2f2f2] dark:fill-[#071a2d] animate-wave-bottom z-1 opacity-70 origin-bottom-right'>
+          <div className='absolute left-0 bottom-0 w-[280%] h-full fill-[#f2f2f2] dark:fill-[#260303] animate-wave-bottom z-1 opacity-70 origin-bottom-right'>
             <WaveSvg className='absolute w-full h-[200px]' type='btm' />
             <WaveSvg className='absolute w-full h-[200px]' type='btm' />
           </div>

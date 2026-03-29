@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import TIHLDELOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDELOGO from '~/assets/img/TihldeBackground.png';
 import Page from '~/components/navigation/Page';
 import { eventByIdQuery } from '~/hooks/Event';
 import EventRenderer from '~/pages/EventDetails/components/EventRenderer';

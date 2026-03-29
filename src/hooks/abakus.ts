@@ -1,4 +1,5 @@
 import { Group, GroupList } from '~/types/Group';
+import abakusLogo from '../assets/img/tihldakus.png?url';
 
 export const ABAKUS_GROUP_MAP: Record<string, { name: string; image?: string }> = {
   hs: { name: 'Hovedstyret', image: 'https://thumbor.abakus.no/K9CE8rGZm4y7DcUvBmCT3v4Hnic=/400x400/hs_ny.png' },
@@ -10,7 +11,7 @@ export const ABAKUS_GROUP_MAP: Record<string, { name: string; image?: string }> 
   sosialen: { name: 'Arrkom', image: 'https://thumbor.abakus.no/90ultWI0reP9-cUC8cPmPYIX6q4=/400x400/arrkom_ny.png' },
   okom: { name: 'Bankkom', image: 'https://thumbor.abakus.no/w-ancC-T7AHH8nKIWtnDfMp1wkA=/400x400/bankkom01_C0BtIzd.png' },
   redaksjonen: { name: 'readme', image: 'https://thumbor.abakus.no/aFxk4lF8BT-SdrffOcvIZeh7vBU=/400x400/readme_riktigfarge.png' },
-  semikolon: { name: 'Algorytmen' },
+  semikolon: { name: 'Algorytmen', image: abakusLogo },
   handball: { name: 'Abax Håndballklubb' },
   'pythons-gutter-a': { name: 'Datakameratene Gutter' },
   'pythons-jenter': { name: 'Datakameratene Jenter' },
@@ -22,6 +23,7 @@ export function ConvertGroup<T extends Group | GroupList>(group: T): T & { origi
     return {
       ...group,
       name: group.name.replace(/tihlde/i, 'Abakus'),
+      image: abakusLogo,
       originalName: group.name,
     };
   return {

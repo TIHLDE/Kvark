@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.png';
 import FormUserAnswers from '~/components/forms/FormUserAnswers';
 import DetailContent from '~/components/miscellaneous/DetailContent';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';

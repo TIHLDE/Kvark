@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import TIHLDE_LOGO from '~/assets/img/TihldeBackground.jpg';
+import TIHLDE_LOGO from '~/assets/img/TihldeBackground.png';
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { ReactionHandler } from '~/components/miscellaneous/reactions/ReactionHandler';
 import ShareButton from '~/components/miscellaneous/ShareButton';
