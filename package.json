@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "tsc --noEmit && vite build",
+    "build": "vite build",
     "serve": "node .output/server/index.mjs",
     "start": "vite",
     "check": "tsc --noEmit",
-    "build:prod": "tsc --noEmit && vite build && sh post-build.sh",
+    "build:prod": "vite build && sh post-build.sh",
     "lint": "oxlint .",
     "pre-commit": "lint-staged",
     "format": "oxfmt .",
