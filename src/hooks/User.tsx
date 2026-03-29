@@ -24,6 +24,7 @@ import type { PermissionApp } from '~/types/Enums';
 import { useEffect, type ReactNode } from 'react';
 
 import { useAuthQuery } from './auth';
+import { ConvertGroup } from './abakus';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -108,7 +109,16 @@ export const useUserForms = (filters?: any) =>
 export const useUserMemberships = (userId?: User['user_id']) =>
   useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>({
     queryKey: [USER_MEMBERSHIPS_QUERY_KEY, userId],
-    queryFn: () => API.getUserMemberships(userId),
+    queryFn: async () => {
+      const data = await API.getUserMemberships(userId);
+      if (data !== null && Array.isArray(data.results)) {
+        return {
+          ...data,
+          results: data.results.map((v) => ({ ...v, group: ConvertGroup(v.group) })),
+        };
+      }
+      return data;
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });

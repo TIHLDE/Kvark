@@ -20,6 +20,7 @@ import type {
 } from '~/types';
 import { GroupType } from '~/types/Enums';
 import { useMemo } from 'react';
+import { ConvertGroup } from './abakus';
 
 export const GROUPS_QUERY_KEYS = {
   all: ['groups'],
@@ -46,14 +47,26 @@ export const GROUPS_QUERY_KEYS = {
 export function getGroupQueryOptions(slug: Group['slug']) {
   return queryOptions({
     queryKey: GROUPS_QUERY_KEYS.detail(slug),
-    queryFn: () => API.getGroup(slug),
+    queryFn: async () => {
+      const data = await API.getGroup(slug);
+      if (data !== null) {
+        return ConvertGroup(data);
+      }
+      return data;
+    },
   });
 }
 
 export function getGroupsQueryOptions(filters?: any) {
   return queryOptions({
     queryKey: GROUPS_QUERY_KEYS.list(filters),
-    queryFn: () => API.getGroups({ ...(filters ?? {}) }),
+    queryFn: async () => {
+      const data = await API.getGroups({ ...(filters ?? {}) });
+      if (data !== null && Array.isArray(data)) {
+        return data.map((v) => ConvertGroup(v));
+      }
+      return data;
+    },
   });
 }
 

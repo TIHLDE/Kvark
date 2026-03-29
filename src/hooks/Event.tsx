@@ -6,6 +6,7 @@ import { FORM_QUERY_KEY } from '~/hooks/Form';
 import { NOTIFICATION_QUERY_KEY } from '~/hooks/Notification';
 import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from '~/hooks/User';
 import type { Event, EventFavorite, EventList, EventMutate, PaginationResponse, PublicRegistration, Registration, RequestResponse, User } from '~/types';
+import { ABAKUS_GROUP_MAP } from './abakus';
 
 export const EVENT_QUERY_KEYS = {
   all: ['event'],
@@ -22,10 +23,31 @@ export const EVENT_QUERY_KEYS = {
   },
 } as const;
 
+function ConvertEvent(event: Event | EventList) {
+  if (!event.organizer) return event;
+
+  const AbakusInfo = ABAKUS_GROUP_MAP[event.organizer.slug];
+  if (!AbakusInfo) return event;
+
+  return {
+    ...event,
+    organizer: {
+      ...event.organizer,
+      name: AbakusInfo.name,
+    },
+  };
+}
+
 export const eventByIdQuery = (eventId: Event['id']) =>
   queryOptions({
     queryKey: EVENT_QUERY_KEYS.detail(eventId),
-    queryFn: () => API.getEvent(eventId),
+    queryFn: async () => {
+      const data = await API.getEvent(eventId);
+      if (data !== null) {
+        return ConvertEvent(data);
+      }
+      return data;
+    },
   });
 
 export const useEventById = (eventId: Event['id']) =>
@@ -35,9 +57,18 @@ export const useEventById = (eventId: Event['id']) =>
   });
 
 export const useEvents = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>({
+  useInfiniteQuery({
     queryKey: EVENT_QUERY_KEYS.list(filters),
-    queryFn: ({ pageParam }) => API.getEvents({ ...filters, page: pageParam }),
+    queryFn: async ({ pageParam }) => {
+      const data = await API.getEvents({ ...filters, page: pageParam });
+      if (data !== null && Array.isArray(data.results)) {
+        return {
+          ...data,
+          results: data.results.map((v) => ConvertEvent(v)),
+        };
+      }
+      return data;
+    },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
   });

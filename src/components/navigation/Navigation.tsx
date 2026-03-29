@@ -58,7 +58,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
         text: 'Generelt',
         items: [
           { title: 'Nyheter', text: 'Se de siste nyhetene fra TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/nyheter' }) } },
-          { title: 'TÖDDEL', text: 'TIHLDE sitt eget studentblad', link: { type: 'internal', options: linkOptions({ to: '/toddel' }) } },
+          { title: 'readme', text: 'TIHLDE sitt eget studentblad', link: { type: 'internal', options: linkOptions({ to: '/toddel' }) } },
           { title: 'Gruppeoversikt', text: 'Få oversikt over alle verv og grupper', link: { type: 'internal', options: linkOptions({ to: '/grupper' }) } },
           { title: 'Interessegrupper', text: 'Se alle interessegrupper', link: { type: 'internal', options: linkOptions({ to: '/interessegrupper' }) } },
           { title: 'Fondet', text: 'Se hvordan det ligger an med fondet vårt', link: { type: 'external', href: URLS.external.fondet } },

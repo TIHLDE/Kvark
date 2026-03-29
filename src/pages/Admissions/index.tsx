@@ -61,7 +61,7 @@ function Admissions() {
 
   const AdmissionInfo = ({ title, description }: AdmissionInfoProps) => (
     <div className='space-y-2'>
-      <h1 className='lg:text-lg font-bold text-sky-500'>{title}</h1>
+      <h1 className='lg:text-lg font-bold text-primary'>{title}</h1>
       <p className='text-sm lg:text-base text-slate-700 dark:text-slate-300'>{description}</p>
     </div>
   );
@@ -69,10 +69,10 @@ function Admissions() {
   return (
     <Page className='pt-0 space-y-20'>
       <div className='lg:h-[50vh] relative z-0 flex items-center flex-col text-center pt-20'>
-        <div className='h-96 w-24 rotate-45 bg-indigo-400/40 blur-3xl absolute -bottom-24 left-1 z-0' />
+        <div className='h-96 w-24 rotate-45 bg-red-400/40 blur-3xl absolute -bottom-24 left-1 z-0' />
         <div className='h-72 lg:h-96 w-72 lg:w-96  bg-cyan-400/10 blur-3xl absolute -bottom-64 right-0 z-0' />
-        <div className='h-96 w-96 bg-cyan-400/30 blur-3xl absolute -top-[350px] lg:-top-[450px] right-48 z-0' />
-        {isDesktop && <div className='h-96 w-96 bg-cyan-400/30 blur-3xl absolute -bottom-[250px] left-1/2' />}
+        <div className='h-96 w-96 bg-red-400/30 blur-3xl absolute -top-[350px] lg:-top-[450px] right-48 z-0' />
+        {isDesktop && <div className='h-96 w-96 bg-red-400/30 blur-3xl absolute -bottom-[250px] left-1/2' />}
         <h1 className='text-center text-3xl lg:text-6xl font-bold max-w-3xl mb-4'>Søk verv!</h1>
         <p className='dark:text-slate-300 text-slate-700 max-w-2xl mb-8'>
           Her finner du en oversikt over alle vervene i TIHLDE. Søk på vervene du er interessert i, og bli med på å skape et bedre studentmiljø!
@@ -97,8 +97,8 @@ function Admissions() {
 
       <div className='text-center flex flex-col justify-center relative z-0'>
         <div className='h-96 w-24 rotate-45 bg-emerald-400/30 dark:bg-emerald-900/40 blur-3xl absolute -top-24 left-1 z-0' />
-        <div className='h-72 lg:h-96 w-72 lg:w-96 bg-cyan-400/10 dark:bg-cyan-900/20 blur-3xl absolute -bottom-64 right-0 z-0' />
-        <div className='h-96 w-96 bg-indigo-300/20 dark:bg-indigo-900/30 blur-3xl absolute top-0 right-4 z-0' />
+        <div className='h-72 lg:h-96 w-72 lg:w-96 bg-red-400/10 dark:bg-red-900/20 blur-3xl absolute -bottom-64 right-0 z-0' />
+        <div className='h-96 w-96 bg-red-300/20 dark:bg-red-900/30 blur-3xl absolute top-0 right-4 z-0' />
         <h2 className='text-xl md:text-5xl font-semibold max-w-5xl mx-auto'>Det er mange verv å velge mellom!</h2>
         <p className='text-slate-700 dark:text-slate-300 max-w-lg mt-6 mx-auto pb-12'>
           Du vil bli kalt inn til intervju etter søknadsfristen, for alle verv du har søkt på.

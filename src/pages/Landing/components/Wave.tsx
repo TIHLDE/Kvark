@@ -14,12 +14,15 @@ const Wave = () => {
 
   return (
     <div className='w-full h-[600px]'>
-      <div className='overflow-hidden absolute w-full h-[600px] bg-linear-to-tr from-indigo-200 to-white dark:from-indigo-900 dark:to-background'>
+      <div className='overflow-hidden absolute w-full h-[600px] bg-linear-to-tr from-red-200 to-white dark:from-red-900 dark:to-background'>
         <div className='max-w-[920px] relative z-20 pt-[150px] px-[15px] pb-[100px] m-auto'>
           <TihldeLogo className='w-[70vw] max-w-[450px] min-w-[250px] max-h-[90px] text-primary' size='large' />
           <h1 className='text-center md:text-lg py-2'>
-            Linjeforeningen for Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og
-            Informasjonsbehandling ved NTNU
+            Linjeforeningen for{' '}
+            <span className='line-through decoration-2'>
+              Dataingeniør, Digital infrastruktur og cybersikkerhet, Digital forretningsutvikling, Digital transformasjon og Informasjonsbehandling
+            </span>{' '}
+            <span>Datateknologi & Cybersikkerhet og datakommunikasjon</span> ved NTNU
           </h1>
           <div className='flex items-center space-x-4 justify-center mt-4'>
             {isAuthenticated ? (

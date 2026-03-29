@@ -4,6 +4,7 @@ import { Skeleton } from '~/components/ui/skeleton';
 import type { GroupList } from '~/types';
 import URLS from '~/URLS';
 import { Mail, User } from 'lucide-react';
+import { cn } from '~/lib/utils';
 
 export type GroupItemProps = {
   group: GroupList;
@@ -11,7 +12,11 @@ export type GroupItemProps = {
 
 const GroupItem = ({ group }: GroupItemProps) => (
   <Link className='flex space-x-4 text-black dark:text-white rounded-md bg-card border p-1 hover:border-primary' to={URLS.groups.details(group.slug)}>
-    <AspectRatioImg alt={group?.image_alt || ''} className='w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-md ratio-[1]' src={group?.image || ''} />
+    <AspectRatioImg
+      alt={group?.image_alt || ''}
+      className={cn('w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] rounded-md ratio-[1]', group.image?.includes('abakus.no') && 'p-[8px]')}
+      src={group?.image || ''}
+    />
 
     <div className='flex flex-col flex-1 overflow-hidden'>
       <h1 className='text-ellipsis md:text-lg font-bold text-start'>{group.name}</h1>

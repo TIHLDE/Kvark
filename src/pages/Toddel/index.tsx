@@ -23,7 +23,7 @@ function ToddelPage() {
     <Page className='space-y-8'>
       <div className='flex items-center justify-between'>
         <div className='space-y-2'>
-          <h1 className='text-3xl md:text-5xl font-bold'>TÖDDEL</h1>
+          <h1 className='text-3xl md:text-5xl font-bold'>readme</h1>
           <p className='text-muted-foreground ml-2'>Linjeforeningsbladet til TIHLDE</p>
         </div>
 

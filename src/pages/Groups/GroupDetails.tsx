@@ -73,7 +73,7 @@ function GroupPage() {
               </div>
             </div>
 
-            {hasWriteAcccess && <GroupAdmin group={group as FormGroupValues} />}
+            {hasWriteAcccess && <GroupAdmin group={{ ...group, name: group.originalName } as FormGroupValues} />}
           </div>
         </CardHeader>
         <CardContent>
