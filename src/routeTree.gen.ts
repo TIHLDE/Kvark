@@ -18,7 +18,6 @@ import { Route as DotPagesPrivacyIndexRouteImport } from './pages/Privacy/index'
 import { Route as DotPagesAdmissionsIndexRouteImport } from './pages/Admissions/index'
 import { Route as DotPagesNewStudentIndexRouteImport } from './pages/NewStudent/index'
 import { Route as DotPagesInterestGroupsIndexRouteImport } from './pages/InterestGroups/index'
-import { Route as DotPagesChangelogIndexRouteImport } from './pages/Changelog/index'
 import { Route as DotPagesCompaniesIndexRouteImport } from './pages/Companies/index'
 import { Route as DotPagesLandingIndexRouteImport } from './pages/Landing/index'
 import { Route as DotRoutesAuthLoginRouteImport } from './routes/auth/login'
@@ -27,8 +26,6 @@ import { Route as DotPagesFormIndexRouteImport } from './pages/Form/index'
 import { Route as DotPagesProfileIndexRouteImport } from './pages/Profile/index'
 import { Route as DotPagesSignUpIndexRouteImport } from './pages/SignUp/index'
 import { Route as DotPagesSignUpFeideIndexRouteImport } from './pages/SignUpFeide/index'
-import { Route as DotPagesBadgesIndexRouteImport } from './pages/Badges/index'
-import { Route as DotPagesBadgesDetailsIndexRouteImport } from './pages/Badges/details/index'
 import { Route as DotPagesStrikeAdminIndexRouteImport } from './pages/StrikeAdmin/index'
 import { Route as DotPagesOpptakIndexRouteImport } from './pages/Opptak/index'
 import { Route as DotPagesNewGroupAdministrationIndexRouteImport } from './pages/NewGroupAdministration/index'
@@ -49,7 +46,6 @@ import { Route as DotPagesGroupsLawsIndexRouteImport } from './pages/Groups/laws
 import { Route as DotPagesGroupsFinesIndexRouteImport } from './pages/Groups/fines/index'
 import { Route as DotPagesGroupsEventsIndexRouteImport } from './pages/Groups/events/index'
 import { Route as DotPagesGalleryDetailsIndexRouteImport } from './pages/GalleryDetails/index'
-import { Route as DotPagesBadgesCategoryIndexRouteImport } from './pages/Badges/category/index'
 import { Route as DotPagesEventRegistrationIndexRouteImport } from './pages/EventRegistration/index'
 import { Route as DotPagesEventDetailsIndexRouteImport } from './pages/EventDetails/index'
 import { Route as DotPagesJobPostAdministrationIndexRouteImport } from './pages/JobPostAdministration/index'
@@ -57,12 +53,6 @@ import { Route as DotPagesNewsAdministrationIndexRouteImport } from './pages/New
 import { Route as DotPagesEventAdministrationIndexRouteImport } from './pages/EventAdministration/index'
 import { Route as DotPagesGroupsAboutIndexRouteImport } from './pages/Groups/about/index'
 import { Route as DotPagesFormFormAdminRouteImport } from './pages/Form/FormAdmin'
-import { Route as DotPagesBadgesOverviewBadgeCategoriesListRouteImport } from './pages/Badges/overview/BadgeCategoriesList'
-import { Route as DotPagesBadgesOverviewBadgesListRouteImport } from './pages/Badges/overview/BadgesList'
-import { Route as DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport } from './pages/Badges/overview/BadgesOverallLeaderboard'
-import { Route as DotPagesBadgesGetIndexRouteImport } from './pages/Badges/get/index'
-import { Route as DotPagesBadgesCategoryCategoryBadgesListRouteImport } from './pages/Badges/category/CategoryBadgesList'
-import { Route as DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport } from './pages/Badges/category/BadgesCategoryLeaderboard'
 
 const DotPagesCompanyInterestIndexRoute =
   DotPagesCompanyInterestIndexRouteImport.update({
@@ -110,11 +100,6 @@ const DotPagesInterestGroupsIndexRoute =
     path: '/interessegrupper',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
-const DotPagesChangelogIndexRoute = DotPagesChangelogIndexRouteImport.update({
-  id: '/endringslogg',
-  path: '/endringslogg',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
 const DotPagesCompaniesIndexRoute = DotPagesCompaniesIndexRouteImport.update({
   id: '/bedrifter',
   path: '/bedrifter',
@@ -155,17 +140,6 @@ const DotPagesSignUpFeideIndexRoute =
   DotPagesSignUpFeideIndexRouteImport.update({
     id: '/ny-bruker/feide',
     path: '/ny-bruker/feide',
-    getParentRoute: () => DotPagesMainLayoutRoute,
-  } as any)
-const DotPagesBadgesIndexRoute = DotPagesBadgesIndexRouteImport.update({
-  id: '/badges/_index',
-  path: '/badges',
-  getParentRoute: () => DotPagesMainLayoutRoute,
-} as any)
-const DotPagesBadgesDetailsIndexRoute =
-  DotPagesBadgesDetailsIndexRouteImport.update({
-    id: '/badges/$badgeId',
-    path: '/badges/$badgeId',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
 const DotPagesStrikeAdminIndexRoute =
@@ -279,12 +253,6 @@ const DotPagesGalleryDetailsIndexRoute =
     path: '/galleri/$id/{-$urlTitle}',
     getParentRoute: () => DotPagesMainLayoutRoute,
   } as any)
-const DotPagesBadgesCategoryIndexRoute =
-  DotPagesBadgesCategoryIndexRouteImport.update({
-    id: '/badges/kategorier/$categoryId',
-    path: '/badges/kategorier/$categoryId',
-    getParentRoute: () => DotPagesMainLayoutRoute,
-  } as any)
 const DotPagesEventRegistrationIndexRoute =
   DotPagesEventRegistrationIndexRouteImport.update({
     id: '/arrangementer/registrering/$id',
@@ -326,41 +294,6 @@ const DotPagesFormFormAdminRoute = DotPagesFormFormAdminRouteImport.update({
   path: '/sporreskjema/admin/$id',
   getParentRoute: () => DotPagesMainLayoutRoute,
 } as any)
-const DotPagesBadgesOverviewBadgeCategoriesListRoute =
-  DotPagesBadgesOverviewBadgeCategoriesListRouteImport.update({
-    id: '/kategorier',
-    path: '/kategorier',
-    getParentRoute: () => DotPagesBadgesIndexRoute,
-  } as any)
-const DotPagesBadgesOverviewBadgesListRoute =
-  DotPagesBadgesOverviewBadgesListRouteImport.update({
-    id: '/alle',
-    path: '/alle',
-    getParentRoute: () => DotPagesBadgesIndexRoute,
-  } as any)
-const DotPagesBadgesOverviewBadgesOverallLeaderboardRoute =
-  DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => DotPagesBadgesIndexRoute,
-  } as any)
-const DotPagesBadgesGetIndexRoute = DotPagesBadgesGetIndexRouteImport.update({
-  id: '/erverv/{-$badgeId}',
-  path: '/erverv/{-$badgeId}',
-  getParentRoute: () => DotPagesBadgesIndexRoute,
-} as any)
-const DotPagesBadgesCategoryCategoryBadgesListRoute =
-  DotPagesBadgesCategoryCategoryBadgesListRouteImport.update({
-    id: '/badges',
-    path: '/badges',
-    getParentRoute: () => DotPagesBadgesCategoryIndexRoute,
-  } as any)
-const DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute =
-  DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => DotPagesBadgesCategoryIndexRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof DotPagesLandingIndexRoute
@@ -368,7 +301,6 @@ export interface FileRoutesByFullPath {
   '/glemt-passord': typeof DotRoutesAuthForgotPasswordRoute
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
-  '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
@@ -388,15 +320,10 @@ export interface FileRoutesByFullPath {
   '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/admin/opptak': typeof DotPagesOpptakIndexRoute
   '/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
-  '/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
-  '/badges': typeof DotPagesBadgesIndexRouteWithChildren
   '/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
   '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/badges/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
-  '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
-  '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
   '/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
   '/grupper/$slug/': typeof DotPagesGroupsAboutIndexRoute
   '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
@@ -404,7 +331,6 @@ export interface FileRoutesByFullPath {
   '/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
   '/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
   '/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
-  '/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
   '/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
   '/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
   '/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
@@ -413,9 +339,6 @@ export interface FileRoutesByFullPath {
   '/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
   '/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
   '/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
-  '/badges/kategorier/$categoryId/': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
-  '/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
-  '/badges/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRoutesByTo {
   '/interesse': typeof DotPagesCompanyInterestIndexRoute
@@ -423,7 +346,6 @@ export interface FileRoutesByTo {
   '/logg-inn': typeof DotRoutesAuthLoginRoute
   '/': typeof DotPagesLandingIndexRoute
   '/bedrifter': typeof DotPagesCompaniesIndexRoute
-  '/endringslogg': typeof DotPagesChangelogIndexRoute
   '/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
   '/ny-student': typeof DotPagesNewStudentIndexRoute
   '/opptak': typeof DotPagesAdmissionsIndexRoute
@@ -442,14 +364,10 @@ export interface FileRoutesByTo {
   '/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/admin/opptak': typeof DotPagesOpptakIndexRoute
   '/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
-  '/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
   '/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
   '/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/badges': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
-  '/badges/alle': typeof DotPagesBadgesOverviewBadgesListRoute
-  '/badges/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
   '/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
   '/grupper/$slug': typeof DotPagesGroupsAboutIndexRoute
   '/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
@@ -465,9 +383,6 @@ export interface FileRoutesByTo {
   '/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
   '/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
   '/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
-  '/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
-  '/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
-  '/badges/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -477,7 +392,6 @@ export interface FileRoutesById {
   '/_MainLayout/logg-inn': typeof DotRoutesAuthLoginRoute
   '/_MainLayout/': typeof DotPagesLandingIndexRoute
   '/_MainLayout/bedrifter': typeof DotPagesCompaniesIndexRoute
-  '/_MainLayout/endringslogg': typeof DotPagesChangelogIndexRoute
   '/_MainLayout/interessegrupper': typeof DotPagesInterestGroupsIndexRoute
   '/_MainLayout/ny-student': typeof DotPagesNewStudentIndexRoute
   '/_MainLayout/opptak': typeof DotPagesAdmissionsIndexRoute
@@ -497,15 +411,10 @@ export interface FileRoutesById {
   '/_MainLayout/admin/ny-gruppe': typeof DotPagesNewGroupAdministrationIndexRoute
   '/_MainLayout/admin/opptak': typeof DotPagesOpptakIndexRoute
   '/_MainLayout/admin/prikker': typeof DotPagesStrikeAdminIndexRoute
-  '/_MainLayout/badges/$badgeId': typeof DotPagesBadgesDetailsIndexRoute
-  '/_MainLayout/badges/_index': typeof DotPagesBadgesIndexRouteWithChildren
   '/_MainLayout/ny-bruker/feide': typeof DotPagesSignUpFeideIndexRoute
   '/_MainLayout/ny-bruker/skjema': typeof DotPagesSignUpIndexRoute
   '/_MainLayout/profil/{-$userId}': typeof DotPagesProfileIndexRoute
   '/_MainLayout/sporreskjema/$id': typeof DotPagesFormIndexRoute
-  '/_MainLayout/badges/_index/': typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
-  '/_MainLayout/badges/_index/alle': typeof DotPagesBadgesOverviewBadgesListRoute
-  '/_MainLayout/badges/_index/kategorier': typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
   '/_MainLayout/sporreskjema/admin/$id': typeof DotPagesFormFormAdminRoute
   '/_MainLayout/grupper/$slug/': typeof DotPagesGroupsAboutIndexRoute
   '/_MainLayout/admin/arrangementer/{-$eventId}': typeof DotPagesEventAdministrationIndexRoute
@@ -513,7 +422,6 @@ export interface FileRoutesById {
   '/_MainLayout/admin/stillingsannonser/{-$jobPostId}': typeof DotPagesJobPostAdministrationIndexRoute
   '/_MainLayout/arrangementer/$id/{-$urlTitle}': typeof DotPagesEventDetailsIndexRoute
   '/_MainLayout/arrangementer/registrering/$id': typeof DotPagesEventRegistrationIndexRoute
-  '/_MainLayout/badges/kategorier/$categoryId': typeof DotPagesBadgesCategoryIndexRouteWithChildren
   '/_MainLayout/galleri/$id/{-$urlTitle}': typeof DotPagesGalleryDetailsIndexRoute
   '/_MainLayout/grupper/$slug/arrangementer': typeof DotPagesGroupsEventsIndexRoute
   '/_MainLayout/grupper/$slug/boter': typeof DotPagesGroupsFinesIndexRoute
@@ -522,9 +430,6 @@ export interface FileRoutesById {
   '/_MainLayout/kokebok/{-$studyId}/{-$classId}': typeof DotPagesCheatsheetIndexRoute
   '/_MainLayout/nyheter/$id/{-$urlTitle}': typeof DotPagesNewsDetailsIndexRoute
   '/_MainLayout/stillingsannonser/$id/{-$urlTitle}': typeof DotPagesJobPostDetailsIndexRoute
-  '/_MainLayout/badges/kategorier/$categoryId/': typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
-  '/_MainLayout/badges/kategorier/$categoryId/badges': typeof DotPagesBadgesCategoryCategoryBadgesListRoute
-  '/_MainLayout/badges/_index/erverv/{-$badgeId}': typeof DotPagesBadgesGetIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -534,7 +439,6 @@ export interface FileRouteTypes {
     | '/glemt-passord'
     | '/logg-inn'
     | '/bedrifter'
-    | '/endringslogg'
     | '/interessegrupper'
     | '/ny-student'
     | '/opptak'
@@ -554,15 +458,10 @@ export interface FileRouteTypes {
     | '/admin/ny-gruppe'
     | '/admin/opptak'
     | '/admin/prikker'
-    | '/badges/$badgeId'
-    | '/badges'
     | '/ny-bruker/feide'
     | '/ny-bruker/skjema'
     | '/profil/{-$userId}'
     | '/sporreskjema/$id'
-    | '/badges/'
-    | '/badges/alle'
-    | '/badges/kategorier'
     | '/sporreskjema/admin/$id'
     | '/grupper/$slug/'
     | '/admin/arrangementer/{-$eventId}'
@@ -570,7 +469,6 @@ export interface FileRouteTypes {
     | '/admin/stillingsannonser/{-$jobPostId}'
     | '/arrangementer/$id/{-$urlTitle}'
     | '/arrangementer/registrering/$id'
-    | '/badges/kategorier/$categoryId'
     | '/galleri/$id/{-$urlTitle}'
     | '/grupper/$slug/arrangementer'
     | '/grupper/$slug/boter'
@@ -579,9 +477,6 @@ export interface FileRouteTypes {
     | '/kokebok/{-$studyId}/{-$classId}'
     | '/nyheter/$id/{-$urlTitle}'
     | '/stillingsannonser/$id/{-$urlTitle}'
-    | '/badges/kategorier/$categoryId/'
-    | '/badges/kategorier/$categoryId/badges'
-    | '/badges/erverv/{-$badgeId}'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/interesse'
@@ -589,7 +484,6 @@ export interface FileRouteTypes {
     | '/logg-inn'
     | '/'
     | '/bedrifter'
-    | '/endringslogg'
     | '/interessegrupper'
     | '/ny-student'
     | '/opptak'
@@ -608,14 +502,10 @@ export interface FileRouteTypes {
     | '/admin/ny-gruppe'
     | '/admin/opptak'
     | '/admin/prikker'
-    | '/badges/$badgeId'
     | '/ny-bruker/feide'
     | '/ny-bruker/skjema'
     | '/profil/{-$userId}'
     | '/sporreskjema/$id'
-    | '/badges'
-    | '/badges/alle'
-    | '/badges/kategorier'
     | '/sporreskjema/admin/$id'
     | '/grupper/$slug'
     | '/admin/arrangementer/{-$eventId}'
@@ -631,9 +521,6 @@ export interface FileRouteTypes {
     | '/kokebok/{-$studyId}/{-$classId}'
     | '/nyheter/$id/{-$urlTitle}'
     | '/stillingsannonser/$id/{-$urlTitle}'
-    | '/badges/kategorier/$categoryId'
-    | '/badges/kategorier/$categoryId/badges'
-    | '/badges/erverv/{-$badgeId}'
   id:
     | '__root__'
     | '/_MainLayout'
@@ -642,7 +529,6 @@ export interface FileRouteTypes {
     | '/_MainLayout/logg-inn'
     | '/_MainLayout/'
     | '/_MainLayout/bedrifter'
-    | '/_MainLayout/endringslogg'
     | '/_MainLayout/interessegrupper'
     | '/_MainLayout/ny-student'
     | '/_MainLayout/opptak'
@@ -662,15 +548,10 @@ export interface FileRouteTypes {
     | '/_MainLayout/admin/ny-gruppe'
     | '/_MainLayout/admin/opptak'
     | '/_MainLayout/admin/prikker'
-    | '/_MainLayout/badges/$badgeId'
-    | '/_MainLayout/badges/_index'
     | '/_MainLayout/ny-bruker/feide'
     | '/_MainLayout/ny-bruker/skjema'
     | '/_MainLayout/profil/{-$userId}'
     | '/_MainLayout/sporreskjema/$id'
-    | '/_MainLayout/badges/_index/'
-    | '/_MainLayout/badges/_index/alle'
-    | '/_MainLayout/badges/_index/kategorier'
     | '/_MainLayout/sporreskjema/admin/$id'
     | '/_MainLayout/grupper/$slug/'
     | '/_MainLayout/admin/arrangementer/{-$eventId}'
@@ -678,7 +559,6 @@ export interface FileRouteTypes {
     | '/_MainLayout/admin/stillingsannonser/{-$jobPostId}'
     | '/_MainLayout/arrangementer/$id/{-$urlTitle}'
     | '/_MainLayout/arrangementer/registrering/$id'
-    | '/_MainLayout/badges/kategorier/$categoryId'
     | '/_MainLayout/galleri/$id/{-$urlTitle}'
     | '/_MainLayout/grupper/$slug/arrangementer'
     | '/_MainLayout/grupper/$slug/boter'
@@ -687,9 +567,6 @@ export interface FileRouteTypes {
     | '/_MainLayout/kokebok/{-$studyId}/{-$classId}'
     | '/_MainLayout/nyheter/$id/{-$urlTitle}'
     | '/_MainLayout/stillingsannonser/$id/{-$urlTitle}'
-    | '/_MainLayout/badges/kategorier/$categoryId/'
-    | '/_MainLayout/badges/kategorier/$categoryId/badges'
-    | '/_MainLayout/badges/_index/erverv/{-$badgeId}'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -762,13 +639,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotPagesInterestGroupsIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
-    '/_MainLayout/endringslogg': {
-      id: '/_MainLayout/endringslogg'
-      path: '/endringslogg'
-      fullPath: '/endringslogg'
-      preLoaderRoute: typeof DotPagesChangelogIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
     '/_MainLayout/bedrifter': {
       id: '/_MainLayout/bedrifter'
       path: '/bedrifter'
@@ -823,20 +693,6 @@ declare module '@tanstack/react-router' {
       path: '/ny-bruker/feide'
       fullPath: '/ny-bruker/feide'
       preLoaderRoute: typeof DotPagesSignUpFeideIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
-    '/_MainLayout/badges/_index': {
-      id: '/_MainLayout/badges/_index'
-      path: '/badges'
-      fullPath: '/badges'
-      preLoaderRoute: typeof DotPagesBadgesIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
-    '/_MainLayout/badges/$badgeId': {
-      id: '/_MainLayout/badges/$badgeId'
-      path: '/badges/$badgeId'
-      fullPath: '/badges/$badgeId'
-      preLoaderRoute: typeof DotPagesBadgesDetailsIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
     '/_MainLayout/admin/prikker': {
@@ -979,13 +835,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotPagesGalleryDetailsIndexRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
-    '/_MainLayout/badges/kategorier/$categoryId': {
-      id: '/_MainLayout/badges/kategorier/$categoryId'
-      path: '/badges/kategorier/$categoryId'
-      fullPath: '/badges/kategorier/$categoryId'
-      preLoaderRoute: typeof DotPagesBadgesCategoryIndexRouteImport
-      parentRoute: typeof DotPagesMainLayoutRoute
-    }
     '/_MainLayout/arrangementer/registrering/$id': {
       id: '/_MainLayout/arrangementer/registrering/$id'
       path: '/arrangementer/registrering/$id'
@@ -1035,48 +884,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotPagesFormFormAdminRouteImport
       parentRoute: typeof DotPagesMainLayoutRoute
     }
-    '/_MainLayout/badges/_index/kategorier': {
-      id: '/_MainLayout/badges/_index/kategorier'
-      path: '/kategorier'
-      fullPath: '/badges/kategorier'
-      preLoaderRoute: typeof DotPagesBadgesOverviewBadgeCategoriesListRouteImport
-      parentRoute: typeof DotPagesBadgesIndexRoute
-    }
-    '/_MainLayout/badges/_index/alle': {
-      id: '/_MainLayout/badges/_index/alle'
-      path: '/alle'
-      fullPath: '/badges/alle'
-      preLoaderRoute: typeof DotPagesBadgesOverviewBadgesListRouteImport
-      parentRoute: typeof DotPagesBadgesIndexRoute
-    }
-    '/_MainLayout/badges/_index/': {
-      id: '/_MainLayout/badges/_index/'
-      path: '/'
-      fullPath: '/badges/'
-      preLoaderRoute: typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRouteImport
-      parentRoute: typeof DotPagesBadgesIndexRoute
-    }
-    '/_MainLayout/badges/_index/erverv/{-$badgeId}': {
-      id: '/_MainLayout/badges/_index/erverv/{-$badgeId}'
-      path: '/erverv/{-$badgeId}'
-      fullPath: '/badges/erverv/{-$badgeId}'
-      preLoaderRoute: typeof DotPagesBadgesGetIndexRouteImport
-      parentRoute: typeof DotPagesBadgesIndexRoute
-    }
-    '/_MainLayout/badges/kategorier/$categoryId/badges': {
-      id: '/_MainLayout/badges/kategorier/$categoryId/badges'
-      path: '/badges'
-      fullPath: '/badges/kategorier/$categoryId/badges'
-      preLoaderRoute: typeof DotPagesBadgesCategoryCategoryBadgesListRouteImport
-      parentRoute: typeof DotPagesBadgesCategoryIndexRoute
-    }
-    '/_MainLayout/badges/kategorier/$categoryId/': {
-      id: '/_MainLayout/badges/kategorier/$categoryId/'
-      path: '/'
-      fullPath: '/badges/kategorier/$categoryId/'
-      preLoaderRoute: typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRouteImport
-      parentRoute: typeof DotPagesBadgesCategoryIndexRoute
-    }
   }
 }
 
@@ -1102,49 +909,11 @@ const DotPagesGroupsGroupDetailsRouteWithChildren =
     DotPagesGroupsGroupDetailsRouteChildren,
   )
 
-interface DotPagesBadgesIndexRouteChildren {
-  DotPagesBadgesOverviewBadgesOverallLeaderboardRoute: typeof DotPagesBadgesOverviewBadgesOverallLeaderboardRoute
-  DotPagesBadgesOverviewBadgesListRoute: typeof DotPagesBadgesOverviewBadgesListRoute
-  DotPagesBadgesOverviewBadgeCategoriesListRoute: typeof DotPagesBadgesOverviewBadgeCategoriesListRoute
-  DotPagesBadgesGetIndexRoute: typeof DotPagesBadgesGetIndexRoute
-}
-
-const DotPagesBadgesIndexRouteChildren: DotPagesBadgesIndexRouteChildren = {
-  DotPagesBadgesOverviewBadgesOverallLeaderboardRoute:
-    DotPagesBadgesOverviewBadgesOverallLeaderboardRoute,
-  DotPagesBadgesOverviewBadgesListRoute: DotPagesBadgesOverviewBadgesListRoute,
-  DotPagesBadgesOverviewBadgeCategoriesListRoute:
-    DotPagesBadgesOverviewBadgeCategoriesListRoute,
-  DotPagesBadgesGetIndexRoute: DotPagesBadgesGetIndexRoute,
-}
-
-const DotPagesBadgesIndexRouteWithChildren =
-  DotPagesBadgesIndexRoute._addFileChildren(DotPagesBadgesIndexRouteChildren)
-
-interface DotPagesBadgesCategoryIndexRouteChildren {
-  DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute: typeof DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute
-  DotPagesBadgesCategoryCategoryBadgesListRoute: typeof DotPagesBadgesCategoryCategoryBadgesListRoute
-}
-
-const DotPagesBadgesCategoryIndexRouteChildren: DotPagesBadgesCategoryIndexRouteChildren =
-  {
-    DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute:
-      DotPagesBadgesCategoryBadgesCategoryLeaderboardRoute,
-    DotPagesBadgesCategoryCategoryBadgesListRoute:
-      DotPagesBadgesCategoryCategoryBadgesListRoute,
-  }
-
-const DotPagesBadgesCategoryIndexRouteWithChildren =
-  DotPagesBadgesCategoryIndexRoute._addFileChildren(
-    DotPagesBadgesCategoryIndexRouteChildren,
-  )
-
 interface DotPagesMainLayoutRouteChildren {
   DotRoutesAuthForgotPasswordRoute: typeof DotRoutesAuthForgotPasswordRoute
   DotRoutesAuthLoginRoute: typeof DotRoutesAuthLoginRoute
   DotPagesLandingIndexRoute: typeof DotPagesLandingIndexRoute
   DotPagesCompaniesIndexRoute: typeof DotPagesCompaniesIndexRoute
-  DotPagesChangelogIndexRoute: typeof DotPagesChangelogIndexRoute
   DotPagesInterestGroupsIndexRoute: typeof DotPagesInterestGroupsIndexRoute
   DotPagesNewStudentIndexRoute: typeof DotPagesNewStudentIndexRoute
   DotPagesAdmissionsIndexRoute: typeof DotPagesAdmissionsIndexRoute
@@ -1164,8 +933,6 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesNewGroupAdministrationIndexRoute: typeof DotPagesNewGroupAdministrationIndexRoute
   DotPagesOpptakIndexRoute: typeof DotPagesOpptakIndexRoute
   DotPagesStrikeAdminIndexRoute: typeof DotPagesStrikeAdminIndexRoute
-  DotPagesBadgesDetailsIndexRoute: typeof DotPagesBadgesDetailsIndexRoute
-  DotPagesBadgesIndexRoute: typeof DotPagesBadgesIndexRouteWithChildren
   DotPagesSignUpFeideIndexRoute: typeof DotPagesSignUpFeideIndexRoute
   DotPagesSignUpIndexRoute: typeof DotPagesSignUpIndexRoute
   DotPagesProfileIndexRoute: typeof DotPagesProfileIndexRoute
@@ -1176,7 +943,6 @@ interface DotPagesMainLayoutRouteChildren {
   DotPagesJobPostAdministrationIndexRoute: typeof DotPagesJobPostAdministrationIndexRoute
   DotPagesEventDetailsIndexRoute: typeof DotPagesEventDetailsIndexRoute
   DotPagesEventRegistrationIndexRoute: typeof DotPagesEventRegistrationIndexRoute
-  DotPagesBadgesCategoryIndexRoute: typeof DotPagesBadgesCategoryIndexRouteWithChildren
   DotPagesGalleryDetailsIndexRoute: typeof DotPagesGalleryDetailsIndexRoute
   DotPagesCheatsheetIndexRoute: typeof DotPagesCheatsheetIndexRoute
   DotPagesNewsDetailsIndexRoute: typeof DotPagesNewsDetailsIndexRoute
@@ -1188,7 +954,6 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
   DotRoutesAuthLoginRoute: DotRoutesAuthLoginRoute,
   DotPagesLandingIndexRoute: DotPagesLandingIndexRoute,
   DotPagesCompaniesIndexRoute: DotPagesCompaniesIndexRoute,
-  DotPagesChangelogIndexRoute: DotPagesChangelogIndexRoute,
   DotPagesInterestGroupsIndexRoute: DotPagesInterestGroupsIndexRoute,
   DotPagesNewStudentIndexRoute: DotPagesNewStudentIndexRoute,
   DotPagesAdmissionsIndexRoute: DotPagesAdmissionsIndexRoute,
@@ -1210,8 +975,6 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
     DotPagesNewGroupAdministrationIndexRoute,
   DotPagesOpptakIndexRoute: DotPagesOpptakIndexRoute,
   DotPagesStrikeAdminIndexRoute: DotPagesStrikeAdminIndexRoute,
-  DotPagesBadgesDetailsIndexRoute: DotPagesBadgesDetailsIndexRoute,
-  DotPagesBadgesIndexRoute: DotPagesBadgesIndexRouteWithChildren,
   DotPagesSignUpFeideIndexRoute: DotPagesSignUpFeideIndexRoute,
   DotPagesSignUpIndexRoute: DotPagesSignUpIndexRoute,
   DotPagesProfileIndexRoute: DotPagesProfileIndexRoute,
@@ -1223,8 +986,6 @@ const DotPagesMainLayoutRouteChildren: DotPagesMainLayoutRouteChildren = {
     DotPagesJobPostAdministrationIndexRoute,
   DotPagesEventDetailsIndexRoute: DotPagesEventDetailsIndexRoute,
   DotPagesEventRegistrationIndexRoute: DotPagesEventRegistrationIndexRoute,
-  DotPagesBadgesCategoryIndexRoute:
-    DotPagesBadgesCategoryIndexRouteWithChildren,
   DotPagesGalleryDetailsIndexRoute: DotPagesGalleryDetailsIndexRoute,
   DotPagesCheatsheetIndexRoute: DotPagesCheatsheetIndexRoute,
   DotPagesNewsDetailsIndexRoute: DotPagesNewsDetailsIndexRoute,
