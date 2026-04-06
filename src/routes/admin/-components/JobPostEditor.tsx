@@ -50,7 +50,7 @@ export type EventEditorProps = {
 const formSchema = z
   .object({
     body: z.string().min(1, { error: 'Gi annonsen en beskrivelse' }),
-    company: z.string().min(1, { error: 'Du ma oppgi en bedrift' }),
+    company: z.string().min(1, { error: 'Du må oppgi en bedrift' }),
     email: z.email({ error: 'Ugyldig e-post' }).optional().or(z.literal('')),
     ingress: z.string(),
     imageUrl: z.string(),
