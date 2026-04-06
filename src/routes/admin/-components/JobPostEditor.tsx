@@ -289,7 +289,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               render={({ field }) => (
                 <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
                   <div className='space-y-0.5'>
-                    <FormLabel className='text-base'>Fortlopende opptak?</FormLabel>
+                    <FormLabel className='text-base'>Fortløpende opptak?</FormLabel>
                     <FormDescription>Huk av om annonsen er fortlopende opptak.</FormDescription>
                   </div>
                   <FormControl>
