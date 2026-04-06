@@ -1,17 +1,17 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
+import type { JobListItem } from '@tihlde/sdk';
 import { Button, PaginateButton } from '~/components/ui/button';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
-import { jobPostsQuery } from '~/hooks/JobPost';
-import type { JobPost } from '~/types';
+import { getJobsInfiniteQuery } from '~/api/queries/jobs';
 import { ChevronRight, List } from 'lucide-react';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { type Dispatch, type SetStateAction, useMemo, useState } from 'react';
 
 const JobPostList = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, hasNextPage, fetchNextPage, isLoading } = useInfiniteQuery(jobPostsQuery());
-  const items = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
+  const { data, hasNextPage, fetchNextPage, isLoading } = useInfiniteQuery(getJobsInfiniteQuery());
+  const items = useMemo(() => (data ? data.pages.flatMap((page) => page.items) : []), [data]);
 
   return (
     <ResponsiveDialog
@@ -49,7 +49,7 @@ const JobPostList = () => {
 };
 
 type ListItemProps = {
-  item: JobPost;
+  item: JobListItem;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
