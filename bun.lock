@@ -42,6 +42,7 @@
         "cmdk": "^1.1.1",
         "date-fns": "^4.1.0",
         "emoji-picker-react": "^4.16.1",
+        "ky": "^1.14.3",
         "lucide-react": "^0.577.0",
         "nitro": "3.0.260311-beta",
         "posthog-js": "^1.360.1",
@@ -1117,6 +1118,8 @@
     "json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
 
     "knip": ["knip@5.86.0", "", { "dependencies": { "@nodelib/fs.walk": "1.2.8", "fast-glob": "3.3.3", "formatly": "0.3.0", "jiti": "2.6.1", "minimist": "1.2.8", "oxc-resolver": "11.19.1", "picocolors": "1.1.1", "picomatch": "4.0.3", "smol-toml": "1.6.0", "strip-json-comments": "5.0.3", "unbash": "2.2.0", "yaml": "2.8.2", "zod": "4.3.6" }, "peerDependencies": { "@types/node": "22.18.0", "typescript": "5.9.3" }, "bin": { "knip": "bin/knip.js", "knip-bun": "bin/knip-bun.js" } }, "sha512-tGpRCbP+L+VysXnAp1bHTLQ0k/SdC3M3oX18+Cpiqax1qdS25iuCPzpK8LVmAKARZv0Ijri81Wq09Rzk0JTl+Q=="],
+
+    "ky": ["ky@1.14.3", "", {}, "sha512-9zy9lkjac+TR1c2tG+mkNSVlyOpInnWdSMiue4F+kq8TwJSgv6o8jhLRg8Ho6SnZ9wOYUq/yozts9qQCfk7bIw=="],
 
     "kysely": ["kysely@0.28.15", "", {}, "sha512-r2clcf7HLWvDXaVUEvQymXJY4i3bSOIV3xsL/Upy3ZfSv5HeKsk9tsqbBptLvth5qHEIhxeHTA2jNLyQABkLBA=="],
 
