@@ -71,7 +71,7 @@ const formSchema = z
     },
     {
       path: ['classStart'],
-      error: '"Fra arstrinn" ma vaere mindre eller lik "Til arstrinn"',
+      error: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
     },
   );
 
