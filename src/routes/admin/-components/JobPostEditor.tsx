@@ -290,7 +290,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                 <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
                   <div className='space-y-0.5'>
                     <FormLabel className='text-base'>Fortløpende opptak?</FormLabel>
-                    <FormDescription>Huk av om annonsen er fortlopende opptak.</FormDescription>
+                    <FormDescription>Huk av om annonsen er fortløpende opptak.</FormDescription>
                   </div>
                   <FormControl>
                     <Switch checked={field.value} onCheckedChange={field.onChange} />
