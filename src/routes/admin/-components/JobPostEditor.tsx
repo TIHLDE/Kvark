@@ -300,7 +300,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             />
 
             <div className='space-y-6 w-full md:flex md:space-x-4 md:space-y-0'>
-              <DateTimePicker form={form} label='Utlopsdato' name='deadline' required />
+              <DateTimePicker form={form} label='Utløpsdato' name='deadline' required />
 
               <FormField
                 control={form.control}
