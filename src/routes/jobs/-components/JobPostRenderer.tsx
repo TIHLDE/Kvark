@@ -51,7 +51,7 @@ const JobPostRenderer = ({ data, preview = false }: JobPostRendererProps) => {
           <CardContent className='p-4 space-y-2'>
             <DetailContent info={data.company} title='Bedrift: ' />
             <DetailContent info={data.isContinuouslyHiring ? 'Fortløpende opptak' : (deadline ?? 'Ingen frist')} title='Søknadsfrist: ' />
-            <DetailContent info={classDisplay} title='Arstrinn: ' />
+            <DetailContent info={classDisplay} title='Årstrinn: ' />
             <DetailContent info={JOB_TYPE_LABELS[data.jobType] ?? data.jobType} title='Stillingstype: ' />
             <DetailContent info={data.location} title='Sted: ' />
           </CardContent>
