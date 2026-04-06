@@ -125,7 +125,7 @@ function JobPosts() {
             <div className='flex flex-wrap gap-2 mb-4'>
               {queryFilters.search && (
                 <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
-                  <span>Sok: {queryFilters.search}</span>
+                  <span>Søk: {queryFilters.search}</span>
                   <button
                     aria-label='Fjern søkefilter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
