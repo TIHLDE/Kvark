@@ -215,7 +215,7 @@ function SearchForm({ queryFilters, setQueryFilters }: SearchFormProps) {
     <div className='p-4 space-y-6'>
       <div className='space-y-2'>
         <Label className='text-sm font-medium' htmlFor='search-input'>
-          Sok etter stillinger
+          Søk etter stillinger
         </Label>
         <div className='flex gap-2'>
           <Input
