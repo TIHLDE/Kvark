@@ -48,11 +48,9 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
 
-    // Redirects to new wiki: https://wiki.tihlde.org/
     route('/nyheter', [
-      index('./pages/News/index.tsx'),
-      route('/$id/{-$urlTitle}', './pages/NewsDetails/index.tsx'),
-      //
+      index('./routes/news/index.tsx'),
+      route('/$id/{-$urlTitle}', './routes/news/detail.tsx'),
     ]),
 
     route('/profil/{-$userId}', './pages/Profile/index.tsx'),
@@ -66,7 +64,7 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
       route('/stillingsannonser/{-$jobPostId}', './routes/admin/jobs-editor.tsx'),
       route('/arrangementer/{-$eventId}', './pages/EventAdministration/index.tsx'),
-      route('/nyheter/{-$newsId}', './pages/NewsAdministration/index.tsx'),
+      route('/nyheter/{-$newsId}', './routes/admin/news-editor.tsx'),
       route('/brukere', './pages/UserAdmin/index.tsx'),
       route('/prikker', './pages/StrikeAdmin/index.tsx'),
       route('/opptak', './pages/Opptak/index.tsx'),
