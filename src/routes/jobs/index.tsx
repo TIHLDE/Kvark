@@ -173,7 +173,7 @@ function JobPosts() {
             ) : !isLoading ? (
               <div className='text-center py-12 bg-muted/30 rounded-lg'>
                 <h3 className='text-xl font-medium mb-2'>Ingen stillinger funnet</h3>
-                <p className='text-muted-foreground'>Prov a justere filtrene dine for a se flere resultater</p>
+                <p className='text-muted-foreground'>Prøv å justere filtrene dine for å se flere resultater</p>
               </div>
             ) : null}
 
