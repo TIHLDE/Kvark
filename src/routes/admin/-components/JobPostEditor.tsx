@@ -372,7 +372,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                   name='classStart'
                   render={({ field }) => (
                     <FormItem className='w-full'>
-                      <FormLabel>Fra arstrinn</FormLabel>
+                      <FormLabel>Fra årstrinn</FormLabel>
                       <Select defaultValue={field.value} onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger>
