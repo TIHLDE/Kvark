@@ -127,7 +127,7 @@ function JobPosts() {
                 <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
                   <span>Sok: {queryFilters.search}</span>
                   <button
-                    aria-label='Fjern sokefilter'
+                    aria-label='Fjern søkefilter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
                     onClick={() => setQueryFilters({ ...queryFilters, search: '' })}>
                     <FilterX size={14} />
