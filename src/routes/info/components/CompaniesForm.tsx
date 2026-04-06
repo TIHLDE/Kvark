@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import API from '~/api/api';
 import FormInput from '~/components/inputs/Input';
 import FormMultiCheckbox from '~/components/inputs/MultiCheckbox';
 import FormTextarea from '~/components/inputs/Textarea';
@@ -8,9 +7,8 @@ import { Card, CardContent } from '~/components/ui/card';
 import { Form } from '~/components/ui/form';
 import { Separator } from '~/components/ui/separator';
 import { useAnalytics } from '~/hooks/Utils';
-import type { CompaniesEmail } from '~/types';
 import { addMonths } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -36,7 +34,6 @@ const formSchema = z.object({
 
 const CompaniesForm = () => {
   const { event } = useAnalytics();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,36 +47,9 @@ const CompaniesForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const companyData: CompaniesEmail = {
-        info: {
-          bedrift: values.bedrift,
-          kontaktperson: values.kontaktperson,
-          epost: values.epost,
-        },
-        time: values.time,
-        type: values.type,
-        comment: values.comment || '',
-      };
-      const response = await API.emailForm(companyData);
-      event('submit-form', 'companies', `Company: ${values.bedrift}`);
-      toast.success(response.detail);
-      form.reset();
-    } catch (e) {
-      if (typeof e === 'object' && e != null && 'detail' in e && typeof e.detail === 'string') {
-        toast.error(e.detail);
-        form.setError('bedrift', { message: e.detail });
-      } else {
-        toast.error(`Det oppstod en feil: ${String(e)}`);
-        form.setError('bedrift', { message: 'Noe gikk galt' });
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    // TODO: Re-implement form submission with new API — previously used API.emailForm()
+    event('submit-form', 'companies', `Company: ${values.bedrift}`);
+    toast.error('Innsending er midlertidig utilgjengelig. Kontakt oss på hs@tihlde.org.');
   };
 
   const getSemester = (semester: number) => {
@@ -118,8 +88,8 @@ const CompaniesForm = () => {
 
             <FormTextarea form={form} label='Kommentar' name='comment' />
 
-            <Button className='w-full' disabled={isLoading}>
-              {isLoading ? 'Sender inn...' : 'Send inn'}
+            <Button className='w-full' type='submit'>
+              Send inn
             </Button>
           </form>
         </Form>

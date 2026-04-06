@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import InfoCard from '~/components/layout/InfoCard';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
-import CompaniesForm from '~/pages/Companies/components/CompaniesForm';
+import CompaniesForm from '~/routes/info/components/CompaniesForm';
 import { UserStudy } from '~/types/Enums';
 import URLS from '~/URLS';
 import { getUserStudyLong } from '~/utils';
@@ -25,7 +25,7 @@ function Companies() {
     dataing: `Dataingeniør-studiet kombinerer det beste fra de spesialiserte informatikkutdanningene og de tradisjonelle ingeniørutdanningene.
 Det legger mye vekt på praktisk utvikling av systemer og programmer, og studentene får et godt grunnlag i datateknikk, matematikk og teknisk-naturvitenskapelige fag, samt varig og verdifull kompetanse om hvordan datateknikk kan benyttes.`,
     info: `Dette digitale bachelorstudiet kvalifiserer studenter til å tilrettelegge og organisere informasjon i en virksomhet. Man får kunnskap om programmering, webløsninger og datasikkerhet.`,
-    digsec: `Dette bachelorstudiet setter fokus på den drift-tekniske IKT-kompetansen bedrifter etterspør. Studentene lærer planleggingsprosesser og oppsett av virtuelle maskiner med bruk av teknologier som VMWare og HyperV. Videre temaer i studiet er Linux, Windows Server, “Cloud Computing” og overvåkning og sikkerhet i digital infrastruktur.`,
+    digsec: `Dette bachelorstudiet setter fokus på den drift-tekniske IKT-kompetansen bedrifter etterspør. Studentene lærer planleggingsprosesser og oppsett av virtuelle maskiner med bruk av teknologier som VMWare og HyperV. Videre temaer i studiet er Linux, Windows Server, "Cloud Computing" og overvåkning og sikkerhet i digital infrastruktur.`,
     digsam: `Digital transformasjon er et veletablert forskningsområde som tar for seg hvordan utøvelse og koordinering av samarbeidsaktiviteter kan støttes ved hjelp av ulike IKT-systemer. Studentene ved denne 2 årige masteren er i stand til å samhandle effektivt i forskjellige tverrfaglige problemløsningsprosesser.`,
     digfor: `Digital forretningsutvikling kombinerer IT, økonomi og ledelse for å skape forretningsutviklere med tverrfaglig kompetanse. For at samfunnet skal digitaliseres er det nødvendig med ledere som har både teknisk og økonomisk kompetanse. Digital forretningsutvikling er lagt opp med høyt fokus på praktisk erfaring innenfor teamarbeid og kommunikasjon. Studiet søker å utdanne dyktige endringsagenter som kan effektivisere arbeidsprosesser og implementere digitale løsninger i bedrifter.`,
     ads: `Vi tilbyr promotering av stillingsannonser ut til våre 600 dyktige studenter på vår [stillingsannonse side](${URLS.jobposts}).`,
@@ -35,7 +35,7 @@ Det legger mye vekt på praktisk utvikling av systemer og programmer, og student
 Etter selve presentasjonen reiser vi sammen ned til en resturant for bespisning og mingling med bedriftsrepresentantene.
 Vi kan også tilrettelegge for speed intervjuer dersom dette er ønskelig.`,
     instatakeover: `Ved insta-takeover får bedriften ta over instagrammen vår en hel dag. Dere vil få muligheten til å fremme bedriften på valgfri måte, og nå ut direkte til studentene.`,
-    trip: `På høsten gjennomfører vi i TIHLDE en bedriftsekskursjon til Oslo med 60 av studentene våre”. Dette er en god mulighet for bedriften å vise fram sine lokaler, og bli bedre kjent med studentene. Etter selve besøket så legger vi til rette for bespisning og mingling.`,
+    trip: `På høsten gjennomfører vi i TIHLDE en bedriftsekskursjon til Oslo med 60 av studentene våre". Dette er en god mulighet for bedriften å vise fram sine lokaler, og bli bedre kjent med studentene. Etter selve besøket så legger vi til rette for bespisning og mingling.`,
   };
 
   return (

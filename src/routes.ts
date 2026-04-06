@@ -14,7 +14,7 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/registrering/$id', './pages/EventRegistration/index.tsx'),
       route('/$id/{-$urlTitle}', './pages/EventDetails/index.tsx'),
     ]),
-    route('/bedrifter', './pages/Companies/index.tsx'),
+    route('/bedrifter', './routes/info/companies.tsx'),
     route('/toddel', './pages/Toddel/index.tsx'),
 
     route('/sporreskjema', [
@@ -99,6 +99,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
     route('/endringslogg', './pages/Changelog/index.tsx'),
-    route('/personvern', './pages/Privacy/index.tsx'),
+    route('/personvern', './routes/info/privacy.tsx'),
   ]),
 ]);
