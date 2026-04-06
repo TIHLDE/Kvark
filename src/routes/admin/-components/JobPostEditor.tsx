@@ -57,7 +57,7 @@ const formSchema = z
     imageAlt: z.string(),
     link: z.url({ error: 'Ugyldig URL' }).optional().or(z.literal('')),
     location: z.string(),
-    title: z.string().min(1, { error: 'En tittel er pakrevd' }),
+    title: z.string().min(1, { error: 'En tittel er påkrevd' }),
     isContinuouslyHiring: z.boolean(),
     jobType: z.enum(JOB_TYPE_VALUES),
     classStart: z.enum(CLASS_VALUES),
