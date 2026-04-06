@@ -22,18 +22,16 @@ export const routes = rootRoute('./routes/__root.tsx', [
     ]),
 
     route('/grupper', [
-      index('./pages/Groups/overview/index.tsx'),
-
-      route('/$slug', './pages/Groups/GroupDetails.tsx', [
-        index('./pages/Groups/about/index.tsx'),
-        route('/arrangementer', './pages/Groups/events/index.tsx'),
-        // TODO: Add a button to create a new fine
-        route('/boter', './pages/Groups/fines/index.tsx'),
-        route('/lovverk', './pages/Groups/laws/index.tsx'),
-        route('/sporreskjemaer', './pages/Groups/forms/index.tsx'),
+      index('./routes/groups/index.tsx'),
+      route('/$slug', './routes/groups/detail/layout.tsx', [
+        index('./routes/groups/detail/about.tsx'),
+        route('/arrangementer', './routes/groups/detail/events.tsx'),
+        route('/boter', './routes/groups/detail/fines.tsx'),
+        route('/lovverk', './routes/groups/detail/laws.tsx'),
+        route('/sporreskjemaer', './routes/groups/detail/forms.tsx'),
       ]),
     ]),
-    route('/interessegrupper', './pages/InterestGroups/index.tsx'),
+    route('/interessegrupper', './routes/groups/interest.tsx'),
 
     //
     route('stillingsannonser', [
@@ -55,12 +53,12 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/profil/{-$userId}', './pages/Profile/index.tsx'),
     route('/kokebok/{-$studyId}/{-$classId}', './pages/Cheatsheet/index.tsx'),
     route('/qr-koder', './pages/QRCodes/index.tsx'),
-    route('/opptak', './pages/Admissions/index.tsx'),
+    route('/opptak', './routes/groups/admissions.tsx'),
 
     route('/admin', [
       // WTF why is this in the components folder?
       route('/bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
-      route('/ny-gruppe', './pages/NewGroupAdministration/index.tsx'),
+      route('/ny-gruppe', './routes/admin/new-group.tsx'),
       route('/stillingsannonser/{-$jobPostId}', './routes/admin/jobs-editor.tsx'),
       route('/arrangementer/{-$eventId}', './pages/EventAdministration/index.tsx'),
       route('/nyheter/{-$newsId}', './routes/admin/news-editor.tsx'),
