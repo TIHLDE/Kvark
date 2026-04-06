@@ -1,78 +1,59 @@
 import { queryOptions } from '@tanstack/react-query';
 import { linkOptions, redirect } from '@tanstack/react-router';
-import { ACCESS_TOKEN } from '~/constant';
 import { getQueryClient } from '~/integrations/tanstack-query';
-import { Permissions, RequestResponse, User } from '~/types';
-import { MembershipType, PermissionApp } from '~/types/Enums';
-import { z } from 'zod';
+import { Permissions } from '~/types';
+import { PermissionApp } from '~/types/Enums';
 
-import API from './api';
-import { getCookie, setCookie } from './cookie';
+import { createAuthClient } from 'better-auth/react';
+import { usernameClient, genericOAuthClient } from 'better-auth/client/plugins';
+import { createIsomorphicFn } from '@tanstack/react-start';
+import { getRequestHeaders } from '@tanstack/react-start/server';
+import type { ExtendedSession } from '@tihlde/sdk/auth';
 
-export const AuthObjectSchema = z.object({
-  user: z.object({
-    id: z.string(),
-    firstName: z.string(),
-    lastName: z.string(),
-    email: z.string(),
-    image: z.string().nullish(),
-    groups: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        isLeader: z.boolean(),
-      }),
-    ),
-  }),
-  permissions: z.record(
-    z.string(),
-    z.object({
-      write: z.boolean(),
-      read: z.boolean(),
-      write_all: z.boolean().optional(),
-      destroy: z.boolean().optional(),
-    }),
-  ),
-  tihldeUser: z.custom<User>(),
+export const clientAuthInstance = createAuthClient({
+  plugins: [usernameClient(), genericOAuthClient()],
+  baseURL: import.meta.env.VITE_AUTH_BASE_URL,
 });
 
-export type AuthObject = z.infer<typeof AuthObjectSchema>;
+export class AuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'AuthError';
+  }
+}
+
+export const getAuthSession = createIsomorphicFn()
+  .client(async () => {
+    const session = await clientAuthInstance.getSession();
+    if (session.error) {
+      throw new AuthError(`Failed to get session: ${session.error}`);
+    }
+    return session.data as ExtendedSession;
+  })
+  .server(async () => {
+    const session = await clientAuthInstance.getSession({
+      fetchOptions: {
+        headers: getRequestHeaders(),
+      },
+    });
+
+    if (session.error) {
+      throw new AuthError(`Failed to get session: ${session.error}`);
+    }
+    return session.data as ExtendedSession;
+  });
 
 export const authQueryOptions = queryOptions({
   queryKey: ['auth'],
   staleTime: 1000 * 60 * 2, // 2 minutes we want to check this frequently
   async queryFn() {
-    const token = getCookie(ACCESS_TOKEN);
-
-    if (!token) {
-      return null; // Not allowed to set undefiened in the cache
-    }
-
     try {
-      getQueryClient().cancelQueries({ queryKey: ['user', null] });
-      const [user, permission] = await Promise.all([API.getUserData(), API.getUserPermissions()]);
-
-      // TODO: Check if we need to handle pagination here
-      // Pagination on the backend returns 25 objects. I dont we have to worry about that here
-      const memberships = (await API.getUserMemberships(user.user_id)).results;
-      const authUser = {
-        id: user.user_id,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        image: user.image,
-        groups: memberships.map((m) => ({
-          id: m.group.slug,
-          name: m.group.name,
-          isLeader: m.membership_type === MembershipType.LEADER,
-        })),
-        //TODO: Check if more fields are needed
-      };
-      getQueryClient().setQueryData(['user', null], user);
-      return AuthObjectSchema.parse({ user: authUser, permissions: permission.permissions, tihldeUser: user });
-    } catch {
-      // If we get an error, we want to invalidate the cache
-      return null;
+      return await getAuthSession();
+    } catch (error) {
+      if (error instanceof AuthError) {
+        return undefined;
+      }
+      throw error;
     }
   },
 });
@@ -82,21 +63,13 @@ export const authQueryOptions = queryOptions({
  * @returns auth object with user and permissions
  */
 export async function authClient() {
-  const token = getCookie(ACCESS_TOKEN);
-  if (!token) {
-    return undefined;
-  }
-  // Try to fetch the auth object
   try {
-    const authObject = await getQueryClient().ensureQueryData(authQueryOptions);
-    if (!authObject) {
-      // Invalidate the cache if we get an error
+    const auth = await getQueryClient().ensureQueryData(authQueryOptions);
+    if (auth == null) {
       invalidateAuth();
-      return undefined;
     }
-    return authObject;
+    return auth;
   } catch {
-    // If we get an error, we want to invalidate the cache
     invalidateAuth();
     return undefined;
   }
@@ -109,17 +82,21 @@ export async function authClient() {
  * @throws {RequestResponse} if the authentication fails or the auth object is not fetched correctly
  */
 export async function loginUser(username: string, password: string) {
-  const { token } = await API.authenticate(username, password);
-  if (!token) {
-    throw { detail: 'Noe er galt' } satisfies RequestResponse;
+  const result = await clientAuthInstance.signIn.username({
+    username,
+    password,
+  });
+
+  if (result.error) {
+    throw new Error('Kunne ikke logge inn: ' + result.error);
   }
 
-  setCookie(ACCESS_TOKEN, token);
   await getQueryClient().invalidateQueries();
   const auth = await authClient();
   if (!auth) {
-    throw { detail: 'Kunne ikke finne brukerinformasjonen din' } satisfies RequestResponse;
+    throw new Error('Kunne ikke logge inn: Kunne ikke finne brukerinformasjonen din!');
   }
+
   return auth;
 }
 

@@ -1,12 +1,12 @@
 import { Link } from '@tanstack/react-router';
 import AspectRatioImg from '~/components/miscellaneous/AspectRatioImg';
 import { Skeleton } from '~/components/ui/skeleton';
-import type { News } from '~/types';
+import type { NewsListItem as NewsListItemType } from '@tihlde/sdk';
 import { formatDate, urlEncode } from '~/utils';
 import { parseISO } from 'date-fns';
 
 export type NewsListItemProps = {
-  news: News;
+  news: NewsListItemType;
 };
 
 const NewsListItem = ({ news }: NewsListItemProps) => {
@@ -15,12 +15,12 @@ const NewsListItem = ({ news }: NewsListItemProps) => {
       to='/nyheter/$id/{-$urlTitle}'
       params={{ id: news.id.toString(), urlTitle: urlEncode(news.title) }}
       className='rounded-md p-2 border bg-card space-y-4 cursor-pointer'>
-      <AspectRatioImg alt={news.image_alt || news.title} src={news.image} />
+      <AspectRatioImg alt={news.imageAlt || news.title} src={news.imageUrl ?? undefined} />
 
       <div>
         <h1 className='text-2xl font-bold'>{news.title}</h1>
         <p>{news.header}</p>
-        <p className='text-muted-foreground'>{formatDate(parseISO(news.created_at), { time: false })}</p>
+        <p className='text-muted-foreground'>{formatDate(parseISO(news.createdAt), { time: false })}</p>
       </div>
     </Link>
   );
