@@ -1,8 +1,5 @@
-'use client';
-
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { createFileRoute, stripSearchParams } from '@tanstack/react-router';
-import { FormMultiCheckboxComponent } from '~/components/inputs/MultiCheckbox';
 import JobPostListItem, { JobPostListItemLoading } from '~/components/miscellaneous/JobPostListItem';
 import Page from '~/components/navigation/Page';
 import { Badge } from '~/components/ui/badge';
@@ -12,18 +9,40 @@ import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Separator } from '~/components/ui/separator';
-import { jobPostsQuery } from '~/hooks/JobPost';
+import { getJobsInfiniteQuery } from '~/api/queries/jobs';
+import { JOB_TYPE_LABELS } from '~/routes/jobs/-components/job-labels';
 import { useDebounce } from '~/hooks/Utils';
-import { ChevronRightIcon, FilterX, LoaderCircle, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChevronRightIcon, FilterX, Search } from 'lucide-react';
+import { useState } from 'react';
 import { z } from 'zod';
 
-const defaultJobPostsSearch = { search: '', classes: [], job_type: '' };
+const JOB_TYPE_ENTRIES = Object.entries(JOB_TYPE_LABELS);
+
+type YearValue = 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
+
+const YEAR_OPTIONS: { label: string; value: YearValue }[] = [
+  { label: '1. klasse', value: 'first' },
+  { label: '2. klasse', value: 'second' },
+  { label: '3. klasse', value: 'third' },
+  { label: '4. klasse', value: 'fourth' },
+  { label: '5. klasse', value: 'fifth' },
+];
+
+const YEAR_LABELS: Record<string, string> = {
+  first: '1. klasse',
+  second: '2. klasse',
+  third: '3. klasse',
+  fourth: '4. klasse',
+  fifth: '5. klasse',
+  alumni: 'Alumni',
+};
+
+const defaultJobPostsSearch = { search: '', year: '', jobType: '' };
 
 const jobPostsSearchSchema = z.object({
   search: z.string().optional().default(defaultJobPostsSearch.search),
-  classes: z.array(z.string()).optional().default(defaultJobPostsSearch.classes),
-  job_type: z.string().optional().default(defaultJobPostsSearch.job_type),
+  year: z.string().optional().default(defaultJobPostsSearch.year),
+  jobType: z.string().optional().default(defaultJobPostsSearch.jobType),
 });
 
 type JobPostsSearch = z.infer<typeof jobPostsSearchSchema>;
@@ -47,38 +66,22 @@ function JobPosts() {
 
   const debouncedSearch = useDebounce(queryFilters.search, 500);
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery(
-    jobPostsQuery({
-      ...queryFilters,
-      search: debouncedSearch,
+    getJobsInfiniteQuery({
+      search: debouncedSearch || undefined,
+      jobType: (queryFilters.jobType as 'full_time' | 'part_time' | 'summer_job' | 'other') || undefined,
+      year: (queryFilters.year as YearValue) || undefined,
     }),
   );
 
-  const jobs = data?.pages.flatMap((page) => page.results) ?? [];
+  const jobs = data?.pages.flatMap((page) => page.items) ?? [];
   const jobCount = jobs.length;
 
   function resetFilters() {
-    setQueryFilters({
-      search: '',
-      classes: [],
-      job_type: '',
-    });
+    setQueryFilters({ search: '', year: '', jobType: '' });
   }
 
   const [isOpen, setIsOpen] = useState<boolean>(typeof window !== 'undefined' && window.innerWidth > 1000);
-
-  const hasActiveFilters = queryFilters.search || queryFilters.classes.length > 0 || queryFilters.job_type;
-
-  const jobTypes = [
-    ['SUMMER_JOB', 'Sommerjobb'],
-    ['PART_TIME', 'Deltid'],
-    ['FULL_TIME', 'Fulltid'],
-    ['OTHER', 'Annet'],
-  ];
-
-  const getJobTypeLabel = (value: string) => {
-    const jobType = jobTypes.find(([type]) => type === value);
-    return jobType ? jobType[1] : '';
-  };
+  const hasActiveFilters = queryFilters.search || queryFilters.year || queryFilters.jobType;
 
   return (
     <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
@@ -95,7 +98,7 @@ function JobPosts() {
                 <h3 className='font-medium text-lg'>Filter</h3>
                 {hasActiveFilters && (
                   <Badge className='ml-2' variant='secondary'>
-                    {queryFilters.classes.length + (queryFilters.job_type ? 1 : 0) + (queryFilters.search ? 1 : 0)}
+                    {(queryFilters.year ? 1 : 0) + (queryFilters.jobType ? 1 : 0) + (queryFilters.search ? 1 : 0)}
                   </Badge>
                 )}
               </div>
@@ -112,13 +115,12 @@ function JobPosts() {
               </div>
             </div>
             <CollapsibleContent className='lg:block'>
-              <SearchForm isSearching={isLoading} queryFilters={queryFilters} search={() => {}} setQueryFilters={setQueryFilters} />
+              <SearchForm queryFilters={queryFilters} setQueryFilters={setQueryFilters} />
             </CollapsibleContent>
           </Collapsible>
         </div>
 
         <div className='space-y-4'>
-          {/* Active filters display */}
           {hasActiveFilters && (
             <div className='flex flex-wrap gap-2 mb-4'>
               {queryFilters.search && (
@@ -133,45 +135,38 @@ function JobPosts() {
                 </Badge>
               )}
 
-              {queryFilters.job_type && (
+              {queryFilters.jobType && (
                 <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
-                  <span>Type: {getJobTypeLabel(queryFilters.job_type)}</span>
+                  <span>Type: {JOB_TYPE_LABELS[queryFilters.jobType] ?? queryFilters.jobType}</span>
                   <button
                     aria-label='Fjern jobbtype-filter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() => setQueryFilters({ ...queryFilters, job_type: '' })}>
+                    onClick={() => setQueryFilters({ ...queryFilters, jobType: '' })}>
                     <FilterX size={14} />
                   </button>
                 </Badge>
               )}
 
-              {queryFilters.classes.map((classValue) => (
-                <Badge className='flex items-center gap-1 px-3 py-1' key={classValue} variant='outline'>
-                  <span>Klasse: {classValue}. klasse</span>
+              {queryFilters.year && (
+                <Badge className='flex items-center gap-1 px-3 py-1' variant='outline'>
+                  <span>Klasse: {YEAR_LABELS[queryFilters.year] ?? queryFilters.year}</span>
                   <button
-                    aria-label={`Fjern klasse ${classValue} filter`}
+                    aria-label='Fjern klassefilter'
                     className='ml-1 hover:bg-secondary rounded-full p-1'
-                    onClick={() =>
-                      setQueryFilters({
-                        ...queryFilters,
-                        classes: queryFilters.classes.filter((c) => c !== classValue),
-                      })
-                    }>
+                    onClick={() => setQueryFilters({ ...queryFilters, year: '' })}>
                     <FilterX size={14} />
                   </button>
                 </Badge>
-              ))}
+              )}
             </div>
           )}
 
-          {/* Results count */}
           <div className='flex justify-between items-center mb-4'>
             <h2 className='text-lg font-medium'>
               {jobCount} {jobCount === 1 ? 'stilling' : 'stillinger'} funnet
             </h2>
           </div>
 
-          {/* Job listings */}
           <div className='space-y-4'>
             {jobs.length > 0 ? (
               jobs.map((jobPost) => <JobPostListItem jobPost={jobPost} key={jobPost.id} />)
@@ -200,46 +195,24 @@ function JobPosts() {
 type SearchFormProps = {
   queryFilters: JobPostsSearch;
   setQueryFilters: (newFilters: JobPostsSearch) => void;
-  search: () => void;
-  isSearching: boolean;
 };
 
-function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: SearchFormProps) {
+function SearchForm({ queryFilters, setQueryFilters }: SearchFormProps) {
   const [localSearch, setLocalSearch] = useState(queryFilters.search);
+  const debouncedLocalSearch = useDebounce(localSearch, 500);
 
-  const navigate = Route.useNavigate();
+  // Sync debounced local search to URL params
+  if (debouncedLocalSearch !== queryFilters.search) {
+    setQueryFilters({ ...queryFilters, search: debouncedLocalSearch });
+  }
 
-  const debouncedSearch = useDebounce(localSearch, 500);
-
-  useEffect(() => {
-    setLocalSearch(queryFilters.search);
-  }, [queryFilters.search]);
-
-  useEffect(() => {
-    navigate({
-      search: (prev) => ({ ...prev, search: debouncedSearch }),
-      replace: true,
-    });
-  }, [debouncedSearch, navigate]);
-
-  const grade = [
-    { label: '1. klasse', value: '1' },
-    { label: '2. klasse', value: '2' },
-    { label: '3. klasse', value: '3' },
-    { label: '4. klasse', value: '4' },
-    { label: '5. klasse', value: '5' },
-  ];
-
-  const jobTypes = [
-    ['SUMMER_JOB', 'Sommerjobb'],
-    ['PART_TIME', 'Deltid'],
-    ['FULL_TIME', 'Fulltid'],
-    ['OTHER', 'Annet'],
-  ];
+  // Reset local input when search is cleared externally (e.g. "clear all filters")
+  if (queryFilters.search === '' && localSearch !== '' && debouncedLocalSearch === localSearch) {
+    setLocalSearch('');
+  }
 
   return (
     <div className='p-4 space-y-6'>
-      {/* Search input */}
       <div className='space-y-2'>
         <Label className='text-sm font-medium' htmlFor='search-input'>
           Søk etter stillinger
@@ -252,32 +225,37 @@ function SearchForm({ queryFilters, setQueryFilters, search, isSearching }: Sear
             placeholder='Søk etter tittel, firma...'
             value={localSearch}
           />
-          <Button aria-label='Søk' disabled={isSearching} onClick={() => search()} size='icon'>
-            {isSearching ? <LoaderCircle className='h-4 w-4 animate-spin' /> : <Search className='h-4 w-4' />}
+          <Button aria-label='Søk' size='icon'>
+            <Search className='h-4 w-4' />
           </Button>
         </div>
       </div>
 
       <Separator />
 
-      {/* Class/grade filter */}
       <div className='space-y-3'>
         <Label className='text-sm font-medium'>Klassetrinn</Label>
-        <FormMultiCheckboxComponent
-          items={grade}
-          label={''}
-          onChange={(classes) => setQueryFilters({ ...queryFilters, classes })}
-          value={queryFilters.classes}
-        />
+        <RadioGroup
+          className='space-y-2'
+          onValueChange={(year) => setQueryFilters({ ...queryFilters, year })}
+          value={queryFilters.year}>
+          {YEAR_OPTIONS.map(({ value, label }) => (
+            <div className='flex items-center space-x-2' key={value}>
+              <RadioGroupItem id={`year-${value}`} value={value} />
+              <Label className='font-normal text-sm cursor-pointer' htmlFor={`year-${value}`}>
+                {label}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
 
       <Separator />
 
-      {/* Job type filter */}
       <div className='space-y-3'>
         <Label className='text-sm font-medium'>Jobbtype</Label>
-        <RadioGroup className='space-y-2' onValueChange={(job_type) => setQueryFilters({ ...queryFilters, job_type })} value={queryFilters.job_type}>
-          {jobTypes.map(([value, label]) => (
+        <RadioGroup className='space-y-2' onValueChange={(jobType) => setQueryFilters({ ...queryFilters, jobType })} value={queryFilters.jobType}>
+          {JOB_TYPE_ENTRIES.map(([value, label]) => (
             <div className='flex items-center space-x-2' key={value}>
               <RadioGroupItem id={`job-type-${value}`} value={value} />
               <Label className='font-normal text-sm cursor-pointer' htmlFor={`job-type-${value}`}>

@@ -1,4 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { JobDetail } from '@tihlde/sdk';
 import DateTimePicker from '~/components/inputs/DateTimePicker';
 import MarkdownEditor from '~/components/inputs/MarkdownEditor';
 import { FormImageUpload } from '~/components/inputs/Upload';
@@ -9,13 +11,11 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Switch } from '~/components/ui/switch';
-import { useCreateJobPost, useDeleteJobPost, useJobPostById, useUpdateJobPost } from '~/hooks/JobPost';
-import JobPostRenderer from '~/pages/JobPostDetails/components/JobPostRenderer';
-import type { JobPost } from '~/types';
-import { JobPostType } from '~/types/Enums';
-import { getJobpostType } from '~/utils';
+import { getJobByIdQuery, createJobMutation, updateJobMutation, deleteJobMutation } from '~/api/queries/jobs';
+import JobPostRenderer from '~/routes/jobs/-components/JobPostRenderer';
+import { JOB_TYPE_LABELS } from '~/routes/jobs/-components/job-labels';
 import { parseISO } from 'date-fns';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -23,7 +23,24 @@ import { z } from 'zod';
 import DeleteJobPost from './DeleteJobPost';
 import JobPostFormSkeleton from './JobPostFormSkeleton';
 
-const years = [1, 2, 3, 4, 5];
+type ClassValue = 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
+type JobType = 'full_time' | 'part_time' | 'summer_job' | 'other';
+
+const CLASS_OPTIONS: { value: ClassValue; label: string }[] = [
+  { value: 'first', label: '1' },
+  { value: 'second', label: '2' },
+  { value: 'third', label: '3' },
+  { value: 'fourth', label: '4' },
+  { value: 'fifth', label: '5' },
+];
+
+const JOB_TYPE_OPTIONS = Object.entries(JOB_TYPE_LABELS).map(([value, label]) => ({
+  value: value as JobType,
+  label,
+}));
+
+const CLASS_VALUES = ['first', 'second', 'third', 'fourth', 'fifth', 'alumni'] as const;
+const JOB_TYPE_VALUES = ['full_time', 'part_time', 'summer_job', 'other'] as const;
 
 export type EventEditorProps = {
   jobpostId: number | null;
@@ -32,107 +49,94 @@ export type EventEditorProps = {
 
 const formSchema = z
   .object({
-    body: z.string().min(1, {
-      error: 'Gi annonsen en beskrivelse',
-    }),
-    company: z.string().min(1, {
-      error: 'Du må oppgi en bedrift',
-    }),
-    email: z
-      .email({
-        error: 'Ugyldig e-post',
-      })
-      .optional()
-      .or(z.literal('')),
+    body: z.string().min(1, { error: 'Gi annonsen en beskrivelse' }),
+    company: z.string().min(1, { error: 'Du må oppgi en bedrift' }),
+    email: z.email({ error: 'Ugyldig e-post' }).optional().or(z.literal('')),
     ingress: z.string(),
-    image: z.string(),
-    image_alt: z.string(),
-    link: z
-      .url({
-        error: 'Ugyldig URL',
-      })
-      .optional()
-      .or(z.literal('')),
+    imageUrl: z.string(),
+    imageAlt: z.string(),
+    link: z.url({ error: 'Ugyldig URL' }).optional().or(z.literal('')),
     location: z.string(),
-    title: z.string().min(1, {
-      error: 'En tittel er påkrevd',
-    }),
-    is_continuously_hiring: z.boolean(),
-    job_type: z.enum(JobPostType),
-    class_start: z.string(),
-    class_end: z.string(),
+    title: z.string().min(1, { error: 'En tittel er påkrevd' }),
+    isContinuouslyHiring: z.boolean(),
+    jobType: z.enum(JOB_TYPE_VALUES),
+    classStart: z.enum(CLASS_VALUES),
+    classEnd: z.enum(CLASS_VALUES),
     deadline: z.date(),
   })
-  .refine((data) => parseInt(data.class_start) <= parseInt(data.class_end), {
-    path: ['class_start'],
-    error: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
-  });
+  .refine(
+    (data) => {
+      const order = CLASS_VALUES;
+      return order.indexOf(data.classStart) <= order.indexOf(data.classEnd);
+    },
+    {
+      path: ['classStart'],
+      error: '"Fra årstrinn" må være mindre eller lik "Til årstrinn"',
+    },
+  );
+
+function getEmptyFormValues() {
+  return {
+    body: '',
+    company: '',
+    deadline: new Date(),
+    email: '',
+    imageUrl: '',
+    imageAlt: '',
+    ingress: '',
+    isContinuouslyHiring: false,
+    link: '',
+    location: '',
+    title: '',
+    jobType: 'other' as const,
+    classStart: 'first' as const,
+    classEnd: 'fifth' as const,
+  };
+}
 
 const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
-  const { data, isLoading, isError } = useJobPostById(jobpostId || -1);
-  const createJobPost = useCreateJobPost();
-  const updateJobPost = useUpdateJobPost(jobpostId || -1);
-  const deleteJobPost = useDeleteJobPost(jobpostId || -1);
-  const isUpdating = useMemo(
-    () => createJobPost.isPending || updateJobPost.isPending || deleteJobPost.isPending,
-    [createJobPost.isPending, updateJobPost.isPending, deleteJobPost.isPending],
-  );
+  const { data, isLoading, isError } = useQuery({
+    ...getJobByIdQuery(jobpostId?.toString() || '-1'),
+    enabled: !!jobpostId && jobpostId !== -1,
+  });
+  const createJob = useMutation(createJobMutation);
+  const updateJob = useMutation(updateJobMutation);
+  const deleteJob = useMutation(deleteJobMutation);
+  const isUpdating = createJob.isPending || updateJob.isPending || deleteJob.isPending;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      body: '',
-      company: '',
-      deadline: new Date(),
-      email: '',
-      image: '',
-      image_alt: '',
-      ingress: '',
-      is_continuously_hiring: false,
-      link: '',
-      location: '',
-      title: '',
-      job_type: JobPostType.OTHER,
-      class_start: years[0].toString(),
-      class_end: years[years.length - 1].toString(),
-    },
+    defaultValues: getEmptyFormValues(),
   });
 
   useEffect(() => {
     if (isError) goToJobPost(null);
   }, [isError, goToJobPost]);
 
-  const setValues = useCallback(
-    (newValues: JobPost | null) => {
-      form.reset({
-        body: newValues?.body || '',
-        company: newValues?.company || '',
-        deadline: newValues?.deadline ? parseISO(newValues?.deadline) : new Date(),
-        email: newValues?.email || '',
-        image: newValues?.image || '',
-        image_alt: newValues?.image_alt || '',
-        ingress: newValues?.ingress || '',
-        is_continuously_hiring: newValues?.is_continuously_hiring || false,
-        link: newValues?.link || '',
-        location: newValues?.location || '',
-        title: newValues?.title || '',
-        job_type: newValues?.job_type || JobPostType.OTHER,
-        class_start: newValues?.class_start.toString() || years[0].toString(),
-        class_end: newValues?.class_end.toString() || years[years.length - 1].toString(),
-      });
-    },
-    [form.reset],
-  );
-
   useEffect(() => {
     if (data) {
-      setValues(data);
+      form.reset({
+        body: data.body || '',
+        company: data.company || '',
+        deadline: data.deadline ? parseISO(data.deadline) : new Date(),
+        email: data.email || '',
+        imageUrl: data.imageUrl || '',
+        imageAlt: data.imageAlt || '',
+        ingress: data.ingress || '',
+        isContinuouslyHiring: data.isContinuouslyHiring || false,
+        link: data.link || '',
+        location: data.location || '',
+        title: data.title || '',
+        jobType: data.jobType || 'other',
+        classStart: data.classStart || 'first',
+        classEnd: data.classEnd || 'fifth',
+      });
     } else {
-      setValues(null);
+      form.reset(getEmptyFormValues());
     }
-  }, [data, setValues]);
+  }, [data, form.reset]);
 
-  const getJobPostPreview = (): JobPost | null => {
+  const getJobPostPreview = (): JobDetail | null => {
     const title = form.getValues('title');
     const company = form.getValues('company');
     const location = form.getValues('location');
@@ -144,60 +148,83 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
     return {
       ...form.getValues(),
-      created_at: new Date().toJSON(),
-      id: 1,
-      expired: false,
-      updated_at: new Date().toJSON(),
+      id: '0',
+      createdAt: new Date().toJSON(),
+      updatedAt: new Date().toJSON(),
       deadline: form.getValues().deadline.toJSON(),
-      class_start: parseInt(form.getValues('class_start')),
-      class_end: parseInt(form.getValues('class_end')),
-      link: form.getValues('link') || '',
-      email: form.getValues('email') || '',
+      expired: false,
+      link: form.getValues('link') || null,
+      email: form.getValues('email') || null,
+      imageUrl: form.getValues('imageUrl') || null,
+      imageAlt: form.getValues('imageAlt') || null,
+      createdById: null,
+      creator: null,
     };
   };
 
   const remove = async () => {
-    deleteJobPost.mutate(null, {
-      onSuccess: (data) => {
-        toast.success(data.detail);
-        goToJobPost(null);
+    if (!jobpostId) return;
+    deleteJob.mutate(
+      { jobId: jobpostId.toString() },
+      {
+        onSuccess: () => {
+          toast.success('Stillingen ble slettet');
+          goToJobPost(null);
+        },
+        onError: (e) => {
+          toast.error(e.message);
+        },
       },
-      onError: (e) => {
-        toast.error(e.detail);
-      },
-    });
+    );
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const payload = {
+      title: values.title,
+      ingress: values.ingress,
+      body: values.body,
+      company: values.company,
+      location: values.location,
+      deadline: values.deadline.toJSON(),
+      isContinuouslyHiring: values.isContinuouslyHiring,
+      jobType: values.jobType,
+      classStart: values.classStart,
+      classEnd: values.classEnd,
+      email: values.email || undefined,
+      link: values.link || undefined,
+      imageUrl: values.imageUrl || undefined,
+      imageAlt: values.imageAlt || undefined,
+    };
+
     if (jobpostId) {
-      updateJobPost.mutate(
-        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
+      updateJob.mutate(
+        { jobId: jobpostId.toString(), data: payload },
         {
           onSuccess: () => {
             toast.success('Annonsen ble oppdatert');
           },
           onError: (e) => {
-            toast.error(e.detail);
+            toast.error(e.message);
           },
         },
       );
     } else {
-      createJobPost.mutate(
-        { ...values, deadline: values.deadline.toJSON(), class_start: parseInt(values.class_start), class_end: parseInt(values.class_end) },
+      createJob.mutate(
+        { data: payload },
         {
           onSuccess: (newJobPost) => {
             toast.success('Annonsen ble opprettet');
-            goToJobPost(newJobPost.id);
+            goToJobPost(Number(newJobPost.id));
           },
           onError: (e) => {
-            toast.error(e.detail);
+            toast.error(e.message);
           },
         },
       );
     }
   };
 
-  if (isLoading) {
+  if (isLoading && jobpostId) {
     return <JobPostFormSkeleton />;
   }
 
@@ -258,7 +285,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
             <FormField
               control={form.control}
-              name='is_continuously_hiring'
+              name='isContinuouslyHiring'
               render={({ field }) => (
                 <FormItem className='space-x-16 md:space-x-0 flex flex-row items-center justify-between rounded-md border p-4'>
                   <div className='space-y-0.5'>
@@ -290,11 +317,11 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               />
             </div>
 
-            <FormImageUpload form={form} label='Velg logo' name='image' ratio='21:9' />
+            <FormImageUpload form={form} label='Velg logo' name='imageUrl' ratio='21:9' />
 
             <FormField
               control={form.control}
-              name='image_alt'
+              name='imageAlt'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Alternativ bildetekst</FormLabel>
@@ -342,7 +369,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
               <div className='w-full flex space-x-4'>
                 <FormField
                   control={form.control}
-                  name='class_start'
+                  name='classStart'
                   render={({ field }) => (
                     <FormItem className='w-full'>
                       <FormLabel>Fra årstrinn</FormLabel>
@@ -353,9 +380,9 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {years.map((value) => (
-                            <SelectItem key={value} value={value.toString()}>
-                              {value}
+                          {CLASS_OPTIONS.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -367,7 +394,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
                 <FormField
                   control={form.control}
-                  name='class_end'
+                  name='classEnd'
                   render={({ field }) => (
                     <FormItem className='w-full'>
                       <FormLabel>Til årstrinn</FormLabel>
@@ -378,9 +405,9 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {years.map((value) => (
-                            <SelectItem key={value} value={value.toString()}>
-                              {value}
+                          {CLASS_OPTIONS.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -393,7 +420,7 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
 
               <FormField
                 control={form.control}
-                name='job_type'
+                name='jobType'
                 render={({ field }) => (
                   <FormItem className='w-full'>
                     <FormLabel>Stillingstype</FormLabel>
@@ -404,9 +431,9 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {(Object.keys(JobPostType) as Array<JobPostType>).map((value) => (
+                        {JOB_TYPE_OPTIONS.map(({ value, label }) => (
                           <SelectItem key={value} value={value}>
-                            {getJobpostType(value)}
+                            {label}
                           </SelectItem>
                         ))}
                       </SelectContent>

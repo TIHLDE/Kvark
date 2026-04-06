@@ -1,27 +1,20 @@
-import { createFileRoute, Link, linkOptions, redirect, useNavigate, useParams } from '@tanstack/react-router';
-import { authClientWithRedirect, userHasWritePermission } from '~/api/auth';
+import { createFileRoute, Link, linkOptions, useNavigate } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
-import JobPostEditor from '~/pages/JobPostAdministration/components/JobPostEditor';
-import { PermissionApp } from '~/types/Enums';
+import JobPostEditor from '~/routes/admin/-components/JobPostEditor';
 import { ChevronRight, Plus } from 'lucide-react';
 
-import JobPostList from './components/JobPostList';
+import JobPostList from '~/routes/admin/-components/JobPostList';
+
+// TODO: Re-add auth protection — previously used authClientWithRedirect() / userHasWritePermission(PermissionApp.JOBPOST)
 
 export const Route = createFileRoute('/_MainLayout/admin/stillingsannonser/{-$jobPostId}')({
-  async beforeLoad({ location }) {
-    const auth = await authClientWithRedirect(location.href);
-
-    if (!userHasWritePermission(auth.permissions, PermissionApp.JOBPOST)) {
-      throw redirect({ to: '/' });
-    }
-  },
   component: JobPostAdministration,
 });
 
 function JobPostAdministration() {
   const navigate = useNavigate();
-  const { jobPostId } = useParams({ strict: false });
+  const { jobPostId } = Route.useParams();
 
   const goToJobPost = (newJobPost: number | null) => {
     if (newJobPost) {

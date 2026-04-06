@@ -3,24 +3,22 @@ import { index, layout, rootRoute, route } from '@tanstack/virtual-file-routes';
 export const routes = rootRoute('./routes/__root.tsx', [
   route('/interesse', './pages/CompanyInterest/index.tsx'),
   layout('./pages/MainLayout.tsx', [
-    index('./pages/Landing/index.tsx'),
+    index('./routes/landing/index.tsx'),
     route('/ny-student', './pages/NewStudent/index.tsx'),
 
     route('tilbakemelding', './pages/Feedback/index.tsx'),
 
     route('/arrangementer', [
-      index('./pages/Events/index.tsx'),
-      // INFO: This route has been re-written from :id/registrering
-      route('/registrering/$id', './pages/EventRegistration/index.tsx'),
-      route('/$id/{-$urlTitle}', './pages/EventDetails/index.tsx'),
+      index('./routes/events/index.tsx'),
+      route('/registrering/$id', './routes/events/registration.tsx'),
+      route('/$id/{-$urlTitle}', './routes/events/detail.tsx'),
     ]),
-    route('/bedrifter', './pages/Companies/index.tsx'),
+    route('/bedrifter', './routes/info/companies.tsx'),
     route('/toddel', './pages/Toddel/index.tsx'),
 
     route('/sporreskjema', [
-      route('/admin/$id', './pages/Form/FormAdmin.tsx'),
-      route('/$id', './pages/Form/index.tsx'),
-      //
+      route('/admin/$id', './routes/forms/admin.tsx'),
+      route('/$id', './routes/forms/index.tsx'),
     ]),
 
     route('/grupper', [
@@ -37,9 +35,8 @@ export const routes = rootRoute('./routes/__root.tsx', [
 
     //
     route('stillingsannonser', [
-      index('./pages/JobPosts/index.tsx'),
-      //
-      route('/$id/{-$urlTitle}', './pages/JobPostDetails/index.tsx'),
+      index('./routes/jobs/index.tsx'),
+      route('/$id/{-$urlTitle}', './routes/jobs/detail.tsx'),
     ]),
 
     route('/galleri', [
@@ -48,11 +45,9 @@ export const routes = rootRoute('./routes/__root.tsx', [
       //
     ]),
 
-    // Redirects to new wiki: https://wiki.tihlde.org/
     route('/nyheter', [
-      index('./pages/News/index.tsx'),
-      route('/$id/{-$urlTitle}', './pages/NewsDetails/index.tsx'),
-      //
+      index('./routes/news/index.tsx'),
+      route('/$id/{-$urlTitle}', './routes/news/detail.tsx'),
     ]),
 
     route('/profil/{-$userId}', './pages/Profile/index.tsx'),
@@ -64,9 +59,9 @@ export const routes = rootRoute('./routes/__root.tsx', [
       // WTF why is this in the components folder?
       route('/bannere', './components/miscellaneous/InfoBanner/InfoBannerAdmin.tsx'),
       route('/ny-gruppe', './routes/admin/new-group.tsx'),
-      route('/stillingsannonser/{-$jobPostId}', './pages/JobPostAdministration/index.tsx'),
+      route('/stillingsannonser/{-$jobPostId}', './routes/admin/jobs-editor.tsx'),
       route('/arrangementer/{-$eventId}', './pages/EventAdministration/index.tsx'),
-      route('/nyheter/{-$newsId}', './pages/NewsAdministration/index.tsx'),
+      route('/nyheter/{-$newsId}', './routes/admin/news-editor.tsx'),
       route('/brukere', './pages/UserAdmin/index.tsx'),
       route('/prikker', './pages/StrikeAdmin/index.tsx'),
       route('/opptak', './pages/Opptak/index.tsx'),
@@ -81,6 +76,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/feide', './pages/SignUpFeide/index.tsx'),
       //
     ]),
-    route('/personvern', './pages/Privacy/index.tsx'),
+    route('/personvern', './routes/info/privacy.tsx'),
   ]),
 ]);
