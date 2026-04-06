@@ -225,7 +225,7 @@ function SearchForm({ queryFilters, setQueryFilters }: SearchFormProps) {
             placeholder='Søk etter tittel, firma...'
             value={localSearch}
           />
-          <Button aria-label='Sok' size='icon'>
+          <Button aria-label='Søk' size='icon'>
             <Search className='h-4 w-4' />
           </Button>
         </div>
