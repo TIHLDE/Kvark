@@ -14,7 +14,7 @@ export type JobPostListItemProps = {
 
 const JobPostListItem = ({ jobPost }: JobPostListItemProps) => {
   const deadline = jobPost.isContinuouslyHiring
-    ? 'Fortlopende'
+    ? 'Fortløpende'
     : jobPost.deadline
       ? formatDate(parseISO(jobPost.deadline), { time: false })
       : 'Ingen frist';
