@@ -222,7 +222,7 @@ function SearchForm({ queryFilters, setQueryFilters }: SearchFormProps) {
             className='flex-1'
             id='search-input'
             onChange={(e) => setLocalSearch(e.target.value)}
-            placeholder='Sok etter tittel, firma...'
+            placeholder='Søk etter tittel, firma...'
             value={localSearch}
           />
           <Button aria-label='Sok' size='icon'>
