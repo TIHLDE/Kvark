@@ -83,7 +83,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
       route('/feide', './pages/SignUpFeide/index.tsx'),
       //
     ]),
-    route('/endringslogg', './pages/Changelog/index.tsx'),
     route('/personvern', './routes/info/privacy.tsx'),
   ]),
 ]);
