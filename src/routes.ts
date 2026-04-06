@@ -37,21 +37,6 @@ export const routes = rootRoute('./routes/__root.tsx', [
     ]),
     route('/interessegrupper', './pages/InterestGroups/index.tsx'),
 
-    route('/badges', [
-      layout('./pages/Badges/index.tsx', [
-        index('./pages/Badges/overview/BadgesOverallLeaderboard.tsx'),
-        route('/kategorier', './pages/Badges/overview/BadgeCategoriesList.tsx'),
-        route('/alle', './pages/Badges/overview/BadgesList.tsx'),
-        route('/erverv/{-$badgeId}', './pages/Badges/get/index.tsx'),
-      ]),
-      route('/kategorier/$categoryId', './pages/Badges/category/index.tsx', [
-        index('./pages/Badges/category/BadgesCategoryLeaderboard.tsx'),
-        //
-        route('/badges', './pages/Badges/category/CategoryBadgesList.tsx'),
-      ]),
-      route('/$badgeId', './pages/Badges/details/index.tsx'),
-    ]),
-
     //
     route('stillingsannonser', [
       index('./pages/JobPosts/index.tsx'),
