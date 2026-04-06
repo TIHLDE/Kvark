@@ -18,9 +18,8 @@ export const routes = rootRoute('./routes/__root.tsx', [
     route('/toddel', './pages/Toddel/index.tsx'),
 
     route('/sporreskjema', [
-      route('/admin/$id', './pages/Form/FormAdmin.tsx'),
-      route('/$id', './pages/Form/index.tsx'),
-      //
+      route('/admin/$id', './routes/forms/admin.tsx'),
+      route('/$id', './routes/forms/index.tsx'),
     ]),
 
     route('/grupper', [
