@@ -4,13 +4,13 @@ import TihldeLogo from '~/components/miscellaneous/TihldeLogo';
 import { NavigationItem } from '~/components/navigation/Navigation';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '~/components/ui/accordion';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '~/components/ui/drawer';
-import { useIsAuthenticated } from '~/hooks/User';
 import { cn } from '~/lib/utils';
 import URLS from '~/URLS';
 import { BookOpen, BriefcaseBusiness, Calendar, Menu } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { ExternalLink } from '../ui/external-link';
+import { useIsAuthenticated } from '~/hooks/auth';
 
 type ActionItem =
   | { icon: React.ReactNode; text: string; type: 'internal'; to: LinkOptions }

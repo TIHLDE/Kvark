@@ -2,12 +2,13 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
-import { useVisibleInfoBanners } from '~/hooks/InfoBanner';
 
 import AspectRatioImg from '../AspectRatioImg';
 
 const Banner = () => {
-  const { data: banners = [], isLoading } = useVisibleInfoBanners();
+  const banners = [] as any[];
+  const isLoading = false;
+  // const { data: banners = [], isLoading } = useVisibleInfoBanners();
   const banner = banners.shift();
 
   if (banner) {

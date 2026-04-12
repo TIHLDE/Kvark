@@ -13,34 +13,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~
 import { Switch } from '~/components/ui/switch';
 import { getJobByIdQuery, createJobMutation, updateJobMutation, deleteJobMutation } from '~/api/queries/jobs';
 import JobPostRenderer from '~/routes/jobs/-components/JobPostRenderer';
-import { JOB_TYPE_LABELS } from '~/routes/jobs/-components/job-labels';
+import { CLASS_OPTIONS, CLASS_VALUES, JOB_TYPE_OPTIONS, JOB_TYPE_VALUES } from '~/routes/jobs/-components/job-labels';
 import { parseISO } from 'date-fns';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import DeleteJobPost from './DeleteJobPost';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 import JobPostFormSkeleton from './JobPostFormSkeleton';
-
-type ClassValue = 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
-type JobType = 'full_time' | 'part_time' | 'summer_job' | 'other';
-
-const CLASS_OPTIONS: { value: ClassValue; label: string }[] = [
-  { value: 'first', label: '1' },
-  { value: 'second', label: '2' },
-  { value: 'third', label: '3' },
-  { value: 'fourth', label: '4' },
-  { value: 'fifth', label: '5' },
-];
-
-const JOB_TYPE_OPTIONS = Object.entries(JOB_TYPE_LABELS).map(([value, label]) => ({
-  value: value as JobType,
-  label,
-}));
-
-const CLASS_VALUES = ['first', 'second', 'third', 'fourth', 'fifth', 'alumni'] as const;
-const JOB_TYPE_VALUES = ['full_time', 'part_time', 'summer_job', 'other'] as const;
 
 export type EventEditorProps = {
   jobpostId: number | null;
@@ -445,7 +426,13 @@ const JobPostEditor = ({ jobpostId, goToJobPost }: EventEditorProps) => {
             </div>
 
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
-              <DeleteJobPost deleteJobPost={remove} jobPostId={jobpostId} />
+              <DeleteConfirmDialog
+                itemId={jobpostId}
+                onDelete={remove}
+                title='Slett stilling?'
+                description='Er du sikker på at du vil slette stillingen? Dette kan ikke angres.'
+                buttonLabel='Slett stilling'
+              />
 
               <RendererPreview getContent={getJobPostPreview} renderer={JobPostRenderer} />
 

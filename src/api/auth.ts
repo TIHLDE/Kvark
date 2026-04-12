@@ -12,7 +12,7 @@ import type { ExtendedSession } from '@tihlde/sdk/auth';
 
 export const clientAuthInstance = createAuthClient({
   plugins: [usernameClient(), genericOAuthClient()],
-  baseURL: import.meta.env.VITE_AUTH_BASE_URL,
+  baseURL: import.meta.env.VITE_AUTH_BASE_URL ?? 'https://photon.tihlde.org',
 });
 
 export class AuthError extends Error {
@@ -103,8 +103,8 @@ export async function loginUser(username: string, password: string) {
 /**
  * Invalidates the auth used by authClient for the specified token
  */
-export function invalidateAuth() {
-  getQueryClient().invalidateQueries(authQueryOptions);
+export async function invalidateAuth() {
+  await getQueryClient().invalidateQueries(authQueryOptions);
 }
 
 /**
@@ -154,4 +154,9 @@ export function createLoginRedirectUrl(url: string) {
       redirectTo: url,
     },
   });
+}
+
+export async function logoutUser() {
+  await clientAuthInstance.signOut();
+  await invalidateAuth();
 }

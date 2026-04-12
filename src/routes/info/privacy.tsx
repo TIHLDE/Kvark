@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Separator } from '~/components/ui/separator';
@@ -254,14 +254,7 @@ function PrivacyPolicy() {
 
           <section className='space-y-4'>
             <h2 className='text-2xl font-semibold'>10. Endringer</h2>
-            <p>
-              Denne personvernerklæringen kan oppdateres ved behov. Ved vesentlige endringer vil vi informere brukere via e-post eller på nettsiden. Du kan
-              sjekke endringshistorikk i vår{' '}
-              <Link className='text-blue-500 hover:underline' to='/endringslogg'>
-                endringslogg
-              </Link>
-              .
-            </p>
+            <p>Denne personvernerklæringen kan oppdateres ved behov. Ved vesentlige endringer vil vi informere brukere via e-post eller på nettsiden. .</p>
           </section>
         </CardContent>
       </Card>

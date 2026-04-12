@@ -152,5 +152,5 @@ export function createClient<Paths extends object>(options: ClientOptions): Clie
 export type { Client, ClientOptions, Options, Hooks, BeforeHTTPErrorHook, BeforeAnyErrorHook };
 
 export const apiClient = createClient<paths>({
-  prefixUrl: import.meta.env.VITE_API_URL,
+  prefixUrl: import.meta.env.VITE_API_URL ?? 'https://photon.tihlde.org/',
 });

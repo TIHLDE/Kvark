@@ -10,32 +10,13 @@ import { Label } from '~/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Separator } from '~/components/ui/separator';
 import { getJobsInfiniteQuery } from '~/api/queries/jobs';
-import { JOB_TYPE_LABELS } from '~/routes/jobs/-components/job-labels';
+import { JOB_TYPE_LABELS, YEAR_OPTIONS, YEAR_LABELS, type ClassValue } from '~/routes/jobs/-components/job-labels';
 import { useDebounce } from '~/hooks/Utils';
 import { ChevronRightIcon, FilterX, Search } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
 
 const JOB_TYPE_ENTRIES = Object.entries(JOB_TYPE_LABELS);
-
-type YearValue = 'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'alumni';
-
-const YEAR_OPTIONS: { label: string; value: YearValue }[] = [
-  { label: '1. klasse', value: 'first' },
-  { label: '2. klasse', value: 'second' },
-  { label: '3. klasse', value: 'third' },
-  { label: '4. klasse', value: 'fourth' },
-  { label: '5. klasse', value: 'fifth' },
-];
-
-const YEAR_LABELS: Record<string, string> = {
-  first: '1. klasse',
-  second: '2. klasse',
-  third: '3. klasse',
-  fourth: '4. klasse',
-  fifth: '5. klasse',
-  alumni: 'Alumni',
-};
 
 const defaultJobPostsSearch = { search: '', year: '', jobType: '' };
 
@@ -47,7 +28,7 @@ const jobPostsSearchSchema = z.object({
 
 type JobPostsSearch = z.infer<typeof jobPostsSearchSchema>;
 
-export const Route = createFileRoute('/_MainLayout/stillingsannonser/')({
+export const Route = createFileRoute('/_MainLayout/annonser/')({
   validateSearch: jobPostsSearchSchema,
   search: {
     middlewares: [stripSearchParams(defaultJobPostsSearch)],
@@ -69,7 +50,7 @@ function JobPosts() {
     getJobsInfiniteQuery({
       search: debouncedSearch || undefined,
       jobType: (queryFilters.jobType as 'full_time' | 'part_time' | 'summer_job' | 'other') || undefined,
-      year: (queryFilters.year as YearValue) || undefined,
+      year: (queryFilters.year as ClassValue) || undefined,
     }),
   );
 

@@ -1,10 +1,10 @@
 import { createFileRoute, Link, linkOptions, useNavigate } from '@tanstack/react-router';
 import Page from '~/components/navigation/Page';
 import { Button } from '~/components/ui/button';
-import JobPostEditor from '~/routes/admin/-components/JobPostEditor';
+import JobPostEditor from '~/routes/admin/components/JobPostEditor';
 import { ChevronRight, Plus } from 'lucide-react';
 
-import JobPostList from '~/routes/admin/-components/JobPostList';
+import JobPostList from '~/routes/admin/components/JobPostList';
 
 // TODO: Re-add auth protection — previously used authClientWithRedirect() / userHasWritePermission(PermissionApp.JOBPOST)
 

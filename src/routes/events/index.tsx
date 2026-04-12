@@ -3,12 +3,12 @@ import Page from '~/components/navigation/Page';
 import { Skeleton } from '~/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { Calendar, List, PartyPopper } from 'lucide-react';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 
 import EventsDefaultView from './components/EventsDefaultView';
 import ActivitiesDefaultView from './components/ActivitiesDefaultView';
 
-const EventsCalendarView = lazy(() => import('~/pages/Landing/components/EventsCalendarView'));
+// const EventsCalendarView = lazy(() => import('~/pages/Landing/components/EventsCalendarView'));
 
 export const Route = createFileRoute('/_MainLayout/arrangementer/')({
   component: Events,
@@ -44,9 +44,7 @@ function Events() {
           <ActivitiesDefaultView />
         </TabsContent>
         <TabsContent value='calendar'>
-          <Suspense fallback={<Skeleton className='w-full h-96' />}>
-            <EventsCalendarView />
-          </Suspense>
+          <Suspense fallback={<Skeleton className='w-full h-96' />}>{/* <EventsCalendarView /> */}</Suspense>
         </TabsContent>
       </Tabs>
     </Page>

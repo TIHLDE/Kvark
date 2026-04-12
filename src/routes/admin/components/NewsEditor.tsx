@@ -22,7 +22,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import DeleteNews from './DeleteNews';
+import DeleteConfirmDialog from './DeleteConfirmDialog';
 
 export type NewsEditorProps = {
   newsId: number | null;
@@ -240,7 +240,13 @@ const NewsEditor = ({ newsId, goToNews }: NewsEditorProps) => {
             />
 
             <div className='space-y-2 md:flex md:items-center md:justify-end md:space-x-4 md:space-y-0 pt-6'>
-              <DeleteNews deleteNews={remove} newsId={newsId} />
+              <DeleteConfirmDialog
+                itemId={newsId}
+                onDelete={remove}
+                title='Slett nyhet?'
+                description='Er du sikker på at du vil slette nyheten? Dette kan ikke angres.'
+                buttonLabel='Slett nyhet'
+              />
 
               <RendererPreview getContent={getNewsPreview} renderer={NewsRenderer} />
               <Button className='w-full md:w-40 block' disabled={isUpdating} type='submit'>

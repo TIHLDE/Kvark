@@ -4,9 +4,6 @@ import NewsListItem, { NewsListItemLoading } from '~/components/miscellaneous/Ne
 import Expandable from '~/components/ui/expandable';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
-import { useEventById } from '~/hooks/Event';
-import { useJobPostById } from '~/hooks/JobPost';
-import { useNewsById } from '~/hooks/News';
 import type { Event, EventList, JobPost, News } from '~/types';
 import React, { createElement, lazy, ReactNode } from 'react';
 import type { Components } from 'react-markdown';
