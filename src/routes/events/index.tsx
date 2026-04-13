@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_MainLayout/arrangementer/')({
 
 function Events() {
   return (
-    <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto'>
+    <Page className='space-y-8 max-w-(--breakpoint-2xl) mx-auto pt-20'>
       <div>
         <h1 className='text-3xl md:text-5xl font-bold'>Arrangementer</h1>
         <p className='text-muted-foreground mt-2'>Finn arrangementer for studenter</p>

@@ -90,7 +90,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
   return (
     <>
       <Topbar items={items} />
-      <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
+      <main className='min-h-[101vh]'>{children}</main>
       <Footer />
       <BottomBar className='md:hidden' items={items} />
     </>

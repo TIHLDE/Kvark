@@ -99,16 +99,16 @@ const Topbar = ({ items }: TopbarProps) => {
   }, [setIsOnTop]);
 
   return (
-    <>
+    <div>
       <header
         className={cn(
-          'fixed left-0 right-0 z-30 w-full top-0 transition-all duration-150 max-md:flex max-md:items-center max-md:justify-between',
+          'h-14 fixed top-0 left-0 right-0 z-30 w-full transition-colors duration-150 grid place-items-center',
           !isOnTop &&
-            'border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-card/60  dark:supports-backdrop-filter:bg-background/60',
+            'border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-card/60 dark:supports-backdrop-filter:bg-background/60',
         )}>
-        <nav className='flex items-center justify-between py-3 px-8 w-full'>
+        <nav className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_auto_1fr] items-center w-full px-4'>
           <Link aria-label='Til forsiden' to={URLS.landing}>
-            <TihldeLogo className='h-[28px] w-auto ml-0 text-primary' size='large' />
+            <TihldeLogo className='h-7 w-auto ml-0 text-primary' size='large' />
           </Link>
           <NavigationMenu className='max-md:hidden'>
             <NavigationMenuList>
@@ -127,7 +127,9 @@ const Topbar = ({ items }: TopbarProps) => {
           </div>
         </nav>
       </header>
-    </>
+      {/* Shift the page content down so that the topbar doesn't cover it */}
+      <div className='h-14'></div>
+    </div>
   );
 };
 
