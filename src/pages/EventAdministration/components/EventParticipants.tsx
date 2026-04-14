@@ -45,7 +45,7 @@ const Registrations = ({ onWait = false, eventId, needsSorting = false }: Regist
     };
 
     return Object.fromEntries(
-      Object.entries(values).filter(([, value]) => Boolean(value) || (typeof value === 'string' && value === 'false')),
+      Object.entries(values).filter(([, value]) => Boolean(value) || value === false || (typeof value === 'string' && value === 'false')),
     ) as Partial<EventRegistrationSearch> & {
       is_on_wait: boolean;
     };
