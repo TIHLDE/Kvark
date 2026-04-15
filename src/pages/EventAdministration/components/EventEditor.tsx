@@ -499,6 +499,7 @@ const EventEditor = ({ eventId, goToEvent }: EventEditorProps) => {
             </BoolExpand>
             <MarkdownEditor form={form} label='Innhold' name='description' required />
 
+            <p className='text-sm text-muted-foreground'>Banner for arrangementer skal være godkjent av Promo</p>
             <FormImageUpload form={form} label='Velg bilde' name='image' ratio='21:9' />
 
             <FormField
