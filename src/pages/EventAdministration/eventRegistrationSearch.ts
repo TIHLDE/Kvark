@@ -7,6 +7,7 @@ export const eventRegistrationDefaultValues = {
   has_allergy: '',
   search: '',
   has_paid: '',
+  has_suspicious_payment: '',
   allow_photo: '',
 } as const;
 
@@ -17,6 +18,7 @@ export const eventRegistrationSchema = z.object({
   has_allergy: z.string().optional().default(eventRegistrationDefaultValues.has_allergy),
   search: z.string().optional().default(eventRegistrationDefaultValues.search),
   has_paid: z.string().optional().default(eventRegistrationDefaultValues.has_paid),
+  has_suspicious_payment: z.string().optional().default(eventRegistrationDefaultValues.has_suspicious_payment),
   allow_photo: z.string().optional().default(eventRegistrationDefaultValues.allow_photo),
 });
 

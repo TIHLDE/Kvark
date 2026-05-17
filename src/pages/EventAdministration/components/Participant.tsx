@@ -13,7 +13,7 @@ import { cn } from '~/lib/utils';
 import type { Registration } from '~/types';
 import { formatDate, getUserAffiliation } from '~/utils';
 import { parseISO } from 'date-fns';
-import { BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
+import { AlertTriangle, BadgeCheck, ChevronDown, ChevronRight, HandCoins, NutOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -121,6 +121,20 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                   <TooltipPositioner>
                     <TooltipContent>
                       <p>{registration.has_paid_order ? 'Deltager har betalt' : 'Deltager har ikke betalt'}</p>
+                    </TooltipContent>
+                  </TooltipPositioner>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            {event?.is_paid_event && registration.has_suspicious_payment && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <AlertTriangle className='w-5 h-5 stroke-[1.5px] text-amber-600' />
+                  </TooltipTrigger>
+                  <TooltipPositioner>
+                    <TooltipContent>
+                      <p>Mulig dobbeltbetaling eller manglende Vipps-knapp</p>
                     </TooltipContent>
                   </TooltipPositioner>
                 </Tooltip>
