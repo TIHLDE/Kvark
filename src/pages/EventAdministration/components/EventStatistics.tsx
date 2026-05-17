@@ -103,6 +103,15 @@ const EventStatistics = ({ eventId, isPaid }: EventStatisticsProps) => {
               onClick={() => handleFiltering('has_paid', 'false')}
             />
           )}
+          {Boolean(isPaid) && (
+            <Stat
+              active={Boolean(queryFilters.has_suspicious_payment)}
+              key='has_suspicious_payment'
+              label='Mistenkelig betaling'
+              number={data.suspicious_payment_count}
+              onClick={() => handleFiltering('has_suspicious_payment', 'true')}
+            />
+          )}
           <Stat
             active={Boolean(queryFilters.has_attended)}
             key='has_attended'

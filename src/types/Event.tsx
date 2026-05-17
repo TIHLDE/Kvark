@@ -97,6 +97,7 @@ export type Registration = {
   user_info: UserList;
   payment_expiredate: Date;
   has_paid_order?: boolean;
+  has_suspicious_payment?: boolean;
   wait_queue_number?: number;
 };
 
@@ -113,4 +114,5 @@ export type EventStatistics = {
   has_allergy_count: number;
   has_not_paid_count: number;
   allow_photo_count: number;
+  suspicious_payment_count: number;
 };
