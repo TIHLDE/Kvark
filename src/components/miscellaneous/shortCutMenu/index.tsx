@@ -1,11 +1,11 @@
 import { linkOptions, useNavigate } from '@tanstack/react-router';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '~/components/ui/command';
 import { useOptionalAuth } from '~/hooks/auth';
-import { useLogout } from '~/hooks/User';
 import { PermissionApp } from '~/types/Enums';
 import URLS from '~/URLS';
 import { LogOutIcon } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { logoutUser } from '~/api/auth';
 
 const navigationLinks = [
   { name: 'Hjem', path: linkOptions({ to: '/' }) },
@@ -32,7 +32,7 @@ export default function ShortCutMenu() {
   const [isOpen, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const logout = useLogout();
+  // const logout = useLogout();
 
   useEffect(() => {
     const abc = new AbortController();
@@ -99,7 +99,7 @@ export default function ShortCutMenu() {
           <CommandItem
             onSelect={() => {
               closeMenu();
-              logout();
+              logoutUser();
             }}
             value='logg ut'
             className='text-red-600 data-[selected=true]:text-red-600 flex gap-2'>

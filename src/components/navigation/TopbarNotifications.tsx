@@ -8,8 +8,6 @@ import { ScrollArea } from '~/components/ui/scroll-area';
 import { Separator } from '~/components/ui/separator';
 import { Skeleton } from '~/components/ui/skeleton';
 import useMediaQuery, { MEDIUM_SCREEN } from '~/hooks/MediaQuery';
-import { notificationQueryOptions, useMarkAllNotificationsAsRead } from '~/hooks/Notification';
-import { useUser } from '~/hooks/User';
 import type { Notification } from '~/types';
 import { getTimeSince } from '~/utils';
 import { parseISO } from 'date-fns';

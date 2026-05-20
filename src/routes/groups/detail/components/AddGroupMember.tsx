@@ -1,0 +1,81 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { SingleUserSearch } from '~/components/inputs/UserSearch';
+import { Button } from '~/components/ui/button';
+import { Form } from '~/components/ui/form';
+import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { addGroupMemberMutation } from '~/api/queries/groups';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
+export type AddMemberModalProps = {
+  groupSlug: string;
+};
+
+const formSchema = z.object({
+  user: z.object(
+    {
+      user_id: z.string(),
+    },
+    {
+      error: (issue) => (issue.input === undefined ? 'Du ma velge en bruker' : undefined),
+    },
+  ),
+});
+
+const AddGroupMember = ({ groupSlug }: AddMemberModalProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const createMembership = useMutation(addGroupMemberMutation);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    createMembership.mutate(
+      { groupSlug, data: { user_id: values.user.user_id } as never },
+      {
+        onSuccess: () => {
+          form.reset();
+          setIsOpen(false);
+          toast.success('Medlem lagt til');
+        },
+        onError: (e) => {
+          toast.error(e.message);
+        },
+      },
+    );
+  };
+
+  const OpenButton = (
+    <Button variant='outline'>
+      <Plus className='mr-2 w-5 h-5 stroke-[1.5px]' />
+      Legg til
+    </Button>
+  );
+
+  return (
+    <ResponsiveDialog
+      className='w-full max-w-md'
+      description='Brukeren vil motta en epost/varsel om at de er lagt til i gruppen.'
+      onOpenChange={setIsOpen}
+      open={isOpen}
+      title='Legg til medlem'
+      trigger={OpenButton}>
+      <Form {...form}>
+        <div className='px-2 space-y-4'>
+          <SingleUserSearch form={form} label='Sok etter bruker' name='user' />
+
+          <Button onClick={form.handleSubmit(onSubmit)} className='w-full' disabled={createMembership.isPending}>
+            {createMembership.isPending ? 'Legger til...' : 'Legg til medlem'}
+          </Button>
+        </div>
+      </Form>
+    </ResponsiveDialog>
+  );
+};
+
+export default AddGroupMember;

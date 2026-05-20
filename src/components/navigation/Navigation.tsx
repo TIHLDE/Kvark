@@ -3,9 +3,9 @@ import BottomBar from '~/components/navigation/BottomBar';
 import Footer from '~/components/navigation/Footer';
 import Topbar from '~/components/navigation/Topbar';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
-import { useIsAuthenticated } from '~/hooks/User';
 import URLS from '~/URLS';
 import { ReactNode, useMemo } from 'react';
+import { useIsAuthenticated } from '~/hooks/auth';
 
 export type NavigationOptions = {
   noFooter: boolean;
@@ -78,10 +78,8 @@ const NavigationContent = ({ children }: NavigationProps) => {
           { title: 'Opptak', text: 'Søk verv hos TIHLDE', link: { type: 'internal', options: linkOptions({ to: '/opptak' }) } },
           { title: 'Kokebok', text: 'Få hjelp til dine øvinger', link: { type: 'internal', options: linkOptions({ to: '/kokebok/{-$studyId}/{-$classId}' }) } },
           { title: 'QR koder', text: 'Generer dine egne QR koder', link: { type: 'internal', options: linkOptions({ to: '/qr-koder' }) } },
-          { title: 'Badges ledertavler', text: 'Se hvem som har flest badges', link: { type: 'internal', options: linkOptions({ to: '/badges' }) } },
           { title: 'Galleri', text: 'Se alle bilder fra TIHLDE sine arrangementer', link: { type: 'internal', options: linkOptions({ to: '/galleri' }) } },
           { title: 'Kontres', text: 'Reserver kontoret eller tilhørende utstyr', link: { type: 'external', href: URLS.external.kontRes } },
-          { title: 'Endringslogg', text: 'Se changeloggen til denne nettsiden', link: { type: 'internal', options: linkOptions({ to: '/endringslogg' }) } },
         ],
       },
       { type: 'link', text: 'For Bedrifter', link: { type: 'external', href: URLS.company }, hidden: isAuthenticated },
@@ -92,7 +90,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
   return (
     <>
       <Topbar items={items} />
-      <main className='bg-background text-black dark:text-white min-h-[101vh]'>{children}</main>
+      <main className='min-h-[101vh]'>{children}</main>
       <Footer />
       <BottomBar className='md:hidden' items={items} />
     </>

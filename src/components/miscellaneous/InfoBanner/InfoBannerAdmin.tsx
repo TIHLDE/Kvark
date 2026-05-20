@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/com
 import { Form, FormControl, FormField, FormItem } from '~/components/ui/form';
 import { Label } from '~/components/ui/label';
 import { Switch } from '~/components/ui/switch';
-import { useInfoBanners } from '~/hooks/InfoBanner';
 import { PermissionApp } from '~/types/Enums';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';

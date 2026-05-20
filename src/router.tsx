@@ -1,6 +1,5 @@
 import { createRouter } from '@tanstack/react-router';
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
-import API from '~/api/api';
 import { SHOW_NEW_STUDENT_INFO } from '~/constant';
 import { ThemeProvider } from '~/hooks/Theme';
 import { PostHogProvider } from '~/integrations/posthog';
@@ -65,7 +64,6 @@ declare module '@tanstack/react-router' {
       (window as any).tihldeDev = {
         analyticsEvent: (await import('~/hooks/Utils')).analyticsEvent,
         getQueryClient: TanstackQuery.getQueryClient,
-        API: (await import('~/api/api')).default,
         URLS: (await import('~/URLS')).default,
         posthog: (await import('posthog-js')).default,
       };
@@ -90,17 +88,4 @@ declare module '@tanstack/react-router' {
     }`,
     'font-weight: bold; font-size: 1rem;color: #ff9400;',
   );
-  // eslint-disable-next-line no-console
-  console.log(
-    'Lyst på en ny badge? Skriv %cbadge();%c i konsollen da vel!',
-    'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
-    '',
-  );
-  const rickroll = async () => {
-    const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
-    API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
-    window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-  };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (window as any).badge = rickroll;
 })();
