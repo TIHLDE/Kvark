@@ -1,14 +1,14 @@
 import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
-import ResponsiveDialog from '~/components/ui/responsive-dialog';
+import { eventByIdQuery } from '~/hooks/Event';
+import { jobPostByIdQuery } from '~/hooks/JobPost';
+import { newsByIdQuery } from '~/hooks/News';
+import { useQuery } from '@tanstack/react-query';
 import type { NodeViewProps } from '@tiptap/react';
 import { mergeAttributes, Node } from '@tiptap/react';
 import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
-import { Briefcase, CalendarDays, Newspaper, Pencil } from 'lucide-react';
+import { Briefcase, CalendarDays, Newspaper, Pencil, Trash2 } from 'lucide-react';
 import { useState } from 'react';
-
-export type EmbedKind = 'event' | 'jobpost' | 'news';
+import EmbedDialog, { type EmbedKind } from '../dialogs/EmbedDialog';
 
 const KIND_LABEL: Record<EmbedKind, string> = {
   event: 'Arrangement',
@@ -22,59 +22,42 @@ const KIND_ICON: Record<EmbedKind, React.ComponentType<{ className?: string }>> 
   news: Newspaper,
 };
 
+function useEmbedTitle(kind: EmbedKind, id: string): string | undefined {
+  const valid = /^\d+$/.test(id) && Number(id) > 0;
+  const numId = valid ? Number(id) : -1;
+  const eventQ = useQuery({ ...eventByIdQuery(numId), enabled: valid && kind === 'event', retry: false });
+  const jobQ = useQuery({ ...jobPostByIdQuery(numId), enabled: valid && kind === 'jobpost', retry: false });
+  const newsQ = useQuery({ ...newsByIdQuery(numId), enabled: valid && kind === 'news', retry: false });
+  const q = kind === 'event' ? eventQ : kind === 'jobpost' ? jobQ : newsQ;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (q.data as any)?.title;
+}
+
 function EmbedCardView({ node, updateAttributes, deleteNode }: NodeViewProps) {
   const kind = node.attrs.kind as EmbedKind;
   const id = String(node.attrs.id ?? '');
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState(id);
   const Icon = KIND_ICON[kind] ?? CalendarDays;
+  const title = useEmbedTitle(kind, id);
 
   return (
     <NodeViewWrapper as='div' className='my-2'>
       <div className='flex items-center gap-2 rounded-md border bg-card px-3 py-2'>
-        <Icon className='size-4 text-muted-foreground' />
-        <span className='text-sm'>
-          {KIND_LABEL[kind] ?? kind} #{id || '?'}
-        </span>
-        <div className='ml-auto flex gap-1'>
-          <ResponsiveDialog
-            description={`Skriv inn ID-en til ${KIND_LABEL[kind]?.toLowerCase() ?? 'innholdet'} du vil vise.`}
-            onOpenChange={(v) => {
-              setOpen(v);
-              if (v) setDraft(id);
-            }}
-            open={open}
-            title={`Endre ${KIND_LABEL[kind]?.toLowerCase() ?? 'innhold'}`}
-            trigger={
-              <Button size='sm' title='Endre ID' type='button' variant='ghost'>
-                <Pencil className='size-3.5' />
-              </Button>
-            }>
-            <div className='space-y-3'>
-              <div className='space-y-1'>
-                <Label htmlFor='embed-id'>ID</Label>
-                <Input id='embed-id' inputMode='numeric' onChange={(e) => setDraft(e.target.value)} value={draft} />
-              </div>
-              <div className='flex justify-end gap-2'>
-                <Button onClick={() => setOpen(false)} type='button' variant='ghost'>
-                  Avbryt
-                </Button>
-                <Button
-                  onClick={() => {
-                    updateAttributes({ id: draft.trim() });
-                    setOpen(false);
-                  }}
-                  type='button'>
-                  Lagre
-                </Button>
-              </div>
-            </div>
-          </ResponsiveDialog>
-          <Button onClick={() => deleteNode()} size='sm' title='Fjern' type='button' variant='ghost'>
-            Fjern
-          </Button>
+        <Icon className='size-4 shrink-0 text-muted-foreground' />
+        <div className='min-w-0 flex-1'>
+          <div className='truncate text-sm'>{title ?? `${KIND_LABEL[kind] ?? kind} #${id || '?'}`}</div>
+          <div className='text-xs text-muted-foreground'>
+            {KIND_LABEL[kind] ?? kind} · ID {id || '?'}
+          </div>
         </div>
+        <Button onClick={() => setOpen(true)} size='icon' title='Endre ID' type='button' variant='ghost'>
+          <Pencil className='size-3.5' />
+        </Button>
+        <Button onClick={() => deleteNode()} size='icon' title='Fjern' type='button' variant='ghost'>
+          <Trash2 className='size-3.5' />
+        </Button>
       </div>
+      {open && <EmbedDialog initialId={id} kind={kind} onOpenChange={setOpen} onSubmit={(newId) => updateAttributes({ id: newId })} open={open} />}
     </NodeViewWrapper>
   );
 }
