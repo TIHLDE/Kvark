@@ -1,12 +1,15 @@
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Button } from '~/components/ui/button';
-import { FormControl, FormField, FormItem, FormMessage } from '~/components/ui/form';
+import { FormField, FormItem, FormMessage } from '~/components/ui/form';
 import { Label } from '~/components/ui/label';
 import ResponsiveDialog from '~/components/ui/responsive-dialog';
 import { ScrollArea } from '~/components/ui/scroll-area';
-import { Textarea } from '~/components/ui/textarea';
+import { Skeleton } from '~/components/ui/skeleton';
 import { cn } from '~/lib/utils';
+import { lazy, Suspense } from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+
+const EditorBody = lazy(() => import('./markdown-editor/EditorBody'));
 
 const guide = `
   ___
@@ -22,7 +25,7 @@ const guide = `
   ~~~
 
   ___
-  
+
   ## **Typografi**
 
   **Fet tekst**
@@ -33,22 +36,6 @@ const guide = `
   **Fet tekst**
   _Kursiv tekst_
   _**Fet og kursiv tekst**_
-  ~~~
-
-  ___
-
-  ## **Mellomrom**
-
-  Tekst før mellomrom
-
-  &nbsp;  
-
-  Tekst etter mellomrom
-
-  ~~~
-  &nbsp;
-  Det må være to mellomrom etter &nbsp; for at det skal fungere
-  (&nbsp;  )
   ~~~
 
   ___
@@ -68,7 +55,7 @@ const guide = `
   ___
 
   ## **Sitat**
-  
+
   > Sitat som får et innrykk
 
   ~~~
@@ -76,7 +63,7 @@ const guide = `
   ~~~
 
   ___
-  
+
   ## **Liste**
 
   Med tall:
@@ -89,111 +76,21 @@ const guide = `
   - Andre element
   - Tredje element
 
-  ~~~
-  Med tall:
-  1. Første element
-  2. Andre element
-  3. Tredje element
-
-  Uten tall:
-  - Første element
-  - Andre element
-  - Tredje element
-  ~~~
-
   ___
 
-  ## **Delelinje**
+  ## **Utvid og kort**
 
-  ___
-
-  ~~~
-  ___
-  ~~~
-
-  ___
-  
-  ## **Kodeblokk**
-
-  \`Kodeblokk på en linje\`
-
-  ~~~
-  En linje:
-  \`Kodeblokk på en linje\`
-
-  Flere linjer:
-  \`\`\`
-  const party = new Party();
-  party.start();
-
-  party.stop();
-  \`\`\`
-  ~~~
-
-  ___
-  
-  ## **Utvid**
+  Bruk knappene i verktøylinjen for å sette inn utvid-lister og arrangement-, jobbannonse- eller nyhet-kort. Du kan også skrive det selv:
 
   ~~~expandlist
   \`\`\`expand
   Tittel 1::Innhold som kan **styles** på samme måte som resten
   \`\`\`
-  \`\`\`expand
-  Tittel 2::Innhold som kan _styles_ på samme måte som resten
-  \`\`\`
   ~~~
 
-  Utvid-bokser må ligge inne i en \`expandlist\`:
-
-  \`\`\`
-  ~~~expandlist
-  // Utvid-bokser her
-  ~~~
-  \`\`\`
-  
-  Utvid-bokser inneholder en tittel og innhold som separeres med \`::\`:
-
-  \`\`\`
-  ~~~expandlist
-    \`\`\`expand
-    Tittel 1::Innhold som kan **styles** på samme måte som resten
-    \`\`\`
-    \`\`\`expand
-    Tittel 2::Innhold som kan _styles_ på samme måte som resten
-    \`\`\`
-  ~~~
-  \`\`\`
-
-  ___
-
-  ## **Arrangement- / Nyhet- / Annonse-kort**
-  
   \`\`\`event
   19
   \`\`\`
-  
-  Kort med link til arrangementer, nyheter og annonser kan opprettes ved å skrive \`type\` kort og \`id\` til for eksempel arrangement inni:
-
-  *Arrangement:*
-  ~~~
-  \`\`\`event
-  19
-  \`\`\`
-  ~~~
-  
-  *Jobbannonse:*
-  ~~~
-  \`\`\`jobpost
-  19
-  \`\`\`
-  ~~~
-  
-  *Nyhet:*
-  ~~~
-  \`\`\`news
-  19
-  \`\`\`
-  ~~~
   `;
 
 type MarkdownEditorProps<TFormValues extends FieldValues> = {
@@ -204,9 +101,16 @@ type MarkdownEditorProps<TFormValues extends FieldValues> = {
   className?: string;
 };
 
+const EditorFallback = ({ className }: { className?: string }) => (
+  <div className={cn('rounded-md border bg-background', className)}>
+    <Skeleton className='h-9 w-full rounded-b-none' />
+    <Skeleton className='h-[200px] md:h-[300px] w-full rounded-t-none' />
+  </div>
+);
+
 const MarkdownEditor = <TFormValues extends FieldValues>({ form, name, label, required, className }: MarkdownEditorProps<TFormValues>) => {
   return (
-    <div>
+    <div className='space-y-1'>
       <FormField
         control={form.control}
         name={name}
@@ -215,18 +119,18 @@ const MarkdownEditor = <TFormValues extends FieldValues>({ form, name, label, re
             <Label>
               {label} {required && <span className='text-red-300'>*</span>}
             </Label>
-            <FormControl>
-              <Textarea className={cn('w-full h-[200px] md:h-[300px]', className)} placeholder='Skriv innhold her...' {...field} />
-            </FormControl>
+            <Suspense fallback={<EditorFallback className={className} />}>
+              <EditorBody className={className} onBlur={field.onBlur} onChange={field.onChange} value={(field.value as string | undefined) ?? ''} />
+            </Suspense>
             <FormMessage />
           </FormItem>
         )}
       />
       <ResponsiveDialog
-        description='Markdown er en vanlig måte å formatere tekst på nettet og brukes også på tihlde.org. Her følger en rekke eksempler på hvordan du kan legge inn overskrifter, lister, linker, bilder, osv. ved hjelp av vanlig Markdown. I tillegg kan du vise arrangement-, nyhet- og jobbannonse-kort, samt en utvid-boks.'
+        description='Bruk verktøylinjen for å formatere tekst, sette inn lenker og bilder, samt legge til utvid-lister og kort for arrangement, jobbannonse eller nyhet. Her er en oversikt over hva som er mulig.'
         title='Formaterings-guide'
         trigger={
-          <Button className='justify-start' variant='link'>
+          <Button className='justify-start px-0' variant='link'>
             Hvordan formaterer jeg teksten?
           </Button>
         }>
