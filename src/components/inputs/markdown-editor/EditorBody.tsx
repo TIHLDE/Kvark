@@ -6,6 +6,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import { useEffect, useRef } from 'react';
+import './editor.css';
 import { EmbedCard } from './extensions/EmbedCard';
 import { ExpandItem } from './extensions/ExpandItem';
 import { ExpandList } from './extensions/ExpandList';
@@ -52,7 +53,7 @@ export default function EditorBody({ value, onChange, onBlur, className }: Edito
     onBlur: () => onBlur?.(),
     editorProps: {
       attributes: {
-        class: cn('prose prose-sm max-w-none focus:outline-none px-3 py-2 min-h-[200px] md:min-h-[300px]', 'dark:prose-invert'),
+        class: cn('kvark-editor focus:outline-none px-3 py-2 min-h-[200px] md:min-h-[300px]'),
       },
     },
   });
