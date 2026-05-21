@@ -11,13 +11,15 @@ export type ImageDialogProps = {
   onSubmit: (args: { src: string; alt: string }) => void;
 };
 
-function isLikelyUrl(value: string): boolean {
-  if (!value) return false;
+function toSafeHttpUrl(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
   try {
-    const u = new URL(value);
-    return u.protocol === 'http:' || u.protocol === 'https:';
+    const u = new URL(trimmed);
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+    return u.toString();
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -38,14 +40,15 @@ export default function ImageDialog({ open, onOpenChange, onSubmit }: ImageDialo
     setPreviewFailed(false);
   }, [src]);
 
+  const safeSrc = toSafeHttpUrl(src);
+
   const submit = () => {
-    const s = src.trim();
-    if (!s) return;
-    onSubmit({ src: s, alt: alt.trim() });
+    if (!safeSrc) return;
+    onSubmit({ src: safeSrc, alt: alt.trim() });
     onOpenChange(false);
   };
 
-  const showPreview = isLikelyUrl(src.trim());
+  const showPreview = Boolean(safeSrc);
 
   return (
     <ResponsiveDialog
@@ -72,7 +75,12 @@ export default function ImageDialog({ open, onOpenChange, onSubmit }: ImageDialo
           <div className='mb-1 text-xs text-muted-foreground'>Forhåndsvisning</div>
           {showPreview && !previewFailed ? (
             // eslint-disable-next-line jsx-a11y/alt-text
-            <img alt={alt || 'Forhåndsvisning'} className='max-h-48 w-auto rounded-md object-contain' onError={() => setPreviewFailed(true)} src={src.trim()} />
+            <img
+              alt={alt || 'Forhåndsvisning'}
+              className='max-h-48 w-auto rounded-md object-contain'
+              onError={() => setPreviewFailed(true)}
+              src={safeSrc ?? ''}
+            />
           ) : (
             <div className='flex h-24 items-center justify-center gap-2 text-sm text-muted-foreground'>
               <ImageOff className='size-4' />
@@ -84,7 +92,7 @@ export default function ImageDialog({ open, onOpenChange, onSubmit }: ImageDialo
           <Button onClick={() => onOpenChange(false)} type='button' variant='ghost'>
             Avbryt
           </Button>
-          <Button disabled={src.trim() === ''} type='submit'>
+          <Button disabled={!safeSrc} type='submit'>
             Sett inn
           </Button>
         </div>
