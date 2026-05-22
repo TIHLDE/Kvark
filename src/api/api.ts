@@ -10,7 +10,6 @@ import type {
   Cheatsheet,
   CompaniesEmail,
   createFeedbackInput,
-  CreateQRCode,
   Event,
   EventFavorite,
   EventList,
@@ -52,7 +51,6 @@ import type {
   PaginationResponse,
   Picture,
   PublicRegistration,
-  QRCode,
   Reaction,
   ReactionMutate,
   Registration,
@@ -70,7 +68,6 @@ import type {
   UserNotificationSettingChoice,
   UserPermissions,
   UserSubmission,
-  Warning,
   WikiChildren,
   WikiPage,
   WikiRequired,
@@ -103,7 +100,6 @@ export const NOTIFICATIONS_ENDPOINT = 'notifications';
 export const NOTIFICATION_SETTINGS_ENDPOINT = 'notification-settings';
 export const WIKI_ENDPOINT = 'pages';
 export const SHORT_LINKS_ENDPOINT = 'short-links';
-export const QR_CODE_ENDPOINT = 'qr-codes';
 export const STRIKES_ENDPOINT = 'strikes';
 export const SUBMISSIONS_ENDPOINT = 'submissions';
 export const USERS_ENDPOINT = 'users';
@@ -257,11 +253,6 @@ export default {
   createShortLink: (item: ShortLink) => IFetch<ShortLink>({ method: 'POST', url: `${SHORT_LINKS_ENDPOINT}/`, data: item }),
   deleteShortLink: (slug: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${SHORT_LINKS_ENDPOINT}/${slug}/` }),
 
-  // QR codes
-  getQRCodes: (filters?: any) => IFetch<Array<QRCode>>({ method: 'GET', url: `${QR_CODE_ENDPOINT}/`, data: filters || {} }),
-  createQRCode: (item: CreateQRCode) => IFetch<QRCode>({ method: 'POST', url: `${QR_CODE_ENDPOINT}/`, data: item }),
-  deleteQRCode: (id: number) => IFetch<RequestResponse>({ method: 'DELETE', url: `${QR_CODE_ENDPOINT}/${String(id)}/` }),
-
   // Gallery
   getGallery: (id: Gallery['id']) => IFetch<Gallery>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${id}/` }),
   getGalleries: (filters?: any) => IFetch<PaginationResponse<Gallery>>({ method: 'GET', url: `${GALLERY_ENDPOINT}/`, data: filters || {} }),
@@ -296,9 +287,6 @@ export default {
       withAuth: true,
     });
   },
-
-  // Warning
-  getWarnings: () => IFetch<Array<Warning>>({ method: 'GET', url: `${WARNINGS_ENDPOINT}/` }),
 
   // Categories
   getCategories: () => IFetch<Array<Category>>({ method: 'GET', url: `${CATEGORIES_ENDPOINT}/` }),
