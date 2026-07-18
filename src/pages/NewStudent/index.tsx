@@ -66,7 +66,7 @@ function NewStudent() {
           bruker om du ikke har gjort dette allerede.
         </p>
         <div className='flex flex-col md:flex-row gap-2'>
-          <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' rel='noreferrer' target='_blank'>
+          <a href='https://fadderuka.tihlde.org' rel='noreferrer' target='_blank'>
             <Button className='font-semibold  bg-sky-500 text-white'>
               Meld meg på fadderuka <Users2 className='h-4' />
             </Button>
@@ -88,7 +88,7 @@ function NewStudent() {
           </p>
           <div className='flex gap-2 flex-col md:flex-row'>
             <Button asChild className='bg-sky-500 text-white font-semibold' onClick={fadderukaSignupAnalytics}>
-              <a href='https://forms.gle/oJa8sQrkQfGq6vcNA' rel='noreferrer' target='_blank'>
+              <a href='https://fadderuka.tihlde.org' rel='noreferrer' target='_blank'>
                 Meld meg på!
               </a>
             </Button>
