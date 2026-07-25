@@ -1,14 +1,14 @@
 import MarkdownRenderer from '~/components/miscellaneous/MarkdownRenderer';
 import { Button } from '~/components/ui/button';
 import Expandable from '~/components/ui/expandable';
-import { useUpdateGroupFine } from '~/hooks/Group';
+import { useUpdateGroupFine, useUpdateGroupFineStarred } from '~/hooks/Group';
 import { useUser } from '~/hooks/User';
 import { useAnalytics } from '~/hooks/Utils';
 import { cn } from '~/lib/utils';
 import type { Group, GroupFine, UserBase } from '~/types';
 import { formatDate } from '~/utils';
 import { parseISO } from 'date-fns';
-import { Check, HandCoins } from 'lucide-react';
+import { Check, HandCoins, Star } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -29,6 +29,8 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
   const { event } = useAnalytics();
   const updateFine = useUpdateGroupFine(groupSlug, fine.id);
   const [approved, setApproved] = useState(fine.approved);
+
+  const updateStar = useUpdateGroupFineStarred(groupSlug, fine.id);
 
   const toggleApproved = () => {
     event('update', 'fines', `Approved a single fine`);
@@ -56,6 +58,21 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
       {
         onSuccess: () => {
           toast.success(`Boten er nå markert som ${fine.payed ? 'ikke betalt' : 'betalt'}`);
+        },
+        onError: (e) => {
+          toast.error(e.detail);
+        },
+      },
+    );
+  };
+
+  const toggleStar = () => {
+    event('update', 'fines', 'Starred a fine');
+    updateStar.mutate(
+      { starred: !fine.starred },
+      {
+        onSuccess: () => {
+          toast.success(`Boten er nå ${!fine.starred ? "lagt til i 'Hall of Shame'" : 'fjernet fra Hall of Shame'}`);
         },
         onError: (e) => {
           toast.error(e.detail);
@@ -98,6 +115,15 @@ const FineItem = ({ fine, groupSlug, isAdmin, hideUserInfo, fineUser }: FineItem
             <HandCoins className='w-4 h-4' />
             <span>{fine.payed ? 'Betalt' : 'Ikke betalt'}</span>
           </div>
+          <Button
+            onClick={toggleStar}
+            variant='ghost'
+            className={cn(
+              'ml-auto',
+              fine.starred ? 'text-yellow-500 hover:text-yellow-500 [&>svg]:fill-yellow-500' : 'text-muted-foreground hover:text-yellow-500',
+            )}>
+            <Star className='w-4 h-4' />
+          </Button>
         </div>
 
         <div>
