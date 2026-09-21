@@ -90,6 +90,7 @@
     "husky": "^9.1.7",
     "knip": "^5.86.0",
     "lint-staged": "^16.3.3",
+    "msw": "^2.15.0",
     "oxfmt": "^0.38.0",
     "oxlint": "^1.53.0",
     "tailwindcss": "^4.2.1",
@@ -105,6 +106,11 @@
     "*.{ts?(x),js?(x)}": [
       "oxlint --fix",
       "oxfmt --write"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
     ]
   }
 }
