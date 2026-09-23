@@ -4,7 +4,7 @@ import { StartClient } from '@tanstack/react-start/client';
 import { worker } from '~/mocks/browser';
 
 async function start() {
-  if (import.meta.env.DEV && import.meta.env.VITE_ENABLE_MOCKS !== 'false') {
+  if (import.meta.env.VITE_ENABLE_MOCKS === 'true') {
     await worker.start({ onUnhandledRequest: 'bypass' });
   }
   startTransition(() => {

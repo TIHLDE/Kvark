@@ -9,7 +9,7 @@
     "serve": "node .output/server/index.mjs",
     "start": "vite",
     "check": "tsc --noEmit",
-    "build:prod": "tsc --noEmit && vite build && sh post-build.sh",
+    "build:prod": "tsc --noEmit && vite build",
     "lint": "oxlint .",
     "pre-commit": "lint-staged",
     "format": "oxfmt .",

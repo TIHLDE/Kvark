@@ -23,6 +23,15 @@ function Landing() {
       <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
         <div className='max-w-5xl w-full mx-auto py-4 space-y-8 px-4'>
           <NewStudentBox />
+          {import.meta.env.VITE_ENABLE_MOCKS === 'true' && (
+            <div className='p-4 rounded-md border max-w-3xl w-full mx-auto space-y-4'>
+              <h1 className='text-center text-4xl font-bold'>Denne siden kjører i Mock Modus</h1>
+              <p className='text-center'>
+                Dette er den gamle frontenden til TIHLDE. Nå brukes denne som en referanse til å jobbe på den nye siden. Dersom du ønsker å teste å logge inn så
+                kan du bruke brukernavn: <code>index</code> og passord: <code>index123</code>
+              </p>
+            </div>
+          )}
           <InfoBanner />
           <StoriesView />
         </div>
