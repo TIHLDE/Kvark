@@ -29,6 +29,7 @@ jobs:
 
   deploy:
     needs: build
+    permissions: {}
     uses: TIHLDE/tihlde-workflows/.github/workflows/_notify_deploy.yml@main
     with:
       deploy_url: "https://deploy-king.tihlde.org/deploy"
