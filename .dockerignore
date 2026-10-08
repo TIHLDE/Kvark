@@ -1,0 +1,13 @@
+node_modules
+.output
+.tanstack
+.vercel
+.git
+.github
+.husky
+.vscode
+.idea
+.env
+.env.*
+!.env.example
+*.log
