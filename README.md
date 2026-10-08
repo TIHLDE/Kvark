@@ -1,3 +1,6 @@
+> [!NOTE]
+> This is the old TIHLDE site. It is deprecated and only kept around as a reference point. Go to [old.tihlde.org](https://old.tihlde.org) to preview it.
+
 <br/>
 <p align="center">
     <a href="https://tihlde.org" target="_blank">
