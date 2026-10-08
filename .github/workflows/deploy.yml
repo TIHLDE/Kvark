@@ -2,7 +2,7 @@ name: "build -> push -> deploy"
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
