@@ -2,7 +2,7 @@
 
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
+import { createRootRouteWithContext, HeadContent, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { authClient } from '~/api/auth';
 import appCss from '~/assets/css/index.css?url';
@@ -63,25 +63,20 @@ export const Route = createRootRouteWithContext<{
       { property: 'twitter:image', content: metaData.image },
     ],
   }),
-  component: RootComponent,
+  // The shell is always server-rendered, also when SSR is disabled for the routes (mock mode)
+  shellComponent: RootDocument,
   errorComponent: ({ error }) => (
-    <RootDocument>
-      <div className='container mx-auto p-4 pt-16'>
-        <h1 className='text-2xl font-bold'>Something went wrong</h1>
-        <p className='mt-2'>An unexpected error occurred. Please try again later.</p>
-        {import.meta.env.DEV && error instanceof Error && (
-          <pre className='mt-4 p-4 bg-muted rounded overflow-x-auto'>
-            <code>{error.stack}</code>
-          </pre>
-        )}
-      </div>
-    </RootDocument>
+    <div className='container mx-auto p-4 pt-16'>
+      <h1 className='text-2xl font-bold'>Something went wrong</h1>
+      <p className='mt-2'>An unexpected error occurred. Please try again later.</p>
+      {import.meta.env.DEV && error instanceof Error && (
+        <pre className='mt-4 p-4 bg-muted rounded overflow-x-auto'>
+          <code>{error.stack}</code>
+        </pre>
+      )}
+    </div>
   ),
-  notFoundComponent: () => (
-    <RootDocument>
-      <Http404 />
-    </RootDocument>
-  ),
+  notFoundComponent: () => <Http404 />,
 });
 
 async function clientLoader() {
@@ -103,14 +98,6 @@ function RootDocument({ children }: React.PropsWithChildren) {
         <Scripts />
       </body>
     </html>
-  );
-}
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
   );
 }
 

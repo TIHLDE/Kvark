@@ -5,6 +5,10 @@ import { isAfterDateOfYear, isBeforeDateOfYear } from '~/utils';
  */
 export const TIHLDE_API_URL = import.meta.env.VITE_API_URL;
 /**
+ * Mock all backend requests with MSW. On by default, opt out with `VITE_ENABLE_MOCKS=false`
+ */
+export const MOCKS_ENABLED = import.meta.env.VITE_ENABLE_MOCKS !== 'false';
+/**
  * Client ID for Feide application
  */
 export const FEIDE_CLIENT_ID = import.meta.env.VITE_FEIDE_CLIENT_ID;

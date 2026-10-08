@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import InfoBanner from '~/components/miscellaneous/InfoBanner/InfoBanner';
 import { Button } from '~/components/ui/button';
+import { MOCKS_ENABLED } from '~/constant';
 import { analyticsEvent } from '~/hooks/Utils';
 import EventsView from '~/pages/Landing/components/EventsView';
 import NewsListView from '~/pages/Landing/components/NewsListView';
@@ -23,7 +24,7 @@ function Landing() {
       <div className='bg-[#f2f2f2] dark:bg-[#071a2d]'>
         <div className='max-w-5xl w-full mx-auto py-4 space-y-8 px-4'>
           <NewStudentBox />
-          {import.meta.env.VITE_ENABLE_MOCKS === 'true' && (
+          {MOCKS_ENABLED && (
             <div className='p-4 rounded-md border max-w-3xl w-full mx-auto space-y-4'>
               <h1 className='text-center text-4xl font-bold'>Denne siden kjører i Mock Modus</h1>
               <p className='text-center'>
